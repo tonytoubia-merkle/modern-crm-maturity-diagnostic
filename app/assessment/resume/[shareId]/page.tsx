@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
 import { AssessmentFlow } from "@/components/assessment/AssessmentFlow";
 import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY } from "@/lib/data/questions";
@@ -19,11 +19,6 @@ export default async function ResumeAssessmentPage({
 
   if (!assessment) notFound();
 
-  // Completed assessments go straight to results
-  if (assessment.status === "completed") {
-    redirect(`/results/${params.shareId}`);
-  }
-
   const { data: rawResponses } = await supabase
     .from("responses")
     .select("*")
@@ -37,19 +32,22 @@ export default async function ResumeAssessmentPage({
     isIndustryQuestion: r.is_industry_question,
   }));
 
-  // Find first incomplete core section to resume at
+  // Completed assessments start at step 1 (all answers pre-filled, user edits from beginning)
+  // In-progress: find first incomplete section
   let initialStep = 1;
-  for (let i = 0; i < CAPABILITIES_ORDER.length; i++) {
-    const cap = CAPABILITIES_ORDER[i] as Capability;
-    const capQuestions = QUESTIONS_BY_CAPABILITY[cap];
-    const allAnswered = capQuestions.every((q) =>
-      responses.some((r) => r.questionId === q.id)
-    );
-    if (!allAnswered) {
+  if (assessment.status !== "completed") {
+    for (let i = 0; i < CAPABILITIES_ORDER.length; i++) {
+      const cap = CAPABILITIES_ORDER[i] as Capability;
+      const capQuestions = QUESTIONS_BY_CAPABILITY[cap];
+      const allAnswered = capQuestions.every((q) =>
+        responses.some((r) => r.questionId === q.id)
+      );
+      if (!allAnswered) {
+        initialStep = i + 1;
+        break;
+      }
       initialStep = i + 1;
-      break;
     }
-    initialStep = i + 1; // all done so far, keep advancing
   }
 
   const industry = assessment.industry as Industry | null;
