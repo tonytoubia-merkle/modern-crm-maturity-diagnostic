@@ -67,6 +67,7 @@ export interface Opportunity {
   description: string;
   capabilities: Capability[];
   triggerThreshold: number;
+  minTriggerScore?: number; // if set, fires when score >= this value (advanced/innovation opps)
   scope: string;
   methods: string[];
   valueNarrative: string;

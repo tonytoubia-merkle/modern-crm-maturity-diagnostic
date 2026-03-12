@@ -64,7 +64,7 @@ export default function HomePage() {
               M
             </span>
             <span className="text-sm font-semibold text-slate-700">
-              Merkle · CRM Diagnostic
+              Merkle · Modern CRM Diagnostic
             </span>
           </div>
           <button

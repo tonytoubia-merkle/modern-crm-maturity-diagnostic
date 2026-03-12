@@ -397,6 +397,108 @@ export const OPPORTUNITIES: Opportunity[] = [
     priority: "high",
   },
 
+  // ── ADVANCED / INNOVATION (fire for high-scoring mature orgs) ─────────────────
+
+  {
+    id: "modern_crm_innovation_sprint",
+    title: "Modern CRM Innovation Sprint",
+    tagline: "Chart the frontier of what your CRM engine can become",
+    description:
+      "A structured bluesky workshop series for mature CRM organizations ready to explore the next horizon. Examine emerging use cases in generative AI personalization, agentic engagement, real-time identity, and autonomous decisioning — and build a prioritized innovation roadmap grounded in your existing capability strengths. This is for organizations that have crossed the operational threshold and are asking 'what's next?'",
+    capabilities: ["decisioning", "learning_optimization", "engagement"],
+    triggerThreshold: 5,
+    minTriggerScore: 3.5,
+    scope:
+      "Two-day facilitated innovation workshop, GenAI and agentic CRM use case mapping, innovation backlog development, POC scoping for two to three priority opportunities, and executive alignment session.",
+    methods: [
+      "Current-state capability assessment and frontier benchmarking",
+      "GenAI and agentic CRM use case ideation and prioritization",
+      "POC or pilot scoping for two to three high-value innovation areas",
+      "Innovation roadmap development with phased investment framework",
+      "Executive alignment and internal stakeholder activation session",
+    ],
+    valueNarrative:
+      "Mature CRM organizations that fail to invest in innovation risk capability plateau as competitors accelerate. Organizations at Stage 3–4 are uniquely positioned to pilot frontier use cases — generative personalization, AI-driven decisioning, autonomous engagement — because they have the data, identity, and orchestration foundations required. This sprint converts existing strengths into a defined innovation agenda with clear next steps and executive sponsorship.",
+    sfType: "CRM Strategy & Activation",
+    engagementSize: "Small (4–6 weeks)",
+    priority: "high",
+  },
+
+  {
+    id: "genai_personalization",
+    title: "Generative AI Personalization at Scale",
+    tagline: "Produce 1:1 content and experiences at a scale humans cannot",
+    description:
+      "Deploy generative AI to produce dynamic, personalized content across email, SMS, push, and web — moving beyond segment-level messaging to true 1:1 communication at scale. Combine LLMs with your first-party data, behavioral signals, and decisioning layer to generate contextually relevant subject lines, body copy, product narratives, and offers for each individual. The next frontier of CRM is content that writes itself based on who the customer is and what they're doing right now.",
+    capabilities: ["engagement", "decisioning", "signals"],
+    triggerThreshold: 5,
+    minTriggerScore: 3.5,
+    scope:
+      "GenAI content strategy and guardrail framework, LLM integration with CRM and ESP platforms, dynamic content template architecture, brand voice governance model, and measurement framework for personalization lift.",
+    methods: [
+      "GenAI content strategy and brand voice governance framework",
+      "LLM integration with existing CRM, CDP, and ESP stack",
+      "Dynamic template architecture for email, SMS, push, and web",
+      "Prompt engineering and content generation workflow design",
+      "A/B testing framework for GenAI versus human-authored content",
+    ],
+    valueNarrative:
+      "Generative AI personalization enables brands to produce hundreds of content variations per send — matching each customer's context, preference, and lifecycle stage with messaging that no human content team could produce at scale. Early adopters are seeing 15–25% improvement in engagement metrics from AI-generated subject lines and body copy alone. The organizations that build GenAI personalization now will establish a compounding advantage as their models learn from millions of interactions.",
+    sfType: "CRM Strategy & Activation",
+    engagementSize: "Medium (12–16 weeks)",
+    priority: "high",
+  },
+
+  {
+    id: "crm_center_of_excellence",
+    title: "CRM Center of Excellence",
+    tagline: "Institutionalize Modern CRM as a core organizational capability",
+    description:
+      "Build the operating model, governance structures, talent frameworks, and technology standards that make Modern CRM a permanent, self-reinforcing organizational capability — not a project. A CRM Center of Excellence (CoE) codifies best practices, accelerates cross-functional alignment, governs data and decisioning standards, and ensures that capability gains compound rather than decay. For organizations at Stage 4, this is the structural investment that protects and extends the competitive advantage already earned.",
+    capabilities: ["learning_optimization", "decisioning", "identity"],
+    triggerThreshold: 5,
+    minTriggerScore: 4.0,
+    scope:
+      "CoE charter and operating model design, capability maturity roadmap, cross-functional governance framework, talent and skills assessment, technology and vendor standards documentation, and executive sponsorship activation.",
+    methods: [
+      "CRM CoE charter, scope, and operating model design",
+      "Cross-functional governance framework and decision rights mapping",
+      "Capability maturity roadmap and investment prioritization model",
+      "Talent and skills gap assessment with hiring and upskilling recommendations",
+      "Technology standards and vendor evaluation framework",
+    ],
+    valueNarrative:
+      "Organizations with a dedicated CRM CoE sustain 20–40% higher capability maturity scores over three years compared to those without formal governance — because CoEs prevent regression, accelerate adoption of new capabilities, and create the internal expertise to reduce dependency on external partners over time. Building a CoE is the difference between CRM as a one-time transformation and CRM as a permanent competitive advantage.",
+    sfType: "CRM Strategy & Activation",
+    engagementSize: "Medium (10–16 weeks)",
+    priority: "medium",
+  },
+
+  {
+    id: "agentic_crm_pilot",
+    title: "Agentic CRM & Autonomous Engagement Pilot",
+    tagline: "Put AI agents to work in your CRM stack",
+    description:
+      "Design and pilot the use of AI agents — autonomous, goal-directed systems capable of taking action across CRM workflows without constant human instruction. Explore use cases in autonomous lifecycle management, AI-driven offer negotiation, predictive service intervention, and real-time journey adaptation. Agentic CRM represents the leading edge of the Adaptive Intelligence stage — where the engagement engine doesn't just respond to signals, it acts on them proactively.",
+    capabilities: ["decisioning", "learning_optimization"],
+    triggerThreshold: 5,
+    minTriggerScore: 4.0,
+    scope:
+      "Agentic use case discovery workshop, pilot scope definition for one to two autonomous workflows, agent architecture design, integration and guardrail framework, and POC delivery with measurement plan.",
+    methods: [
+      "Agentic CRM use case discovery and prioritization workshop",
+      "Pilot workflow design for one to two autonomous CRM use cases",
+      "Agent architecture: tools, memory, context, and action frameworks",
+      "Guardrail and escalation framework for autonomous action governance",
+      "POC delivery with performance measurement and scale-readiness assessment",
+    ],
+    valueNarrative:
+      "Agentic AI represents the next paradigm shift in CRM — moving from AI-assisted decisions to AI-driven action. Organizations piloting agentic workflows today are building the operational experience and institutional knowledge to scale autonomous engagement before it becomes a market standard. For mature CRM organizations with strong data, identity, and decisioning foundations, an agentic pilot is the highest-leverage next investment on the innovation frontier.",
+    sfType: "Analytics & Decisioning",
+    engagementSize: "Small to Medium (6–12 weeks)",
+    priority: "medium",
+  },
+
   {
     id: "crm_intelligence_loop",
     title: "CRM Intelligence Loop",
@@ -427,11 +529,16 @@ export function getTriggeredOpportunities(
   limit: number = 6
 ): Opportunity[] {
   const triggered = OPPORTUNITIES.filter((opp) => {
-    return opp.capabilities.some(
-      (cap) =>
-        capabilityScores[cap] !== undefined &&
-        capabilityScores[cap] < opp.triggerThreshold
-    );
+    return opp.capabilities.some((cap) => {
+      const score = capabilityScores[cap];
+      if (score === undefined) return false;
+      if (opp.minTriggerScore !== undefined) {
+        // Advanced opportunity: fires when capability is already strong
+        return score >= opp.minTriggerScore;
+      }
+      // Standard gap opportunity: fires when capability is below threshold
+      return score < opp.triggerThreshold;
+    });
   });
 
   // Sort by: priority (critical first), then by lowest capability score gap

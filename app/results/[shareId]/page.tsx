@@ -12,7 +12,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   return {
-    title: `CRM Diagnostic Results · ${params.shareId}`,
+    title: `Modern CRM Diagnostic Results · ${params.shareId}`,
     description: "Modern CRM Maturity Diagnostic results and strategic recommendations.",
   };
 }
