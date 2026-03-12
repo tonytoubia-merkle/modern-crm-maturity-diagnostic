@@ -40,18 +40,19 @@ export function AssessmentFlow() {
     respondentName: string;
     repEmail: string;
     isRepMode: boolean;
-    industry: Industry | "";
+    industry: Industry | "none" | "";
   }) => {
+    const resolvedIndustry = data.industry === "none" || data.industry === "" ? null : data.industry as Industry;
     const res = await fetch("/api/assessments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, industry: resolvedIndustry }),
     });
     if (!res.ok) throw new Error("Failed to create assessment");
     const { id, shareId: sid } = await res.json();
     setAssessmentId(id);
     setShareId(sid);
-    if (data.industry) setPreSelectedIndustry(data.industry as Industry);
+    if (resolvedIndustry) setPreSelectedIndustry(resolvedIndustry);
     setStep(1);
   };
 
@@ -113,8 +114,10 @@ export function AssessmentFlow() {
     await saveCurrentResponses();
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
+    } else if (preSelectedIndustry) {
+      setStep(7); // industry questions (selection already done)
     } else {
-      setStep(7); // industry module
+      await handleComplete(null); // no industry selected, skip straight to results
     }
   };
 

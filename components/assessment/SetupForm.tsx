@@ -13,7 +13,7 @@ interface SetupData {
   respondentName: string;
   repEmail: string;
   isRepMode: boolean;
-  industry: Industry | "";
+  industry: Industry | "none" | "";
 }
 
 interface SetupFormProps {
@@ -77,33 +77,44 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
           error={errors.clientName}
           required
         />
-        <div className="space-y-1">
-          <label htmlFor="industry" className="block text-sm font-medium text-slate-700">
-            Industry / Sector <span className="text-slate-400 font-normal">(optional)</span>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Industry / Sector
           </label>
-          <select
-            id="industry"
-            value={data.industry}
-            onChange={(e) =>
-              setData({
-                ...data,
-                industry: e.target.value as Industry | "",
-                clientCompany: e.target.value
-                  ? INDUSTRY_LABELS[e.target.value as Industry]
-                  : "",
-              })
-            }
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-          >
-            <option value="">Select your industry…</option>
-            {(Object.entries(INDUSTRY_LABELS) as [Industry, string][]).map(
-              ([key, label]) => (
-                <option key={key} value={key}>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setData({ ...data, industry: "none", clientCompany: "" })}
+              className={`text-left p-3 rounded-xl border-2 transition-all ${
+                data.industry === "none"
+                  ? "border-blue-600 bg-blue-50"
+                  : "border-slate-200 bg-white hover:border-blue-300"
+              }`}
+            >
+              <p className={`font-semibold text-sm ${data.industry === "none" ? "text-blue-700" : "text-slate-800"}`}>
+                No specific industry
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">Skip industry questions</p>
+            </button>
+            {(Object.entries(INDUSTRY_LABELS) as [Industry, string][]).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() =>
+                  setData({ ...data, industry: key as Industry, clientCompany: label })
+                }
+                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                  data.industry === key
+                    ? "border-blue-600 bg-blue-50"
+                    : "border-slate-200 bg-white hover:border-blue-300"
+                }`}
+              >
+                <p className={`font-semibold text-sm ${data.industry === key ? "text-blue-700" : "text-slate-800"}`}>
                   {label}
-                </option>
-              )
-            )}
-          </select>
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
         <Input
           id="respondentName"

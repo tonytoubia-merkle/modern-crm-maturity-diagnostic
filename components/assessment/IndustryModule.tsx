@@ -29,7 +29,7 @@ export function IndustryModule({
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(
     preSelectedIndustry
   );
-  const [showQuestions, setShowQuestions] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(preSelectedIndustry !== null);
 
   const industryQuestions = selectedIndustry
     ? INDUSTRY_QUESTIONS.filter((q) => q.industry === selectedIndustry)
