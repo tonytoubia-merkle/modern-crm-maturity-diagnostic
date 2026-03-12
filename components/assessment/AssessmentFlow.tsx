@@ -216,7 +216,11 @@ export function AssessmentFlow({
                     onClick={handleNext}
                     disabled={!currentSectionAnswered}
                   >
-                    {step < TOTAL_CORE_STEPS ? "Next →" : "Review & Finish →"}
+                    {step < TOTAL_CORE_STEPS
+                      ? "Next →"
+                      : preSelectedIndustry
+                      ? "Next →"
+                      : "Complete Assessment →"}
                   </Button>
                 </div>
               </div>

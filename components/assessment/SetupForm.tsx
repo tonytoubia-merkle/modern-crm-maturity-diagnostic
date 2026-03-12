@@ -81,20 +81,17 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
           <label className="block text-sm font-medium text-slate-700">
             Industry / Sector
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setData({ ...data, industry: "none", clientCompany: "" })}
-              className={`text-left p-3 rounded-xl border-2 transition-all ${
+              className={`px-4 py-2 rounded-full border-2 text-sm font-medium transition-all whitespace-nowrap ${
                 data.industry === "none"
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-slate-200 bg-white hover:border-blue-300"
+                  ? "border-blue-600 bg-blue-50 text-blue-700"
+                  : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
               }`}
             >
-              <p className={`font-semibold text-sm ${data.industry === "none" ? "text-blue-700" : "text-slate-800"}`}>
-                No specific industry
-              </p>
-              <p className="text-xs text-slate-500 mt-0.5">Skip industry questions</p>
+              No specific industry
             </button>
             {(Object.entries(INDUSTRY_LABELS) as [Industry, string][]).map(([key, label]) => (
               <button
@@ -103,15 +100,13 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
                 onClick={() =>
                   setData({ ...data, industry: key as Industry, clientCompany: label })
                 }
-                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                className={`px-4 py-2 rounded-full border-2 text-sm font-medium transition-all whitespace-nowrap ${
                   data.industry === key
-                    ? "border-blue-600 bg-blue-50"
-                    : "border-slate-200 bg-white hover:border-blue-300"
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
                 }`}
               >
-                <p className={`font-semibold text-sm ${data.industry === key ? "text-blue-700" : "text-slate-800"}`}>
-                  {label}
-                </p>
+                {label}
               </button>
             ))}
           </div>
