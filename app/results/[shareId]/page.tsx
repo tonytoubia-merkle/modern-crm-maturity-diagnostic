@@ -4,6 +4,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { buildDiagnosticResults } from "@/lib/scoring";
 import type { ResponseItem } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: { shareId: string };
 }

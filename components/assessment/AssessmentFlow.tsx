@@ -161,6 +161,7 @@ export function AssessmentFlow({
         }),
       });
 
+      router.refresh();
       router.push(`/results/${shareId}`);
     } catch (e) {
       console.error("Failed to complete assessment:", e);
