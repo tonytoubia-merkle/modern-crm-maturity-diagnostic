@@ -7,7 +7,7 @@ import { CapabilitySection } from "./CapabilitySection";
 import { IndustryModule } from "./IndustryModule";
 import { ProgressBar } from "./ProgressBar";
 import { Button } from "@/components/ui/Button";
-import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY, CORE_QUESTIONS } from "@/lib/data/questions";
+import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY, CORE_QUESTIONS, INDUSTRY_QUESTIONS } from "@/lib/data/questions";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
@@ -46,7 +46,12 @@ export function AssessmentFlow({
   }, [step]);
 
   const coreQuestionCount = CORE_QUESTIONS.length;
+  const industryQuestionCount = preSelectedIndustry
+    ? INDUSTRY_QUESTIONS.filter((q) => q.industry === preSelectedIndustry).length
+    : 0;
+  const totalQuestionCount = coreQuestionCount + industryQuestionCount;
   const answeredCoreCount = responses.filter((r) => !r.isIndustryQuestion).length;
+  const answeredTotalCount = responses.length;
 
   // Create assessment
   const handleSetup = async (data: {
@@ -196,9 +201,10 @@ export function AssessmentFlow({
           <div className="mb-8">
             <ProgressBar
               currentStep={step}
-              totalSteps={TOTAL_CORE_STEPS + 1}
-              answeredCount={answeredCoreCount}
-              totalQuestions={coreQuestionCount}
+              totalSteps={TOTAL_CORE_STEPS + 1 + (preSelectedIndustry ? 1 : 0)}
+              answeredCount={answeredTotalCount}
+              totalQuestions={totalQuestionCount}
+              hasIndustry={!!preSelectedIndustry}
             />
           </div>
         )}

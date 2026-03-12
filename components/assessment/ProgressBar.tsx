@@ -9,6 +9,7 @@ interface ProgressBarProps {
   totalSteps: number;
   answeredCount: number;
   totalQuestions: number;
+  hasIndustry?: boolean;
 }
 
 export function ProgressBar({
@@ -16,6 +17,7 @@ export function ProgressBar({
   totalSteps,
   answeredCount,
   totalQuestions,
+  hasIndustry = false,
 }: ProgressBarProps) {
   const pct = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
 
@@ -60,6 +62,25 @@ export function ProgressBar({
             </div>
           );
         })}
+
+        {hasIndustry && (
+          <div className="flex items-center gap-1">
+            <div className="h-0.5 w-4 bg-slate-200 flex-shrink-0" />
+            <div
+              className={cn(
+                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors",
+                currentStep > 7
+                  ? "bg-blue-600 border-blue-600 text-white"
+                  : currentStep === 7
+                  ? "bg-white border-blue-600 text-blue-600"
+                  : "bg-white border-slate-200 text-slate-400"
+              )}
+              title="Industry Context"
+            >
+              {currentStep > 7 ? "✓" : "7"}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Progress bar */}
