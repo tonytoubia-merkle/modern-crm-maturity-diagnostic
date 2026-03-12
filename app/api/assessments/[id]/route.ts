@@ -72,3 +72,25 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const supabase = createServerClient();
+    const { error } = await supabase
+      .from("assessments")
+      .delete()
+      .eq("id", params.id);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/assessments/[id] error:", err);
+    return NextResponse.json(
+      { error: "Failed to delete assessment" },
+      { status: 500 }
+    );
+  }
+}
