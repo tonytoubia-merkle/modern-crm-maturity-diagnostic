@@ -21,11 +21,11 @@ const STAGE_COLORS: Record<
     bar: "bg-red-500",
   },
   2: {
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    badge: "bg-amber-100 text-amber-700",
-    text: "text-amber-900",
-    bar: "bg-amber-500",
+    bg: "bg-orange-50",
+    border: "border-orange-200",
+    badge: "bg-orange-100 text-orange-700",
+    text: "text-orange-900",
+    bar: "bg-orange-500",
   },
   3: {
     bg: "bg-blue-50",

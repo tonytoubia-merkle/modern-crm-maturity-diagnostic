@@ -138,15 +138,15 @@ export function IndustryModule({
         })}
       </div>
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex items-center justify-between pt-2">
+        <Button variant="ghost" onClick={() => setShowQuestions(false)}>
+          Back
+        </Button>
         <Button
           disabled={!allAnswered}
           onClick={() => onComplete(selectedIndustry)}
         >
           Complete Assessment
-        </Button>
-        <Button variant="ghost" onClick={() => setShowQuestions(false)}>
-          Back
         </Button>
       </div>
     </div>

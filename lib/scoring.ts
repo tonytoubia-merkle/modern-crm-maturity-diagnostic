@@ -69,7 +69,7 @@ export const MATURITY_STAGES: Record<
     label: "Stage 2 — Segmented Engagement",
     description:
       "Basic segmentation and lifecycle messaging exist. The organization has begun connecting customer data across some channels and uses behavioral insights to guide segment-based engagement. Signals inform decisions in pockets, but consistent orchestration and real-time responsiveness are limited. 70% of consumers say brands don't understand them — Stage 2 organizations are beginning to close this experience gap but haven't yet connected identity, signals, and decisioning into a unified engine.",
-    color: "amber",
+    color: "orange",
   },
   3: {
     label: "Stage 3 — Orchestrated Engagement",

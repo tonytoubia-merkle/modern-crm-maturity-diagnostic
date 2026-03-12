@@ -276,7 +276,7 @@ export default function HomePage() {
               const s = MATURITY_STAGES[stage];
               const colorMap: Record<string, { card: string; badge: string }> = {
                 red:   { card: "border-red-300 bg-red-50",   badge: "bg-red-100 text-red-700" },
-                amber: { card: "border-amber-300 bg-amber-50", badge: "bg-amber-100 text-amber-700" },
+                orange: { card: "border-orange-300 bg-orange-50", badge: "bg-orange-100 text-orange-700" },
                 blue:  { card: "border-blue-300 bg-blue-50",  badge: "bg-blue-100 text-blue-700" },
                 green: { card: "border-green-300 bg-green-50", badge: "bg-green-100 text-green-700" },
               };
