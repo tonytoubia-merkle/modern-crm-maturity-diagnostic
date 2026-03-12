@@ -13,15 +13,29 @@ import type { Capability, Industry, ResponseItem } from "@/lib/types";
 // Steps: 0 = setup, 1-6 = capabilities, 7 = industry
 const TOTAL_CORE_STEPS = 6;
 
-export function AssessmentFlow() {
+interface AssessmentFlowProps {
+  initialAssessmentId?: string | null;
+  initialShareId?: string | null;
+  initialResponses?: ResponseItem[];
+  initialIndustry?: Industry | null;
+  initialStep?: number;
+}
+
+export function AssessmentFlow({
+  initialAssessmentId = null,
+  initialShareId = null,
+  initialResponses = [],
+  initialIndustry = null,
+  initialStep = 0,
+}: AssessmentFlowProps = {}) {
   const router = useRouter();
-  const [assessmentId, setAssessmentId] = useState<string | null>(null);
-  const [shareId, setShareId] = useState<string | null>(null);
-  const [step, setStep] = useState(0);
-  const [responses, setResponses] = useState<ResponseItem[]>([]);
+  const [assessmentId, setAssessmentId] = useState<string | null>(initialAssessmentId);
+  const [shareId, setShareId] = useState<string | null>(initialShareId);
+  const [step, setStep] = useState(initialStep);
+  const [responses, setResponses] = useState<ResponseItem[]>(initialResponses);
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
-  const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(null);
+  const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
 
   // Scroll to top whenever step changes (after render)
   useEffect(() => {

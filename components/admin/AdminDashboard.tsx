@@ -291,14 +291,25 @@ export function AdminDashboard() {
                         </p>
                       </td>
                       <td className="px-4 py-3">
-                        <a
-                          href={`/results/${a.share_id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs font-medium text-blue-600 hover:text-blue-800"
-                        >
-                          View →
-                        </a>
+                        {a.status === "completed" ? (
+                          <a
+                            href={`/results/${a.share_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                          >
+                            View →
+                          </a>
+                        ) : (
+                          <a
+                            href={`/assessment/resume/${a.share_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-medium text-amber-600 hover:text-amber-800"
+                          >
+                            Resume →
+                          </a>
+                        )}
                       </td>
                     </tr>
                   );
