@@ -186,7 +186,8 @@ export default function HomePage() {
           </h2>
           <p className="text-slate-600 text-sm mb-8 max-w-xl">
             The diagnostic evaluates 22 core questions across the six
-            capabilities required to operate a Modern CRM relationship engine.
+            capabilities required to operate a Modern CRM relationship engine —
+            with optional industry-specific questions for additional context.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {CAPABILITIES_ORDER.map((cap, i) => (
@@ -229,7 +230,7 @@ export default function HomePage() {
                 step: "01",
                 title: "Rate Your Capabilities",
                 description:
-                  "Score 22 questions across 6 capability areas on a 1–5 maturity scale. Takes 15–20 minutes.",
+                  "Score 22 core questions across 6 capability areas on a 1–5 maturity scale, with optional industry context. Takes 15–20 minutes.",
               },
               {
                 step: "02",
