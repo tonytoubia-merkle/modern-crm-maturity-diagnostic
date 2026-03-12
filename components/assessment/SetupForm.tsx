@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
+import { INDUSTRY_LABELS } from "@/lib/data/questions";
+import type { Industry } from "@/lib/types";
 
 interface SetupData {
   clientName: string;
@@ -11,6 +13,7 @@ interface SetupData {
   respondentName: string;
   repEmail: string;
   isRepMode: boolean;
+  industry: Industry | "";
 }
 
 interface SetupFormProps {
@@ -24,6 +27,7 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
     respondentName: "",
     repEmail: "",
     isRepMode: false,
+    industry: "",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<SetupData>>({});
@@ -31,7 +35,6 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
   const validate = () => {
     const errs: Partial<SetupData> = {};
     if (!data.clientName.trim()) errs.clientName = "Organization name is required";
-    if (!data.clientCompany.trim()) errs.clientCompany = "Company is required";
     if (!data.respondentName.trim()) errs.respondentName = "Your name is required";
     if (data.repEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.repEmail)) {
       errs.repEmail = "Please enter a valid email address";
@@ -74,15 +77,34 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
           error={errors.clientName}
           required
         />
-        <Input
-          id="clientCompany"
-          label="Industry / Sector"
-          placeholder="e.g. Retail, Financial Services, Travel"
-          value={data.clientCompany}
-          onChange={(e) => setData({ ...data, clientCompany: e.target.value })}
-          error={errors.clientCompany}
-          required
-        />
+        <div className="space-y-1">
+          <label htmlFor="industry" className="block text-sm font-medium text-slate-700">
+            Industry / Sector <span className="text-slate-400 font-normal">(optional)</span>
+          </label>
+          <select
+            id="industry"
+            value={data.industry}
+            onChange={(e) =>
+              setData({
+                ...data,
+                industry: e.target.value as Industry | "",
+                clientCompany: e.target.value
+                  ? INDUSTRY_LABELS[e.target.value as Industry]
+                  : "",
+              })
+            }
+            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          >
+            <option value="">Select your industry…</option>
+            {(Object.entries(INDUSTRY_LABELS) as [Industry, string][]).map(
+              ([key, label]) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              )
+            )}
+          </select>
+        </div>
         <Input
           id="respondentName"
           label="Your Name"

@@ -16,6 +16,7 @@ interface IndustryModuleProps {
   ) => void;
   onComplete: (selectedIndustry: Industry | null) => void;
   onSkip: () => void;
+  preSelectedIndustry?: Industry | null;
 }
 
 export function IndustryModule({
@@ -23,9 +24,10 @@ export function IndustryModule({
   onScore,
   onComplete,
   onSkip,
+  preSelectedIndustry = null,
 }: IndustryModuleProps) {
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(
-    null
+    preSelectedIndustry
   );
   const [showQuestions, setShowQuestions] = useState(false);
 

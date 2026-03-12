@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SetupForm } from "./SetupForm";
 import { CapabilitySection } from "./CapabilitySection";
@@ -21,6 +21,14 @@ export function AssessmentFlow() {
   const [responses, setResponses] = useState<ResponseItem[]>([]);
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(null);
+
+  // Scroll to top whenever step changes (after render)
+  useEffect(() => {
+    if (step > 0) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [step]);
 
   const coreQuestionCount = CORE_QUESTIONS.length;
   const answeredCoreCount = responses.filter((r) => !r.isIndustryQuestion).length;
@@ -32,6 +40,7 @@ export function AssessmentFlow() {
     respondentName: string;
     repEmail: string;
     isRepMode: boolean;
+    industry: Industry | "";
   }) => {
     const res = await fetch("/api/assessments", {
       method: "POST",
@@ -42,6 +51,7 @@ export function AssessmentFlow() {
     const { id, shareId: sid } = await res.json();
     setAssessmentId(id);
     setShareId(sid);
+    if (data.industry) setPreSelectedIndustry(data.industry as Industry);
     setStep(1);
   };
 
@@ -106,12 +116,10 @@ export function AssessmentFlow() {
     } else {
       setStep(7); // industry module
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePrev = () => {
     setStep(Math.max(0, step - 1));
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Complete the assessment
@@ -203,6 +211,7 @@ export function AssessmentFlow() {
               onScore={handleScore}
               onComplete={handleComplete}
               onSkip={handleSkipIndustry}
+              preSelectedIndustry={preSelectedIndustry}
             />
           )}
 

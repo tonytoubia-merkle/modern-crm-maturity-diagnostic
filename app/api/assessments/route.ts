@@ -5,12 +5,12 @@ import { generateShareId } from "@/lib/utils";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clientName, clientCompany, respondentName, repEmail, isRepMode } =
+    const { clientName, clientCompany, respondentName, repEmail, isRepMode, industry } =
       body;
 
-    if (!clientName || !clientCompany || !respondentName) {
+    if (!clientName || !respondentName) {
       return NextResponse.json(
-        { error: "clientName, clientCompany, and respondentName are required" },
+        { error: "clientName and respondentName are required" },
         { status: 400 }
       );
     }
@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
       .insert({
         share_id: shareId,
         client_name: clientName,
-        client_company: clientCompany,
+        client_company: clientCompany || "",
         respondent_name: respondentName,
         rep_email: repEmail || null,
         is_rep_mode: isRepMode || false,
+        industry: industry || null,
         status: "in_progress",
       })
       .select()
