@@ -8,6 +8,7 @@ import { IndustryModule } from "./IndustryModule";
 import { ProgressBar } from "./ProgressBar";
 import { Button } from "@/components/ui/Button";
 import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY, CORE_QUESTIONS } from "@/lib/data/questions";
+import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
 // Steps: 0 = setup, 1-6 = capabilities, 7 = industry
@@ -151,13 +152,21 @@ export function AssessmentFlow({
         body: JSON.stringify({ responses }),
       });
 
-      // Mark complete and save industry
+      // Compute scores to persist for admin dashboard
+      const capabilityScores = computeCapabilityScores(responses);
+      const overallScore = computeOverallScore(capabilityScores);
+      const maturityStage = computeMaturityStage(overallScore);
+
+      // Mark complete and save industry + computed scores
       await fetch(`/api/assessments/${assessmentId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           status: "completed",
           industry: selectedIndustry,
+          overallScore,
+          maturityStage,
+          capabilityScores,
         }),
       });
 
