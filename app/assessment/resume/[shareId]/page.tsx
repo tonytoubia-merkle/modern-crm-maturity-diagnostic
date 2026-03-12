@@ -30,7 +30,8 @@ export default async function ResumeAssessmentPage({
     .eq("assessment_id", assessment.id);
 
   const responses: ResponseItem[] = (rawResponses ?? []).map((r) => ({
-    questionId: r.question_id,
+    // Core question IDs are numbers in the app but stored as TEXT in DB — convert back
+    questionId: /^\d+$/.test(r.question_id) ? Number(r.question_id) : r.question_id,
     score: r.score,
     capability: r.capability as Capability,
     isIndustryQuestion: r.is_industry_question,
