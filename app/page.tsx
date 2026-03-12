@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { CAPABILITY_LABELS, CAPABILITY_SUBTITLES, CAPABILITIES_ORDER } from "@/lib/data/questions";
+import { MATURITY_STAGES } from "@/lib/scoring";
+import type { MaturityStage } from "@/lib/types";
 
 const CAPABILITY_ICONS: Record<string, string> = {
   identity: "◉",
@@ -270,51 +272,29 @@ export default function HomePage() {
             Four Maturity Stages
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              {
-                stage: "Stage 1",
-                label: "Campaign-Centric CRM",
-                desc: "Channels operate independently with limited customer recognition.",
-                color: "border-red-300 bg-red-50",
-                badge: "bg-red-100 text-red-700",
-              },
-              {
-                stage: "Stage 2",
-                label: "Segmented Engagement",
-                desc: "Basic segmentation and lifecycle messaging exist.",
-                color: "border-amber-300 bg-amber-50",
-                badge: "bg-amber-100 text-amber-700",
-              },
-              {
-                stage: "Stage 3",
-                label: "Orchestrated Engagement",
-                desc: "Customer signals drive engagement across channels.",
-                color: "border-blue-300 bg-blue-50",
-                badge: "bg-blue-100 text-blue-700",
-              },
-              {
-                stage: "Stage 4",
-                label: "Relationship Growth Engine",
-                desc: "Signals continuously power engagement, loyalty, and media growth.",
-                color: "border-green-300 bg-green-50",
-                badge: "bg-green-100 text-green-700",
-              },
-            ].map((s) => (
-              <div
-                key={s.stage}
-                className={`border-2 rounded-xl p-5 ${s.color}`}
-              >
-                <span
-                  className={`text-xs font-bold px-2.5 py-1 rounded-full mb-3 inline-block ${s.badge}`}
-                >
-                  {s.stage}
-                </span>
-                <h3 className="font-bold text-slate-900 text-sm mb-1.5">
-                  {s.label}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
+            {([1, 2, 3, 4] as MaturityStage[]).map((stage) => {
+              const s = MATURITY_STAGES[stage];
+              const colorMap: Record<string, { card: string; badge: string }> = {
+                red:   { card: "border-red-300 bg-red-50",   badge: "bg-red-100 text-red-700" },
+                amber: { card: "border-amber-300 bg-amber-50", badge: "bg-amber-100 text-amber-700" },
+                blue:  { card: "border-blue-300 bg-blue-50",  badge: "bg-blue-100 text-blue-700" },
+                green: { card: "border-green-300 bg-green-50", badge: "bg-green-100 text-green-700" },
+              };
+              const colors = colorMap[s.color];
+              // Use first sentence of description for the homepage card
+              const shortDesc = s.description.split(".")[0] + ".";
+              return (
+                <div key={stage} className={`border-2 rounded-xl p-5 ${colors.card}`}>
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full mb-3 inline-block ${colors.badge}`}>
+                    Stage {stage}
+                  </span>
+                  <h3 className="font-bold text-slate-900 text-sm mb-1.5">
+                    {s.label.replace(/^Stage \d — /, "")}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">{shortDesc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -330,7 +310,7 @@ export default function HomePage() {
             link and downloadable PDF.
           </p>
           <a href="/assessment/new">
-            <Button size="lg">Start Free Assessment →</Button>
+            <Button size="lg">Start Assessment →</Button>
           </a>
         </div>
       </section>
