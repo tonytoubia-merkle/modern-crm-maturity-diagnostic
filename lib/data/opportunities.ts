@@ -421,7 +421,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Mature CRM organizations that fail to invest in innovation risk capability plateau as competitors accelerate. Organizations at Stage 3–4 are uniquely positioned to pilot frontier use cases — generative personalization, AI-driven decisioning, autonomous engagement — because they have the data, identity, and orchestration foundations required. This sprint converts existing strengths into a defined innovation agenda with clear next steps and executive sponsorship.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Small (4–6 weeks)",
-    priority: "high",
+    priority: "innovation",
   },
 
   {
@@ -446,7 +446,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Generative AI personalization enables brands to produce hundreds of content variations per send — matching each customer's context, preference, and lifecycle stage with messaging that no human content team could produce at scale. Early adopters are seeing 15–25% improvement in engagement metrics from AI-generated subject lines and body copy alone. The organizations that build GenAI personalization now will establish a compounding advantage as their models learn from millions of interactions.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (12–16 weeks)",
-    priority: "high",
+    priority: "innovation",
   },
 
   {
@@ -471,7 +471,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Organizations with a dedicated CRM CoE sustain 20–40% higher capability maturity scores over three years compared to those without formal governance — because CoEs prevent regression, accelerate adoption of new capabilities, and create the internal expertise to reduce dependency on external partners over time. Building a CoE is the difference between CRM as a one-time transformation and CRM as a permanent competitive advantage.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (10–16 weeks)",
-    priority: "medium",
+    priority: "innovation",
   },
 
   {
@@ -496,7 +496,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Agentic AI represents the next paradigm shift in CRM — moving from AI-assisted decisions to AI-driven action. Organizations piloting agentic workflows today are building the operational experience and institutional knowledge to scale autonomous engagement before it becomes a market standard. For mature CRM organizations with strong data, identity, and decisioning foundations, an agentic pilot is the highest-leverage next investment on the innovation frontier.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Small to Medium (6–12 weeks)",
-    priority: "medium",
+    priority: "innovation",
   },
 
   {
@@ -542,7 +542,7 @@ export function getTriggeredOpportunities(
   });
 
   // Sort by: priority (critical first), then by lowest capability score gap
-  const priorityOrder = { critical: 0, high: 1, medium: 2 };
+  const priorityOrder = { critical: 0, high: 1, medium: 2, innovation: 3 };
 
   triggered.sort((a, b) => {
     const aPriority = priorityOrder[a.priority];

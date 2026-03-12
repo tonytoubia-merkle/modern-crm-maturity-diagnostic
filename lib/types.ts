@@ -73,7 +73,7 @@ export interface Opportunity {
   valueNarrative: string;
   sfType: string;
   engagementSize: string;
-  priority: "critical" | "high" | "medium";
+  priority: "critical" | "high" | "medium" | "innovation";
 }
 
 export interface DiagnosticResults {

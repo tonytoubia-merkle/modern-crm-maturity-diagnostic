@@ -25,6 +25,10 @@ const PRIORITY_STYLES: Record<
     badge: "bg-blue-100 text-blue-700 border-blue-200",
     border: "border-l-blue-500",
   },
+  innovation: {
+    badge: "bg-purple-100 text-purple-700 border-purple-200",
+    border: "border-l-purple-500",
+  },
 };
 
 export function OpportunityCards({ opportunities }: OpportunityCardsProps) {
