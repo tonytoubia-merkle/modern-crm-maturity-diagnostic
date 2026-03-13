@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { SetupForm } from "./SetupForm";
 import { CapabilitySection } from "./CapabilitySection";
@@ -45,13 +45,6 @@ export function AssessmentFlow({
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
   const [sectionReady, setSectionReady] = useState(false);
-
-  // Scroll to top whenever step changes
-  useEffect(() => {
-    if (step > 0) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [step]);
 
   const coreQuestionCount = CORE_QUESTIONS.length;
   const industryQuestionCount = preSelectedIndustry
@@ -151,6 +144,7 @@ export function AssessmentFlow({
 
   const handleNext = async () => {
     await saveCurrentResponses();
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
     } else if (preSelectedIndustry) {
