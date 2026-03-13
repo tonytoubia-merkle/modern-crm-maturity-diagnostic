@@ -13,6 +13,7 @@ import {
   CORE_QUESTIONS,
   INDUSTRY_QUESTIONS,
   SCORE_LABELS,
+  SCORE_DESCRIPTIONS,
 } from "@/lib/data/questions";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
@@ -227,9 +228,13 @@ export function AssessmentFlow({
                 <div className="mt-2 flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
                   <span className="font-semibold text-slate-600">Scale:</span>
                   {([1, 2, 3, 4, 5] as const).map((v) => (
-                    <span key={v}>
+                    <span key={v} className="relative group cursor-help">
                       <strong className="text-slate-700">{v}</strong>{" "}
                       {SCORE_LABELS[v]}
+                      <span className="absolute bottom-full left-0 mb-2 w-52 bg-slate-900 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-30 leading-relaxed shadow-lg">
+                        <strong className="block mb-0.5">{v} — {SCORE_LABELS[v]}</strong>
+                        {SCORE_DESCRIPTIONS[v]}
+                      </span>
                     </span>
                   ))}
                 </div>

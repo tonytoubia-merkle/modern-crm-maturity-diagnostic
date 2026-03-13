@@ -118,32 +118,28 @@ export function CapabilitySection({
                 </div>
               ) : (
                 <div className="ml-9 space-y-2">
-                  {/* Slider */}
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-400 w-4 flex-shrink-0 text-center">1</span>
-                    <input
-                      type="range"
-                      min={1}
-                      max={5}
-                      step={1}
-                      value={selected ?? 3}
-                      onChange={(e) =>
-                        onScore(question.id, Number(e.target.value), capability)
-                      }
-                      className="flex-1 accent-blue-600 cursor-pointer"
-                    />
-                    <span className="text-xs text-slate-400 w-4 flex-shrink-0 text-center">5</span>
+                  {/* Score pips */}
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        onClick={() => onScore(question.id, v, capability)}
+                        className={`w-9 h-9 rounded-full text-sm font-bold border-2 transition-all flex-shrink-0 ${
+                          selected === v
+                            ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                            : "border-slate-200 bg-white text-slate-400 hover:border-blue-400 hover:text-blue-600"
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                    {selected !== null && (
+                      <span className="text-sm text-slate-600 ml-1">
+                        — {SCORE_LABELS[selected]}
+                      </span>
+                    )}
                   </div>
-
-                  {/* Score display */}
-                  {selected !== null ? (
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-blue-600">{selected}</span>
-                      <span className="text-sm text-slate-700">— {SCORE_LABELS[selected]}</span>
-                    </div>
-                  ) : (
-                    <p className="text-xs text-slate-400 italic">Drag to set your rating</p>
-                  )}
 
                   {/* Notes (only after scoring) */}
                   {selected !== null && (
