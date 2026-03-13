@@ -144,14 +144,15 @@ export function AssessmentFlow({
 
   const handleNext = async () => {
     await saveCurrentResponses();
-    window.scrollTo({ top: 0, behavior: "smooth" });
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
     } else if (preSelectedIndustry) {
       setStep(7);
     } else {
       await handleComplete(null);
+      return;
     }
+    setTimeout(() => window.scrollTo(0, 0), 0);
   };
 
   const handlePrev = () => {
