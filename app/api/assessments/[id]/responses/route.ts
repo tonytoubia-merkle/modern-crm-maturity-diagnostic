@@ -25,12 +25,14 @@ export async function POST(
         score: number;
         capability: string;
         isIndustryQuestion: boolean;
+        notes?: string;
       }) => ({
         assessment_id: params.id,
         question_id: String(r.questionId),
         score: r.score,
         capability: r.capability,
         is_industry_question: r.isIndustryQuestion || false,
+        notes: r.notes ?? null,
       })
     );
 

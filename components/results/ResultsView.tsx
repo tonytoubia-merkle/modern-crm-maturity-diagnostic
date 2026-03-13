@@ -8,15 +8,23 @@ import { SalesforceOutput } from "./SalesforceOutput";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { formatDate } from "@/lib/utils";
-import { INDUSTRY_LABELS } from "@/lib/data/questions";
-import type { DiagnosticResults } from "@/lib/types";
+import { INDUSTRY_LABELS, CORE_QUESTIONS, INDUSTRY_QUESTIONS } from "@/lib/data/questions";
+import type { DiagnosticResults, ResponseItem } from "@/lib/types";
 
 interface ResultsViewProps {
   results: DiagnosticResults;
   shareId: string;
+  responses?: ResponseItem[];
 }
 
-export function ResultsView({ results, shareId }: ResultsViewProps) {
+const ALL_QUESTIONS = [...CORE_QUESTIONS, ...INDUSTRY_QUESTIONS];
+
+function getQuestionText(questionId: string | number): string {
+  const q = ALL_QUESTIONS.find((q) => String(q.id) === String(questionId));
+  return q?.text ?? `Question ${questionId}`;
+}
+
+export function ResultsView({ results, shareId, responses = [] }: ResultsViewProps) {
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const [sharecopied, setShareCopied] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
@@ -130,6 +138,39 @@ export function ResultsView({ results, shareId }: ResultsViewProps) {
             <SalesforceOutput results={results} />
           </CardContent>
         </Card>
+
+        {/* Respondent notes */}
+        {responses.some((r) => r.notes) && (
+          <Card className="mb-6">
+            <CardHeader>
+              <h2 className="text-lg font-bold text-slate-900">
+                Respondent Notes &amp; Context
+              </h2>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Additional context provided during the assessment.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {responses
+                  .filter((r) => r.notes)
+                  .map((r) => (
+                    <div
+                      key={r.questionId}
+                      className="border-l-2 border-blue-200 pl-4"
+                    >
+                      <p className="text-xs font-semibold text-slate-500 mb-1">
+                        {getQuestionText(r.questionId)}
+                      </p>
+                      <p className="text-sm text-slate-800 leading-relaxed">
+                        {r.notes}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Footer actions */}
         <div className="flex items-center justify-between flex-wrap gap-4 py-4 border-t border-slate-200 print:hidden">

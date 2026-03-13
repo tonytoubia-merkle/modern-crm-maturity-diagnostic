@@ -40,6 +40,7 @@ export default async function ResultsPage({ params }: PageProps) {
     score: r.score,
     capability: r.capability,
     isIndustryQuestion: r.is_industry_question,
+    notes: r.notes ?? undefined,
   }));
 
   const normalizedAssessment = {
@@ -58,5 +59,5 @@ export default async function ResultsPage({ params }: PageProps) {
 
   const results = buildDiagnosticResults(normalizedAssessment, responses);
 
-  return <ResultsView results={results} shareId={params.shareId} />;
+  return <ResultsView results={results} shareId={params.shareId} responses={responses} />;
 }

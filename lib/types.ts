@@ -33,6 +33,7 @@ export interface ResponseItem {
   score: number;
   capability: Capability;
   isIndustryQuestion: boolean;
+  notes?: string;
 }
 
 export interface Assessment {

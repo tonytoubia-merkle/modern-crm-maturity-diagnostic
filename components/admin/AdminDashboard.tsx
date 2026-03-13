@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDateTime } from "@/lib/utils";
 import { MATURITY_STAGES } from "@/lib/scoring";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import type { MaturityStage } from "@/lib/types";
@@ -89,7 +89,7 @@ export function AdminDashboard() {
       a.maturity_stage
         ? MATURITY_STAGES[a.maturity_stage as MaturityStage]?.label ?? ""
         : "",
-      formatDate(a.created_at),
+      `${formatDateTime(a.created_at).date} ${formatDateTime(a.created_at).time}`,
       a.share_id,
     ]);
     const csv = [headers, ...rows]
@@ -306,9 +306,8 @@ export function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3 hidden lg:table-cell">
-                        <p className="text-xs text-slate-500">
-                          {formatDate(a.created_at)}
-                        </p>
+                        <p className="text-xs text-slate-700">{formatDateTime(a.created_at).date}</p>
+                        <p className="text-xs text-slate-400">{formatDateTime(a.created_at).time}</p>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">

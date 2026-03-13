@@ -156,11 +156,14 @@ export default function HomePage() {
             <br />
             Into Growth
           </h1>
-          <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl">
-            Assess your organization&apos;s readiness to connect identity,
-            behavioral signals, decisioning, and engagement into a unified Modern
-            CRM growth engine. Takes 15–20 minutes.
-          </p>
+          <div className="mb-8 max-w-2xl">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">What to expect</p>
+            <p className="text-lg text-slate-900 leading-relaxed">
+              Assess your organization&apos;s readiness to connect identity,
+              behavioral signals, decisioning, and engagement into a unified Modern
+              CRM growth engine. Takes 15–20 minutes.
+            </p>
+          </div>
           <div className="flex flex-wrap gap-3">
             <a href="/assessment/new">
               <Button size="lg">
@@ -168,9 +171,8 @@ export default function HomePage() {
               </Button>
             </a>
           </div>
-          <p className="text-xs text-slate-400 mt-4">
-            No account required. Results are immediately available via shareable
-            link.
+          <p className="text-xs text-slate-600 mt-4">
+            No account required · Results shareable via link
           </p>
         </div>
       </section>
@@ -184,7 +186,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold text-slate-900 mb-2">
             Six-Capability Assessment Model
           </h2>
-          <p className="text-slate-600 text-sm mb-8 max-w-xl">
+          <p className="text-slate-900 text-sm mb-8 max-w-xl">
             The diagnostic evaluates 22 core questions across the six
             capabilities required to operate a Modern CRM relationship engine —
             with optional industry-specific questions for additional context.
@@ -253,7 +255,7 @@ export default function HomePage() {
                   <h3 className="font-bold text-slate-900 mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-slate-900 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -306,7 +308,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold text-slate-900 mb-4">
             Ready to assess your CRM maturity?
           </h2>
-          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+          <p className="text-slate-900 mb-8 max-w-xl mx-auto">
             15–20 minutes. No account required. Instant results with shareable
             link and downloadable PDF.
           </p>

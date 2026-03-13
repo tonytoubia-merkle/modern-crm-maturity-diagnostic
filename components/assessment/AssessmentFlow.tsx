@@ -7,7 +7,13 @@ import { CapabilitySection } from "./CapabilitySection";
 import { IndustryModule } from "./IndustryModule";
 import { ProgressBar } from "./ProgressBar";
 import { Button } from "@/components/ui/Button";
-import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY, CORE_QUESTIONS, INDUSTRY_QUESTIONS } from "@/lib/data/questions";
+import {
+  CAPABILITIES_ORDER,
+  QUESTIONS_BY_CAPABILITY,
+  CORE_QUESTIONS,
+  INDUSTRY_QUESTIONS,
+  SCORE_LABELS,
+} from "@/lib/data/questions";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
@@ -37,8 +43,9 @@ export function AssessmentFlow({
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
+  const [sectionReady, setSectionReady] = useState(false);
 
-  // Scroll to top whenever step changes (after render)
+  // Scroll to top whenever step changes
   useEffect(() => {
     if (step > 0) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -50,7 +57,6 @@ export function AssessmentFlow({
     ? INDUSTRY_QUESTIONS.filter((q) => q.industry === preSelectedIndustry).length
     : 0;
   const totalQuestionCount = coreQuestionCount + industryQuestionCount;
-  const answeredCoreCount = responses.filter((r) => !r.isIndustryQuestion).length;
   const answeredTotalCount = responses.length;
 
   // Create assessment
@@ -91,6 +97,7 @@ export function AssessmentFlow({
           score,
           capability: capability as Capability,
           isIndustryQuestion,
+          notes: existing >= 0 ? prev[existing].notes : undefined,
         };
         if (existing >= 0) {
           const updated = [...prev];
@@ -103,7 +110,25 @@ export function AssessmentFlow({
     []
   );
 
-  // Auto-save responses for current capability section
+  // Update notes on an existing response
+  const handleNotes = useCallback((questionId: number | string, notes: string) => {
+    setResponses((prev) => {
+      const idx = prev.findIndex((r) => r.questionId === questionId);
+      if (idx >= 0) {
+        const updated = [...prev];
+        updated[idx] = { ...updated[idx], notes };
+        return updated;
+      }
+      return prev;
+    });
+  }, []);
+
+  // Remove a response (used when question is skipped)
+  const handleRemoveResponse = useCallback((questionId: number | string) => {
+    setResponses((prev) => prev.filter((r) => r.questionId !== questionId));
+  }, []);
+
+  // Auto-save responses
   const saveCurrentResponses = async () => {
     if (!assessmentId || responses.length === 0) return;
     setSaving(true);
@@ -120,24 +145,17 @@ export function AssessmentFlow({
     }
   };
 
-  // Check if current capability section is fully answered
   const currentCapability =
     step >= 1 && step <= 6 ? CAPABILITIES_ORDER[step - 1] : null;
-
-  const currentSectionAnswered = currentCapability
-    ? QUESTIONS_BY_CAPABILITY[currentCapability].every(
-        (q) => responses.find((r) => r.questionId === q.id) !== undefined
-      )
-    : false;
 
   const handleNext = async () => {
     await saveCurrentResponses();
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
     } else if (preSelectedIndustry) {
-      setStep(7); // industry questions (selection already done)
+      setStep(7);
     } else {
-      await handleComplete(null); // no industry selected, skip straight to results
+      await handleComplete(null);
     }
   };
 
@@ -145,24 +163,20 @@ export function AssessmentFlow({
     setStep(Math.max(0, step - 1));
   };
 
-  // Complete the assessment
   const handleComplete = async (selectedIndustry: Industry | null) => {
     if (!assessmentId || !shareId) return;
     setCompleting(true);
     try {
-      // Save final responses
       await fetch(`/api/assessments/${assessmentId}/responses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ responses }),
       });
 
-      // Compute scores to persist for admin dashboard
       const capabilityScores = computeCapabilityScores(responses);
       const overallScore = computeOverallScore(capabilityScores);
       const maturityStage = computeMaturityStage(overallScore);
 
-      // Mark complete and save industry + computed scores
       await fetch(`/api/assessments/${assessmentId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -189,26 +203,43 @@ export function AssessmentFlow({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <a href="/" className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1">
+      {/* Sticky header: breadcrumb + progress + scale legend */}
+      <div className="sticky top-0 z-20 bg-slate-50 border-b border-slate-100 shadow-sm">
+        <div className="max-w-3xl mx-auto px-4 pt-3 pb-3">
+          <a
+            href="/"
+            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1 mb-2"
+          >
             ← Modern CRM Maturity Diagnostic
           </a>
+
+          {step > 0 && (
+            <>
+              <ProgressBar
+                currentStep={step}
+                totalSteps={TOTAL_CORE_STEPS + 1 + (preSelectedIndustry ? 1 : 0)}
+                answeredCount={answeredTotalCount}
+                totalQuestions={totalQuestionCount}
+                hasIndustry={!!preSelectedIndustry}
+              />
+
+              {(step >= 1 && step <= 7) && (
+                <div className="mt-2 flex items-center flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
+                  <span className="font-semibold text-slate-600">Scale:</span>
+                  {([1, 2, 3, 4, 5] as const).map((v) => (
+                    <span key={v}>
+                      <strong className="text-slate-700">{v}</strong>{" "}
+                      {SCORE_LABELS[v]}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
+      </div>
 
-        {step > 0 && (
-          <div className="mb-8">
-            <ProgressBar
-              currentStep={step}
-              totalSteps={TOTAL_CORE_STEPS + 1 + (preSelectedIndustry ? 1 : 0)}
-              answeredCount={answeredTotalCount}
-              totalQuestions={totalQuestionCount}
-              hasIndustry={!!preSelectedIndustry}
-            />
-          </div>
-        )}
-
+      <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
           {step === 0 && <SetupForm onSubmit={handleSetup} />}
 
@@ -218,6 +249,9 @@ export function AssessmentFlow({
                 capability={currentCapability}
                 responses={responses}
                 onScore={handleScore}
+                onNotes={handleNotes}
+                onRemoveResponse={handleRemoveResponse}
+                onReadyChange={setSectionReady}
               />
               <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                 <Button variant="ghost" onClick={handlePrev} disabled={step === 1}>
@@ -227,10 +261,7 @@ export function AssessmentFlow({
                   {saving && (
                     <span className="text-xs text-slate-400">Saving…</span>
                   )}
-                  <Button
-                    onClick={handleNext}
-                    disabled={!currentSectionAnswered}
-                  >
+                  <Button onClick={handleNext} disabled={!sectionReady}>
                     {step < TOTAL_CORE_STEPS
                       ? "Next →"
                       : preSelectedIndustry
@@ -246,6 +277,8 @@ export function AssessmentFlow({
             <IndustryModule
               responses={responses}
               onScore={handleScore}
+              onNotes={handleNotes}
+              onRemoveResponse={handleRemoveResponse}
               onComplete={handleComplete}
               onSkip={handleSkipIndustry}
               preSelectedIndustry={preSelectedIndustry}
