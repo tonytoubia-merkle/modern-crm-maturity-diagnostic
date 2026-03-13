@@ -74,6 +74,7 @@ export function AssessmentFlow({
     setShareId(sid);
     if (resolvedIndustry) setPreSelectedIndustry(resolvedIndustry);
     setStep(1);
+    setTimeout(() => window.scrollTo(0, 0), 0);
   };
 
   // Score a question
