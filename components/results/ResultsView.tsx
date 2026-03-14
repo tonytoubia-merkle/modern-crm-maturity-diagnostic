@@ -27,6 +27,7 @@ function getQuestionText(questionId: string | number): string {
 export function ResultsView({ results, shareId, responses = [] }: ResultsViewProps) {
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const [sharecopied, setShareCopied] = useState(false);
+  const [exportingPptx, setExportingPptx] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   const shareUrl =
@@ -42,6 +43,23 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleExportPptx = async () => {
+    setExportingPptx(true);
+    try {
+      const res = await fetch(`/api/export/${shareId}/ppt`);
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${assessment.clientName}_CRM_Diagnostic.pptx`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExportingPptx(false);
+    }
   };
 
   return (
@@ -75,6 +93,9 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
               </Button>
               <Button variant="secondary" size="sm" onClick={handlePrint}>
                 Download PDF
+              </Button>
+              <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
+                {exportingPptx ? "Generating…" : "Export PPTX"}
               </Button>
             </div>
           </div>
@@ -184,8 +205,11 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
             <Button variant="secondary" size="sm" onClick={copyShareLink}>
               {sharecopied ? "✓ Link Copied!" : "Copy Share Link"}
             </Button>
-            <Button variant="primary" size="sm" onClick={handlePrint}>
+            <Button variant="secondary" size="sm" onClick={handlePrint}>
               Download PDF
+            </Button>
+            <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
+              {exportingPptx ? "Generating…" : "Export PPTX"}
             </Button>
           </div>
         </div>
