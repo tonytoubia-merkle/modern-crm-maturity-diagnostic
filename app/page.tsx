@@ -59,12 +59,11 @@ export default function HomePage() {
       {/* Nav */}
       <nav className="border-b border-slate-100 bg-white sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
-              M
-            </span>
-            <span className="text-sm font-semibold text-slate-700">
-              Merkle · Modern CRM Diagnostic
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto" />
+            <span className="text-sm font-semibold text-slate-500">
+              Modern CRM Diagnostic
             </span>
           </div>
           <button

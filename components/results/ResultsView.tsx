@@ -70,9 +70,13 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
         <div className="mb-8 print:mb-6">
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
-              <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">
-                Modern CRM Maturity Diagnostic
-              </p>
+              <div className="flex items-center gap-2 mb-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
+                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                  Modern CRM Maturity Diagnostic
+                </span>
+              </div>
               <h1 className="text-3xl font-bold text-slate-900">
                 {assessment.clientName}
               </h1>
