@@ -7,6 +7,7 @@ import type { Opportunity } from "@/lib/types";
 
 interface OpportunityCardsProps {
   opportunities: Opportunity[];
+  clientMode?: boolean;
 }
 
 const PRIORITY_STYLES: Record<
@@ -31,7 +32,7 @@ const PRIORITY_STYLES: Record<
   },
 };
 
-export function OpportunityCards({ opportunities }: OpportunityCardsProps) {
+export function OpportunityCards({ opportunities, clientMode = false }: OpportunityCardsProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   if (opportunities.length === 0) {
@@ -42,6 +43,51 @@ export function OpportunityCards({ opportunities }: OpportunityCardsProps) {
     );
   }
 
+  // Client mode: simplified cards without expandable detail
+  if (clientMode) {
+    return (
+      <div className="space-y-4">
+        {opportunities.map((opp) => {
+          const styles = PRIORITY_STYLES[opp.priority];
+          return (
+            <div
+              key={opp.id}
+              className={cn(
+                "rounded-xl border bg-white overflow-hidden border-l-4 px-6 py-4",
+                styles.border
+              )}
+            >
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <span
+                  className={cn(
+                    "text-xs font-semibold px-2 py-0.5 rounded border",
+                    styles.badge
+                  )}
+                >
+                  {opp.priority.charAt(0).toUpperCase() + opp.priority.slice(1)} Priority
+                </span>
+                {opp.capabilities.map((c) => (
+                  <span
+                    key={c}
+                    className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded"
+                  >
+                    {CAPABILITY_LABELS[c]}
+                  </span>
+                ))}
+              </div>
+              <h4 className="text-base font-bold text-slate-900">{opp.title}</h4>
+              <p className="text-sm text-slate-600 mt-0.5">{opp.tagline}</p>
+              <p className="text-sm text-slate-700 mt-2 leading-relaxed">
+                {opp.description.split(".").slice(0, 2).join(".") + "."}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Internal mode: full expandable cards
   return (
     <div className="space-y-4">
       {opportunities.map((opp) => {

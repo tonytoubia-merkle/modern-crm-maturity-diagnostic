@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { formatDate } from "@/lib/utils";
 import { INDUSTRY_LABELS, CORE_QUESTIONS, INDUSTRY_QUESTIONS } from "@/lib/data/questions";
-import type { DiagnosticResults, ResponseItem } from "@/lib/types";
+import type { DiagnosticResults, ResponseItem, ViewMode } from "@/lib/types";
 
 interface ResultsViewProps {
   results: DiagnosticResults;
@@ -28,7 +28,10 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const [sharecopied, setShareCopied] = useState(false);
   const [exportingPptx, setExportingPptx] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("internal");
   const printRef = useRef<HTMLDivElement>(null);
+
+  const isClient = viewMode === "client";
 
   const shareUrl =
     typeof window !== "undefined"
@@ -54,7 +57,7 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${assessment.clientName}_CRM_Diagnostic.pptx`;
+      a.download = `${assessment.clientName}_Modern_CRM_Diagnostic.pptx`;
       a.click();
       URL.revokeObjectURL(url);
     } finally {
@@ -62,9 +65,13 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
     }
   };
 
+  // In client mode, show max 5 opportunities and exclude innovation tier
+  const displayOpportunities = isClient
+    ? opportunities.filter((o) => o.priority !== "innovation").slice(0, 5)
+    : opportunities;
+
   return (
     <div className="min-h-screen bg-slate-50 print:bg-white">
-      {/* Print styles injected via global.css */}
       <div className="max-w-4xl mx-auto px-4 py-10" ref={printRef}>
         {/* Header */}
         <div className="mb-8 print:mb-6">
@@ -91,19 +98,78 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
                 {assessment.respondentName}
               </p>
             </div>
-            <div className="flex gap-2 print:hidden">
-              <Button variant="secondary" size="sm" onClick={copyShareLink}>
-                {sharecopied ? "✓ Copied!" : "Share Link"}
-              </Button>
-              <Button variant="secondary" size="sm" onClick={handlePrint}>
-                Download PDF
-              </Button>
-              <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
-                {exportingPptx ? "Generating…" : "Export PPTX"}
-              </Button>
+            <div className="flex flex-col gap-2 print:hidden">
+              {/* View mode toggle */}
+              <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs font-medium">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("internal")}
+                  className={`px-3 py-1.5 transition-colors ${
+                    !isClient
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  Internal
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("client")}
+                  className={`px-3 py-1.5 transition-colors ${
+                    isClient
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  Client
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="secondary" size="sm" onClick={copyShareLink}>
+                  {sharecopied ? "Copied!" : "Share Link"}
+                </Button>
+                <Button variant="secondary" size="sm" onClick={handlePrint}>
+                  Download PDF
+                </Button>
+                <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
+                  {exportingPptx ? "Generating..." : "Export PPTX"}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Framing text */}
+        <Card className="mb-6">
+          <CardContent>
+            <div className="py-2">
+              <p className="text-sm text-slate-700 leading-relaxed">
+                {isClient ? (
+                  <>
+                    This report summarizes the findings of a Modern CRM Maturity Diagnostic
+                    conducted for <strong>{assessment.clientName}</strong>. The assessment
+                    evaluates six core capabilities — Identity, Signals, Decisioning, Engagement,
+                    Media Activation, and Learning &amp; Optimization — that together determine how
+                    effectively an organization turns customer data into coordinated engagement and
+                    growth. Each capability is scored on a 1–5 scale and mapped to one of four
+                    maturity stages. The opportunities below highlight the highest-impact areas for
+                    advancement.
+                  </>
+                ) : (
+                  <>
+                    This diagnostic assessed <strong>{assessment.clientName}</strong> across
+                    the six capabilities of Modern CRM — Identity, Signals, Decisioning,
+                    Engagement, Media Activation, and Learning &amp; Optimization. Scores reflect
+                    the respondent&apos;s assessment on a 1–5 maturity scale (1 = Not in Place,
+                    3 = Operational, 5 = Optimized). Strategic opportunities are triggered by
+                    capability gaps and sorted by priority. Use the Salesforce output section
+                    below for pipeline and proposal development.
+                  </>
+                )}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Maturity stage */}
         <div className="mb-6">
@@ -126,46 +192,49 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
         </Card>
 
         {/* Strategic opportunities */}
-        {opportunities.length > 0 && (
+        {displayOpportunities.length > 0 && (
           <Card className="mb-6">
             <CardHeader>
               <h2 className="text-lg font-bold text-slate-900">
-                Strategic Opportunity Areas
+                {isClient ? "Key Opportunity Areas" : "Strategic Opportunity Areas"}
               </h2>
               <p className="text-sm text-slate-500 mt-0.5">
-                {opportunities.length} prioritized opportunities based on your
-                capability gaps. Click each to expand scope and methods.
+                {isClient
+                  ? `${displayOpportunities.length} prioritized opportunities based on your assessment results.`
+                  : `${displayOpportunities.length} prioritized opportunities based on capability gaps. Click each to expand scope and methods.`}
               </p>
             </CardHeader>
             <CardContent>
-              <OpportunityCards opportunities={opportunities} />
+              <OpportunityCards opportunities={displayOpportunities} clientMode={isClient} />
             </CardContent>
           </Card>
         )}
 
-        {/* Salesforce / Proposal output */}
-        <Card className="mb-6 print:hidden">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-slate-900">
-                Pipeline & Proposal Output
-              </h2>
-              <span className="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-0.5 rounded border border-blue-200">
-                Salesforce Ready
-              </span>
-            </div>
-            <p className="text-sm text-slate-500 mt-0.5">
-              Copy-ready narratives, opportunity tables, and individual records
-              for Salesforce and proposal documents.
-            </p>
-          </CardHeader>
-          <CardContent>
-            <SalesforceOutput results={results} />
-          </CardContent>
-        </Card>
+        {/* Salesforce / Proposal output — internal only */}
+        {!isClient && (
+          <Card className="mb-6 print:hidden">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold text-slate-900">
+                  Pipeline & Proposal Output
+                </h2>
+                <span className="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-0.5 rounded border border-blue-200">
+                  Salesforce Ready
+                </span>
+              </div>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Copy-ready narratives, opportunity tables, and individual records
+                for Salesforce and proposal documents.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <SalesforceOutput results={results} />
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Respondent notes */}
-        {responses.some((r) => r.notes) && (
+        {/* Respondent notes — internal only */}
+        {!isClient && responses.some((r) => r.notes) && (
           <Card className="mb-6">
             <CardHeader>
               <h2 className="text-lg font-bold text-slate-900">
@@ -197,23 +266,42 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
           </Card>
         )}
 
+        {/* Validation flags — internal only */}
+        {!isClient && responses.some((r) => r.score === undefined || r.score === null) && (
+          <Card className="mb-6">
+            <CardHeader>
+              <h2 className="text-lg font-bold text-slate-900">
+                Validation Flags
+              </h2>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Questions marked &quot;Not sure / Requires validation&quot; by the respondent.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-600">
+                Some questions were flagged for validation. Consider following up on these areas for a more complete assessment.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Footer actions */}
         <div className="flex items-center justify-between flex-wrap gap-4 py-4 border-t border-slate-200 print:hidden">
           <a
             href="/"
             className="text-sm text-slate-500 hover:text-slate-700"
           >
-            ← Start a new assessment
+            Start a new assessment
           </a>
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" onClick={copyShareLink}>
-              {sharecopied ? "✓ Link Copied!" : "Copy Share Link"}
+              {sharecopied ? "Link Copied!" : "Copy Share Link"}
             </Button>
             <Button variant="secondary" size="sm" onClick={handlePrint}>
               Download PDF
             </Button>
             <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
-              {exportingPptx ? "Generating…" : "Export PPTX"}
+              {exportingPptx ? "Generating..." : "Export PPTX"}
             </Button>
           </div>
         </div>

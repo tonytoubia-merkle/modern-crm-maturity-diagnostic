@@ -19,6 +19,7 @@ export interface Question {
   id: number;
   text: string;
   capability: Capability;
+  tooltip?: string;
 }
 
 export interface IndustryQuestion {
@@ -26,7 +27,10 @@ export interface IndustryQuestion {
   text: string;
   industry: Industry;
   capability: Capability;
+  tooltip?: string;
 }
+
+export type ViewMode = "internal" | "client";
 
 export interface ResponseItem {
   questionId: string | number;

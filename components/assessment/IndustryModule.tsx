@@ -151,18 +151,27 @@ export function IndustryModule({
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center mt-0.5">
                   {idx + 1}
                 </span>
-                <p
-                  className={`text-sm font-medium leading-relaxed ${
-                    isSkipped ? "line-through text-slate-400" : "text-slate-900"
-                  }`}
-                >
-                  {question.text}
-                </p>
+                <div className="flex-1">
+                  <p
+                    className={`text-sm font-medium leading-relaxed ${
+                      isSkipped ? "line-through text-slate-400" : "text-slate-900"
+                    }`}
+                  >
+                    {question.text}
+                  </p>
+                  {question.tooltip && !isSkipped && (
+                    <p className="mt-1 text-xs text-slate-500 leading-relaxed italic">
+                      {question.tooltip}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {isSkipped ? (
                 <div className="ml-9 flex items-center gap-2">
-                  <span className="text-xs text-slate-400 italic">Skipped</span>
+                  <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-medium">
+                    Not sure / Requires validation
+                  </span>
                   <button
                     type="button"
                     onClick={() => handleSkipToggle(question.id)}
@@ -227,9 +236,9 @@ export function IndustryModule({
                   <button
                     type="button"
                     onClick={() => handleSkipToggle(question.id)}
-                    className="text-xs text-slate-400 hover:text-slate-600 transition-colors block"
+                    className="text-xs text-slate-400 hover:text-amber-600 transition-colors block"
                   >
-                    Skip this question
+                    Not sure / Requires validation
                   </button>
                 </div>
               )}

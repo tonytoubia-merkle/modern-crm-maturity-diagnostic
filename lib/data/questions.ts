@@ -33,6 +33,21 @@ export const CAPABILITY_DESCRIPTIONS: Record<string, string> = {
     "Assess whether the organization continuously improves engagement and media strategies through data and experimentation.",
 };
 
+export const CAPABILITY_SCOPE_HINTS: Record<string, string> = {
+  identity:
+    "These questions assess enterprise-wide identity capabilities. You may need input from your data engineering or customer data platform (CDP) team.",
+  signals:
+    "These questions assess how behavioral data flows into customer profiles. Input from data engineering or marketing technology teams may be helpful.",
+  decisioning:
+    "These questions assess analytical and AI-driven capabilities. Input from analytics, data science, or marketing operations teams may be helpful.",
+  engagement:
+    "These questions assess cross-channel execution capabilities. Consider the full scope of owned channel operations across teams.",
+  media_activation:
+    "These questions assess how CRM data informs media strategy. Input from media planning or performance marketing teams may be helpful.",
+  learning_optimization:
+    "These questions assess experimentation and measurement maturity. Input from analytics or marketing science teams may be helpful.",
+};
+
 export const SCORE_LABELS: Record<number, string> = {
   1: "Not in Place",
   2: "Emerging",
@@ -42,11 +57,11 @@ export const SCORE_LABELS: Record<number, string> = {
 };
 
 export const SCORE_DESCRIPTIONS: Record<number, string> = {
-  1: "Capability does not exist or is highly fragmented.",
-  2: "Limited pilots or isolated capabilities exist.",
-  3: "Capability is in use but not consistently integrated.",
-  4: "Capability operates across teams and channels.",
-  5: "Capability is orchestrated and continuously improved through data and experimentation.",
+  1: "Capability does not exist or is highly fragmented with no formal process.",
+  2: "Limited pilots or isolated capabilities exist but are not consistently applied.",
+  3: "Capability is in use and operational but not consistently integrated across teams or channels.",
+  4: "Capability operates across teams and channels with clear governance and coordination.",
+  5: "Capability is fully orchestrated, continuously improved through data and experimentation, and drives measurable outcomes.",
 };
 
 export const CORE_QUESTIONS: Question[] = [
@@ -55,10 +70,11 @@ export const CORE_QUESTIONS: Question[] = [
     id: 1,
     text: "To what extent does the organization maintain a unified customer profile across channels and touchpoints?",
     capability: "identity",
+    tooltip: "A unified customer profile is a single, persistent record that connects all known data about a customer — purchases, interactions, preferences, and identifiers — across every channel and touchpoint.",
   },
   {
     id: 2,
-    text: "How effectively can the organization recognize the same customer across digital, mobile, in-store, and service interactions?",
+    text: "To what extent can the organization recognize the same customer across digital, mobile, in-store, and service interactions?",
     capability: "identity",
   },
   {
@@ -68,35 +84,40 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 4,
-    text: "Is a common view of readiness, risk, and opportunity shared across the organization, including different divisions or business units?",
+    text: "To what extent is customer identity and data shared consistently across organizational divisions and business units?",
     capability: "identity",
   },
   // Signals
   {
     id: 5,
-    text: "How effectively are behavioral intent signals such as purchase, browsing, engagement, or usage captured and connected to customer profiles?",
+    text: "To what extent are behavioral intent signals such as purchase, browsing, engagement, or usage captured and connected to customer profiles?",
     capability: "signals",
+    tooltip: "Behavioral intent signals are actions a customer takes — page views, cart activity, email opens, app sessions, store visits — that indicate interest or readiness to engage.",
   },
   {
     id: 6,
     text: "To what extent are real-time or near-real-time signals used to trigger engagement or messaging?",
     capability: "signals",
+    tooltip: "Real-time signals are captured and available for activation within minutes, rather than in batch processes that run daily or weekly.",
   },
   {
     id: 7,
-    text: "How effectively are customer lifecycle or milestone signals identified and used to guide engagement strategies?",
+    text: "To what extent are customer lifecycle or milestone signals identified and used to guide engagement strategies?",
     capability: "signals",
+    tooltip: "Lifecycle signals include events like onboarding completion, anniversary dates, lapse risk indicators, tier changes, or renewal windows.",
   },
   // Decisioning
   {
     id: 8,
     text: "To what extent are segmentation or predictive models used to guide engagement strategies?",
     capability: "decisioning",
+    tooltip: "Predictive models are statistical or machine learning models that estimate the likelihood of future customer behavior — such as purchase propensity, churn risk, or lifetime value.",
   },
   {
     id: 9,
-    text: "How effectively are next-best-actions determined dynamically based on customer behavior or context?",
+    text: "To what extent are next-best-actions determined dynamically based on customer behavior or context?",
     capability: "decisioning",
+    tooltip: "Next-best-action (NBA) is a decisioning approach where the system determines the most relevant message, offer, or experience for each customer based on their current context, history, and behavior.",
   },
   {
     id: 10,
@@ -106,17 +127,19 @@ export const CORE_QUESTIONS: Question[] = [
   // Engagement / Orchestration
   {
     id: 11,
-    text: "How effectively are customer journeys orchestrated across channels such as email, mobile, app, web, store, and service?",
+    text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, store, and service?",
     capability: "engagement",
+    tooltip: "Orchestration means channels are coordinated so each interaction builds on the last — rather than operating independently in silos with separate strategies.",
   },
   {
     id: 12,
-    text: "To what extent are loyalty programs integrated with CRM engagement strategies?",
+    text: "To what extent are loyalty or recognition programs integrated with CRM engagement strategies?",
     capability: "engagement",
+    tooltip: "This includes traditional loyalty tiers as well as modern recognition models — value exchange, experiential rewards, personalized benefits, and non-transactional engagement mechanics.",
   },
   {
     id: 13,
-    text: "How effectively are promotions or offers personalized using behavioral signals rather than broadly distributed?",
+    text: "To what extent are promotions or offers personalized using behavioral signals rather than broadly distributed?",
     capability: "engagement",
   },
   {
@@ -126,13 +149,13 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 15,
-    text: "How effectively are dynamic content or personalized experiences assembled in real time based on customer signals and context?",
+    text: "To what extent are dynamic content or personalized experiences assembled in real time based on customer signals and context?",
     capability: "engagement",
   },
   // Media Activation
   {
     id: 16,
-    text: "How effectively is first-party customer data used to inform paid media targeting?",
+    text: "To what extent is first-party customer data used to inform paid media targeting?",
     capability: "media_activation",
   },
   {
@@ -142,13 +165,13 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 18,
-    text: "How effectively are paid media campaigns designed to drive owned relationship growth such as app adoption, loyalty enrollment, or profile completion?",
+    text: "To what extent are paid media campaigns designed to drive owned relationship growth such as app adoption, loyalty enrollment, or profile completion?",
     capability: "media_activation",
   },
   // Learning & Optimization
   {
     id: 19,
-    text: "How consistently are experiments or test-and-learn programs used to improve engagement strategies?",
+    text: "To what extent are experiments or test-and-learn programs used to improve engagement strategies?",
     capability: "learning_optimization",
   },
   {
@@ -158,12 +181,13 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 21,
-    text: "How effectively does the organization measure incremental lift from loyalty, promotions, and messaging programs?",
+    text: "To what extent does the organization measure incremental lift from loyalty, promotions, and messaging programs?",
     capability: "learning_optimization",
+    tooltip: "Incremental lift measures the true causal impact of a program — the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway.",
   },
   {
     id: 22,
-    text: "How consistently are customer insights used to refine segmentation, journeys, and targeting strategies?",
+    text: "To what extent are customer insights used to refine segmentation, journeys, and targeting strategies?",
     capability: "learning_optimization",
   },
 ];
@@ -198,7 +222,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   // Retail
   {
     id: "retail_1",
-    text: "How effectively are households or family relationships identified and activated in marketing?",
+    text: "To what extent are households or family relationships identified and activated in marketing?",
     industry: "retail",
     capability: "identity",
   },
@@ -210,7 +234,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "retail_3",
-    text: "How effectively are category purchase patterns used to anticipate next purchase needs?",
+    text: "To what extent are category purchase patterns used to anticipate next purchase needs?",
     industry: "retail",
     capability: "decisioning",
   },
@@ -222,14 +246,14 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "retail_5",
-    text: "How effectively are gift buyers or secondary purchasers identified and engaged?",
+    text: "To what extent are gift buyers or secondary purchasers identified and engaged?",
     industry: "retail",
     capability: "identity",
   },
   // QSR
   {
     id: "qsr_1",
-    text: "How effectively are visit frequency patterns used to trigger personalized engagement?",
+    text: "To what extent are visit frequency patterns used to trigger personalized engagement?",
     industry: "qsr",
     capability: "signals",
   },
@@ -241,7 +265,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "qsr_3",
-    text: "How effectively are loyalty signals used to optimize offers instead of blanket promotions?",
+    text: "To what extent are loyalty signals used to optimize offers instead of blanket promotions?",
     industry: "qsr",
     capability: "engagement",
   },
@@ -253,14 +277,14 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "qsr_5",
-    text: "How effectively are location and proximity signals used to trigger engagement?",
+    text: "To what extent are location and proximity signals used to trigger engagement?",
     industry: "qsr",
     capability: "signals",
   },
   // Financial Services
   {
     id: "fs_1",
-    text: "How effectively are onboarding journeys designed to drive early product activation?",
+    text: "To what extent are onboarding journeys designed to drive early product activation?",
     industry: "financial_services",
     capability: "engagement",
   },
@@ -272,7 +296,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "fs_3",
-    text: "How effectively are CRM and loyalty strategies used to increase product utilization?",
+    text: "To what extent are CRM and loyalty strategies used to increase product utilization?",
     industry: "financial_services",
     capability: "engagement",
   },
@@ -284,26 +308,27 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "fs_5",
-    text: "How effectively are lifecycle events used to trigger financial guidance or engagement?",
+    text: "To what extent are lifecycle events used to trigger financial guidance or engagement?",
     industry: "financial_services",
     capability: "signals",
   },
   // Travel & Hospitality
   {
     id: "th_1",
-    text: "How effectively are travel intent signals used to trigger engagement or offers?",
+    text: "To what extent are travel intent signals used to trigger engagement or offers?",
     industry: "travel_hospitality",
     capability: "signals",
   },
   {
     id: "th_2",
-    text: "To what extent are loyalty tiers used to personalize experiences beyond rewards?",
+    text: "To what extent are recognition and value exchange programs used to personalize guest experiences beyond transactional rewards?",
     industry: "travel_hospitality",
     capability: "engagement",
+    tooltip: "This includes traditional loyalty tiers as well as modern recognition models — experiential rewards, personalized service, status-based perks, and non-transactional engagement.",
   },
   {
     id: "th_3",
-    text: "How effectively are service recovery moments integrated with loyalty gestures?",
+    text: "To what extent are service recovery moments integrated with loyalty gestures?",
     industry: "travel_hospitality",
     capability: "engagement",
   },
@@ -315,14 +340,15 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "th_5",
-    text: "How effectively are ancillary revenue opportunities personalized using customer signals?",
+    text: "To what extent are ancillary revenue opportunities personalized using customer signals?",
     industry: "travel_hospitality",
     capability: "decisioning",
+    tooltip: "Ancillary revenue refers to revenue from additional products and services beyond the core offering — such as upgrades, add-ons, experiences, and partner offers.",
   },
   // Automotive
   {
     id: "auto_1",
-    text: "How effectively are vehicle lifecycle milestones used to trigger engagement?",
+    text: "To what extent are vehicle lifecycle milestones used to trigger engagement?",
     industry: "automotive",
     capability: "signals",
   },
@@ -334,7 +360,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "auto_3",
-    text: "How effectively are service interactions used to strengthen the customer relationship?",
+    text: "To what extent are service interactions used to strengthen the customer relationship?",
     industry: "automotive",
     capability: "engagement",
   },
@@ -346,7 +372,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
   },
   {
     id: "auto_5",
-    text: "How effectively does CRM extend beyond purchase to support ongoing brand engagement?",
+    text: "To what extent does CRM extend beyond purchase to support ongoing brand engagement?",
     industry: "automotive",
     capability: "engagement",
   },
