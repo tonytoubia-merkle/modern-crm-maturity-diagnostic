@@ -559,5 +559,16 @@ export function getTriggeredOpportunities(
     return aMinScore - bMinScore;
   });
 
-  return triggered.slice(0, limit);
+  const sliced = triggered.slice(0, limit);
+
+  // Assign display priority based on rank position so the output is
+  // differentiated even when many opportunities share the same static priority.
+  // Top 2 = Critical, next 2 = High, rest = Medium.
+  // Innovation opportunities keep their label regardless of position.
+  return sliced.map((opp, idx) => {
+    if (opp.priority === "innovation") return opp;
+    const displayPriority: Opportunity["priority"] =
+      idx < 2 ? "critical" : idx < 4 ? "high" : "medium";
+    return { ...opp, priority: displayPriority };
+  });
 }
