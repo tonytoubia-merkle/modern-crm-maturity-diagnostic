@@ -72,71 +72,97 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
 
   return (
     <div className="min-h-screen bg-slate-50 print:bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-10" ref={printRef}>
-        {/* Header */}
-        <div className="mb-8 print:mb-6">
-          <div className="flex items-start justify-between flex-wrap gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
-                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
-                  Modern CRM Maturity Diagnostic
-                </span>
-              </div>
-              <h1 className="text-3xl font-bold text-slate-900">
-                {assessment.clientName}
-              </h1>
-              <p className="text-slate-500 mt-1">
-                {assessment.clientCompany}
-                {assessment.industry &&
-                  INDUSTRY_LABELS[assessment.industry] &&
-                  ` · ${INDUSTRY_LABELS[assessment.industry]}`}
-              </p>
-              <p className="text-slate-400 text-sm mt-0.5">
-                Completed {formatDate(assessment.createdAt)} · Assessed by{" "}
-                {assessment.respondentName}
-              </p>
+      {/* Branded header bar */}
+      <div className="print:hidden" style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto brightness-0 invert" />
+            <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">
+              Modern CRM Diagnostic
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            {/* View mode toggle — compact */}
+            <div className="inline-flex rounded-md overflow-hidden text-xs font-medium border border-white/20">
+              <button
+                type="button"
+                onClick={() => setViewMode("internal")}
+                className={`px-2.5 py-1 transition-colors ${
+                  !isClient
+                    ? "bg-white text-slate-900"
+                    : "text-white/70 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                Internal
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("client")}
+                className={`px-2.5 py-1 transition-colors ${
+                  isClient
+                    ? "bg-white text-slate-900"
+                    : "text-white/70 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                Client
+              </button>
             </div>
-            <div className="flex flex-col gap-2 print:hidden">
-              {/* View mode toggle */}
-              <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs font-medium">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("internal")}
-                  className={`px-3 py-1.5 transition-colors ${
-                    !isClient
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
-                  }`}
-                >
-                  Internal
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("client")}
-                  className={`px-3 py-1.5 transition-colors ${
-                    isClient
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-slate-600 hover:bg-slate-50"
-                  }`}
-                >
-                  Client
-                </button>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="secondary" size="sm" onClick={copyShareLink}>
-                  {sharecopied ? "Copied!" : "Share Link"}
-                </Button>
-                <Button variant="secondary" size="sm" onClick={handlePrint}>
-                  Download PDF
-                </Button>
-                <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
-                  {exportingPptx ? "Generating..." : "Export PPTX"}
-                </Button>
-              </div>
+            <div className="flex gap-1.5">
+              <button
+                type="button"
+                onClick={copyShareLink}
+                className="text-xs text-white/70 hover:text-white px-2 py-1 rounded transition-colors"
+              >
+                {sharecopied ? "Copied!" : "Share"}
+              </button>
+              <button
+                type="button"
+                onClick={handlePrint}
+                className="text-xs text-white/70 hover:text-white px-2 py-1 rounded transition-colors"
+              >
+                PDF
+              </button>
+              <button
+                type="button"
+                onClick={handleExportPptx}
+                disabled={exportingPptx}
+                className="text-xs bg-white/20 text-white hover:bg-white/30 px-2.5 py-1 rounded font-semibold transition-colors disabled:opacity-50"
+              >
+                {exportingPptx ? "..." : "PPTX"}
+              </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-10" ref={printRef}>
+        {/* Print-only header */}
+        <div className="hidden print:block mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#00205B" }}>
+              Modern CRM Maturity Diagnostic
+            </span>
+          </div>
+        </div>
+
+        {/* Client info */}
+        <div className="mb-8 print:mb-6">
+          <h1 className="text-3xl font-bold text-slate-900">
+            {assessment.clientName}
+          </h1>
+          <p className="text-slate-500 mt-1">
+            {assessment.clientCompany}
+            {assessment.industry &&
+              INDUSTRY_LABELS[assessment.industry] &&
+              ` · ${INDUSTRY_LABELS[assessment.industry]}`}
+          </p>
+          <p className="text-slate-400 text-sm mt-0.5">
+            Completed {formatDate(assessment.createdAt)} · Assessed by{" "}
+            {assessment.respondentName}
+          </p>
         </div>
 
         {/* Framing text */}
@@ -295,10 +321,7 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
           </a>
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" onClick={copyShareLink}>
-              {sharecopied ? "Link Copied!" : "Copy Share Link"}
-            </Button>
-            <Button variant="secondary" size="sm" onClick={handlePrint}>
-              Download PDF
+              {sharecopied ? "Link Copied!" : "Share Link"}
             </Button>
             <Button variant="primary" size="sm" onClick={handleExportPptx} disabled={exportingPptx}>
               {exportingPptx ? "Generating..." : "Export PPTX"}

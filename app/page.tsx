@@ -57,18 +57,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Nav */}
-      <nav className="border-b border-slate-100 bg-white sticky top-0 z-10">
+      <nav className="sticky top-0 z-10" style={{ backgroundColor: "#00205B" }}>
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto" />
-            <span className="text-sm font-semibold text-slate-500">
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+            <span className="text-sm font-semibold text-white/70">
               Modern CRM Diagnostic
             </span>
           </div>
           <button
             onClick={() => setShowRetrieve(!showRetrieve)}
-            className="text-sm text-slate-500 hover:text-slate-800"
+            className="text-sm text-white/70 hover:text-white transition-colors"
           >
             Retrieve Assessment
           </button>
@@ -318,14 +318,18 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-100 py-8">
+      <footer className="py-8" style={{ backgroundColor: "#00205B" }}>
         <div className="max-w-5xl mx-auto px-4 flex items-center justify-between flex-wrap gap-4">
-          <p className="text-xs text-slate-400">
-            © {new Date().getFullYear()} Merkle. Modern CRM Maturity Diagnostic.
-          </p>
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
+            <p className="text-xs text-white/50">
+              © {new Date().getFullYear()} Merkle. Modern CRM Maturity Diagnostic.
+            </p>
+          </div>
           <a
             href="/admin"
-            className="text-xs text-slate-300 hover:text-slate-500"
+            className="text-xs text-white/30 hover:text-white/60 transition-colors"
           >
             Admin
           </a>

@@ -200,15 +200,23 @@ export function AssessmentFlow({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Sticky header: breadcrumb + progress + scale legend */}
-      <div className="sticky top-0 z-20 bg-slate-50 border-b border-slate-100 shadow-sm">
-        <div className="max-w-3xl mx-auto px-4 pt-3 pb-3">
+      {/* Branded nav bar */}
+      <div className="sticky top-0 z-20" style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
           <a
             href="/"
-            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1 mb-2"
+            className="text-xs text-white/70 hover:text-white flex items-center gap-1 transition-colors"
           >
-            ← Modern CRM Maturity Diagnostic
+            ← Modern CRM Diagnostic
           </a>
+        </div>
+      </div>
+
+      {/* Progress + scale legend */}
+      <div className="sticky z-10 bg-slate-50 border-b border-slate-100 shadow-sm" style={{ top: "36px" }}>
+        <div className="max-w-3xl mx-auto px-4 pt-3 pb-3">
 
           {step > 0 && (
             <>
