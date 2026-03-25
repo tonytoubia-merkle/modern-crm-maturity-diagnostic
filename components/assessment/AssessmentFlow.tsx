@@ -186,8 +186,9 @@ export function AssessmentFlow({
         }),
       });
 
-      router.refresh();
-      router.push(`/results/${shareId}`);
+      // Hard navigation to bypass Next.js client-side router cache —
+      // router.refresh() + router.push() races and often serves stale data
+      window.location.href = `/results/${shareId}`;
     } catch (e) {
       console.error("Failed to complete assessment:", e);
       setCompleting(false);
