@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SetupForm } from "./SetupForm";
 import { CapabilitySection } from "./CapabilitySection";
@@ -13,13 +13,17 @@ import {
   CORE_QUESTIONS,
   INDUSTRY_QUESTIONS,
   SCORE_LABELS,
-  SCORE_DESCRIPTIONS,
 } from "@/lib/data/questions";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
 // Steps: 0 = setup, 1-6 = capabilities, 7 = industry
 const TOTAL_CORE_STEPS = 6;
+
+export interface QuestionAverages {
+  overall: Record<string, number>;
+  industry: Record<string, number> | null;
+}
 
 interface AssessmentFlowProps {
   initialAssessmentId?: string | null;
@@ -45,6 +49,8 @@ export function AssessmentFlow({
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
   const [sectionReady, setSectionReady] = useState(false);
+  const [averages, setAverages] = useState<QuestionAverages>({ overall: {}, industry: null });
+  const [scaleExpanded, setScaleExpanded] = useState(false);
 
   const coreQuestionCount = CORE_QUESTIONS.length;
   const industryQuestionCount = preSelectedIndustry
@@ -52,6 +58,16 @@ export function AssessmentFlow({
     : 0;
   const totalQuestionCount = coreQuestionCount + industryQuestionCount;
   const answeredTotalCount = responses.length;
+
+  // Fetch benchmark averages
+  useEffect(() => {
+    const ind = preSelectedIndustry || initialIndustry;
+    const url = ind ? `/api/averages?industry=${ind}` : "/api/averages";
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => setAverages(data))
+      .catch(() => {});
+  }, [preSelectedIndustry, initialIndustry]);
 
   // Create assessment
   const handleSetup = async (data: {
@@ -186,8 +202,7 @@ export function AssessmentFlow({
         }),
       });
 
-      // Hard navigation to bypass Next.js client-side router cache —
-      // router.refresh() + router.push() races and often serves stale data
+      // Hard navigation to bypass Next.js client-side router cache
       window.location.href = `/results/${shareId}`;
     } catch (e) {
       console.error("Failed to complete assessment:", e);
@@ -215,10 +230,9 @@ export function AssessmentFlow({
         </div>
       </div>
 
-      {/* Progress + scale legend */}
+      {/* Progress + compact scale legend */}
       <div className="sticky z-10 bg-slate-50 border-b border-slate-100 shadow-sm" style={{ top: "36px" }}>
-        <div className="max-w-3xl mx-auto px-4 pt-3 pb-3">
-
+        <div className="max-w-3xl mx-auto px-4 pt-3 pb-2">
           {step > 0 && (
             <>
               <ProgressBar
@@ -230,16 +244,41 @@ export function AssessmentFlow({
               />
 
               {(step >= 1 && step <= 7) && (
-                <div className="mt-2 bg-white border border-slate-200 rounded-lg px-3 py-2">
-                  <div className="flex items-center flex-wrap gap-x-4 gap-y-0.5 text-xs">
-                    {([1, 2, 3, 4, 5] as const).map((v) => (
-                      <span key={v} className="text-slate-600">
-                        <strong className="text-slate-800">{v}</strong>{" "}
-                        <span className="font-medium">{SCORE_LABELS[v]}</span>
-                        <span className="text-slate-400 hidden sm:inline"> — {SCORE_DESCRIPTIONS[v]}</span>
+                <div className="mt-1.5">
+                  {/* Compact single-line scale */}
+                  <div className="flex items-center gap-1 text-[11px] text-slate-500">
+                    <span className="text-slate-400 font-medium mr-0.5">Scale:</span>
+                    {([1, 2, 3, 4, 5] as const).map((v, i) => (
+                      <span key={v}>
+                        <strong className="text-slate-700">{v}</strong>{" "}
+                        {SCORE_LABELS[v]}
+                        {i < 4 && <span className="text-slate-300 mx-1">·</span>}
                       </span>
                     ))}
+                    <button
+                      type="button"
+                      onClick={() => setScaleExpanded(!scaleExpanded)}
+                      className="ml-1 text-blue-500 hover:text-blue-700 font-medium"
+                    >
+                      {scaleExpanded ? "hide" : "details"}
+                    </button>
                   </div>
+                  {/* Expanded descriptions */}
+                  {scaleExpanded && (
+                    <div className="mt-1.5 bg-white border border-slate-200 rounded-lg px-3 py-2 text-[11px] text-slate-500 space-y-0.5">
+                      {([1, 2, 3, 4, 5] as const).map((v) => (
+                        <div key={v}>
+                          <strong className="text-slate-700">{v} {SCORE_LABELS[v]}</strong>
+                          <span className="text-slate-400"> — </span>
+                          {v === 1 && "Capability does not exist or is highly fragmented."}
+                          {v === 2 && "Limited pilots or isolated capabilities exist."}
+                          {v === 3 && "In use but not consistently integrated across teams."}
+                          {v === 4 && "Operates across teams and channels with governance."}
+                          {v === 5 && "Fully orchestrated, continuously improved, drives outcomes."}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </>
@@ -260,6 +299,7 @@ export function AssessmentFlow({
                 onNotes={handleNotes}
                 onRemoveResponse={handleRemoveResponse}
                 onReadyChange={setSectionReady}
+                averages={averages}
               />
               <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                 <Button variant="ghost" onClick={handlePrev} disabled={step === 1}>
