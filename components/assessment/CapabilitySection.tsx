@@ -137,57 +137,52 @@ export function CapabilitySection({
                 </div>
               ) : (
                 <div className="ml-9 space-y-2">
-                  {/* Score pips + Not sure button on same row */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {/* 1-5 pips with average markers */}
-                    <div className="flex items-center gap-1.5">
-                      {[1, 2, 3, 4, 5].map((v) => {
-                        const isOverallAvg = overallAvg === v;
-                        const isIndustryAvg = industryAvg === v && industryAvg !== overallAvg;
-                        const hasBothAvg = overallAvg === v && industryAvg === v;
-                        return (
-                          <div key={v} className="flex flex-col items-center gap-0.5">
-                            <button
-                              type="button"
-                              onClick={() => onScore(question.id, v, capability)}
-                              className={`w-9 h-9 rounded-full text-sm font-bold border-2 transition-all flex-shrink-0 ${
-                                selected === v
-                                  ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                                  : "border-slate-200 bg-white text-slate-400 hover:border-blue-400 hover:text-blue-600"
-                              }`}
-                            >
-                              {v}
-                            </button>
-                            {/* Average indicators — small dots below the pip */}
-                            <div className="flex items-center gap-0.5 h-2">
-                              {hasBothAvg ? (
-                                <>
-                                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400" title="Overall avg" />
-                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400" title="Industry avg" />
-                                </>
-                              ) : (
-                                <>
-                                  {isOverallAvg && (
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400" title="Overall avg" />
-                                  )}
-                                  {isIndustryAvg && (
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400" title="Industry avg" />
-                                  )}
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  {/* Score pips + Not sure — single row */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {[1, 2, 3, 4, 5].map((v) => {
+                      const isOverallAvg = overallAvg === v;
+                      const isIndustryAvg = industryAvg === v;
+                      // Show a subtle bottom accent on pips that match averages
+                      const accentClass =
+                        isOverallAvg && isIndustryAvg
+                          ? "ring-1 ring-offset-1 ring-slate-300"
+                          : isOverallAvg
+                          ? "ring-1 ring-offset-1 ring-slate-300"
+                          : isIndustryAvg
+                          ? "ring-1 ring-offset-1 ring-blue-300"
+                          : "";
+                      return (
+                        <button
+                          key={v}
+                          type="button"
+                          onClick={() => onScore(question.id, v, capability)}
+                          title={
+                            isOverallAvg && isIndustryAvg
+                              ? `${SCORE_LABELS[v]} · Overall & industry avg`
+                              : isOverallAvg
+                              ? `${SCORE_LABELS[v]} · Overall avg`
+                              : isIndustryAvg
+                              ? `${SCORE_LABELS[v]} · Industry avg`
+                              : SCORE_LABELS[v]
+                          }
+                          className={`w-9 h-9 rounded-full text-sm font-bold border-2 transition-all flex-shrink-0 ${
+                            selected === v
+                              ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                              : `border-slate-200 bg-white text-slate-400 hover:border-blue-400 hover:text-blue-600 ${accentClass}`
+                          }`}
+                        >
+                          {v}
+                        </button>
+                      );
+                    })}
                     {selected !== null && (
-                      <span className="text-xs text-slate-500 ml-0.5">
+                      <span className="text-xs text-slate-500">
                         {SCORE_LABELS[selected]}
                       </span>
                     )}
                     {/* Divider */}
-                    <span className="text-slate-200 mx-0.5">|</span>
-                    {/* Not sure button — prominent, same row */}
+                    <span className="text-slate-200">|</span>
+                    {/* Not sure button */}
                     <button
                       type="button"
                       onClick={() => handleSkipToggle(question.id)}
@@ -195,25 +190,22 @@ export function CapabilitySection({
                     >
                       Not sure
                     </button>
+                    {/* Inline benchmark reference */}
+                    {(overallAvg || industryAvg) && (
+                      <span className="text-[10px] text-slate-400 ml-1 hidden sm:inline">
+                        {overallAvg && (
+                          <span title="Average across all completed assessments">
+                            Avg <span className="font-semibold text-slate-500">{overallAvg}</span>
+                          </span>
+                        )}
+                        {industryAvg && industryAvg !== overallAvg && (
+                          <span title="Average for this industry">
+                            {overallAvg ? " · " : ""}Ind <span className="font-semibold text-blue-500">{industryAvg}</span>
+                          </span>
+                        )}
+                      </span>
+                    )}
                   </div>
-
-                  {/* Average legend — only show if there are averages */}
-                  {(overallAvg || industryAvg) && !selected && (
-                    <div className="flex items-center gap-3 text-[10px] text-slate-400">
-                      {overallAvg && (
-                        <span className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
-                          Avg across all assessments
-                        </span>
-                      )}
-                      {industryAvg && industryAvg !== overallAvg && (
-                        <span className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block" />
-                          Industry avg
-                        </span>
-                      )}
-                    </div>
-                  )}
 
                   {/* Notes (only after scoring) */}
                   {selected !== null && (
