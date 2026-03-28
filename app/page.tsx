@@ -61,10 +61,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
-            <span className="text-sm font-semibold text-white/70">
-              Modern CRM Diagnostic
-            </span>
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto brightness-0 invert" />
           </div>
           <button
             onClick={() => setShowRetrieve(!showRetrieve)}
@@ -143,49 +140,53 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Hero */}
-      <section className="max-w-5xl mx-auto px-4 pt-20 pb-16">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-full mb-6">
-            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-            Modern CRM Maturity Diagnostic
-          </div>
-          <h1 className="text-5xl font-bold text-slate-900 leading-tight tracking-tight mb-6">
-            Turn Customer Signals
-            <br />
-            Into Growth
-          </h1>
-          <div className="mb-8 max-w-2xl">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">What to expect</p>
-            <p className="text-lg text-slate-900 leading-relaxed">
+      {/* Hero — branded navy */}
+      <section style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-5xl mx-auto px-4 pt-20 pb-20">
+          <div className="max-w-3xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/merkle-logo.webp"
+              alt="Merkle"
+              className="h-10 w-auto brightness-0 invert mb-8"
+            />
+            <h1 className="text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+              Modern CRM
+              <br />
+              Maturity Diagnostic
+            </h1>
+            <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-2xl">
               Assess your organization&apos;s readiness to connect identity,
-              behavioral signals, decisioning, and engagement into a unified Modern
+              behavioral signals, decisioning, and engagement into a unified
               CRM growth engine. Takes 15–20 minutes.
             </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="/assessment/new">
+                <button
+                  className="px-6 py-3 bg-white font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
+                  style={{ color: "#00205B" }}
+                >
+                  Start Assessment →
+                </button>
+              </a>
+            </div>
+            <p className="text-xs text-white/40 mt-4">
+              No account required · Results shareable via link
+            </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <a href="/assessment/new">
-              <Button size="lg">
-                Start Assessment →
-              </Button>
-            </a>
-          </div>
-          <p className="text-xs text-slate-600 mt-4">
-            No account required · Results shareable via link
-          </p>
         </div>
       </section>
 
       {/* What it measures */}
-      <section className="border-t border-slate-100 bg-slate-50 py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#00205B" }}>
             Framework
           </p>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">
             Six-Capability Assessment Model
           </h2>
-          <p className="text-slate-900 text-sm mb-8 max-w-xl">
+          <p className="text-slate-600 text-sm mb-8 max-w-xl">
             The diagnostic evaluates 22 core questions across the six
             capabilities required to operate a Modern CRM relationship engine —
             with optional industry-specific questions for additional context.
@@ -194,10 +195,11 @@ export default function HomePage() {
             {CAPABILITIES_ORDER.map((cap, i) => (
               <div
                 key={cap}
-                className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm"
+                className="border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
+                style={{ borderLeftWidth: "4px", borderLeftColor: "#00205B" }}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl text-blue-600 font-bold">
+                  <span className="text-xl font-bold" style={{ color: "#00205B" }}>
                     {CAPABILITY_ICONS[cap]}
                   </span>
                   <span className="text-xs font-bold text-slate-400">
@@ -207,7 +209,7 @@ export default function HomePage() {
                 <h3 className="text-base font-bold text-slate-900 mb-0.5">
                   {CAPABILITY_LABELS[cap]}
                 </h3>
-                <p className="text-xs text-blue-600 font-semibold mb-2">
+                <p className="text-xs font-semibold" style={{ color: "#00205B" }}>
                   {CAPABILITY_SUBTITLES[cap]}
                 </p>
               </div>
@@ -217,9 +219,9 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="py-16">
+      <section className="py-16 bg-slate-50 border-t border-slate-100">
         <div className="max-w-5xl mx-auto px-4">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#00205B" }}>
             Process
           </p>
           <h2 className="text-2xl font-bold text-slate-900 mb-8">
@@ -247,14 +249,14 @@ export default function HomePage() {
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-4">
-                <span className="text-2xl font-black text-slate-200 flex-shrink-0 w-10">
+                <span className="text-2xl font-black flex-shrink-0 w-10" style={{ color: "#00205B", opacity: 0.2 }}>
                   {item.step}
                 </span>
                 <div>
                   <h3 className="font-bold text-slate-900 mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-slate-900 leading-relaxed">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -265,9 +267,9 @@ export default function HomePage() {
       </section>
 
       {/* Maturity stages */}
-      <section className="border-t border-slate-100 bg-slate-50 py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#00205B" }}>
             Outcomes
           </p>
           <h2 className="text-2xl font-bold text-slate-900 mb-8">
@@ -283,7 +285,6 @@ export default function HomePage() {
                 green: { card: "border-green-300 bg-green-50", badge: "bg-green-100 text-green-700" },
               };
               const colors = colorMap[s.color];
-              // Use first sentence of description for the homepage card
               const shortDesc = s.description.split(".")[0] + ".";
               return (
                 <div key={stage} className={`border-2 rounded-xl p-5 ${colors.card}`}>
@@ -301,35 +302,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">
+      {/* CTA — branded navy */}
+      <section style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-5xl mx-auto px-4 py-20 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
             Ready to assess your CRM maturity?
           </h2>
-          <p className="text-slate-900 mb-8 max-w-xl mx-auto">
+          <p className="text-white/60 mb-8 max-w-xl mx-auto">
             15–20 minutes. No account required. Instant results with shareable
             link and downloadable PDF.
           </p>
           <a href="/assessment/new">
-            <Button size="lg">Start Assessment →</Button>
+            <button
+              className="px-6 py-3 bg-white font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
+              style={{ color: "#00205B" }}
+            >
+              Start Assessment →
+            </button>
           </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8" style={{ backgroundColor: "#00205B" }}>
+      <footer className="py-6 bg-white border-t border-slate-100">
         <div className="max-w-5xl mx-auto px-4 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
-            <p className="text-xs text-white/50">
-              © {new Date().getFullYear()} Merkle. Modern CRM Maturity Diagnostic.
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
+            <p className="text-xs text-slate-400">
+              © {new Date().getFullYear()} Merkle
             </p>
           </div>
           <a
             href="/admin"
-            className="text-xs text-white/30 hover:text-white/60 transition-colors"
+            className="text-xs text-slate-300 hover:text-slate-500 transition-colors"
           >
             Admin
           </a>
