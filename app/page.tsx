@@ -56,100 +56,98 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Nav */}
-      <nav className="sticky top-0 z-10" style={{ backgroundColor: "#00205B" }}>
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto brightness-0 invert" />
-          </div>
-          <button
-            onClick={() => setShowRetrieve(!showRetrieve)}
-            className="text-sm text-white/70 hover:text-white transition-colors"
-          >
-            Retrieve Assessment
-          </button>
-        </div>
-      </nav>
-
-      {/* Retrieve panel */}
-      {showRetrieve && (
-        <div className="border-b border-slate-100 bg-slate-50">
-          <div className="max-w-5xl mx-auto px-4 py-6">
-            <h3 className="text-sm font-semibold text-slate-700 mb-3">
-              Retrieve Your Assessments
-            </h3>
-            <form
-              onSubmit={handleRetrieve}
-              className="flex gap-3 max-w-md"
-            >
-              <Input
-                id="repEmail"
-                type="email"
-                placeholder="Enter your email address"
-                value={retrieveEmail}
-                onChange={(e) => setRetrieveEmail(e.target.value)}
-                required
-              />
-              <Button type="submit" size="sm" loading={retrieveLoading}>
-                Find
-              </Button>
-            </form>
-            {retrieveError && (
-              <p className="text-sm text-red-600 mt-2">{retrieveError}</p>
-            )}
-            {retrieveResults.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {retrieveResults.map((a) => (
-                  <a
-                    key={a.id}
-                    href={`/results/${a.share_id}`}
-                    className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-4 py-3 hover:border-blue-300 transition-colors"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-slate-800">
-                        {a.client_name}
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        {a.client_company} ·{" "}
-                        {new Date(a.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {a.overall_score && (
-                        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                          {a.overall_score.toFixed(1)}
-                        </span>
-                      )}
-                      <span
-                        className={`text-xs font-medium px-2 py-0.5 rounded ${
-                          a.status === "completed"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-amber-100 text-amber-700"
-                        }`}
-                      >
-                        {a.status === "completed" ? "Complete" : "In Progress"}
-                      </span>
-                      <span className="text-blue-600 text-sm">→</span>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Hero — branded navy */}
+      {/* Hero — branded navy, includes logo + retrieve */}
       <section style={{ backgroundColor: "#00205B" }}>
-        <div className="max-w-5xl mx-auto px-4 pt-20 pb-20">
-          <div className="max-w-3xl">
+        <div className="max-w-5xl mx-auto px-4 pt-10 pb-20">
+          {/* Top bar: logo + retrieve */}
+          <div className="flex items-center justify-between mb-14">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/merkle-logo.webp"
               alt="Merkle"
-              className="h-10 w-auto brightness-0 invert mb-8"
+              className="h-10 w-auto brightness-0 invert"
             />
+            <button
+              onClick={() => setShowRetrieve(!showRetrieve)}
+              className="text-sm text-white/60 hover:text-white transition-colors"
+            >
+              {showRetrieve ? "Close" : "Retrieve Assessment"}
+            </button>
+          </div>
+
+          {/* Retrieve panel — inline in hero */}
+          {showRetrieve && (
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-6 py-5 mb-10 max-w-lg">
+              <h3 className="text-sm font-semibold text-white mb-3">
+                Retrieve Your Assessments
+              </h3>
+              <form
+                onSubmit={handleRetrieve}
+                className="flex gap-3"
+              >
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={retrieveEmail}
+                  onChange={(e) => setRetrieveEmail(e.target.value)}
+                  required
+                  className="flex-1 text-sm px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-white/50 transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={retrieveLoading}
+                  className="px-4 py-2 bg-white text-sm font-semibold rounded-lg hover:bg-white/90 transition-colors disabled:opacity-50"
+                  style={{ color: "#00205B" }}
+                >
+                  {retrieveLoading ? "..." : "Find"}
+                </button>
+              </form>
+              {retrieveError && (
+                <p className="text-sm text-red-300 mt-2">{retrieveError}</p>
+              )}
+              {retrieveResults.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {retrieveResults.map((a) => (
+                    <a
+                      key={a.id}
+                      href={`/results/${a.share_id}`}
+                      className="flex items-center justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/20 transition-colors"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-white">
+                          {a.client_name}
+                        </p>
+                        <p className="text-xs text-white/50">
+                          {a.client_company} ·{" "}
+                          {new Date(a.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {a.overall_score && (
+                          <span className="text-xs font-bold text-white bg-white/20 px-2 py-0.5 rounded">
+                            {a.overall_score.toFixed(1)}
+                          </span>
+                        )}
+                        <span
+                          className={`text-xs font-medium px-2 py-0.5 rounded ${
+                            a.status === "completed"
+                              ? "bg-green-500/20 text-green-300"
+                              : "bg-amber-500/20 text-amber-300"
+                          }`}
+                        >
+                          {a.status === "completed" ? "Complete" : "In Progress"}
+                        </span>
+                        <span className="text-white/60 text-sm">→</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Hero content */}
+          <div className="max-w-3xl">
             <h1 className="text-5xl font-bold text-white leading-tight tracking-tight mb-4">
               Modern CRM
               <br />
