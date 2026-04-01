@@ -110,6 +110,7 @@ export default function SurveyPage() {
           ) : (
             <SurveyFlow
               assessmentId={data.stakeholder.assessmentId}
+              stakeholderId={data.stakeholder.id}
               respondentName={data.stakeholder.name}
               clientName={data.project.clientName}
               industry={data.project.industry}

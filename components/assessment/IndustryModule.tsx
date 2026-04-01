@@ -169,7 +169,7 @@ export function IndustryModule({
 
               {isSkipped ? (
                 <div className="ml-9 flex items-center gap-2">
-                  <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-medium">
+                  <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg font-medium">
                     Not sure / Requires validation
                   </span>
                   <button
@@ -182,8 +182,8 @@ export function IndustryModule({
                 </div>
               ) : (
                 <div className="ml-9 space-y-2">
-                  {/* Score pips */}
-                  <div className="flex items-center gap-2">
+                  {/* Score pips + Not sure — single row (matches CapabilitySection) */}
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     {[1, 2, 3, 4, 5].map((v) => (
                       <button
                         key={v}
@@ -201,12 +201,21 @@ export function IndustryModule({
                       </button>
                     ))}
                     {selected !== null && (
-                      <span className="text-sm text-slate-600 ml-1">
-                        — {SCORE_LABELS[selected]}
+                      <span className="text-xs text-slate-500">
+                        {SCORE_LABELS[selected]}
                       </span>
                     )}
+                    <span className="text-slate-200">|</span>
+                    <button
+                      type="button"
+                      onClick={() => handleSkipToggle(question.id)}
+                      className="text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1.5 rounded-lg hover:bg-amber-100 transition-colors"
+                    >
+                      Not sure
+                    </button>
                   </div>
 
+                  {/* Notes (only after scoring) */}
                   {selected !== null && (
                     noteVisible ? (
                       <textarea
@@ -232,14 +241,6 @@ export function IndustryModule({
                       </button>
                     )
                   )}
-
-                  <button
-                    type="button"
-                    onClick={() => handleSkipToggle(question.id)}
-                    className="text-xs text-slate-400 hover:text-amber-600 transition-colors block"
-                  >
-                    Not sure / Requires validation
-                  </button>
                 </div>
               )}
             </div>

@@ -17,6 +17,7 @@ const TOTAL_CORE_STEPS = 6;
 
 interface SurveyFlowProps {
   assessmentId: string;
+  stakeholderId: string;
   respondentName: string;
   clientName: string;
   industry?: Industry | null;
@@ -25,6 +26,7 @@ interface SurveyFlowProps {
 
 export function SurveyFlow({
   assessmentId,
+  stakeholderId,
   respondentName,
   clientName,
   industry = null,
@@ -113,15 +115,21 @@ export function SurveyFlow({
   const handleComplete = async (selectedIndustry: Industry | null) => {
     setCompleting(true);
     try {
+      // Save responses
       await fetch(`/api/assessments/${assessmentId}/responses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ responses }),
       });
+      // Mark assessment completed
       await fetch(`/api/assessments/${assessmentId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "completed", industry: selectedIndustry }),
+      });
+      // Update stakeholder status so dashboard reflects completion
+      await fetch(`/api/stakeholders/${stakeholderId}/complete`, {
+        method: "POST",
       });
       setDone(true);
     } finally {
@@ -189,7 +197,16 @@ export function SurveyFlow({
           </ul>
         </div>
 
-        <Button size="lg" onClick={() => { setStep(1); setTimeout(() => window.scrollTo(0, 0), 0); }}>
+        <Button size="lg" onClick={() => {
+          // Mark stakeholder as in_progress
+          fetch(`/api/stakeholders/${stakeholderId}/complete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "in_progress" }),
+          }).catch(() => {});
+          setStep(1);
+          setTimeout(() => window.scrollTo(0, 0), 0);
+        }}>
           Start Survey →
         </Button>
       </div>
