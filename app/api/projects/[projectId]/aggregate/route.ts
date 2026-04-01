@@ -7,6 +7,7 @@ import {
   computeMaturityStage,
 } from "@/lib/scoring";
 import { getTriggeredOpportunities } from "@/lib/data/opportunities";
+import { buildWorkshopAgenda } from "@/lib/workshop/agendaBuilder";
 import type { Capability, ResponseItem } from "@/lib/types";
 
 export async function POST(
@@ -83,7 +84,13 @@ export async function POST(
     const maturityStage = computeMaturityStage(overallScore);
     const opportunities = getTriggeredOpportunities(capabilityScores);
 
-    // Update project with aggregated results
+    // Build workshop agenda from triggered opportunities
+    const agenda = buildWorkshopAgenda(
+      opportunities.map((o) => o.id),
+      project.industry || undefined
+    );
+
+    // Update project with aggregated results + agenda
     const { error: updateErr } = await supabase
       .from("projects")
       .update({
@@ -92,6 +99,7 @@ export async function POST(
         aggregated_overall: overallScore,
         aggregated_maturity: maturityStage,
         triggered_opportunity_ids: opportunities.map((o) => o.id),
+        workshop_agenda: agenda,
         updated_at: new Date().toISOString(),
       })
       .eq("id", params.projectId);

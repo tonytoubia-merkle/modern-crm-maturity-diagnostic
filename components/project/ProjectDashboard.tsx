@@ -3,6 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/Button";
 import { StakeholderManager } from "./StakeholderManager";
+import { CAPABILITY_LABELS } from "@/lib/data/questions";
+import { OPPORTUNITIES } from "@/lib/data/opportunities";
+import { VIGNETTES } from "@/lib/data/vignettes";
+import type { WorkshopAgenda } from "@/lib/types";
 
 interface StakeholderData {
   id: string;
@@ -33,6 +37,9 @@ interface ProjectData {
   status: string;
   aggregated_overall: number | null;
   aggregated_maturity: number | null;
+  aggregated_scores: Record<string, number> | null;
+  triggered_opportunity_ids: string[] | null;
+  workshop_agenda: WorkshopAgenda | null;
 }
 
 interface ProjectDashboardProps {
@@ -287,21 +294,177 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
       )}
 
       {/* Results section */}
-      <div className="border-t border-slate-200 pt-6">
+      <div className="border-t border-slate-200 pt-6 space-y-6">
         {project.aggregated_overall ? (
           <>
-            <h3 className="font-bold text-slate-900 mb-2">Aggregated Results</h3>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold" style={{ color: "#00205B" }}>
-                {project.aggregated_overall.toFixed(1)}
-              </span>
-              <span className="text-sm text-slate-500">
-                Overall Score · Stage {project.aggregated_maturity}
-              </span>
+            {/* Score summary */}
+            <div>
+              <h3 className="font-bold text-slate-900 mb-3">Aggregated Results</h3>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-3xl font-bold" style={{ color: "#00205B" }}>
+                  {project.aggregated_overall.toFixed(1)}
+                </span>
+                <span className="text-sm text-slate-500">
+                  Overall Score · Stage {project.aggregated_maturity}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mb-4">
+                Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
+              </p>
             </div>
-            <p className="text-sm text-slate-600 mb-4">
-              Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
-            </p>
+
+            {/* Capability scores */}
+            {project.aggregated_scores && (
+              <div>
+                <h4 className="text-sm font-semibold text-slate-700 mb-3">Capability Scores</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {Object.entries(project.aggregated_scores).map(([cap, score]) => (
+                    <div key={cap} className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center">
+                      <p className="text-lg font-bold" style={{ color: "#00205B" }}>
+                        {typeof score === "number" ? score.toFixed(1) : score}
+                      </p>
+                      <p className="text-[11px] text-slate-500 font-medium">
+                        {CAPABILITY_LABELS[cap] || cap}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Triggered opportunities */}
+            {project.triggered_opportunity_ids && project.triggered_opportunity_ids.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-slate-700 mb-3">
+                  Triggered Opportunities ({project.triggered_opportunity_ids.length})
+                </h4>
+                <div className="space-y-2">
+                  {project.triggered_opportunity_ids.map((oppId) => {
+                    const opp = OPPORTUNITIES.find((o) => o.id === oppId);
+                    if (!opp) return null;
+                    return (
+                      <div
+                        key={oppId}
+                        className="border border-slate-200 rounded-lg p-3 bg-white"
+                        style={{ borderLeftWidth: "3px", borderLeftColor: "#00205B" }}
+                      >
+                        <p className="text-sm font-semibold text-slate-900">{opp.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{opp.tagline}</p>
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                            {opp.sfType}
+                          </span>
+                          <span className="text-[10px] text-slate-400">
+                            {opp.engagementSize}
+                          </span>
+                          {opp.capabilities.map((c) => (
+                            <span key={c} className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">
+                              {CAPABILITY_LABELS[c] || c}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Workshop agenda */}
+            {project.workshop_agenda && (
+              <div>
+                <h4 className="text-sm font-semibold text-slate-700 mb-1">
+                  Workshop Agenda
+                </h4>
+                <p className="text-xs text-slate-500 mb-3">
+                  {project.workshop_agenda.format.replace("_", " ")} format ·{" "}
+                  {Math.round(project.workshop_agenda.totalMinutes / 60)}h{" "}
+                  {project.workshop_agenda.totalMinutes % 60 > 0
+                    ? `${project.workshop_agenda.totalMinutes % 60}m`
+                    : ""}{" "}
+                  · {project.workshop_agenda.days.length} day{project.workshop_agenda.days.length !== 1 ? "s" : ""}
+                </p>
+                {project.workshop_agenda.days.map((day) => (
+                  <div key={day.dayNumber} className="mb-4">
+                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
+                      Day {day.dayNumber} — {day.title}
+                    </p>
+                    <div className="space-y-1.5">
+                      {day.blocks.map((block, bi) => {
+                        const vignette = block.vignetteId
+                          ? VIGNETTES.find((v) => v.id === block.vignetteId)
+                          : null;
+                        const isBreak = block.type === "break";
+                        return (
+                          <div
+                            key={bi}
+                            className={`rounded-lg p-3 ${
+                              isBreak
+                                ? "bg-slate-50 border border-slate-100"
+                                : block.type === "vignette"
+                                ? "bg-white border border-slate-200"
+                                : "bg-blue-50 border border-blue-100"
+                            }`}
+                            style={
+                              block.type === "vignette"
+                                ? { borderLeftWidth: "3px", borderLeftColor: "#00205B" }
+                                : undefined
+                            }
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex-1 min-w-0">
+                                <p
+                                  className={`text-sm font-semibold ${
+                                    isBreak ? "text-slate-400" : "text-slate-900"
+                                  }`}
+                                >
+                                  {block.title}
+                                </p>
+                                {block.description && !isBreak && (
+                                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                                    {block.description}
+                                  </p>
+                                )}
+                                {/* Vignette details */}
+                                {vignette && (
+                                  <div className="mt-2 space-y-1.5">
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {vignette.expectedOutputs.map((output, oi) => (
+                                        <span
+                                          key={oi}
+                                          className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-100"
+                                        >
+                                          {output}
+                                        </span>
+                                      ))}
+                                    </div>
+                                    {vignette.requiredInputs.length > 0 && (
+                                      <p className="text-[10px] text-slate-400">
+                                        Pre-work: {vignette.requiredInputs.join(" · ")}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                              <span
+                                className={`text-xs font-medium px-2 py-0.5 rounded flex-shrink-0 ${
+                                  isBreak
+                                    ? "bg-slate-100 text-slate-400"
+                                    : "bg-slate-100 text-slate-600"
+                                }`}
+                              >
+                                {block.durationMinutes}m
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <Button
               onClick={handleAggregate}
               loading={aggregating}
@@ -315,7 +478,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
             <h3 className="font-bold text-slate-900 mb-2">Generate Results</h3>
             <p className="text-sm text-slate-600 mb-4">
               Once you&apos;ve received enough surveys, aggregate the responses to generate
-              combined results.
+              combined results and a workshop agenda.
               {completedCount === 0 && " No surveys completed yet."}
             </p>
             <Button
