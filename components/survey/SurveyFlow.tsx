@@ -166,8 +166,8 @@ export function SurveyFlow({
           </h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
             You&apos;ve been invited to complete a Modern CRM Maturity Assessment
-            for <strong>{clientName}</strong>. This survey evaluates six capability
-            areas and takes about 15–20 minutes.
+            for <strong>{clientName}</strong>. This survey evaluates {industry ? "nine" : "eight"} capability
+            areas and takes about {industry ? "20–25" : "15–20"} minutes.
           </p>
         </div>
 

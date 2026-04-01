@@ -267,7 +267,7 @@ export default function HomePage() {
               Maturity Diagnostic
             </h1>
             <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-2xl">
-              Assess a client&apos;s CRM maturity across six capability areas,
+              Assess a client&apos;s CRM maturity across eight capability areas,
               generate prioritized opportunities, and build pipeline — all in
               one sitting. Run it solo or as a workshop with a client and SME.
             </p>

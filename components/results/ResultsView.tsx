@@ -174,8 +174,8 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
                   <>
                     This report summarizes the findings of a Modern CRM Maturity Diagnostic
                     conducted for <strong>{assessment.clientName}</strong>. The assessment
-                    evaluates six core capabilities — Identity, Signals, Decisioning, Engagement,
-                    Media Activation, and Learning &amp; Optimization — that together determine how
+                    evaluates eight core capabilities — Identity, Signals, Decisioning, Engagement,
+                    Media Activation, Learning &amp; Optimization, Technology, and Organization — that together determine how
                     effectively an organization turns customer data into coordinated engagement and
                     growth. Each capability is scored on a 1–5 scale and mapped to one of four
                     maturity stages. The opportunities below highlight the highest-impact areas for
@@ -184,8 +184,8 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
                 ) : (
                   <>
                     This diagnostic assessed <strong>{assessment.clientName}</strong> across
-                    the six capabilities of Modern CRM — Identity, Signals, Decisioning,
-                    Engagement, Media Activation, and Learning &amp; Optimization. Scores reflect
+                    the eight capabilities of Modern CRM — Identity, Signals, Decisioning,
+                    Engagement, Media Activation, Learning &amp; Optimization, Technology, and Organization. Scores reflect
                     the respondent&apos;s assessment on a 1–5 maturity scale (1 = Not in Place,
                     3 = Operational, 5 = Optimized). Strategic opportunities are triggered by
                     capability gaps and sorted by priority. Use the Salesforce output section
