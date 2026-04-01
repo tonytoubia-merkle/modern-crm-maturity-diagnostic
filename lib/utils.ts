@@ -38,6 +38,23 @@ export function formatDateTime(dateString: string): { date: string; time: string
   };
 }
 
+export function generateInviteToken(): string {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+  let result = "";
+  const array = new Uint8Array(16);
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    crypto.getRandomValues(array);
+    for (let i = 0; i < 16; i++) {
+      result += chars[array[i] % chars.length];
+    }
+  } else {
+    for (let i = 0; i < 16; i++) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+  }
+  return result;
+}
+
 export function slugify(str: string): string {
   return str
     .toLowerCase()

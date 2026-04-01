@@ -90,3 +90,79 @@ export interface DiagnosticResults {
   maturityDescription: string;
   opportunities: Opportunity[];
 }
+
+// ── Workshop / Project types ────────────────────────────────
+
+export type ProjectMode = "lite" | "workshop";
+export type ProjectStatus = "collecting" | "aggregating" | "completed";
+export type StakeholderStatus = "invited" | "in_progress" | "completed";
+
+export interface Project {
+  id: string;
+  shareId: string;
+  clientName: string;
+  clientCompany: string;
+  industry?: Industry;
+  createdByName: string;
+  createdByEmail?: string;
+  mode: ProjectMode;
+  hasPassword: boolean;
+  maxStakeholders: number;
+  status: ProjectStatus;
+  aggregatedScores?: Record<Capability, number>;
+  aggregatedOverall?: number;
+  aggregatedMaturity?: MaturityStage;
+  triggeredOpportunityIds?: string[];
+  workshopAgenda?: WorkshopAgenda;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Stakeholder {
+  id: string;
+  projectId: string;
+  name: string;
+  email?: string;
+  role?: string;
+  inviteToken: string;
+  assessmentId?: string;
+  status: StakeholderStatus;
+  invitedAt: string;
+  completedAt?: string;
+}
+
+export interface Vignette {
+  id: string;
+  title: string;
+  description: string;
+  durationMinutes: number;
+  category: string;
+  requiredInputs: string[];
+  facilitationGuide: string;
+  expectedOutputs: string[];
+  relatedOpportunityIds: string[];
+  triggerCapabilities: Capability[];
+  industries?: Industry[];
+  sortOrder: number;
+}
+
+export interface AgendaBlock {
+  type: "vignette" | "break" | "intro" | "closing" | "discussion";
+  vignetteId?: string;
+  title: string;
+  description: string;
+  durationMinutes: number;
+  relatedOpportunities: string[];
+  relatedCapabilities: Capability[];
+}
+
+export interface WorkshopAgenda {
+  format: "half_day" | "full_day" | "two_day";
+  totalMinutes: number;
+  days: {
+    dayNumber: number;
+    title: string;
+    blocks: AgendaBlock[];
+  }[];
+  generatedAt: string;
+}

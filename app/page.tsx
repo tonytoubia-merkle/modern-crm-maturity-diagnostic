@@ -200,15 +200,20 @@ export default function HomePage() {
               one sitting. Run it solo or as a workshop with a client and SME.
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href="/assessment/new">
+              <a href="/project/new">
                 <button
                   className="px-6 py-3 bg-white font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
                   style={{ color: "#00205B" }}
                 >
-                  Start New Assessment →
+                  Start Workshop Project →
                 </button>
               </a>
-              <a href="#playbook" className="text-sm text-white/60 hover:text-white transition-colors">
+              <a href="/assessment/new">
+                <button className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold text-sm rounded-lg hover:bg-white/20 transition-colors">
+                  Quick Assessment →
+                </button>
+              </a>
+              <a href="#playbook" className="text-sm text-white/60 hover:text-white transition-colors ml-1">
                 See the playbook ↓
               </a>
             </div>
@@ -356,23 +361,19 @@ export default function HomePage() {
             Pipeline-ready Salesforce output.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="/assessment/new">
+            <a href="/project/new">
               <button
                 className="px-6 py-3 bg-white font-bold text-sm rounded-lg hover:bg-white/90 transition-colors"
                 style={{ color: "#00205B" }}
               >
-                Start New Assessment →
+                Start Workshop Project →
               </button>
             </a>
-            <button
-              onClick={() => {
-                setShowRetrieve(true);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold text-sm rounded-lg hover:bg-white/20 transition-colors"
-            >
-              Retrieve Past Assessment
-            </button>
+            <a href="/assessment/new">
+              <button className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold text-sm rounded-lg hover:bg-white/20 transition-colors">
+                Quick Assessment →
+              </button>
+            </a>
           </div>
         </div>
       </section>
