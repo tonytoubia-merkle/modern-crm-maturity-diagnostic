@@ -285,8 +285,11 @@ export default function HomePage() {
                   Quick Assessment →
                 </button>
               </a>
-              <a href="#playbook" className="text-sm text-white/60 hover:text-white transition-colors ml-1">
-                See the playbook ↓
+              <a href="/library" className="text-sm text-white/60 hover:text-white transition-colors ml-1">
+                Workshop Library
+              </a>
+              <a href="#playbook" className="text-sm text-white/60 hover:text-white transition-colors">
+                Playbook ↓
               </a>
             </div>
           </div>
