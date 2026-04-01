@@ -35,9 +35,16 @@ export async function GET(
         .eq("project_id", projByShare.id)
         .order("invited_at", { ascending: true });
 
+      // Also get assessments linked directly to this project (covers pre-stakeholder records)
+      const { data: linkedAssessments } = await supabase
+        .from("assessments")
+        .select("id, share_id, respondent_name, status, overall_score, maturity_stage")
+        .eq("project_id", projByShare.id);
+
       return NextResponse.json({
         project: { ...projByShare, survey_password: undefined },
         stakeholders: stakeholders || [],
+        linkedAssessments: linkedAssessments || [],
       });
     }
 
@@ -47,9 +54,15 @@ export async function GET(
       .eq("project_id", project.id)
       .order("invited_at", { ascending: true });
 
+    const { data: linkedAssessments } = await supabase
+      .from("assessments")
+      .select("id, share_id, respondent_name, status, overall_score, maturity_stage")
+      .eq("project_id", project.id);
+
     return NextResponse.json({
       project: { ...project, survey_password: undefined },
       stakeholders: stakeholders || [],
+      linkedAssessments: linkedAssessments || [],
     });
   } catch (err) {
     console.error("GET /api/projects/[id] error:", err);

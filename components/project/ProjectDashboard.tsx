@@ -40,8 +40,18 @@ interface ProjectDashboardProps {
 }
 
 export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
+  interface LinkedAssessment {
+    id: string;
+    share_id: string;
+    respondent_name: string;
+    status: string;
+    overall_score: number | null;
+    maturity_stage: number | null;
+  }
+
   const [project, setProject] = useState<ProjectData | null>(null);
   const [stakeholders, setStakeholders] = useState<StakeholderData[]>([]);
+  const [linkedAssessments, setLinkedAssessments] = useState<LinkedAssessment[]>([]);
   const [loading, setLoading] = useState(true);
   const [aggregating, setAggregating] = useState(false);
   const [showAddMore, setShowAddMore] = useState(false);
@@ -55,6 +65,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
     const data = await res.json();
     setProject(data.project);
     setStakeholders(data.stakeholders);
+    setLinkedAssessments(data.linkedAssessments || []);
     setLoading(false);
   }, [projectShareId]);
 
@@ -65,11 +76,14 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
     return () => clearInterval(interval);
   }, [fetchData]);
 
-  // Use assessment status as source of truth (stakeholder status may be stale for older records)
-  const completedCount = stakeholders.filter(
+  // Use linked assessments as source of truth for counts
+  const totalAssessments = linkedAssessments.length;
+  const completedAssessments = linkedAssessments.filter((a) => a.status === "completed").length;
+  // Fall back to stakeholder count if no linked assessments
+  const completedCount = completedAssessments || stakeholders.filter(
     (s) => s.status === "completed" || s.assessments?.status === "completed"
   ).length;
-  const totalCount = stakeholders.length;
+  const totalCount = totalAssessments || stakeholders.length;
 
   const handleAggregate = async () => {
     if (!project) return;
@@ -223,6 +237,54 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
           })}
         </div>
       </div>
+
+      {/* Linked assessments (when no stakeholders but assessments exist) */}
+      {stakeholders.length === 0 && linkedAssessments.length > 0 && (
+        <div>
+          <p className="text-sm font-semibold text-slate-700 mb-3">Linked Assessments</p>
+          <div className="space-y-2">
+            {linkedAssessments.map((a) => (
+              <div
+                key={a.id}
+                className="flex items-center justify-between border border-slate-200 rounded-lg px-4 py-3 bg-white"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                      a.status === "completed" ? "bg-green-500" : "bg-amber-500"
+                    }`}
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{a.respondent_name}</p>
+                    <p className="text-xs text-slate-500">
+                      {a.overall_score ? `Score: ${a.overall_score.toFixed(1)}` : "In progress"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-xs font-medium px-2 py-0.5 rounded ${
+                      a.status === "completed" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+                    }`}
+                  >
+                    {a.status === "completed" ? "Done" : "In Progress"}
+                  </span>
+                  {a.status === "completed" && (
+                    <a
+                      href={`/results/${a.share_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      View Results
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Results section */}
       <div className="border-t border-slate-200 pt-6">
