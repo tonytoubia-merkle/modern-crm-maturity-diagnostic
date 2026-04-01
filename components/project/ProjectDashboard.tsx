@@ -65,7 +65,10 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
     return () => clearInterval(interval);
   }, [fetchData]);
 
-  const completedCount = stakeholders.filter((s) => s.status === "completed").length;
+  // Use assessment status as source of truth (stakeholder status may be stale for older records)
+  const completedCount = stakeholders.filter(
+    (s) => s.status === "completed" || s.assessments?.status === "completed"
+  ).length;
   const totalCount = stakeholders.length;
 
   const handleAggregate = async () => {
@@ -160,7 +163,10 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
         )}
 
         <div className="space-y-2">
-          {stakeholders.map((s) => (
+          {stakeholders.map((s) => {
+            const isDone = s.status === "completed" || s.assessments?.status === "completed";
+            const isActive = !isDone && (s.status === "in_progress" || s.assessments?.status === "in_progress");
+            return (
             <div
               key={s.id}
               className="flex items-center justify-between border border-slate-200 rounded-lg px-4 py-3 bg-white"
@@ -168,9 +174,9 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
               <div className="flex items-center gap-3">
                 <span
                   className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                    s.status === "completed"
+                    isDone
                       ? "bg-green-500"
-                      : s.status === "in_progress"
+                      : isActive
                       ? "bg-amber-500"
                       : "bg-slate-300"
                   }`}
@@ -185,16 +191,16 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2 py-0.5 rounded ${
-                    s.status === "completed"
+                    isDone
                       ? "bg-green-100 text-green-700"
-                      : s.status === "in_progress"
+                      : isActive
                       ? "bg-amber-100 text-amber-700"
                       : "bg-slate-100 text-slate-500"
                   }`}
                 >
-                  {s.status === "completed" ? "Done" : s.status === "in_progress" ? "In Progress" : "Invited"}
+                  {isDone ? "Done" : isActive ? "In Progress" : "Invited"}
                 </span>
-                {s.assessments?.share_id && s.status === "completed" && (
+                {s.assessments?.share_id && isDone && (
                   <a
                     href={`/results/${s.assessments.share_id}`}
                     target="_blank"
@@ -213,55 +219,53 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* Generate results */}
-      {project.status === "collecting" && (
-        <div className="border-t border-slate-200 pt-6">
-          <h3 className="font-bold text-slate-900 mb-2">Generate Results</h3>
-          <p className="text-sm text-slate-600 mb-4">
-            Once you&apos;ve received enough surveys, aggregate the responses to generate
-            combined results and a workshop agenda.
-            {completedCount === 0 && " No surveys completed yet."}
-          </p>
-          <Button
-            onClick={handleAggregate}
-            loading={aggregating}
-            disabled={completedCount === 0}
-          >
-            Aggregate {completedCount} Response{completedCount !== 1 ? "s" : ""} & Generate Results →
-          </Button>
-        </div>
-      )}
-
-      {/* View results (if aggregated) */}
-      {project.status === "completed" && project.aggregated_overall && (
-        <div className="border-t border-slate-200 pt-6">
-          <h3 className="font-bold text-slate-900 mb-2">Results Ready</h3>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl font-bold" style={{ color: "#00205B" }}>
-              {project.aggregated_overall.toFixed(1)}
-            </span>
-            <span className="text-sm text-slate-500">
-              Overall Score · Stage {project.aggregated_maturity}
-            </span>
-          </div>
-          <p className="text-sm text-slate-600 mb-4">
-            Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
-          </p>
-          <div className="flex gap-3">
+      {/* Results section */}
+      <div className="border-t border-slate-200 pt-6">
+        {project.aggregated_overall ? (
+          <>
+            <h3 className="font-bold text-slate-900 mb-2">Aggregated Results</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl font-bold" style={{ color: "#00205B" }}>
+                {project.aggregated_overall.toFixed(1)}
+              </span>
+              <span className="text-sm text-slate-500">
+                Overall Score · Stage {project.aggregated_maturity}
+              </span>
+            </div>
+            <p className="text-sm text-slate-600 mb-4">
+              Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
+            </p>
             <Button
-              variant="secondary"
               onClick={handleAggregate}
               loading={aggregating}
+              disabled={completedCount === 0}
             >
               Regenerate Results
             </Button>
-          </div>
-        </div>
-      )}
+          </>
+        ) : (
+          <>
+            <h3 className="font-bold text-slate-900 mb-2">Generate Results</h3>
+            <p className="text-sm text-slate-600 mb-4">
+              Once you&apos;ve received enough surveys, aggregate the responses to generate
+              combined results.
+              {completedCount === 0 && " No surveys completed yet."}
+            </p>
+            <Button
+              onClick={handleAggregate}
+              loading={aggregating}
+              disabled={completedCount === 0}
+            >
+              Aggregate {completedCount} Response{completedCount !== 1 ? "s" : ""} & Generate Results →
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
