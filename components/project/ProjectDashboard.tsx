@@ -14,6 +14,12 @@ interface StakeholderData {
   status: string;
   invited_at: string;
   completed_at: string | null;
+  assessments?: {
+    share_id: string;
+    status: string;
+    overall_score: number | null;
+    maturity_stage: number | null;
+  };
 }
 
 interface ProjectData {
@@ -188,6 +194,16 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                 >
                   {s.status === "completed" ? "Done" : s.status === "in_progress" ? "In Progress" : "Invited"}
                 </span>
+                {s.assessments?.share_id && s.status === "completed" && (
+                  <a
+                    href={`/results/${s.assessments.share_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    View Results
+                  </a>
+                )}
                 <button
                   type="button"
                   onClick={() => copyLink(s.invite_token)}
@@ -235,10 +251,15 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
           <p className="text-sm text-slate-600 mb-4">
             Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
           </p>
-          <p className="text-xs text-slate-500 mb-4">
-            Full results view and workshop agenda generation coming soon. Individual stakeholder
-            results are available via their survey links.
-          </p>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              onClick={handleAggregate}
+              loading={aggregating}
+            >
+              Regenerate Results
+            </Button>
+          </div>
         </div>
       )}
     </div>

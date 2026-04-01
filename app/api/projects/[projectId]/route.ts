@@ -31,7 +31,7 @@ export async function GET(
 
       const { data: stakeholders } = await supabase
         .from("stakeholders")
-        .select("*")
+        .select("*, assessments(share_id, status, overall_score, maturity_stage)")
         .eq("project_id", projByShare.id)
         .order("invited_at", { ascending: true });
 
@@ -43,7 +43,7 @@ export async function GET(
 
     const { data: stakeholders } = await supabase
       .from("stakeholders")
-      .select("*")
+      .select("*, assessments(share_id, status, overall_score, maturity_stage)")
       .eq("project_id", project.id)
       .order("invited_at", { ascending: true });
 
