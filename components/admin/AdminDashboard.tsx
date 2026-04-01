@@ -33,26 +33,44 @@ const STAGE_BADGES: Record<
   4: { bg: "bg-green-100", text: "text-green-700" },
 };
 
+interface ProjectRow {
+  id: string;
+  share_id: string;
+  client_name: string;
+  client_company: string;
+  created_by_name: string;
+  created_by_email: string | null;
+  mode: string;
+  status: string;
+  industry: string | null;
+  aggregated_overall: number | null;
+  aggregated_maturity: number | null;
+  created_at: string;
+}
+
 export function AdminDashboard() {
   const [password, setPassword] = useState("");
   const [authed, setAuthed] = useState(false);
   const [error, setError] = useState("");
   const [assessments, setAssessments] = useState<AssessmentRow[]>([]);
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<AssessmentRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [tab, setTab] = useState<"projects" | "assessments">("projects");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/assessments", {
-        headers: { "x-admin-password": password },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setAssessments(data);
+      const [assRes, projRes] = await Promise.all([
+        fetch("/api/assessments", { headers: { "x-admin-password": password } }),
+        fetch("/api/projects", { headers: { "x-admin-password": password } }),
+      ]);
+      if (assRes.ok) {
+        setAssessments(await assRes.json());
+        setProjects(projRes.ok ? await projRes.json() : []);
         setAuthed(true);
         setError("");
       } else {
@@ -217,7 +235,139 @@ export function AdminDashboard() {
           })}
         </div>
 
-        {/* Table */}
+        {/* Tabs */}
+        <div className="flex gap-1 mb-4">
+          <button
+            onClick={() => setTab("projects")}
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              tab === "projects"
+                ? "bg-white border border-slate-200 text-slate-900 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Projects ({projects.length})
+          </button>
+          <button
+            onClick={() => setTab("assessments")}
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              tab === "assessments"
+                ? "bg-white border border-slate-200 text-slate-900 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Assessments ({assessments.length})
+          </button>
+        </div>
+
+        {/* Projects table */}
+        {tab === "projects" && (
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm mb-6">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-100 bg-slate-50">
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">Client</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">Created By</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3 hidden md:table-cell">Mode</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">Score</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">Status</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3 hidden lg:table-cell">Date</th>
+                    <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projects
+                    .filter((p) => {
+                      const q = search.toLowerCase();
+                      return (
+                        p.client_name.toLowerCase().includes(q) ||
+                        p.created_by_name.toLowerCase().includes(q) ||
+                        (p.created_by_email ?? "").toLowerCase().includes(q)
+                      );
+                    })
+                    .map((p, i, arr) => {
+                      const stage = p.aggregated_maturity as MaturityStage | null;
+                      const badge = stage ? STAGE_BADGES[stage] : null;
+                      return (
+                        <tr
+                          key={p.id}
+                          className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${
+                            i === arr.length - 1 ? "border-b-0" : ""
+                          }`}
+                        >
+                          <td className="px-4 py-3">
+                            <p className="font-semibold text-slate-900">{p.client_name}</p>
+                            <p className="text-xs text-slate-500">
+                              {p.industry ? (INDUSTRY_LABELS[p.industry] ?? p.industry) : "No industry"}
+                            </p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <p className="text-slate-700">{p.created_by_name}</p>
+                            {p.created_by_email && (
+                              <p className="text-xs text-slate-400">{p.created_by_email}</p>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 hidden md:table-cell">
+                            <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                              p.mode === "workshop" ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-600"
+                            }`}>
+                              {p.mode === "workshop" ? "Workshop" : "Quick"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            {p.aggregated_overall && stage && badge ? (
+                              <div>
+                                <span className={`inline-block text-xs font-bold px-2 py-0.5 rounded ${badge.bg} ${badge.text}`}>
+                                  {p.aggregated_overall.toFixed(1)}
+                                </span>
+                                <p className="text-xs text-slate-400 mt-0.5">Stage {stage}</p>
+                              </div>
+                            ) : (
+                              <span className="text-slate-400 text-xs">—</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                              p.status === "completed"
+                                ? "bg-green-100 text-green-700"
+                                : p.status === "collecting"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-amber-100 text-amber-700"
+                            }`}>
+                              {p.status === "completed" ? "Complete" : p.status === "collecting" ? "Collecting" : "Aggregating"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 hidden lg:table-cell">
+                            <p className="text-xs text-slate-700">{formatDateTime(p.created_at).date}</p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <a
+                              href={`/project/${p.share_id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                            >
+                              Open →
+                            </a>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  {projects.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="px-4 py-8 text-center text-slate-400 text-sm">
+                        No projects found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Assessments table */}
+        {tab === "assessments" && (
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -364,6 +514,7 @@ export function AdminDashboard() {
             </table>
           </div>
         </div>
+        )}
       </div>
     </div>
 

@@ -61,7 +61,19 @@ export default function HomePage() {
   const [retrieveEmail, setRetrieveEmail] = useState("");
   const [showRetrieve, setShowRetrieve] = useState(false);
   const [retrieveLoading, setRetrieveLoading] = useState(false);
-  const [retrieveResults, setRetrieveResults] = useState<
+  const [retrieveProjects, setRetrieveProjects] = useState<
+    Array<{
+      id: string;
+      share_id: string;
+      client_name: string;
+      client_company: string;
+      mode: string;
+      status: string;
+      aggregated_overall: number | null;
+      created_at: string;
+    }>
+  >([]);
+  const [retrieveAssessments, setRetrieveAssessments] = useState<
     Array<{
       id: string;
       share_id: string;
@@ -70,6 +82,7 @@ export default function HomePage() {
       status: string;
       overall_score: number | null;
       created_at: string;
+      project_id: string | null;
     }>
   >([]);
   const [retrieveError, setRetrieveError] = useState("");
@@ -79,17 +92,28 @@ export default function HomePage() {
     setRetrieveLoading(true);
     setRetrieveError("");
     try {
-      const res = await fetch(
-        `/api/assessments?repEmail=${encodeURIComponent(retrieveEmail)}`
+      // Fetch both projects and standalone assessments in parallel
+      const [projRes, assRes] = await Promise.all([
+        fetch(`/api/projects?email=${encodeURIComponent(retrieveEmail)}`),
+        fetch(`/api/assessments?repEmail=${encodeURIComponent(retrieveEmail)}`),
+      ]);
+
+      const projects = projRes.ok ? await projRes.json() : [];
+      const assessments = assRes.ok ? await assRes.json() : [];
+
+      // Filter assessments to only show standalone ones (not part of a project)
+      const standalone = assessments.filter(
+        (a: { project_id: string | null }) => !a.project_id
       );
-      if (!res.ok) throw new Error("Failed to retrieve");
-      const data = await res.json();
-      setRetrieveResults(data);
-      if (data.length === 0) {
-        setRetrieveError("No assessments found for this email address.");
+
+      setRetrieveProjects(projects);
+      setRetrieveAssessments(standalone);
+
+      if (projects.length === 0 && standalone.length === 0) {
+        setRetrieveError("No projects or assessments found for this email.");
       }
     } catch {
-      setRetrieveError("Unable to retrieve assessments. Please try again.");
+      setRetrieveError("Unable to retrieve. Please try again.");
     } finally {
       setRetrieveLoading(false);
     }
@@ -143,9 +167,55 @@ export default function HomePage() {
               {retrieveError && (
                 <p className="text-sm text-red-300 mt-2">{retrieveError}</p>
               )}
-              {retrieveResults.length > 0 && (
+              {/* Projects */}
+              {retrieveProjects.length > 0 && (
                 <div className="mt-4 space-y-2">
-                  {retrieveResults.map((a) => (
+                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+                    Projects ({retrieveProjects.length})
+                  </p>
+                  {retrieveProjects.map((p) => (
+                    <a
+                      key={p.id}
+                      href={`/project/${p.share_id}`}
+                      className="flex items-center justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/20 transition-colors"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-white">
+                          {p.client_name}
+                        </p>
+                        <p className="text-xs text-white/50">
+                          {p.mode === "workshop" ? "Workshop" : "Quick"} ·{" "}
+                          {new Date(p.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {p.aggregated_overall && (
+                          <span className="text-xs font-bold text-white bg-white/20 px-2 py-0.5 rounded">
+                            {p.aggregated_overall.toFixed(1)}
+                          </span>
+                        )}
+                        <span
+                          className={`text-xs font-medium px-2 py-0.5 rounded ${
+                            p.status === "completed"
+                              ? "bg-green-500/20 text-green-300"
+                              : "bg-blue-500/20 text-blue-300"
+                          }`}
+                        >
+                          {p.status === "completed" ? "Complete" : p.status === "collecting" ? "Collecting" : "Aggregating"}
+                        </span>
+                        <span className="text-white/60 text-sm">→</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+              {/* Standalone assessments */}
+              {retrieveAssessments.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+                    Quick Assessments ({retrieveAssessments.length})
+                  </p>
+                  {retrieveAssessments.map((a) => (
                     <a
                       key={a.id}
                       href={`/results/${a.share_id}`}
