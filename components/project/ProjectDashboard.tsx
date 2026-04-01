@@ -233,16 +233,12 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
             </span>
           </div>
           <p className="text-sm text-slate-600 mb-4">
-            Aggregated from {completedCount} stakeholder responses.
+            Aggregated from {completedCount} stakeholder response{completedCount !== 1 ? "s" : ""}.
           </p>
-          <div className="flex gap-3">
-            <Button onClick={() => window.location.href = `/project/${projectShareId}/results`}>
-              View Full Results →
-            </Button>
-            <Button variant="secondary" onClick={() => window.location.href = `/project/${projectShareId}/agenda`}>
-              View Workshop Agenda →
-            </Button>
-          </div>
+          <p className="text-xs text-slate-500 mb-4">
+            Full results view and workshop agenda generation coming soon. Individual stakeholder
+            results are available via their survey links.
+          </p>
         </div>
       )}
     </div>
