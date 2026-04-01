@@ -13,7 +13,7 @@ import {
 } from "@/lib/data/questions";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
-const TOTAL_CORE_STEPS = 6;
+const TOTAL_CORE_STEPS = 8;
 
 interface SurveyFlowProps {
   assessmentId: string;
@@ -97,14 +97,14 @@ export function SurveyFlow({
     }
   };
 
-  const currentCapability = step >= 1 && step <= 6 ? CAPABILITIES_ORDER[step - 1] : null;
+  const currentCapability = step >= 1 && step <= TOTAL_CORE_STEPS ? CAPABILITIES_ORDER[step - 1] : null;
 
   const handleNext = async () => {
     await saveResponses();
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
     } else if (industry) {
-      setStep(7);
+      setStep(TOTAL_CORE_STEPS + 1);
     } else {
       await handleComplete(null);
       return;
@@ -237,7 +237,7 @@ export function SurveyFlow({
       </div>
 
       {/* Capability sections */}
-      {step >= 1 && step <= 6 && currentCapability && (
+      {step >= 1 && step <= TOTAL_CORE_STEPS && currentCapability && (
         <div className="space-y-8">
           <CapabilitySection
             capability={currentCapability}
@@ -266,7 +266,7 @@ export function SurveyFlow({
       )}
 
       {/* Industry module */}
-      {step === 7 && (
+      {step === TOTAL_CORE_STEPS + 1 && (
         <IndustryModule
           responses={responses}
           onScore={handleScore}

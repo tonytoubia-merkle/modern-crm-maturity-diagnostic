@@ -7,6 +7,8 @@ export const CAPABILITY_LABELS: Record<string, string> = {
   engagement: "Engagement",
   media_activation: "Media Activation",
   learning_optimization: "Learning & Optimization",
+  technology: "Technology",
+  organization: "Organization & Process",
 };
 
 export const CAPABILITY_SUBTITLES: Record<string, string> = {
@@ -16,6 +18,8 @@ export const CAPABILITY_SUBTITLES: Record<string, string> = {
   engagement: "Experience Delivery",
   media_activation: "Growth Engine",
   learning_optimization: "Feedback Loop",
+  technology: "Value Realization",
+  organization: "Operating Model",
 };
 
 export const CAPABILITY_DESCRIPTIONS: Record<string, string> = {
@@ -31,6 +35,10 @@ export const CAPABILITY_DESCRIPTIONS: Record<string, string> = {
     "Assess the extent to which first-party customer signals are used to improve media performance and acquisition.",
   learning_optimization:
     "Assess whether the organization continuously improves engagement and media strategies through data and experimentation.",
+  technology:
+    "Assess the extent to which the technology stack enables seamless data flow, modular integration, and rapid deployment of new CRM capabilities.",
+  organization:
+    "Assess whether teams, processes, and governance are aligned around shared customer outcomes and cross-functional collaboration.",
 };
 
 export const CAPABILITY_SCOPE_HINTS: Record<string, string> = {
@@ -46,6 +54,10 @@ export const CAPABILITY_SCOPE_HINTS: Record<string, string> = {
     "These questions assess how CRM data informs media strategy. Input from media planning or performance marketing teams may be helpful.",
   learning_optimization:
     "These questions assess experimentation and measurement maturity. Input from analytics or marketing science teams may be helpful.",
+  technology:
+    "These questions assess the technology foundation. Input from IT, engineering, or platform operations teams may be needed.",
+  organization:
+    "These questions assess organizational alignment and operating model. Consider how teams collaborate across CRM, loyalty, media, and service functions.",
 };
 
 export const SCORE_LABELS: Record<number, string> = {
@@ -190,6 +202,48 @@ export const CORE_QUESTIONS: Question[] = [
     text: "To what extent are customer insights used to refine segmentation, journeys, and targeting strategies?",
     capability: "learning_optimization",
   },
+  // Technology Value Realization
+  {
+    id: 23,
+    text: "To what extent is the organization's technology stack architected to enable seamless data flow across CRM, loyalty, media, service, and commerce systems?",
+    capability: "technology",
+  },
+  {
+    id: 24,
+    text: "To what extent can the organization deploy new use cases (e.g., journeys, loyalty experiences, triggers, integrations) without significant engineering effort or delays?",
+    capability: "technology",
+  },
+  {
+    id: 25,
+    text: "To what extent does the current technology stack support modular integration with external platforms, including loyalty, decisioning, and media ecosystems?",
+    capability: "technology",
+  },
+  {
+    id: 26,
+    text: "To what extent does the organization maintain data quality, governance, and consistency across customer, loyalty, and engagement systems?",
+    capability: "technology",
+  },
+  // Organization & Process
+  {
+    id: 27,
+    text: "To what extent are teams aligned around shared customer and business outcomes (e.g., lifetime value, loyalty engagement, retention) rather than channel-specific goals?",
+    capability: "organization",
+  },
+  {
+    id: 28,
+    text: "To what extent are ownership and accountability clearly defined for end-to-end customer experience, including loyalty, across marketing, media, and service functions?",
+    capability: "organization",
+  },
+  {
+    id: 29,
+    text: "To what extent does the organization operate with cross-functional collaboration models (e.g., pods or squads) that integrate CRM, loyalty, media, and service teams?",
+    capability: "organization",
+  },
+  {
+    id: 30,
+    text: "To what extent are data, analytics, and marketing teams integrated to support decisioning, loyalty strategy, and ongoing optimization?",
+    capability: "organization",
+  },
 ];
 
 export const CAPABILITIES_ORDER: Capability[] = [
@@ -199,6 +253,8 @@ export const CAPABILITIES_ORDER: Capability[] = [
   "engagement",
   "media_activation",
   "learning_optimization",
+  "technology",
+  "organization",
 ];
 
 export const QUESTIONS_BY_CAPABILITY: Record<Capability, Question[]> =

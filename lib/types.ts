@@ -4,7 +4,9 @@ export type Capability =
   | "decisioning"
   | "engagement"
   | "media_activation"
-  | "learning_optimization";
+  | "learning_optimization"
+  | "technology"
+  | "organization";
 
 export type Industry =
   | "retail"

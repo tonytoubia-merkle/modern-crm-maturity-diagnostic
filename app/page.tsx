@@ -10,6 +10,8 @@ const CAPABILITY_ICONS: Record<string, string> = {
   engagement: "◎",
   media_activation: "◇",
   learning_optimization: "↻",
+  technology: "⚙",
+  organization: "⊞",
 };
 
 const PLAYBOOK_STEPS = [
@@ -24,7 +26,7 @@ const PLAYBOOK_STEPS = [
     step: "02",
     title: "Assess",
     description:
-      "Walk through 22 core questions across the six Modern CRM capabilities. Rate each on a 1–5 maturity scale. Use \"Not sure\" for areas that need validation — these get flagged in the output.",
+      "Walk through 30 core questions across eight Modern CRM capabilities. Rate each on a 1–5 maturity scale. Use \"Not sure\" for areas that need validation — these get flagged in the output.",
     tip: "Select an industry for 5 additional context questions that enrich the opportunity analysis.",
   },
   {
@@ -345,7 +347,7 @@ export default function HomePage() {
             What It Assesses
           </h2>
           <p className="text-slate-600 text-sm mb-8 max-w-xl">
-            22 core questions across six capabilities that define a Modern CRM
+            30 core questions across eight capabilities that define a Modern CRM
             relationship engine, plus optional industry-specific modules.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -69,15 +69,15 @@ export function ProgressBar({
             <div
               className={cn(
                 "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors",
-                currentStep > 7
+                currentStep > CAPABILITIES_ORDER.length + 1
                   ? "bg-blue-600 border-blue-600 text-white"
-                  : currentStep === 7
+                  : currentStep === CAPABILITIES_ORDER.length + 1
                   ? "bg-white border-blue-600 text-blue-600"
                   : "bg-white border-slate-200 text-slate-400"
               )}
               title="Industry Context"
             >
-              {currentStep > 7 ? "✓" : "7"}
+              {currentStep > CAPABILITIES_ORDER.length + 1 ? "✓" : String(CAPABILITIES_ORDER.length + 1)}
             </div>
           </div>
         )}
@@ -92,7 +92,7 @@ export function ProgressBar({
       </div>
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
-          {currentStep > 0 && currentStep <= 6
+          {currentStep > 0 && currentStep <= CAPABILITIES_ORDER.length
             ? `${CAPABILITY_LABELS[CAPABILITIES_ORDER[currentStep - 1]]} — ${CAPABILITY_SUBTITLES[CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"

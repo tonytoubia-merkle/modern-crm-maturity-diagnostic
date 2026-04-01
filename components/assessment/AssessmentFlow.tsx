@@ -17,8 +17,8 @@ import {
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
 import type { Capability, Industry, ResponseItem } from "@/lib/types";
 
-// Steps: 0 = setup, 1-6 = capabilities, 7 = industry
-const TOTAL_CORE_STEPS = 6;
+// Steps: 0 = setup, 1-8 = capabilities, 9 = industry
+const TOTAL_CORE_STEPS = 8;
 
 export interface QuestionAverages {
   overall: Record<string, number>;
@@ -157,14 +157,14 @@ export function AssessmentFlow({
   };
 
   const currentCapability =
-    step >= 1 && step <= 6 ? CAPABILITIES_ORDER[step - 1] : null;
+    step >= 1 && step <= TOTAL_CORE_STEPS ? CAPABILITIES_ORDER[step - 1] : null;
 
   const handleNext = async () => {
     await saveCurrentResponses();
     if (step < TOTAL_CORE_STEPS) {
       setStep(step + 1);
     } else if (preSelectedIndustry) {
-      setStep(7);
+      setStep(TOTAL_CORE_STEPS + 1); // industry step
     } else {
       await handleComplete(null);
       return;
@@ -243,7 +243,7 @@ export function AssessmentFlow({
                 hasIndustry={!!preSelectedIndustry}
               />
 
-              {(step >= 1 && step <= 7) && (
+              {(step >= 1 && step <= TOTAL_CORE_STEPS + 1) && (
                 <div className="mt-1.5">
                   {/* Compact single-line scale */}
                   <div className="flex items-center gap-1 text-[11px] text-slate-500">
@@ -290,7 +290,7 @@ export function AssessmentFlow({
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
           {step === 0 && <SetupForm onSubmit={handleSetup} />}
 
-          {step >= 1 && step <= 6 && currentCapability && (
+          {step >= 1 && step <= TOTAL_CORE_STEPS && currentCapability && (
             <div className="space-y-8">
               <CapabilitySection
                 capability={currentCapability}
@@ -299,7 +299,6 @@ export function AssessmentFlow({
                 onNotes={handleNotes}
                 onRemoveResponse={handleRemoveResponse}
                 onReadyChange={setSectionReady}
-                averages={averages}
               />
               <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                 <Button variant="ghost" onClick={handlePrev} disabled={step === 1}>
@@ -321,7 +320,7 @@ export function AssessmentFlow({
             </div>
           )}
 
-          {step === 7 && (
+          {step === TOTAL_CORE_STEPS + 1 && (
             <IndustryModule
               responses={responses}
               onScore={handleScore}

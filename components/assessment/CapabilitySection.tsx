@@ -140,31 +140,22 @@ export function CapabilitySection({
                   {/* Score pips + Not sure — single row */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {[1, 2, 3, 4, 5].map((v) => {
-                      const isOverallAvg = overallAvg === v;
-                      const isIndustryAvg = industryAvg === v;
-                      // Show a subtle bottom accent on pips that match averages
+                      // Only show average accents when averages are provided (review mode)
+                      const showAvg = !!averages;
+                      const isOverallAvg = showAvg && overallAvg === v;
+                      const isIndustryAvg = showAvg && industryAvg === v;
                       const accentClass =
-                        isOverallAvg && isIndustryAvg
-                          ? "ring-1 ring-offset-1 ring-slate-300"
-                          : isOverallAvg
-                          ? "ring-1 ring-offset-1 ring-slate-300"
-                          : isIndustryAvg
-                          ? "ring-1 ring-offset-1 ring-blue-300"
+                        isOverallAvg || isIndustryAvg
+                          ? isIndustryAvg
+                            ? "ring-2 ring-offset-1 ring-blue-400"
+                            : "ring-2 ring-offset-1 ring-slate-400"
                           : "";
                       return (
                         <button
                           key={v}
                           type="button"
                           onClick={() => onScore(question.id, v, capability)}
-                          title={
-                            isOverallAvg && isIndustryAvg
-                              ? `${SCORE_LABELS[v]} · Overall & industry avg`
-                              : isOverallAvg
-                              ? `${SCORE_LABELS[v]} · Overall avg`
-                              : isIndustryAvg
-                              ? `${SCORE_LABELS[v]} · Industry avg`
-                              : SCORE_LABELS[v]
-                          }
+                          title={SCORE_LABELS[v]}
                           className={`w-9 h-9 rounded-full text-sm font-bold border-2 transition-all flex-shrink-0 ${
                             selected === v
                               ? "border-blue-600 bg-blue-600 text-white shadow-sm"
@@ -180,9 +171,7 @@ export function CapabilitySection({
                         {SCORE_LABELS[selected]}
                       </span>
                     )}
-                    {/* Divider */}
                     <span className="text-slate-200">|</span>
-                    {/* Not sure button */}
                     <button
                       type="button"
                       onClick={() => handleSkipToggle(question.id)}
@@ -190,17 +179,17 @@ export function CapabilitySection({
                     >
                       Not sure
                     </button>
-                    {/* Inline benchmark reference */}
-                    {(overallAvg || industryAvg) && (
-                      <span className="text-[10px] text-slate-400 ml-1 hidden sm:inline">
+                    {/* Average benchmarks — only shown in review mode */}
+                    {averages && (overallAvg || industryAvg) && (
+                      <span className="text-xs text-slate-400 ml-1">
                         {overallAvg && (
-                          <span title="Average across all completed assessments">
-                            Avg <span className="font-semibold text-slate-500">{overallAvg}</span>
+                          <span>
+                            Avg <span className="font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">{overallAvg}</span>
                           </span>
                         )}
                         {industryAvg && industryAvg !== overallAvg && (
-                          <span title="Average for this industry">
-                            {overallAvg ? " · " : ""}Ind <span className="font-semibold text-blue-500">{industryAvg}</span>
+                          <span>
+                            {overallAvg ? " " : ""}Ind <span className="font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">{industryAvg}</span>
                           </span>
                         )}
                       </span>
