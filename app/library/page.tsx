@@ -10,6 +10,8 @@ const CATEGORIES = Array.from(new Set(VIGNETTES.map((v) => v.category))).sort();
 export default function LibraryPage() {
   const [filter, setFilter] = useState<string>("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [miroUrls, setMiroUrls] = useState<Record<string, string>>({});
+  const [miroLoading, setMiroLoading] = useState<string | null>(null);
 
   const filtered =
     filter === "all"
@@ -205,6 +207,44 @@ export default function LibraryPage() {
                         </div>
                       </div>
                     )}
+
+                    {/* Miro board */}
+                    <div className="pt-2 border-t border-slate-100">
+                      {miroUrls[v.id] ? (
+                        <a
+                          href={miroUrls[v.id]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
+                          style={{ backgroundColor: "#FFD02F", color: "#050038" }}
+                        >
+                          Open Miro Board →
+                        </a>
+                      ) : (
+                        <button
+                          onClick={async () => {
+                            setMiroLoading(v.id);
+                            try {
+                              const res = await fetch(`/api/vignettes/${v.id}/miro`, { method: "POST" });
+                              if (!res.ok) {
+                                const err = await res.json();
+                                alert(err.error || "Failed to create Miro board");
+                                return;
+                              }
+                              const data = await res.json();
+                              setMiroUrls((prev) => ({ ...prev, [v.id]: data.boardUrl }));
+                              window.open(data.boardUrl, "_blank");
+                            } finally {
+                              setMiroLoading(null);
+                            }
+                          }}
+                          disabled={miroLoading === v.id}
+                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
+                        >
+                          {miroLoading === v.id ? "Creating..." : "Generate Miro Board"}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
