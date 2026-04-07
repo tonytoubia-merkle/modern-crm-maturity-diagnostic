@@ -173,28 +173,20 @@ export function SurveyFlow({
 
         <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 space-y-3">
           <h3 className="font-bold text-sm" style={{ color: "#00205B" }}>Before You Start</h3>
-          <ul className="text-sm text-slate-700 space-y-2">
-            <li className="flex gap-2">
-              <span className="text-blue-500 flex-shrink-0">1.</span>
+          <ol className="text-sm text-slate-700 space-y-2 list-decimal list-inside">
+            <li>
               Rate each question on a <strong>1–5 scale</strong>: {Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}`).join(", ")}.
             </li>
-            <li className="flex gap-2">
-              <span className="text-blue-500 flex-shrink-0">2.</span>
-              <strong>It&apos;s OK to select &quot;Not sure&quot;</strong> for areas outside your
-              expertise. We&apos;ll be averaging all responses across participants — your
-              perspective on the areas you do cover is what matters.
+            <li>
+              <strong>It&apos;s OK to select &quot;Not sure&quot;</strong> for areas outside your expertise. We&apos;ll be averaging all responses across participants — your perspective on the areas you do cover is what matters.
             </li>
-            <li className="flex gap-2">
-              <span className="text-blue-500 flex-shrink-0">3.</span>
-              Use the <strong>notes field</strong> to add context, caveats, or concerns on any question.
-              These are reviewed by the Merkle team and help inform the workshop.
+            <li>
+              Use the <strong>notes field</strong> to add context, caveats, or concerns on any question. These are reviewed by the Merkle team and help inform the workshop.
             </li>
-            <li className="flex gap-2">
-              <span className="text-blue-500 flex-shrink-0">4.</span>
-              Your progress is <strong>saved automatically</strong> after each section. You can close
-              and return to this link to continue.
+            <li>
+              Your progress is <strong>saved automatically</strong> after each section. You can close and return to this link to continue.
             </li>
-          </ul>
+          </ol>
         </div>
 
         <Button size="lg" onClick={() => {
