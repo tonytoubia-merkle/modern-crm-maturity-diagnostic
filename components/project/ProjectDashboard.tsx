@@ -376,7 +376,17 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                             <span className="text-[10px] text-slate-400">{sme.leadPractice}</span>
                             {sme.workshopRole === "R" && (
                               <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-600 font-medium">
-                                Required
+                                Must attend workshop
+                              </span>
+                            )}
+                            {sme.workshopRole === "A" && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 font-medium">
+                                Workshop lead
+                              </span>
+                            )}
+                            {sme.workshopRole === "C" && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-medium">
+                                Brief beforehand
                               </span>
                             )}
                             {sme.notes && (
