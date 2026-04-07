@@ -6,26 +6,14 @@ export default function HomePage() {
   const [email, setEmail] = useState("");
   const [showRetrieve, setShowRetrieve] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [projects, setProjects] = useState<
+  const [results, setResults] = useState<
     Array<{
-      id: string;
-      share_id: string;
-      client_name: string;
-      mode: string;
-      status: string;
-      aggregated_overall: number | null;
-      created_at: string;
-    }>
-  >([]);
-  const [assessments, setAssessments] = useState<
-    Array<{
-      id: string;
-      share_id: string;
-      client_name: string;
-      status: string;
-      overall_score: number | null;
-      created_at: string;
-      project_id: string | null;
+      key: string;
+      name: string;
+      href: string;
+      label: string;
+      score: number | null;
+      date: string;
     }>
   >([]);
   const [error, setError] = useState("");
@@ -39,14 +27,23 @@ export default function HomePage() {
         fetch(`/api/projects?email=${encodeURIComponent(email)}`),
         fetch(`/api/assessments?repEmail=${encodeURIComponent(email)}`),
       ]);
-      const p = pRes.ok ? await pRes.json() : [];
-      const a = aRes.ok ? await aRes.json() : [];
-      const standalone = a.filter((x: { project_id: string | null }) => !x.project_id);
-      setProjects(p);
-      setAssessments(standalone);
-      if (p.length === 0 && standalone.length === 0) {
-        setError("No projects found for this email.");
-      }
+      const projects = pRes.ok ? await pRes.json() : [];
+      const assessments = aRes.ok ? await aRes.json() : [];
+      const standalone = assessments.filter((x: { project_id: string | null }) => !x.project_id);
+
+      const combined = [
+        ...projects.map((p: Record<string, string | number | null>) => ({
+          key: p.id, name: p.client_name, href: `/project/${p.share_id}`,
+          label: p.mode === "workshop" ? "Workshop" : "Quick",
+          score: p.aggregated_overall, date: p.created_at,
+        })),
+        ...standalone.map((a: Record<string, string | number | null>) => ({
+          key: a.id, name: a.client_name, href: `/results/${a.share_id}`,
+          label: "Assessment", score: a.overall_score, date: a.created_at,
+        })),
+      ];
+      setResults(combined);
+      if (combined.length === 0) setError("No projects found for this email.");
     } catch {
       setError("Unable to retrieve. Please try again.");
     } finally {
@@ -54,104 +51,123 @@ export default function HomePage() {
     }
   };
 
-  const results = [...projects.map((p) => ({
-    key: p.id,
-    name: p.client_name,
-    href: `/project/${p.share_id}`,
-    label: p.mode === "workshop" ? "Workshop" : "Quick",
-    score: p.aggregated_overall,
-    status: p.status,
-    date: p.created_at,
-  })), ...assessments.map((a) => ({
-    key: a.id,
-    name: a.client_name,
-    href: `/results/${a.share_id}`,
-    label: "Assessment",
-    score: a.overall_score,
-    status: a.status,
-    date: a.created_at,
-  }))];
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* Nav */}
-      <nav className="max-w-4xl mx-auto px-6 pt-10 pb-6 flex items-center justify-between">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto" />
-        <div className="flex items-center gap-6">
-          <a href="/library" className="text-xs tracking-wide uppercase text-slate-400 hover:text-slate-700 transition-colors">
-            Library
-          </a>
-          <a href="/admin" className="text-xs tracking-wide uppercase text-slate-400 hover:text-slate-700 transition-colors">
-            Admin
-          </a>
+    <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
+      {/* Header */}
+      <header style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+          <div className="flex items-center gap-5">
+            <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">
+              Workshop Library
+            </a>
+            <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">
+              Admin
+            </a>
+          </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-6 pt-16 pb-20">
-        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] mb-6" style={{ color: "#00205B" }}>
-          Modern CRM<br />Maturity Diagnostic
-        </h1>
-        <p className="text-lg text-slate-500 leading-relaxed max-w-xl mb-12">
-          Assess CRM maturity across eight capability dimensions. Generate
-          strategic opportunities, workshop agendas, and pipeline-ready outputs.
-        </p>
+      <section style={{ backgroundColor: "#00205B" }}>
+        <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
+          <p className="text-sm font-medium text-white/50 mb-3">Merkle CRM Practice</p>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
+            Modern CRM Maturity Diagnostic
+          </h1>
+          <p className="text-base text-white/70 leading-relaxed max-w-2xl mb-8">
+            Assess client CRM maturity, generate strategic opportunities, and build
+            structured workshop agendas — from diagnostic to pipeline in one workflow.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/project/new"
+              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors hover:bg-white/90"
+              style={{ backgroundColor: "white", color: "#00205B" }}
+            >
+              New Project
+            </a>
+            <a
+              href="/assessment/new"
+              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              Quick Assessment
+            </a>
+          </div>
+        </div>
+      </section>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-16">
-          <a
-            href="/project/new"
-            className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-semibold text-white rounded-lg transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#00205B" }}
-          >
-            New Project
-          </a>
-          <a
-            href="/assessment/new"
-            className="inline-flex items-center justify-center px-7 py-3.5 text-sm font-semibold rounded-lg border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 transition-colors"
-          >
-            Quick Assessment
-          </a>
+      {/* Content */}
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        {/* Three columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 mb-1.5">Assess</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              30 questions across eight capability dimensions. Distribute
+              surveys to multiple stakeholders or complete independently.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 mb-1.5">Generate</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Aggregated maturity scores, strategic opportunities, workshop
+              agendas with facilitation guides, and Miro boards.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 mb-1.5">Activate</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Salesforce-ready opportunity records, branded PPTX exports,
+              shareable results, and a complete workshop toolkit.
+            </p>
+          </div>
         </div>
 
         {/* Retrieve */}
-        <div className="border-t border-slate-100 pt-8">
-          {!showRetrieve ? (
-            <button
-              onClick={() => setShowRetrieve(true)}
-              className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
-            >
-              Retrieve an existing project
-            </button>
-          ) : (
-            <div className="max-w-md">
-              <form onSubmit={handleRetrieve} className="flex gap-2">
+        <div className="bg-white border border-slate-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold text-slate-900">Your Projects</h3>
+            {!showRetrieve && (
+              <button
+                onClick={() => setShowRetrieve(true)}
+                className="text-xs font-medium hover:underline"
+                style={{ color: "#00205B" }}
+              >
+                Look up by email
+              </button>
+            )}
+          </div>
+
+          {showRetrieve && (
+            <div>
+              <form onSubmit={handleRetrieve} className="flex gap-2 mb-3">
                 <input
                   type="email"
-                  placeholder="Your Merkle email"
+                  placeholder="your.name@merkle.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="flex-1 text-sm px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400 transition-colors"
+                  className="flex-1 text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400 transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2.5 text-sm font-semibold text-white rounded-lg transition-colors disabled:opacity-50 hover:opacity-90"
+                  className="px-4 py-2 text-sm font-semibold text-white rounded-lg disabled:opacity-50 hover:opacity-90 transition-colors"
                   style={{ backgroundColor: "#00205B" }}
                 >
                   {loading ? "..." : "Find"}
                 </button>
               </form>
-              {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+              {error && <p className="text-xs text-red-500 mb-2">{error}</p>}
               {results.length > 0 && (
-                <div className="mt-4 space-y-1.5">
+                <div className="space-y-1">
                   {results.map((r) => (
                     <a
                       key={r.key}
                       href={r.href}
-                      className="flex items-center justify-between px-4 py-3 rounded-lg border border-slate-100 hover:border-slate-200 transition-colors group"
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
                     >
                       <div>
                         <p className="text-sm font-medium text-slate-900">{r.name}</p>
@@ -161,62 +177,41 @@ export default function HomePage() {
                       </div>
                       <div className="flex items-center gap-2">
                         {r.score && (
-                          <span className="text-xs font-semibold text-slate-600">
-                            {r.score.toFixed(1)}
+                          <span className="text-xs font-semibold" style={{ color: "#00205B" }}>
+                            {Number(r.score).toFixed(1)}
                           </span>
                         )}
-                        <span className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors">→</span>
+                        <span className="text-slate-300 group-hover:text-slate-500 transition-colors">→</span>
                       </div>
                     </a>
                   ))}
                 </div>
               )}
+              {!loading && results.length === 0 && !error && (
+                <p className="text-xs text-slate-400">Enter your email to find your projects and assessments.</p>
+              )}
             </div>
           )}
-        </div>
-      </section>
 
-      {/* What it does — minimal */}
-      <section className="border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-6 py-20">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Assess</p>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                30 questions across Identity, Signals, Decisioning, Engagement,
-                Media, Optimization, Technology, and Organization. Distribute
-                surveys to multiple stakeholders or complete solo.
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Generate</p>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Aggregated maturity scores, prioritized strategic opportunities,
-                structured workshop agendas with facilitation guides, and
-                auto-generated Miro boards.
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Activate</p>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Salesforce-ready opportunity records, branded PPTX exports,
-                shareable results links, and a complete workshop facilitation
-                toolkit.
-              </p>
-            </div>
-          </div>
+          {!showRetrieve && (
+            <p className="text-xs text-slate-400">
+              Retrieve existing projects by looking up your Merkle email address.
+            </p>
+          )}
         </div>
-      </section>
+      </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-6 py-6 flex items-center justify-between">
-          <p className="text-xs text-slate-300">
-            © {new Date().getFullYear()} Merkle
-          </p>
+      <footer className="border-t border-slate-200">
+        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto opacity-40" />
+            <p className="text-xs text-slate-400">© {new Date().getFullYear()} Merkle</p>
+          </div>
           <div className="flex gap-4">
-            <a href="/library" className="text-xs text-slate-300 hover:text-slate-500 transition-colors">Library</a>
-            <a href="/admin" className="text-xs text-slate-300 hover:text-slate-500 transition-colors">Admin</a>
+            <a href="/library" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Library</a>
+            <a href="/admin" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Admin</a>
           </div>
         </div>
       </footer>
