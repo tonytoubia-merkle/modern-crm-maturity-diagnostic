@@ -59,8 +59,11 @@ export default function HomePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
           <div className="flex items-center gap-5">
+            <a href="/guide" className="text-xs text-white/60 hover:text-white transition-colors">
+              Guide
+            </a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">
-              Workshop Library
+              Library
             </a>
             <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">
               Admin

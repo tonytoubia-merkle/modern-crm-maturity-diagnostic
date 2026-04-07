@@ -168,3 +168,59 @@ export interface WorkshopAgenda {
   }[];
   generatedAt: string;
 }
+
+// ── Guide & SME types ─────────────────────────────────────────
+
+export type EmailTemplateId =
+  | "survey_distribution"
+  | "survey_reminder"
+  | "workshop_invite"
+  | "post_workshop_followup";
+
+export interface EmailTemplate {
+  id: EmailTemplateId;
+  name: string;
+  subject: string;
+  body: string;
+  placeholders: string[];
+  usage: string;
+}
+
+export type MerklePractice =
+  | "CRM Strategy"
+  | "Loyalty"
+  | "Identity & Data"
+  | "Analytics & Decisioning"
+  | "Media"
+  | "Technology & Platforms"
+  | "Promotions & Gamification"
+  | "Innovation & AI";
+
+export interface SmeMapping {
+  opportunityId: string;
+  leadSmeRole: string;
+  leadPractice: MerklePractice;
+  supportingRoles: string[];
+  supportingPractice: MerklePractice;
+  workshopRole: "R" | "A" | "C" | "I";
+  notes?: string;
+}
+
+export interface ChecklistItem {
+  id: string;
+  label: string;
+  category: "logistics" | "materials" | "technology" | "facilitation" | "follow_up";
+  onsite: boolean;
+  virtual: boolean;
+  details?: string;
+}
+
+export interface GuideStep {
+  stepNumber: number;
+  title: string;
+  description: string;
+  timing: string;
+  substeps: string[];
+  tips?: string[];
+  emailTemplateId?: EmailTemplateId;
+}

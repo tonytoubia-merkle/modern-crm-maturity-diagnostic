@@ -6,6 +6,7 @@ import { StakeholderManager } from "./StakeholderManager";
 import { CAPABILITY_LABELS } from "@/lib/data/questions";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { VIGNETTES } from "@/lib/data/vignettes";
+import { getSmeForOpportunity } from "@/lib/data/smeMapping";
 import type { WorkshopAgenda } from "@/lib/types";
 
 interface StakeholderData {
@@ -344,6 +345,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                   {project.triggered_opportunity_ids.map((oppId) => {
                     const opp = OPPORTUNITIES.find((o) => o.id === oppId);
                     if (!opp) return null;
+                    const sme = getSmeForOpportunity(oppId);
                     return (
                       <div
                         key={oppId}
@@ -365,6 +367,23 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                             </span>
                           ))}
                         </div>
+                        {sme && (
+                          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center gap-2 flex-wrap">
+                            <span className="text-[10px] font-semibold text-slate-400">SME:</span>
+                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded text-white" style={{ backgroundColor: "#00205B" }}>
+                              {sme.leadSmeRole}
+                            </span>
+                            <span className="text-[10px] text-slate-400">{sme.leadPractice}</span>
+                            {sme.workshopRole === "R" && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-600 font-medium">
+                                Required
+                              </span>
+                            )}
+                            {sme.notes && (
+                              <span className="text-[10px] text-slate-400 italic">{sme.notes}</span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
