@@ -63,6 +63,8 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
   const [aggregating, setAggregating] = useState(false);
   const [showAddMore, setShowAddMore] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [creatingMiro, setCreatingMiro] = useState(false);
+  const [miroUrl, setMiroUrl] = useState<string | null>(null);
 
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
@@ -465,13 +467,51 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
               </div>
             )}
 
-            <Button
-              onClick={handleAggregate}
-              loading={aggregating}
-              disabled={completedCount === 0}
-            >
-              Regenerate Results
-            </Button>
+            <div className="flex gap-3 flex-wrap">
+              <Button
+                onClick={handleAggregate}
+                loading={aggregating}
+                disabled={completedCount === 0}
+              >
+                Regenerate Results
+              </Button>
+              {project.workshop_agenda && (
+                miroUrl ? (
+                  <a
+                    href={miroUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
+                    style={{ backgroundColor: "#FFD02F", color: "#050038" }}
+                  >
+                    Open Miro Board →
+                  </a>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    loading={creatingMiro}
+                    onClick={async () => {
+                      setCreatingMiro(true);
+                      try {
+                        const res = await fetch(`/api/projects/${project.id}/miro`, { method: "POST" });
+                        if (!res.ok) {
+                          const err = await res.json();
+                          alert(err.error || "Failed to create Miro board");
+                          return;
+                        }
+                        const data = await res.json();
+                        setMiroUrl(data.boardUrl);
+                        window.open(data.boardUrl, "_blank");
+                      } finally {
+                        setCreatingMiro(false);
+                      }
+                    }}
+                  >
+                    Generate Miro Board
+                  </Button>
+                )
+              )}
+            </div>
           </>
         ) : (
           <>
