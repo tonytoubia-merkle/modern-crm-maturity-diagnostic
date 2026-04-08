@@ -88,7 +88,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
   // Persist checklist to localStorage
   useEffect(() => {
     if (checkedItems.size > 0) {
-      localStorage.setItem(`checklist-${projectShareId}`, JSON.stringify([...checkedItems]));
+      localStorage.setItem(`checklist-${projectShareId}`, JSON.stringify(Array.from(checkedItems)));
     }
   }, [checkedItems, projectShareId]);
 
