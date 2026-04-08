@@ -168,11 +168,11 @@ export const GUIDE_STEPS: GuideStep[] = [
       "Determine industry vertical for industry-specific questions",
       "Identify 4-8 stakeholders across roles: CMO/VP Marketing, CRM/Loyalty lead, Data/Analytics lead, MarTech/IT lead, Channel leads",
       "Collect stakeholder names, emails, and titles",
-      "Decide on Workshop mode (multi-stakeholder) or Lite mode (single assessment)",
+      "If running a workshop, create a project at /project/new. For quick internal discovery, use the standalone assessment at /assessment/new",
     ],
     tips: [
       "More diverse roles = richer diagnostic. The tool shows where stakeholders diverge.",
-      "If you can't get 4+ stakeholders, Lite mode still produces useful results.",
+      "If you can't get 4+ stakeholders, the Quick Assessment is useful for internal discovery and triage.",
     ],
   },
   {
@@ -182,7 +182,7 @@ export const GUIDE_STEPS: GuideStep[] = [
     timing: "2-3 weeks before workshop",
     substeps: [
       "Go to /project/new and fill in client details",
-      "Choose Workshop mode and optionally set a survey password",
+      "Fill in client details and optionally set a survey password",
       "Add each stakeholder by name, email, and role",
       "Copy each stakeholder's unique survey link",
       "Bookmark the project dashboard URL — this is your command center",
