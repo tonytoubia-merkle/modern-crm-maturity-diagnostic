@@ -7,7 +7,16 @@ import { CAPABILITY_LABELS } from "@/lib/data/questions";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { VIGNETTES } from "@/lib/data/vignettes";
 import { getSmeForOpportunity } from "@/lib/data/smeMapping";
+import { CHECKLIST } from "@/lib/data/guide";
 import type { WorkshopAgenda } from "@/lib/types";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  logistics: "Logistics",
+  materials: "Materials",
+  technology: "Technology",
+  facilitation: "Facilitation",
+  follow_up: "Follow-Up",
+};
 
 interface StakeholderData {
   id: string;
@@ -66,6 +75,22 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
   const [copied, setCopied] = useState<string | null>(null);
   const [creatingMiro, setCreatingMiro] = useState(false);
   const [miroUrl, setMiroUrl] = useState<string | null>(null);
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [checklistFormat, setChecklistFormat] = useState<"onsite" | "virtual">("onsite");
+  const [checkedItems, setCheckedItems] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const saved = localStorage.getItem(`checklist-${projectShareId}`);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  // Persist checklist to localStorage
+  useEffect(() => {
+    if (checkedItems.size > 0) {
+      localStorage.setItem(`checklist-${projectShareId}`, JSON.stringify([...checkedItems]));
+    }
+  }, [checkedItems, projectShareId]);
 
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
@@ -159,6 +184,106 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
           <p className="text-2xl font-bold text-slate-900 capitalize">{project.status}</p>
           <p className="text-xs text-slate-500 mt-0.5">Status</p>
         </div>
+      </div>
+
+      {/* Workshop checklist */}
+      <div className="border border-slate-200 rounded-xl bg-white overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setShowChecklist(!showChecklist)}
+          className="w-full text-left px-5 py-3.5 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <h3 className="text-sm font-bold text-slate-900">Workshop Checklist</h3>
+            {(() => {
+              const filtered = CHECKLIST.filter((c) => checklistFormat === "onsite" ? c.onsite : c.virtual);
+              const done = filtered.filter((c) => checkedItems.has(c.id)).length;
+              return (
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                  done === filtered.length && filtered.length > 0
+                    ? "bg-green-100 text-green-700"
+                    : "bg-slate-100 text-slate-500"
+                }`}>
+                  {done}/{filtered.length}
+                </span>
+              );
+            })()}
+          </div>
+          <svg
+            className={`w-4 h-4 text-slate-400 transition-transform ${showChecklist ? "rotate-180" : ""}`}
+            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {showChecklist && (
+          <div className="px-5 pb-5 border-t border-slate-100 pt-4 space-y-4">
+            {/* Format toggle */}
+            <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs font-medium w-fit">
+              <button
+                onClick={() => setChecklistFormat("onsite")}
+                className={`px-3 py-1.5 transition-colors ${
+                  checklistFormat === "onsite" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
+                }`}
+                style={checklistFormat === "onsite" ? { backgroundColor: "#00205B" } : undefined}
+              >
+                On-Site
+              </button>
+              <button
+                onClick={() => setChecklistFormat("virtual")}
+                className={`px-3 py-1.5 transition-colors ${
+                  checklistFormat === "virtual" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
+                }`}
+                style={checklistFormat === "virtual" ? { backgroundColor: "#00205B" } : undefined}
+              >
+                Virtual
+              </button>
+            </div>
+
+            {/* Checklist items by category */}
+            {(() => {
+              const filtered = CHECKLIST.filter((c) => checklistFormat === "onsite" ? c.onsite : c.virtual);
+              const categories = Array.from(new Set(filtered.map((c) => c.category)));
+              return categories.map((cat) => {
+                const items = filtered.filter((c) => c.category === cat);
+                return (
+                  <div key={cat}>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                      {CATEGORY_LABELS[cat] || cat}
+                    </p>
+                    <div className="space-y-1">
+                      {items.map((item) => (
+                        <label key={item.id} className="flex items-start gap-2.5 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={checkedItems.has(item.id)}
+                            onChange={() => {
+                              setCheckedItems((prev) => {
+                                const next = new Set(prev);
+                                next.has(item.id) ? next.delete(item.id) : next.add(item.id);
+                                return next;
+                              });
+                            }}
+                            className="mt-0.5 rounded border-slate-300"
+                          />
+                          <div>
+                            <p className={`text-xs leading-relaxed ${checkedItems.has(item.id) ? "text-slate-400 line-through" : "text-slate-700"}`}>
+                              {item.label}
+                            </p>
+                            {item.details && (
+                              <p className="text-[10px] text-slate-400">{item.details}</p>
+                            )}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        )}
       </div>
 
       {/* Stakeholder list */}

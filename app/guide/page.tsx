@@ -1,27 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { GUIDE_STEPS, EMAIL_TEMPLATES, CHECKLIST } from "@/lib/data/guide";
-
-const CATEGORY_LABELS: Record<string, string> = {
-  logistics: "Logistics",
-  materials: "Materials",
-  technology: "Technology",
-  facilitation: "Facilitation",
-  follow_up: "Follow-Up",
-};
+import { GUIDE_STEPS, EMAIL_TEMPLATES } from "@/lib/data/guide";
 
 export default function GuidePage() {
   const [expandedStep, setExpandedStep] = useState<number | null>(1);
   const [expandedEmails, setExpandedEmails] = useState<Set<string>>(new Set());
-  const [checklistFormat, setChecklistFormat] = useState<"onsite" | "virtual">("onsite");
-  const [checked, setChecked] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState<string | null>(null);
-
-  const filteredChecklist = CHECKLIST.filter((c) =>
-    checklistFormat === "onsite" ? c.onsite : c.virtual
-  );
-  const categories = Array.from(new Set(filteredChecklist.map((c) => c.category)));
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -172,72 +157,12 @@ export default function GuidePage() {
           </div>
         </section>
 
-        {/* ── Workshop Checklist ── */}
+        {/* Checklist note */}
         <section className="mb-14">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-slate-900">Workshop Checklist</h2>
-            <div className="flex rounded-lg border border-slate-200 overflow-hidden text-xs font-medium">
-              <button
-                onClick={() => setChecklistFormat("onsite")}
-                className={`px-3 py-1.5 transition-colors ${
-                  checklistFormat === "onsite" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
-                }`}
-                style={checklistFormat === "onsite" ? { backgroundColor: "#00205B" } : undefined}
-              >
-                On-Site
-              </button>
-              <button
-                onClick={() => setChecklistFormat("virtual")}
-                className={`px-3 py-1.5 transition-colors ${
-                  checklistFormat === "virtual" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
-                }`}
-                style={checklistFormat === "virtual" ? { backgroundColor: "#00205B" } : undefined}
-              >
-                Virtual
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-5">
-            {categories.map((cat) => {
-              const items = filteredChecklist.filter((c) => c.category === cat);
-              return (
-                <div key={cat}>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    {CATEGORY_LABELS[cat] || cat}
-                  </p>
-                  <div className="space-y-1.5">
-                    {items.map((item) => (
-                      <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          checked={checked.has(item.id)}
-                          onChange={() => {
-                            setChecked((prev) => {
-                              const next = new Set(prev);
-                              next.has(item.id) ? next.delete(item.id) : next.add(item.id);
-                              return next;
-                            });
-                          }}
-                          className="mt-0.5 rounded border-slate-300"
-                        />
-                        <div>
-                          <p className={`text-sm ${checked.has(item.id) ? "text-slate-400 line-through" : "text-slate-700"}`}>
-                            {item.label}
-                          </p>
-                          {item.details && (
-                            <p className="text-[10px] text-slate-400 mt-0.5">{item.details}</p>
-                          )}
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            <div className="text-xs text-slate-400 pt-2 border-t border-slate-100">
-              {checked.size} / {filteredChecklist.length} completed
-            </div>
+          <div className="bg-blue-50 border border-blue-100 rounded-xl px-5 py-4">
+            <p className="text-sm text-blue-800">
+              <span className="font-semibold">Workshop Checklist</span> — The interactive checklist lives on each project dashboard, so you can track preparation per-project with on-site/virtual toggle and persistent progress.
+            </p>
           </div>
         </section>
       </div>
