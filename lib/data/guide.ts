@@ -160,19 +160,18 @@ export const CHECKLIST: ChecklistItem[] = [
 export const GUIDE_STEPS: GuideStep[] = [
   {
     stepNumber: 1,
-    title: "Gather Client Information",
-    description: "Collect the essential details before creating the project.",
+    title: "Organize for Success",
+    description: "You likely already know the client — this step is about lining up the right people and setting the stage for a productive diagnostic.",
     timing: "3-4 weeks before workshop",
     substeps: [
-      "Identify client company name and primary contact",
-      "Determine industry vertical for industry-specific questions",
-      "Identify 4-8 stakeholders across roles: CMO/VP Marketing, CRM/Loyalty lead, Data/Analytics lead, MarTech/IT lead, Channel leads",
-      "Collect stakeholder names, emails, and titles",
-      "If running a workshop, create a project at /project/new. For quick internal discovery, use the standalone assessment at /assessment/new",
+      "Confirm the industry vertical — this unlocks industry-specific questions in the survey",
+      "Identify 4-8 stakeholders to participate — aim for a mix: marketing leadership, CRM/loyalty, data/analytics, technology, and channel leads",
+      "Gather stakeholder names, emails, and titles for the survey distribution",
+      "Align internally on who from Merkle should be involved (the tool will surface SME recommendations based on results)",
     ],
     tips: [
-      "More diverse roles = richer diagnostic. The tool shows where stakeholders diverge.",
-      "If you can't get 4+ stakeholders, the Quick Assessment is useful for internal discovery and triage.",
+      "More diverse roles = richer diagnostic. The tool highlights where stakeholders diverge — that's some of the most valuable signal.",
+      "If you can't get 4+ stakeholders, the Quick Assessment (/assessment/new) is useful for internal discovery and triage before committing to a full workshop.",
     ],
   },
   {
