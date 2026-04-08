@@ -65,6 +65,9 @@ export default function HomePage() {
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">
               Library
             </a>
+            <a href="/badges" className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">
+              Badges
+            </a>
             <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">
               Admin
             </a>

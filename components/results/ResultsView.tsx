@@ -15,6 +15,7 @@ interface ResultsViewProps {
   results: DiagnosticResults;
   shareId: string;
   responses?: ResponseItem[];
+  isProjectAssessment?: boolean;
 }
 
 const ALL_QUESTIONS = [...CORE_QUESTIONS, ...INDUSTRY_QUESTIONS];
@@ -24,7 +25,7 @@ function getQuestionText(questionId: string | number): string {
   return q?.text ?? `Question ${questionId}`;
 }
 
-export function ResultsView({ results, shareId, responses = [] }: ResultsViewProps) {
+export function ResultsView({ results, shareId, responses = [], isProjectAssessment = false }: ResultsViewProps) {
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const [sharecopied, setShareCopied] = useState(false);
   const [exportingPptx, setExportingPptx] = useState(false);
@@ -164,6 +165,15 @@ export function ResultsView({ results, shareId, responses = [] }: ResultsViewPro
             {assessment.respondentName}
           </p>
         </div>
+
+        {/* Project banner — individual stakeholder results link back to project */}
+        {isProjectAssessment && (
+          <div className="mb-6 bg-blue-50 border border-blue-100 rounded-xl px-5 py-3.5 flex items-center justify-between">
+            <p className="text-sm text-blue-800">
+              This is an individual stakeholder assessment. Aggregated results and the workshop agenda are on the project dashboard.
+            </p>
+          </div>
+        )}
 
         {/* Framing text */}
         <Card className="mb-6">

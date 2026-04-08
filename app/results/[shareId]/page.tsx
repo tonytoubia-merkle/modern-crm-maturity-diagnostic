@@ -59,5 +59,7 @@ export default async function ResultsPage({ params }: PageProps) {
 
   const results = buildDiagnosticResults(normalizedAssessment, responses);
 
-  return <ResultsView results={results} shareId={params.shareId} responses={responses} />;
+  const isProjectAssessment = !!assessment.project_id;
+
+  return <ResultsView results={results} shareId={params.shareId} responses={responses} isProjectAssessment={isProjectAssessment} />;
 }
