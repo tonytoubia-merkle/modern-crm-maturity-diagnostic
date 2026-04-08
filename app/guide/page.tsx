@@ -13,7 +13,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function GuidePage() {
   const [expandedStep, setExpandedStep] = useState<number | null>(1);
-  const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
+  const [expandedEmails, setExpandedEmails] = useState<Set<string>>(new Set());
   const [checklistFormat, setChecklistFormat] = useState<"onsite" | "virtual">("onsite");
   const [checked, setChecked] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState<string | null>(null);
@@ -113,86 +113,57 @@ export default function GuidePage() {
                       )}
 
                       {emailTemplate && (
-                        <div className="border border-slate-200 rounded-lg p-4 bg-slate-50">
-                          <div className="flex items-center justify-between mb-2">
-                            <p className="text-xs font-semibold text-slate-500">
-                              Email Template: {emailTemplate.name}
-                            </p>
-                            <button
-                              onClick={() => copyToClipboard(
-                                `Subject: ${emailTemplate.subject}\n\n${emailTemplate.body}`,
-                                emailTemplate.id
-                              )}
-                              className="text-xs font-medium hover:underline"
-                              style={{ color: "#00205B" }}
-                            >
-                              {copied === emailTemplate.id ? "Copied!" : "Copy to clipboard"}
-                            </button>
-                          </div>
-                          <p className="text-xs text-slate-600 font-mono bg-white border border-slate-100 rounded px-3 py-2 mb-1">
-                            Subject: {emailTemplate.subject}
-                          </p>
-                          <p className="text-[10px] text-slate-400 italic">{emailTemplate.usage}</p>
+                        <div className="border border-slate-200 rounded-lg bg-slate-50 overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={() => setExpandedEmails((prev) => {
+                              const next = new Set(prev);
+                              next.has(emailTemplate.id) ? next.delete(emailTemplate.id) : next.add(emailTemplate.id);
+                              return next;
+                            })}
+                            className="w-full text-left px-4 py-3 flex items-center justify-between"
+                          >
+                            <div>
+                              <p className="text-xs font-semibold text-slate-700">
+                                Email: {emailTemplate.name}
+                              </p>
+                              <p className="text-[10px] text-slate-400 mt-0.5">
+                                Subject: {emailTemplate.subject}
+                              </p>
+                            </div>
+                            <span className="text-[10px] font-medium" style={{ color: "#00205B" }}>
+                              {expandedEmails.has(emailTemplate.id) ? "Collapse" : "Expand to copy"}
+                            </span>
+                          </button>
+                          {expandedEmails.has(emailTemplate.id) && (
+                            <div className="px-4 pb-4 space-y-2">
+                              <div className="flex justify-end">
+                                <button
+                                  onClick={() => copyToClipboard(
+                                    `Subject: ${emailTemplate.subject}\n\n${emailTemplate.body}`,
+                                    emailTemplate.id
+                                  )}
+                                  className="text-xs font-medium px-3 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition-colors"
+                                  style={{ color: "#00205B" }}
+                                >
+                                  {copied === emailTemplate.id ? "Copied!" : "Copy Full Email"}
+                                </button>
+                              </div>
+                              <pre className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap bg-white border border-slate-100 rounded-lg p-3 font-sans">
+                                {emailTemplate.body}
+                              </pre>
+                              <p className="text-[10px] text-slate-400 italic">{emailTemplate.usage}</p>
+                              <div className="flex flex-wrap gap-1">
+                                {emailTemplate.placeholders.map((p) => (
+                                  <span key={p} className="text-[9px] font-mono px-1 py-0.5 rounded bg-amber-50 text-amber-600 border border-amber-100">
+                                    {p}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── Email Templates ── */}
-        <section className="mb-14">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Email Templates</h2>
-          <div className="space-y-2">
-            {EMAIL_TEMPLATES.map((tmpl) => {
-              const isOpen = expandedEmail === tmpl.id;
-              return (
-                <div key={tmpl.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-                  <button
-                    type="button"
-                    className="w-full text-left px-5 py-3.5 flex items-center justify-between"
-                    onClick={() => setExpandedEmail(isOpen ? null : tmpl.id)}
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{tmpl.name}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">Subject: {tmpl.subject}</p>
-                    </div>
-                    <svg
-                      className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-5 pb-5 border-t border-slate-100 pt-4">
-                      <div className="flex justify-end mb-2">
-                        <button
-                          onClick={() => copyToClipboard(
-                            `Subject: ${tmpl.subject}\n\n${tmpl.body}`,
-                            `email-${tmpl.id}`
-                          )}
-                          className="text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-                          style={{ color: "#00205B" }}
-                        >
-                          {copied === `email-${tmpl.id}` ? "Copied!" : "Copy Full Email"}
-                        </button>
-                      </div>
-                      <pre className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50 border border-slate-100 rounded-lg p-4 font-sans">
-                        {tmpl.body}
-                      </pre>
-                      <p className="text-[10px] text-slate-400 mt-2 italic">{tmpl.usage}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        {tmpl.placeholders.map((p) => (
-                          <span key={p} className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-100">
-                            {p}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   )}
                 </div>

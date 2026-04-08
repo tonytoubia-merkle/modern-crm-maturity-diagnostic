@@ -40,28 +40,7 @@ export default function NewProjectPage() {
     const { id, shareId: sid } = await res.json();
     setProjectId(id);
     setShareId(sid);
-    setMode(data.mode);
-
-    // Lite mode: redirect straight to assessment
-    if (data.mode === "lite") {
-      // Create a single assessment under this project
-      const aRes = await fetch("/api/assessments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientName: data.clientName,
-          clientCompany: data.clientCompany,
-          respondentName: data.createdByName,
-          repEmail: data.createdByEmail,
-          isRepMode: true,
-          industry: resolvedIndustry,
-          projectId: id,
-        }),
-      });
-      if (!aRes.ok) throw new Error("Failed to create assessment");
-      const { shareId: assessmentShareId } = await aRes.json();
-      window.location.href = `/assessment/resume/${assessmentShareId}`;
-    }
+    setMode("workshop");
   };
 
   return (
@@ -81,14 +60,14 @@ export default function NewProjectPage() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
           {!projectId ? (
             <ProjectSetupForm onSubmit={handleCreate} />
-          ) : mode === "workshop" ? (
+          ) : (
             <StakeholderManager
               projectId={projectId}
               onDone={() => {
                 window.location.href = `/project/${shareId}`;
               }}
             />
-          ) : null}
+          )}
         </div>
       </div>
     </div>

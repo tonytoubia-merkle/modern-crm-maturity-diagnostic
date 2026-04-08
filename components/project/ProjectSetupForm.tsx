@@ -27,7 +27,7 @@ export function ProjectSetupForm({ onSubmit }: ProjectSetupFormProps) {
     industry: "",
     createdByName: "",
     createdByEmail: "",
-    mode: "workshop",
+    mode: "workshop", // Projects are always workshop mode
     surveyPassword: "",
   });
   const [loading, setLoading] = useState(false);
@@ -63,58 +63,19 @@ export function ProjectSetupForm({ onSubmit }: ProjectSetupFormProps) {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">Create a New Project</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Create a Workshop Project</h2>
         <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-          Set up a diagnostic project for your client. Choose between a quick assessment
-          you complete yourself, or a multi-stakeholder workshop with pre-work surveys.
+          Set up a diagnostic project for your client. You&apos;ll distribute pre-work
+          surveys to multiple stakeholders, aggregate the results, and generate a
+          structured workshop agenda with facilitation guides and Miro boards.
+        </p>
+        <p className="mt-1.5 text-xs text-slate-400">
+          For quick internal discovery without a workshop, use the{" "}
+          <a href="/assessment/new" className="underline hover:text-slate-600">Quick Assessment</a> instead.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Mode selection */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-slate-700">
-            Engagement Mode
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setData({ ...data, mode: "lite" })}
-              className={`text-left p-4 rounded-xl border-2 transition-all ${
-                data.mode === "lite"
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-slate-200 bg-white hover:border-blue-300"
-              }`}
-            >
-              <p className={`font-semibold text-sm ${data.mode === "lite" ? "text-blue-700" : "text-slate-800"}`}>
-                Quick Assessment
-              </p>
-              <p className="text-xs text-slate-500 mt-1">
-                You complete the assessment on behalf of or alongside the client. Single respondent.
-              </p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setData({ ...data, mode: "workshop" })}
-              className={`text-left p-4 rounded-xl border-2 transition-all relative ${
-                data.mode === "workshop"
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-slate-200 bg-white hover:border-blue-300"
-              }`}
-            >
-              <span className="absolute -top-2 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: "#00205B", color: "white" }}>
-                Recommended
-              </span>
-              <p className={`font-semibold text-sm ${data.mode === "workshop" ? "text-blue-700" : "text-slate-800"}`}>
-                Workshop Mode
-              </p>
-              <p className="text-xs text-slate-500 mt-1">
-                Distribute surveys to multiple client stakeholders. Aggregate results into a structured workshop.
-              </p>
-            </button>
-          </div>
-        </div>
-
         {/* Client info */}
         <Input
           id="clientName"
@@ -182,22 +143,20 @@ export function ProjectSetupForm({ onSubmit }: ProjectSetupFormProps) {
           />
         </div>
 
-        {/* Survey password (workshop mode only) */}
-        {data.mode === "workshop" && (
-          <Input
-            id="surveyPassword"
-            label="Survey Password (optional)"
-            type="text"
-            placeholder="Leave blank for open access"
-            value={data.surveyPassword}
-            onChange={(e) => setData({ ...data, surveyPassword: e.target.value })}
-            hint="If set, stakeholders must enter this password to access their survey."
-          />
-        )}
+        {/* Survey password */}
+        <Input
+          id="surveyPassword"
+          label="Survey Password (optional)"
+          type="text"
+          placeholder="Leave blank for open access"
+          value={data.surveyPassword}
+          onChange={(e) => setData({ ...data, surveyPassword: e.target.value })}
+          hint="If set, stakeholders must enter this password to access their survey."
+        />
 
         <div className="pt-2">
           <Button type="submit" size="lg" loading={loading}>
-            {data.mode === "workshop" ? "Create Project & Add Stakeholders →" : "Create Project & Start Assessment →"}
+            Create Project & Add Stakeholders →
           </Button>
         </div>
       </form>
