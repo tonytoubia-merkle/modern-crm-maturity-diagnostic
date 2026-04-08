@@ -25,115 +25,147 @@ function BoulderChase({ stats, newBadge }: { stats: UserStats; newBadge: string 
     const H = canvas.height;
     const f = frame;
 
-    // Clear
+    // Clear — dark cave
     ctx.fillStyle = "#1a1a2e";
     ctx.fillRect(0, 0, W, H);
 
     // Ground
     ctx.fillStyle = "#3d2b1f";
-    ctx.fillRect(0, H - 30, W, 30);
-    // Ground texture
+    ctx.fillRect(0, H - 28, W, 28);
     ctx.fillStyle = "#4a3728";
     for (let x = 0; x < W; x += 12) {
-      ctx.fillRect(x + ((f * 3) % 12), H - 30, 6, 2);
-      ctx.fillRect(x + 6 + ((f * 3) % 12), H - 24, 4, 2);
+      ctx.fillRect(x + ((f * 3) % 12), H - 28, 6, 2);
     }
 
     // Ceiling stalactites
     ctx.fillStyle = "#2d2d44";
-    for (let x = 0; x < W; x += 40) {
-      const h = 8 + Math.sin(x * 0.1) * 6;
-      ctx.fillRect(x + ((f * 2) % 40), 0, 6, h);
+    for (let x = 0; x < W; x += 35) {
+      const h = 6 + Math.sin(x * 0.15) * 5;
+      ctx.fillRect(x + ((f * 2) % 35), 0, 5, h);
     }
 
-    // Boulder (chasing from left)
-    const boulderX = 30 + Math.sin(f * 0.15) * 3;
-    const boulderY = H - 55;
+    // ── BOULDER (rolls right to left continuously) ──
+    const cycle = 120; // frames per full crossing
+    const boulderProgress = (f % cycle) / cycle; // 0 to 1
+    const boulderX = W + 30 - boulderProgress * (W + 80); // right edge to off-left
+    const boulderY = H - 50;
     const boulderR = 22;
+    const rotation = f * 0.2;
+
+    // Shadow
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.beginPath();
+    ctx.ellipse(boulderX, H - 28, boulderR, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Body
     ctx.fillStyle = "#7c6f64";
     ctx.beginPath();
     ctx.arc(boulderX, boulderY, boulderR, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "#5c524a";
     ctx.beginPath();
-    ctx.arc(boulderX - 4, boulderY - 4, boulderR - 4, 0, Math.PI * 2);
+    ctx.arc(boulderX - 3, boulderY - 3, boulderR - 5, 0, Math.PI * 2);
     ctx.fill();
-    // Boulder crack lines
+    // Rotating cracks
+    ctx.save();
+    ctx.translate(boulderX, boulderY);
+    ctx.rotate(rotation);
     ctx.strokeStyle = "#4a423c";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(boulderX - 8, boulderY - 10);
-    ctx.lineTo(boulderX + 5, boulderY + 3);
-    ctx.moveTo(boulderX + 2, boulderY - 12);
-    ctx.lineTo(boulderX - 3, boulderY + 8);
+    ctx.moveTo(-10, -8); ctx.lineTo(6, 4);
+    ctx.moveTo(3, -12); ctx.lineTo(-4, 9);
+    ctx.moveTo(-7, 5); ctx.lineTo(8, -3);
     ctx.stroke();
-    // "TRAPPED VALUE" text on boulder
+    ctx.restore();
+    // Label
     ctx.fillStyle = "#b8a89a";
     ctx.font = "bold 5px monospace";
     ctx.textAlign = "center";
     ctx.fillText("TRAPPED", boulderX, boulderY - 2);
     ctx.fillText("VALUE", boulderX, boulderY + 5);
+    // Dust trail behind boulder
+    ctx.fillStyle = "rgba(180,160,130,0.3)";
+    for (let i = 0; i < 4; i++) {
+      ctx.fillRect(boulderX + boulderR + 3 + i * 6, boulderY + 8 + Math.random() * 8, 3, 2);
+    }
 
-    // Indy (running right)
-    const indyX = 110 + Math.sin(f * 0.2) * 2;
-    const indyY = H - 32;
+    // ── INDY (center, jumps over the boulder as it passes) ──
+    const indyBaseX = W / 2 - 10;
+    const indyGroundY = H - 30;
+
+    // Calculate jump: Indy jumps when boulder is near
+    const distToBoulder = Math.abs(boulderX - indyBaseX);
+    const jumpZone = 50; // start jumping when boulder within 50px
+    let jumpHeight = 0;
+    if (distToBoulder < jumpZone) {
+      const jumpProgress = 1 - distToBoulder / jumpZone;
+      jumpHeight = Math.sin(jumpProgress * Math.PI) * 35; // arc up and down
+    }
+
+    const indyY = indyGroundY - jumpHeight;
+    const isJumping = jumpHeight > 5;
     const runCycle = f % 4;
 
     // Hat
     ctx.fillStyle = "#5c3a1e";
-    ctx.fillRect(indyX - 5, indyY - 18, 12, 3);
-    ctx.fillRect(indyX - 3, indyY - 22, 8, 4);
+    ctx.fillRect(indyBaseX - 6, indyY - 18, 14, 3);
+    ctx.fillRect(indyBaseX - 3, indyY - 22, 8, 5);
 
     // Head
     ctx.fillStyle = "#e8c39e";
-    ctx.fillRect(indyX, indyY - 14, 6, 6);
+    ctx.fillRect(indyBaseX, indyY - 14, 6, 6);
 
-    // Body (jacket)
+    // Body
     ctx.fillStyle = "#8b6914";
-    ctx.fillRect(indyX - 1, indyY - 8, 8, 6);
+    ctx.fillRect(indyBaseX - 1, indyY - 8, 8, 6);
 
-    // Legs (running animation)
+    // Legs
     ctx.fillStyle = "#4a3728";
-    if (runCycle < 2) {
-      ctx.fillRect(indyX, indyY - 2, 3, 4);
-      ctx.fillRect(indyX + 4, indyY - 1, 3, 3);
+    if (isJumping) {
+      // Tucked legs mid-jump
+      ctx.fillRect(indyBaseX - 1, indyY - 2, 4, 3);
+      ctx.fillRect(indyBaseX + 4, indyY - 2, 4, 3);
+    } else if (runCycle < 2) {
+      ctx.fillRect(indyBaseX, indyY - 2, 3, 4);
+      ctx.fillRect(indyBaseX + 4, indyY - 1, 3, 3);
     } else {
-      ctx.fillRect(indyX + 1, indyY - 1, 3, 3);
-      ctx.fillRect(indyX + 3, indyY - 2, 3, 4);
+      ctx.fillRect(indyBaseX + 1, indyY - 1, 3, 3);
+      ctx.fillRect(indyBaseX + 3, indyY - 2, 3, 4);
     }
 
-    // Whip (trailing behind)
+    // Whip (swings up during jump)
     ctx.strokeStyle = "#5c3a1e";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(indyX - 2, indyY - 6);
-    const whipWave = Math.sin(f * 0.5) * 8;
-    ctx.quadraticCurveTo(indyX - 15, indyY - 10 + whipWave, indyX - 25, indyY - 5 + whipWave * 0.5);
+    ctx.moveTo(indyBaseX + 8, indyY - 6);
+    const whipY = isJumping ? indyY - 25 : indyY - 10 + Math.sin(f * 0.5) * 5;
+    ctx.quadraticCurveTo(indyBaseX + 20, whipY, indyBaseX + 35, indyY - 4);
     ctx.stroke();
 
-    // Dust particles behind Indy
-    ctx.fillStyle = "rgba(180, 160, 130, 0.4)";
-    for (let i = 0; i < 5; i++) {
-      const dx = indyX - 10 - Math.random() * 20;
-      const dy = indyY - Math.random() * 8;
-      ctx.fillRect(dx + ((f * 2) % 10), dy, 2, 2);
+    // Jump shadow on ground
+    if (isJumping) {
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.beginPath();
+      ctx.ellipse(indyBaseX + 3, H - 29, 8, 2, 0, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    // Treasure ahead (right side)
-    const treasureX = W - 50;
-    ctx.fillStyle = "#ffd700";
+    // ── GOLD TREASURE (far right, static) ──
+    const treasureX = W - 35;
     const glow = Math.sin(f * 0.2) * 0.3 + 0.7;
     ctx.globalAlpha = glow;
-    ctx.fillRect(treasureX, H - 42, 10, 10);
+    ctx.fillStyle = "#4a3728";
+    ctx.fillRect(treasureX - 2, H - 34, 14, 6);
+    ctx.fillStyle = "#ffd700";
+    ctx.fillRect(treasureX, H - 42, 10, 8);
     ctx.fillStyle = "#ffec44";
-    ctx.fillRect(treasureX + 2, H - 40, 6, 6);
+    ctx.fillRect(treasureX + 2, H - 40, 6, 4);
     ctx.globalAlpha = 1;
-
-    // Sparkle on treasure
     if (f % 8 < 4) {
       ctx.fillStyle = "#fff";
       ctx.fillRect(treasureX + 4, H - 48, 2, 2);
-      ctx.fillRect(treasureX + 10, H - 44, 2, 2);
+      ctx.fillRect(treasureX + 10, H - 45, 2, 2);
     }
 
     // Badge award flash
