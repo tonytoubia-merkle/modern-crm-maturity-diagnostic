@@ -169,7 +169,7 @@ function BoulderChase({ stats, newBadge }: { stats: UserStats; newBadge: string 
 
 export default function BadgesPage() {
   const [stats, setStats] = useState<UserStats>({ assessments: 0, projects: 0, stakeholders: 0, opportunities: 0 });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [searched, setSearched] = useState(false);
   const [newBadge, setNewBadge] = useState<string | null>(null);
