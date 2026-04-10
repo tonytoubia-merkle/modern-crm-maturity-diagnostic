@@ -98,6 +98,9 @@ interface ChatViewProps {
   respondentName: string;
   industry: Industry | null;
   clientFacing?: boolean;
+  onAssistantComplete?: (text: string) => void;
+  externalSend?: (text: string) => void; // set by parent to wire up voice
+  setSendRef?: (fn: (text: string) => void) => void; // parent calls this to get sendMessage
 }
 
 export function ChatView({
@@ -107,6 +110,8 @@ export function ChatView({
   respondentName,
   industry,
   clientFacing = false,
+  onAssistantComplete,
+  setSendRef,
 }: ChatViewProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -251,6 +256,11 @@ export function ChatView({
         )
       );
 
+      // Notify parent for TTS
+      if (onAssistantComplete && displayContent) {
+        onAssistantComplete(displayContent);
+      }
+
       // Process score updates
       if (scoreUpdate) {
         setScores((prev) => {
@@ -311,6 +321,13 @@ export function ChatView({
       inputRef.current?.focus();
     }
   }, [messages, scores, skipped, phase, industry, clientName, respondentName]);
+
+  // Expose sendMessage to parent (for voice integration)
+  useEffect(() => {
+    if (setSendRef) {
+      setSendRef((text: string) => sendMessage(text));
+    }
+  }, [setSendRef, sendMessage]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

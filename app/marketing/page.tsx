@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChatView } from "@/components/chat/ChatView";
+import { VoiceChat } from "@/components/chat/VoiceChat";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import type { Industry } from "@/lib/types";
 
@@ -56,7 +56,7 @@ export default function MarketingPage() {
             </div>
           </div>
         </div>
-        <ChatView
+        <VoiceChat
           assessmentId={assessmentId}
           shareId={shareId}
           clientName={orgName}
