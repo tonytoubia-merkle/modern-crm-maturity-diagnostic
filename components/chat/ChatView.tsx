@@ -97,6 +97,7 @@ interface ChatViewProps {
   clientName: string;
   respondentName: string;
   industry: Industry | null;
+  clientFacing?: boolean;
 }
 
 export function ChatView({
@@ -105,6 +106,7 @@ export function ChatView({
   clientName,
   respondentName,
   industry,
+  clientFacing = false,
 }: ChatViewProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -114,12 +116,23 @@ export function ChatView({
   const [showScoreMap, setShowScoreMap] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(false);
+  const [emailGate, setEmailGate] = useState(false);
+  const [gateEmail, setGateEmail] = useState("");
+  const [averages, setAverages] = useState<{ overall: Record<string, number>; industry: Record<string, number> | null } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const totalQuestions = getTotalQuestionCount(industry);
   const phase = calculatePhase(scores, skipped, totalQuestions);
   const allCovered = scores.size + skipped.size >= totalQuestions;
+
+  // Fetch averages when all covered (for client-facing comparison)
+  useEffect(() => {
+    if (allCovered && !averages) {
+      const url = industry ? `/api/averages?industry=${industry}` : "/api/averages";
+      fetch(url).then((r) => r.json()).then(setAverages).catch(() => {});
+    }
+  }, [allCovered, averages, industry]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -393,24 +406,62 @@ export function ChatView({
           {/* Input */}
           <div className="border-t border-slate-200 px-4 py-3 bg-white">
             {allCovered && !confirming ? (
-              <div className="flex items-center gap-3">
-                <p className="text-sm text-slate-600 flex-1">
-                  All questions covered. Ready to generate results.
-                </p>
-                <button
-                  onClick={() => setShowScoreMap(true)}
-                  className="text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
-                >
-                  Review Scores
-                </button>
-                <button
-                  onClick={handleConfirm}
-                  className="text-xs font-semibold px-4 py-2 rounded-lg text-white hover:opacity-90"
-                  style={{ backgroundColor: "#00205B" }}
-                >
-                  Generate Results →
-                </button>
-              </div>
+              clientFacing && !emailGate ? (
+                /* Client-facing email gate */
+                <div className="space-y-3">
+                  <p className="text-sm text-slate-700 font-medium">
+                    Your assessment is complete. Enter your email to see your results and how you compare to industry benchmarks.
+                  </p>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      placeholder="you@company.com"
+                      value={gateEmail}
+                      onChange={(e) => setGateEmail(e.target.value)}
+                      className="flex-1 text-sm px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && gateEmail.includes("@")) {
+                          setEmailGate(true);
+                          setShowScoreMap(true);
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        if (gateEmail.includes("@")) {
+                          setEmailGate(true);
+                          setShowScoreMap(true);
+                        }
+                      }}
+                      disabled={!gateEmail.includes("@")}
+                      className="px-5 py-2.5 text-sm font-semibold text-white rounded-lg hover:opacity-90 disabled:opacity-40"
+                      style={{ backgroundColor: "#00205B" }}
+                    >
+                      View Results
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Internal or post-gate */
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-slate-600 flex-1">
+                    All questions covered. Ready to generate results.
+                  </p>
+                  <button
+                    onClick={() => setShowScoreMap(true)}
+                    className="text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  >
+                    Review Scores
+                  </button>
+                  <button
+                    onClick={handleConfirm}
+                    className="text-xs font-semibold px-4 py-2 rounded-lg text-white hover:opacity-90"
+                    style={{ backgroundColor: "#00205B" }}
+                  >
+                    Generate Results →
+                  </button>
+                </div>
+              )
             ) : (
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <textarea
@@ -496,6 +547,8 @@ export function ChatView({
           onConfirm={handleConfirm}
           confirming={confirming}
           allCovered={allCovered}
+          averages={averages}
+          clientFacing={clientFacing}
         />
       )}
     </>
