@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
-import { CORE_QUESTIONS, QUESTIONS_BY_CAPABILITY, CAPABILITIES_ORDER } from "@/lib/data/questions";
+import { CORE_QUESTIONS, INDUSTRY_QUESTIONS } from "@/lib/data/questions";
 import type { InferredScore } from "@/lib/chat/types";
 import type { Capability, ResponseItem } from "@/lib/types";
+
+// Build a lookup: questionId -> { capability, isIndustry }
+const QUESTION_META: Record<string, { capability: Capability; isIndustry: boolean }> = {};
+for (const q of CORE_QUESTIONS) {
+  QUESTION_META[String(q.id)] = { capability: q.capability, isIndustry: false };
+}
+for (const q of INDUSTRY_QUESTIONS) {
+  QUESTION_META[String(q.id)] = { capability: q.capability as Capability, isIndustry: true };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,13 +28,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert InferredScore map to ResponseItem array
-    const responses: ResponseItem[] = Object.values(scores).map((s) => ({
-      questionId: s.questionId,
-      score: Math.round(s.score),
-      capability: s.capability,
-      isIndustryQuestion: s.isIndustryQuestion,
-      notes: `[AI-inferred] ${s.evidence}`,
-    }));
+    // Use server-side question metadata for capability (don't trust client)
+    const responses: ResponseItem[] = Object.entries(scores)
+      .filter(([_, s]) => s && typeof s.score === "number")
+      .map(([qId, s]) => {
+        const meta = QUESTION_META[qId] || QUESTION_META[String(s.questionId)];
+        return {
+          questionId: /^\d+$/.test(qId) ? Number(qId) : qId,
+          score: Math.round(s.score),
+          capability: meta?.capability || (s.capability as Capability) || "identity",
+          isIndustryQuestion: meta?.isIndustry ?? s.isIndustryQuestion ?? false,
+          notes: s.evidence ? `[AI-inferred] ${s.evidence}` : undefined,
+        };
+      });
 
     if (responses.length === 0) {
       return NextResponse.json({ error: "No scores to save" }, { status: 400 });
@@ -82,9 +97,10 @@ export async function POST(request: NextRequest) {
       maturityStage,
     });
   } catch (err) {
-    console.error("POST /api/chat/confirm error:", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("POST /api/chat/confirm error:", msg);
     return NextResponse.json(
-      { error: "Failed to confirm scores" },
+      { error: `Failed to confirm scores: ${msg}` },
       { status: 500 }
     );
   }
