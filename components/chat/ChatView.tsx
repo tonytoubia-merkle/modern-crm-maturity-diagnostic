@@ -9,6 +9,88 @@ import { CORE_QUESTIONS, QUESTIONS_BY_CAPABILITY, CAPABILITIES_ORDER } from "@/l
 import type { ChatMessage, InferredScore, ChatPhase } from "@/lib/chat/types";
 import type { Industry, Capability } from "@/lib/types";
 
+/**
+ * Splits an assistant message into acknowledgement (observations/insights)
+ * and questions (follow-up prompts). Renders them with different UI treatments.
+ */
+function AssistantMessage({ content }: { content: string }) {
+  // Split into paragraphs
+  const paragraphs = content.split(/\n\n+/).filter((p) => p.trim());
+
+  if (paragraphs.length <= 1) {
+    return (
+      <div className="bg-slate-100 rounded-2xl rounded-bl-md px-4 py-3 text-sm leading-relaxed text-slate-800">
+        {content}
+      </div>
+    );
+  }
+
+  // Heuristic: paragraphs containing "?" are likely questions/prompts
+  // Everything before the first question paragraph is acknowledgement
+  const ackParagraphs: string[] = [];
+  const questionParagraphs: string[] = [];
+  let foundQuestion = false;
+
+  for (const p of paragraphs) {
+    const hasQuestion = p.includes("?") || /^(could you|can you|tell me|how does|what about|i'd love|let's)/i.test(p.trim());
+    if (hasQuestion && !foundQuestion) {
+      foundQuestion = true;
+    }
+    if (foundQuestion) {
+      questionParagraphs.push(p);
+    } else {
+      ackParagraphs.push(p);
+    }
+  }
+
+  // If no clear split, just render as one block
+  if (ackParagraphs.length === 0 || questionParagraphs.length === 0) {
+    return (
+      <div className="bg-slate-100 rounded-2xl rounded-bl-md px-4 py-3 text-sm leading-relaxed text-slate-800">
+        {paragraphs.map((p, i) => (
+          <p key={i} className={i > 0 ? "mt-2" : ""}>{p}</p>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {/* Acknowledgement — warm, conversational */}
+      <div className="bg-slate-100 rounded-2xl rounded-bl-md px-4 py-3 text-sm leading-relaxed text-slate-700">
+        {ackParagraphs.map((p, i) => (
+          <p key={i} className={i > 0 ? "mt-2" : ""}>{p}</p>
+        ))}
+      </div>
+      {/* Questions — structured, distinct */}
+      <div className="rounded-xl px-4 py-3 text-sm leading-relaxed border-l-[3px]" style={{ borderColor: "#00205B", backgroundColor: "#f0f4ff" }}>
+        {questionParagraphs.map((p, i) => {
+          // Check if the paragraph contains numbered items or bullet-like content
+          const lines = p.split(/\n/).filter((l) => l.trim());
+          const isList = lines.length > 1 && lines.every((l) => /^\d+[\.\)]\s|^[-•]\s/.test(l.trim()));
+
+          if (isList) {
+            return (
+              <ul key={i} className={`space-y-1 ${i > 0 ? "mt-2" : ""}`}>
+                {lines.map((l, li) => (
+                  <li key={li} className="flex gap-2 text-slate-700">
+                    <span className="flex-shrink-0" style={{ color: "#00205B" }}>
+                      {l.match(/^\d+/)?.[0] ? `${l.match(/^\d+/)?.[0]}.` : "•"}
+                    </span>
+                    <span>{l.replace(/^\d+[\.\)]\s*|^[-•]\s*/, "")}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+
+          return <p key={i} className={`text-slate-700 ${i > 0 ? "mt-2" : ""}`}>{p}</p>;
+        })}
+      </div>
+    </div>
+  );
+}
+
 interface ChatViewProps {
   assessmentId: string;
   shareId: string;
@@ -278,25 +360,31 @@ export function ChatView({
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
             {messages.filter((m) => m.role !== "user" || m.content).map((m) => (
-              <div
-                key={m.id}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                    m.role === "user"
-                      ? "bg-blue-600 text-white rounded-br-md"
-                      : "bg-slate-100 text-slate-800 rounded-bl-md"
-                  }`}
-                >
-                  {m.content || (
-                    <span className="inline-flex gap-1">
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </span>
-                  )}
-                </div>
+              <div key={m.id}>
+                {m.role === "user" ? (
+                  <div className="flex justify-end">
+                    <div className="max-w-[80%] rounded-2xl rounded-br-md px-4 py-3 text-sm leading-relaxed bg-blue-600 text-white">
+                      {m.content}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-start">
+                    <div className="max-w-[85%] space-y-2">
+                      {m.content ? (
+                        <AssistantMessage content={m.content} />
+                      ) : (
+                        <div className="bg-slate-100 rounded-2xl rounded-bl-md px-4 py-3">
+                          <span className="inline-flex gap-1.5 items-center">
+                            <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                            <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                            <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                            <span className="text-xs text-slate-400 ml-1">Thinking...</span>
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />
