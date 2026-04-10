@@ -99,8 +99,8 @@ interface ChatViewProps {
   industry: Industry | null;
   clientFacing?: boolean;
   onAssistantComplete?: (text: string) => void;
-  externalSend?: (text: string) => void; // set by parent to wire up voice
-  setSendRef?: (fn: (text: string) => void) => void; // parent calls this to get sendMessage
+  onAssistantSentence?: (sentence: string) => void; // called per sentence during streaming
+  setSendRef?: (fn: (text: string) => void) => void;
 }
 
 export function ChatView({
@@ -111,6 +111,7 @@ export function ChatView({
   industry,
   clientFacing = false,
   onAssistantComplete,
+  onAssistantSentence,
   setSendRef,
 }: ChatViewProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -207,6 +208,7 @@ export function ChatView({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let fullResponse = "";
+      let sentencesSpoken = 0; // track which sentences have been sent to TTS
       const assistantId = `assistant-${Date.now()}`;
 
       // Add empty assistant message that we'll stream into
@@ -239,6 +241,16 @@ export function ChatView({
                     : m
                 )
               );
+
+              // Pipe complete sentences to TTS during streaming
+              if (onAssistantSentence && displayContent) {
+                const sentences = displayContent.split(/(?<=[.!?])\s+/).filter((s: string) => s.trim().length > 5);
+                while (sentencesSpoken < sentences.length - 1) {
+                  // Only send sentences that are complete (not the last one which may be partial)
+                  onAssistantSentence(sentences[sentencesSpoken]);
+                  sentencesSpoken++;
+                }
+              }
             }
           } catch {
             // Skip unparseable chunks
@@ -256,7 +268,16 @@ export function ChatView({
         )
       );
 
-      // Notify parent for TTS
+      // Send any remaining sentences to TTS
+      if (onAssistantSentence && displayContent) {
+        const sentences = displayContent.split(/(?<=[.!?])\s+/).filter((s: string) => s.trim().length > 5);
+        while (sentencesSpoken < sentences.length) {
+          onAssistantSentence(sentences[sentencesSpoken]);
+          sentencesSpoken++;
+        }
+      }
+
+      // Notify parent
       if (onAssistantComplete && displayContent) {
         onAssistantComplete(displayContent);
       }

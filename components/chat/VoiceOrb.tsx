@@ -55,15 +55,12 @@ export function VoiceOrb({
 
   return (
     <div className="flex flex-col items-center gap-2 py-3">
-      {/* Live transcript */}
+      {/* Live transcript — compact single line */}
       {(state === "listening" || state === "countdown" || state === "paused") && (transcript || interimText) && (
-        <div className="max-w-md w-full px-4">
-          <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 leading-relaxed">
-            {transcript}
-            {interimText && (
-              <span className="text-slate-400">{transcript ? " " : ""}{interimText}</span>
-            )}
-          </div>
+        <div className="max-w-sm w-full px-4">
+          <p className="text-xs text-slate-500 truncate bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5">
+            {transcript}{interimText && <span className="text-slate-300"> {interimText}</span>}
+          </p>
         </div>
       )}
 

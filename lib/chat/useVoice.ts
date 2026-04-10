@@ -230,9 +230,72 @@ export function useVoice(options: UseVoiceOptions = {}) {
     setState("listening");
   }, []);
 
-  const speak = useCallback((text: string) => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
+  const audioQueueRef = useRef<string[]>([]);
+  const playingRef = useRef(false);
+  const cancelledRef = useRef(false);
 
+  // Play a base64 PCM audio chunk via AudioContext
+  const playPcmAudio = useCallback((base64: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const raw = atob(base64);
+        const bytes = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+
+        // PCM 16-bit signed LE at 24kHz
+        const samples = new Int16Array(bytes.buffer);
+        const float32 = new Float32Array(samples.length);
+        for (let i = 0; i < samples.length; i++) {
+          float32[i] = samples[i] / 32768;
+        }
+
+        const ctx = new AudioContext({ sampleRate: 24000 });
+        const buffer = ctx.createBuffer(1, float32.length, 24000);
+        buffer.copyToChannel(float32, 0);
+
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.onended = () => { ctx.close(); resolve(); };
+        source.start();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }, []);
+
+  // Process the sentence queue
+  const processQueue = useCallback(async () => {
+    if (playingRef.current) return;
+    playingRef.current = true;
+    cancelledRef.current = false;
+
+    while (audioQueueRef.current.length > 0 && !cancelledRef.current) {
+      const sentence = audioQueueRef.current.shift()!;
+      try {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: sentence }),
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data.audio && !cancelledRef.current) {
+          await playPcmAudio(data.audio);
+        }
+      } catch {
+        // Skip failed sentence
+      }
+    }
+
+    playingRef.current = false;
+    if (!cancelledRef.current) {
+      setState("inactive");
+      setTimeout(() => startListening(), 300);
+    }
+  }, [playPcmAudio, startListening]);
+
+  const speak = useCallback((text: string) => {
     // Stop listening while speaking
     if (recognitionRef.current) {
       try { recognitionRef.current.stop(); } catch {}
@@ -242,7 +305,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
       intervalRef.current = null;
     }
 
-    // Strip markdown-like formatting for cleaner speech
+    // Strip markdown formatting
     const cleanText = text
       .replace(/\*\*([^*]+)\*\*/g, "$1")
       .replace(/\*([^*]+)\*/g, "$1")
@@ -250,31 +313,42 @@ export function useVoice(options: UseVoiceOptions = {}) {
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
       .replace(/<[^>]+>/g, "");
 
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.rate = 1.05;
-    utterance.pitch = 1.0;
+    // Split into sentences for incremental TTS
+    const sentences = cleanText
+      .split(/(?<=[.!?])\s+/)
+      .filter((s) => s.trim().length > 5);
 
-    // Try to pick a natural-sounding voice
-    const voices = speechSynthesis.getVoices();
-    const preferred = voices.find(
-      (v) => v.lang.startsWith("en") && (v.name.includes("Samantha") || v.name.includes("Google") || v.name.includes("Natural"))
-    );
-    if (preferred) utterance.voice = preferred;
+    if (sentences.length === 0) return;
 
-    utterance.onstart = () => setState("speaking");
-    utterance.onend = () => {
-      setState("inactive");
-      // Auto-start listening after speaking
-      setTimeout(() => startListening(), 300);
-    };
-    utterance.onerror = () => setState("inactive");
+    setState("speaking");
+    audioQueueRef.current = sentences;
+    processQueue();
+  }, [processQueue]);
 
-    speechSynthesis.speak(utterance);
-  }, [startListening]);
+  // Queue a single sentence for TTS (called during streaming)
+  const queueSentence = useCallback((sentence: string) => {
+    const clean = sentence.replace(/\*\*([^*]+)\*\*/g, "$1").replace(/<[^>]+>/g, "").trim();
+    if (clean.length < 5) return;
+
+    // Stop listening on first sentence
+    if (!playingRef.current) {
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch {}
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      setState("speaking");
+    }
+
+    audioQueueRef.current.push(clean);
+    if (!playingRef.current) processQueue();
+  }, [processQueue]);
 
   const cancelSpeech = useCallback(() => {
-    speechSynthesis?.cancel();
+    cancelledRef.current = true;
+    audioQueueRef.current = [];
     setState("inactive");
   }, []);
 
@@ -296,6 +370,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
     pauseCountdown,
     resumeCountdown,
     speak,
+    queueSentence,
     cancelSpeech,
   };
 }

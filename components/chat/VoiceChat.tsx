@@ -29,9 +29,10 @@ export function VoiceChat(props: VoiceChatProps) {
     },
   });
 
-  const handleAssistantComplete = useCallback((text: string) => {
+  // Queue individual sentences for TTS as they stream in
+  const handleSentence = useCallback((sentence: string) => {
     if (voiceMode && voice.isSupported) {
-      voice.speak(text);
+      voice.queueSentence(sentence);
     }
   }, [voiceMode, voice]);
 
@@ -72,7 +73,7 @@ export function VoiceChat(props: VoiceChatProps) {
       <div className="flex-1 min-h-0">
         <ChatView
           {...props}
-          onAssistantComplete={voiceMode ? handleAssistantComplete : undefined}
+          onAssistantSentence={voiceMode ? handleSentence : undefined}
           setSendRef={handleSetSendRef}
         />
       </div>
