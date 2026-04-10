@@ -71,9 +71,22 @@ export function ChatView({
     scores.forEach((v, k) => { scoresObj[k] = v; });
 
     try {
-      const apiMessages = isAutoStart
-        ? [{ role: "user" as const, content: "Please begin the assessment." }]
-        : newMessages.map((m) => ({ role: m.role, content: m.content }));
+      // Build API messages — always ensure it starts with a user message
+      // and alternates user/model (Gemini requirement)
+      let apiMessages: Array<{ role: "user" | "assistant"; content: string }>;
+      if (isAutoStart) {
+        apiMessages = [{ role: "user", content: "Please begin the assessment." }];
+      } else {
+        // Prepend the hidden auto-start user message so history is valid
+        apiMessages = [
+          { role: "user", content: "Please begin the assessment." },
+          ...newMessages.map((m) => ({ role: m.role, content: m.content })),
+        ];
+        // Ensure no two consecutive messages have the same role
+        apiMessages = apiMessages.filter((m, i) =>
+          i === 0 || m.role !== apiMessages[i - 1].role
+        );
+      }
 
       const res = await fetch("/api/chat", {
         method: "POST",
