@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.0-flash",
+      model: "gemini-2.5-flash-preview-04-17",
       systemInstruction: systemPrompt,
     });
 
@@ -90,9 +90,10 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err) {
-    console.error("POST /api/chat error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("POST /api/chat error:", message, err);
     return new Response(
-      JSON.stringify({ error: "Chat request failed" }),
+      JSON.stringify({ error: `Chat request failed: ${message}` }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
