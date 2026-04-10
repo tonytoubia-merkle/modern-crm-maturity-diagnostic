@@ -95,7 +95,7 @@ export default function HomePage() {
               New Project
             </a>
             <a
-              href="/assessment/new"
+              href="/assessment/chat"
               className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
             >
               Quick Assessment

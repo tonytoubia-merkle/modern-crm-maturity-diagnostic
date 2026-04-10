@@ -1,0 +1,402 @@
+"use client";
+
+import { useState, useRef, useEffect, useCallback } from "react";
+import { CoverageTracker } from "./CoverageTracker";
+import { ScoreMapModal } from "./ScoreMapModal";
+import { parseAssistantMessage } from "@/lib/chat/parseScores";
+import { calculatePhase, getTotalQuestionCount } from "@/lib/chat/coverageUtils";
+import { CORE_QUESTIONS, QUESTIONS_BY_CAPABILITY, CAPABILITIES_ORDER } from "@/lib/data/questions";
+import type { ChatMessage, InferredScore, ChatPhase } from "@/lib/chat/types";
+import type { Industry, Capability } from "@/lib/types";
+
+interface ChatViewProps {
+  assessmentId: string;
+  shareId: string;
+  clientName: string;
+  respondentName: string;
+  industry: Industry | null;
+}
+
+export function ChatView({
+  assessmentId,
+  shareId,
+  clientName,
+  respondentName,
+  industry,
+}: ChatViewProps) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [streaming, setStreaming] = useState(false);
+  const [scores, setScores] = useState<Map<string, InferredScore>>(new Map());
+  const [skipped, setSkipped] = useState<Set<string>>(new Set());
+  const [showScoreMap, setShowScoreMap] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [mobileSidebar, setMobileSidebar] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const totalQuestions = getTotalQuestionCount(industry);
+  const phase = calculatePhase(scores, skipped, totalQuestions);
+  const allCovered = scores.size + skipped.size >= totalQuestions;
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Auto-start conversation
+  useEffect(() => {
+    if (messages.length === 0) {
+      sendMessage("", true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const sendMessage = useCallback(async (userText: string, isAutoStart = false) => {
+    const newMessages = [...messages];
+    if (userText && !isAutoStart) {
+      newMessages.push({
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: userText,
+      });
+    }
+
+    setMessages(newMessages);
+    setInput("");
+    setStreaming(true);
+
+    // Prepare scores object for API
+    const scoresObj: Record<string, InferredScore> = {};
+    scores.forEach((v, k) => { scoresObj[k] = v; });
+
+    try {
+      const apiMessages = isAutoStart
+        ? [{ role: "user" as const, content: "Please begin the assessment." }]
+        : newMessages.map((m) => ({ role: m.role, content: m.content }));
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: apiMessages,
+          currentScores: scoresObj,
+          skipped: Array.from(skipped),
+          phase,
+          industry,
+          clientName,
+          respondentName,
+        }),
+      });
+
+      if (!res.ok || !res.body) throw new Error("Chat request failed");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let fullResponse = "";
+      const assistantId = `assistant-${Date.now()}`;
+
+      // Add empty assistant message that we'll stream into
+      setMessages((prev) => [
+        ...prev,
+        { id: assistantId, role: "assistant", content: "" },
+      ]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n").filter((l) => l.startsWith("data: "));
+
+        for (const line of lines) {
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.text) {
+              fullResponse += parsed.text;
+              // Show streamed content WITHOUT the scores block
+              const { displayContent } = parseAssistantMessage(fullResponse);
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? { ...m, content: displayContent }
+                    : m
+                )
+              );
+            }
+          } catch {
+            // Skip unparseable chunks
+          }
+        }
+      }
+
+      // Parse final response for scores
+      const { displayContent, scoreUpdate } = parseAssistantMessage(fullResponse);
+
+      // Update displayed message with clean content
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === assistantId ? { ...m, content: displayContent } : m
+        )
+      );
+
+      // Process score updates
+      if (scoreUpdate) {
+        setScores((prev) => {
+          const next = new Map(prev);
+          for (const update of scoreUpdate.updates) {
+            const qIdStr = String(update.questionId);
+            // Find the capability for this question
+            let capability: Capability = "identity";
+            let isIndustry = false;
+            const coreQ = CORE_QUESTIONS.find((q) => String(q.id) === qIdStr);
+            if (coreQ) {
+              capability = coreQ.capability;
+            } else {
+              // Industry question
+              isIndustry = true;
+              // Extract capability from industry questions data
+              for (const cap of CAPABILITIES_ORDER) {
+                // We'll default to the first matching capability
+                capability = cap;
+                break;
+              }
+            }
+
+            next.set(qIdStr, {
+              questionId: update.questionId,
+              score: update.score,
+              confidence: update.confidence,
+              evidence: update.evidence,
+              capability,
+              isIndustryQuestion: isIndustry,
+            });
+          }
+          return next;
+        });
+
+        if (scoreUpdate.skipped.length > 0) {
+          setSkipped((prev) => {
+            const next = new Set(prev);
+            for (const id of scoreUpdate.skipped) {
+              next.add(String(id));
+            }
+            return next;
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `error-${Date.now()}`,
+          role: "assistant",
+          content: "I encountered an issue. Please try sending your message again.",
+        },
+      ]);
+    } finally {
+      setStreaming(false);
+      inputRef.current?.focus();
+    }
+  }, [messages, scores, skipped, phase, industry, clientName, respondentName]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || streaming) return;
+    sendMessage(input.trim());
+  };
+
+  const handleConfirm = async () => {
+    setConfirming(true);
+    try {
+      const scoresObj: Record<string, InferredScore> = {};
+      scores.forEach((v, k) => { scoresObj[k] = v; });
+
+      const res = await fetch("/api/chat/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          assessmentId,
+          scores: scoresObj,
+          skipped: Array.from(skipped),
+        }),
+      });
+
+      if (!res.ok) throw new Error("Confirm failed");
+      const data = await res.json();
+      window.location.href = `/results/${data.shareId || shareId}`;
+    } catch (err) {
+      console.error("Confirm error:", err);
+      setConfirming(false);
+    }
+  };
+
+  const handleUpdateScore = (questionId: string, score: number) => {
+    setScores((prev) => {
+      const next = new Map(prev);
+      const existing = next.get(questionId);
+      if (existing) {
+        next.set(questionId, { ...existing, score });
+      } else {
+        // Find capability
+        const q = CORE_QUESTIONS.find((q) => String(q.id) === questionId);
+        next.set(questionId, {
+          questionId: Number(questionId),
+          score,
+          confidence: "high",
+          evidence: "Manually set during review",
+          capability: q?.capability || "identity",
+          isIndustryQuestion: false,
+        });
+      }
+      return next;
+    });
+  };
+
+  return (
+    <>
+      <div className="flex h-[calc(100vh-44px)]">
+        {/* Chat area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            {messages.filter((m) => m.role !== "user" || m.content).map((m) => (
+              <div
+                key={m.id}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-blue-600 text-white rounded-br-md"
+                      : "bg-slate-100 text-slate-800 rounded-bl-md"
+                  }`}
+                >
+                  {m.content || (
+                    <span className="inline-flex gap-1">
+                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="border-t border-slate-200 px-4 py-3 bg-white">
+            {allCovered && !confirming ? (
+              <div className="flex items-center gap-3">
+                <p className="text-sm text-slate-600 flex-1">
+                  All questions covered. Ready to generate results.
+                </p>
+                <button
+                  onClick={() => setShowScoreMap(true)}
+                  className="text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                >
+                  Review Scores
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  className="text-xs font-semibold px-4 py-2 rounded-lg text-white hover:opacity-90"
+                  style={{ backgroundColor: "#00205B" }}
+                >
+                  Generate Results →
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
+                  placeholder="Tell me about your CRM capabilities..."
+                  disabled={streaming}
+                  rows={1}
+                  className="flex-1 text-sm px-4 py-2.5 border border-slate-200 rounded-xl resize-none focus:outline-none focus:border-slate-400 transition-colors disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={streaming || !input.trim()}
+                  className="px-4 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-30 hover:opacity-90 transition-colors"
+                  style={{ backgroundColor: "#00205B" }}
+                >
+                  →
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar — coverage tracker (desktop) */}
+        <div className="hidden lg:block w-64 border-l border-slate-200 bg-white p-4 overflow-y-auto">
+          <CoverageTracker
+            scores={scores}
+            skipped={skipped}
+            totalQuestions={totalQuestions}
+            phase={phase}
+            onViewScoreMap={() => setShowScoreMap(true)}
+          />
+        </div>
+
+        {/* Mobile coverage badge */}
+        <button
+          onClick={() => setMobileSidebar(!mobileSidebar)}
+          className="lg:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xs font-bold text-white"
+          style={{ backgroundColor: "#00205B" }}
+        >
+          {scores.size + skipped.size}/{totalQuestions}
+        </button>
+
+        {/* Mobile sidebar overlay */}
+        {mobileSidebar && (
+          <div className="lg:hidden fixed inset-0 z-40">
+            <div className="absolute inset-0 bg-black/30" onClick={() => setMobileSidebar(false)} />
+            <div className="absolute right-0 top-0 bottom-0 w-72 bg-white shadow-xl p-4 overflow-y-auto">
+              <div className="flex justify-end mb-2">
+                <button onClick={() => setMobileSidebar(false)} className="text-slate-400">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <CoverageTracker
+                scores={scores}
+                skipped={skipped}
+                totalQuestions={totalQuestions}
+                phase={phase}
+                onViewScoreMap={() => { setMobileSidebar(false); setShowScoreMap(true); }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Score map modal */}
+      {showScoreMap && (
+        <ScoreMapModal
+          scores={scores}
+          skipped={skipped}
+          industry={industry}
+          onClose={() => setShowScoreMap(false)}
+          onUpdateScore={handleUpdateScore}
+          onConfirm={handleConfirm}
+          confirming={confirming}
+          allCovered={allCovered}
+        />
+      )}
+    </>
+  );
+}
