@@ -3,18 +3,16 @@
 import { BrandedChatPage } from "@/components/chat/BrandedChatPage";
 import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 
-// Cannes Lions gold: #C6992E / dentsu black
 const config: BrandConfig = {
   source: "cannes",
   navBg: "#0a0a0a",
   navLogo: (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/dentsu-logo-white.png" alt="dentsu" className="h-5 w-auto" />
-      <span className="text-white/30 text-xs">×</span>
-      <span className="text-xs font-light tracking-widest uppercase" style={{ color: "#C6992E" }}>
-        Cannes Lions
-      </span>
+      <span className="text-white/20">|</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/cannes-lions-icon-logo-transparent.png" alt="Cannes Lions" className="h-5 w-auto invert" />
     </div>
   ),
   navLabel: "",
@@ -36,17 +34,19 @@ const config: BrandConfig = {
     { n: "03", text: "See how you compare to industry benchmarks" },
   ],
   footerLogo: (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/dentsu-logo.png" alt="dentsu" className="h-4 w-auto opacity-40" />
-      <span className="text-[10px] text-slate-400">at Cannes Lions 2025</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/cannes-lions-text-logo-transparent.png" alt="Cannes Lions" className="h-3 w-auto opacity-30" />
     </div>
   ),
   footerText: `© ${new Date().getFullYear()} dentsu`,
   bodyBg: "#fafafa",
   extraHero: (
-    <div className="mb-8 flex items-center gap-2">
-      <span className="text-2xl">🦁</span>
+    <div className="mb-8 flex items-center gap-4">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/cannes-lions-icon-logo-transparent.png" alt="Cannes Lions" className="h-10 w-auto opacity-15" />
       <p className="text-xs text-slate-400 font-light">
         International Festival of Creativity · Cannes, France
       </p>

@@ -3,27 +3,23 @@
 import { BrandedChatPage } from "@/components/chat/BrandedChatPage";
 import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 
-// Merkle navy + Salesforce blue accent
 const MERKLE_NAVY = "#00205B";
-const SF_BLUE = "#00A1E0";
 
 const config: BrandConfig = {
   source: "connections",
   navBg: MERKLE_NAVY,
   navLogo: (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto brightness-0 invert" />
-      <span className="text-white/30 text-xs">+</span>
-      {/* Salesforce cloud inline SVG */}
-      <svg className="h-5 w-auto" viewBox="0 0 100 70" fill="none">
-        <path d="M42.5 12C38.2 12 34.3 13.8 31.5 16.7C29.2 13.3 25.3 11 20.8 11C13.6 11 7.8 16.8 7.8 24C7.8 24.4 7.8 24.8 7.9 25.2C3.3 27 0 31.4 0 36.5C0 43.4 5.6 49 12.5 49H40.5C40.7 49 40.8 49 41 49C41.1 49 41.3 49 41.5 49H73C81.3 49 88 42.3 88 34C88 25.7 81.3 19 73 19C72.2 19 71.4 19.1 70.6 19.2C67.8 14.8 63 12 57.5 12C53.5 12 49.9 13.5 47.2 16C45.9 13.6 44.4 12 42.5 12Z" fill="white"/>
-      </svg>
+      <span className="text-white/20">|</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections" className="h-4 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
     </div>
   ),
-  navLabel: "Connections 2025",
+  navLabel: "",
   introBg: MERKLE_NAVY,
-  accentColor: SF_BLUE,
+  accentColor: "#00A1E0",
   ctaBg: MERKLE_NAVY,
   ctaText: "#ffffff",
   headline: (
@@ -40,21 +36,20 @@ const config: BrandConfig = {
     { n: "03", text: "See opportunities and benchmarks" },
   ],
   footerLogo: (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto" />
-      <span className="text-[10px] text-slate-400">at Salesforce Connections 2025</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-5 w-auto" />
     </div>
   ),
   footerText: `© ${new Date().getFullYear()} Merkle, a dentsu company`,
   bodyBg: "#f0f7ff",
   extraHero: (
-    <div className="mb-8 p-4 rounded-xl border" style={{ backgroundColor: "#f0f7ff", borderColor: "#bfdbfe" }}>
-      <div className="flex items-center gap-4">
-        {/* Astro-inspired character */}
-        <div className="w-14 h-14 rounded-full flex items-center justify-center text-3xl" style={{ backgroundColor: SF_BLUE }}>
-          🚀
-        </div>
+    <div className="mb-8 p-5 rounded-xl border" style={{ backgroundColor: "#f0f7ff", borderColor: "#bfdbfe" }}>
+      <div className="flex items-center gap-5">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-12 w-auto" />
         <div>
           <p className="text-sm font-semibold" style={{ color: MERKLE_NAVY }}>
             Powered by Merkle + Salesforce
@@ -63,6 +58,11 @@ const config: BrandConfig = {
             Connecting identity, engagement, and AI to drive the next era of CRM.
           </p>
         </div>
+      </div>
+      {/* Connections logo below */}
+      <div className="mt-4 pt-3 border-t border-blue-100">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections 2026" className="h-5 w-auto" />
       </div>
     </div>
   ),
