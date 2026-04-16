@@ -9,12 +9,12 @@ const config: BrandConfig = {
   source: "connections",
   navBg: MERKLE_NAVY,
   navLogo: (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto brightness-0 invert" />
-      <span className="text-white/20">|</span>
+      <span className="text-white/20 text-xs">|</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections" className="h-4 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
+      <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections" className="h-3.5 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
     </div>
   ),
   navLabel: "",
@@ -36,11 +36,12 @@ const config: BrandConfig = {
     { n: "03", text: "See opportunities and benchmarks" },
   ],
   footerLogo: (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto" />
+      <img src="/merkle-logo.webp" alt="Merkle" className="h-3.5 w-auto opacity-50" />
+      <span className="text-slate-300 text-[10px]">+</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-5 w-auto" />
+      <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-4 w-auto opacity-50" />
     </div>
   ),
   footerText: `© ${new Date().getFullYear()} Merkle, a dentsu company`,
@@ -49,7 +50,7 @@ const config: BrandConfig = {
     <div className="mb-8 p-5 rounded-xl border" style={{ backgroundColor: "#f0f7ff", borderColor: "#bfdbfe" }}>
       <div className="flex items-center gap-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-12 w-auto" />
+        <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-10 w-auto" />
         <div>
           <p className="text-sm font-semibold" style={{ color: MERKLE_NAVY }}>
             Powered by Merkle + Salesforce

@@ -18,23 +18,49 @@ export async function POST(request: NextRequest) {
     const supabase = createServerClient();
     const shareId = generateShareId();
 
-    const { data, error } = await supabase
-      .from("assessments")
-      .insert({
-        share_id: shareId,
-        client_name: clientName,
-        client_company: clientCompany || "",
-        respondent_name: respondentName,
-        rep_email: repEmail || null,
-        is_rep_mode: isRepMode || false,
-        industry: industry || null,
-        status: "in_progress",
-        project_id: projectId || null,
-        stakeholder_id: stakeholderId || null,
-        source: source || null,
-      })
-      .select()
-      .single();
+    const baseRecord = {
+      share_id: shareId,
+      client_name: clientName,
+      client_company: clientCompany || "",
+      respondent_name: respondentName,
+      rep_email: repEmail || null,
+      is_rep_mode: isRepMode || false,
+      industry: industry || null,
+      status: "in_progress",
+      project_id: projectId || null,
+      stakeholder_id: stakeholderId || null,
+    };
+
+    // Try with source column first, fall back without if column doesn't exist
+    let data, error;
+    if (source) {
+      const result = await supabase
+        .from("assessments")
+        .insert({ ...baseRecord, source })
+        .select()
+        .single();
+      data = result.data;
+      error = result.error;
+
+      // If source column doesn't exist, retry without it
+      if (error && error.message?.includes("source")) {
+        const retry = await supabase
+          .from("assessments")
+          .insert(baseRecord)
+          .select()
+          .single();
+        data = retry.data;
+        error = retry.error;
+      }
+    } else {
+      const result = await supabase
+        .from("assessments")
+        .insert(baseRecord)
+        .select()
+        .single();
+      data = result.data;
+      error = result.error;
+    }
 
     if (error) throw error;
 
@@ -74,7 +100,7 @@ export async function GET(request: NextRequest) {
       const { data, error } = await supabase
         .from("assessments")
         .select(
-          "id, share_id, client_name, client_company, respondent_name, status, industry, overall_score, maturity_stage, created_at, updated_at"
+          "id, share_id, client_name, client_company, respondent_name, status, industry, overall_score, maturity_stage, created_at, updated_at, project_id"
         )
         .eq("rep_email", repEmail)
         .order("created_at", { ascending: false });
