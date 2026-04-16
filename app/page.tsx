@@ -1,55 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createBrowserClient } from "@supabase/ssr";
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function HomePage() {
-  const [email, setEmail] = useState("");
-  const [showRetrieve, setShowRetrieve] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<
+  const [user, setUser] = useState<{ email?: string; name?: string } | null>(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [projects, setProjects] = useState<
     Array<{
       key: string;
       name: string;
       href: string;
       label: string;
       score: number | null;
+      status: string;
       date: string;
     }>
   >([]);
-  const [error, setError] = useState("");
+  const [loadingProjects, setLoadingProjects] = useState(true);
 
-  const handleRetrieve = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  // Get user + auto-load their projects
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setUser({
+          email: data.user.email,
+          name: data.user.user_metadata?.full_name || data.user.email?.split("@")[0],
+        });
+        // Load projects for this user
+        loadProjects(data.user.email || "");
+      }
+    });
+  }, []);
+
+  const loadProjects = async (email: string) => {
+    setLoadingProjects(true);
     try {
       const [pRes, aRes] = await Promise.all([
         fetch(`/api/projects?email=${encodeURIComponent(email)}`),
         fetch(`/api/assessments?repEmail=${encodeURIComponent(email)}`),
       ]);
-      const projects = pRes.ok ? await pRes.json() : [];
+      const projectsData = pRes.ok ? await pRes.json() : [];
       const assessments = aRes.ok ? await aRes.json() : [];
       const standalone = assessments.filter((x: { project_id: string | null }) => !x.project_id);
 
       const combined = [
-        ...projects.map((p: Record<string, string | number | null>) => ({
+        ...projectsData.map((p: Record<string, string | number | null>) => ({
           key: p.id, name: p.client_name, href: `/project/${p.share_id}`,
           label: p.mode === "workshop" ? "Workshop" : "Quick",
-          score: p.aggregated_overall, date: p.created_at,
+          score: p.aggregated_overall, status: p.status as string, date: p.created_at as string,
         })),
         ...standalone.map((a: Record<string, string | number | null>) => ({
-          key: a.id, name: a.client_name, href: `/results/${a.share_id}`,
-          label: "Assessment", score: a.overall_score, date: a.created_at,
+          key: a.id, name: a.client_name, href: a.status === "completed" ? `/results/${a.share_id}` : `/assessment/resume/${a.share_id}`,
+          label: "Assessment", score: a.overall_score, status: a.status as string, date: a.created_at as string,
         })),
       ];
-      setResults(combined);
-      if (combined.length === 0) setError("No projects found for this email.");
+      setProjects(combined);
     } catch {
-      setError("Unable to retrieve. Please try again.");
+      // Silently fail
     } finally {
-      setLoading(false);
+      setLoadingProjects(false);
     }
   };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  };
+
+  const initials = user?.name
+    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : "?";
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
@@ -59,18 +85,42 @@ export default function HomePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
           <div className="flex items-center gap-5">
-            <a href="/guide" className="text-xs text-white/60 hover:text-white transition-colors">
-              Guide
-            </a>
-            <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">
-              Library
-            </a>
-            <a href="/badges" className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">
-              Badges
-            </a>
-            <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">
-              Admin
-            </a>
+            <a href="/guide" className="text-xs text-white/60 hover:text-white transition-colors">Guide</a>
+            <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
+            <a href="/badges" className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">Badges</a>
+            <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">Admin</a>
+
+            {/* Profile bubble */}
+            {user && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold text-white hover:bg-white/30 transition-colors"
+                >
+                  {initials}
+                </button>
+                {showProfileMenu && (
+                  <>
+                    <div className="fixed inset-0 z-30" onClick={() => setShowProfileMenu(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 z-40">
+                      <div className="px-4 py-3 border-b border-slate-100">
+                        <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
+                        <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                      </div>
+                      <a href="/badges" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                        Badges
+                      </a>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-lg transition-colors"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -101,19 +151,12 @@ export default function HomePage() {
               >
                 Quick Assessment
               </a>
-              {/* Hover dropdown */}
               <div className="absolute left-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                <a
-                  href="/assessment/new"
-                  className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-t-lg transition-colors"
-                >
+                <a href="/assessment/new" className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-t-lg transition-colors">
                   <span className="font-medium">Manual Survey</span>
                   <span className="block text-[10px] text-slate-400 mt-0.5">30 questions, step by step</span>
                 </a>
-                <a
-                  href="/assessment/chat"
-                  className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-b-lg border-t border-slate-100 transition-colors"
-                >
+                <a href="/assessment/chat" className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-b-lg border-t border-slate-100 transition-colors">
                   <span className="font-medium">Conversational AI</span>
                   <span className="block text-[10px] text-slate-400 mt-0.5">Natural dialogue with voice support</span>
                 </a>
@@ -150,78 +193,53 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Retrieve */}
+        {/* Your Projects — auto-loaded */}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-900">Your Projects</h3>
-            {!showRetrieve && (
-              <button
-                onClick={() => setShowRetrieve(true)}
-                className="text-xs font-medium hover:underline"
-                style={{ color: "#00205B" }}
-              >
-                Look up by email
-              </button>
-            )}
-          </div>
+          <h3 className="text-sm font-bold text-slate-900 mb-4">Your Projects</h3>
 
-          {showRetrieve && (
-            <div>
-              <form onSubmit={handleRetrieve} className="flex gap-2 mb-3">
-                <input
-                  type="email"
-                  placeholder="your.name@merkle.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1 text-sm px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400 transition-colors"
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-4 py-2 text-sm font-semibold text-white rounded-lg disabled:opacity-50 hover:opacity-90 transition-colors"
-                  style={{ backgroundColor: "#00205B" }}
-                >
-                  {loading ? "..." : "Find"}
-                </button>
-              </form>
-              {error && <p className="text-xs text-red-500 mb-2">{error}</p>}
-              {results.length > 0 && (
-                <div className="space-y-1">
-                  {results.map((r) => (
-                    <a
-                      key={r.key}
-                      href={r.href}
-                      className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-slate-900">{r.name}</p>
-                        <p className="text-xs text-slate-400">
-                          {r.label} · {new Date(r.date).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {r.score && (
-                          <span className="text-xs font-semibold" style={{ color: "#00205B" }}>
-                            {Number(r.score).toFixed(1)}
-                          </span>
-                        )}
-                        <span className="text-slate-300 group-hover:text-slate-500 transition-colors">→</span>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              )}
-              {!loading && results.length === 0 && !error && (
-                <p className="text-xs text-slate-400">Enter your email to find your projects and assessments.</p>
-              )}
+          {loadingProjects ? (
+            <div className="flex items-center gap-2 py-4">
+              <div className="w-4 h-4 border-2 border-slate-300 border-t-transparent rounded-full animate-spin" />
+              <span className="text-xs text-slate-400">Loading your projects...</span>
             </div>
-          )}
-
-          {!showRetrieve && (
-            <p className="text-xs text-slate-400">
-              Retrieve existing projects by looking up your Merkle email address.
-            </p>
+          ) : projects.length > 0 ? (
+            <div className="space-y-1">
+              {projects.map((r) => (
+                <a
+                  key={r.key}
+                  href={r.href}
+                  className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">{r.name}</p>
+                    <p className="text-xs text-slate-400">
+                      {r.label} · {new Date(r.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {r.score && (
+                      <span className="text-xs font-semibold" style={{ color: "#00205B" }}>
+                        {Number(r.score).toFixed(1)}
+                      </span>
+                    )}
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                      r.status === "completed" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+                    }`}>
+                      {r.status === "completed" ? "Done" : "Active"}
+                    </span>
+                    <span className="text-slate-300 group-hover:text-slate-500 transition-colors">→</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-6">
+              <p className="text-sm text-slate-500 mb-1">No projects yet</p>
+              <p className="text-xs text-slate-400">
+                Create a <a href="/project/new" className="text-blue-600 hover:underline">new project</a> or run a{" "}
+                <a href="/assessment/new" className="text-blue-600 hover:underline">quick assessment</a> to get started.
+              </p>
+            </div>
           )}
         </div>
       </div>
