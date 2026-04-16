@@ -32,18 +32,23 @@ function PasswordInput({
   placeholder,
   required,
   minLength,
+  showPassword,
+  onShowStart,
+  onShowEnd,
 }: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   required?: boolean;
   minLength?: number;
+  showPassword: boolean;
+  onShowStart: () => void;
+  onShowEnd: () => void;
 }) {
-  const [show, setShow] = useState(false);
   return (
     <div className="relative">
       <input
-        type={show ? "text" : "password"}
+        type={showPassword ? "text" : "password"}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
@@ -53,11 +58,15 @@ function PasswordInput({
       />
       <button
         type="button"
-        onClick={() => setShow(!show)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition-opacity"
+        onMouseDown={onShowStart}
+        onMouseUp={onShowEnd}
+        onMouseLeave={onShowEnd}
+        onTouchStart={onShowStart}
+        onTouchEnd={onShowEnd}
+        className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition-opacity select-none"
         tabIndex={-1}
       >
-        <EyeIcon open={show} />
+        <EyeIcon open={showPassword} />
       </button>
     </div>
   );
@@ -71,6 +80,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [showPw, setShowPw] = useState(false);
 
   const redirect = typeof window !== "undefined"
     ? new URLSearchParams(window.location.search).get("redirect") || "/"
@@ -190,6 +200,9 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
+              showPassword={showPw}
+              onShowStart={() => setShowPw(true)}
+              onShowEnd={() => setShowPw(false)}
             />
             {mode === "signup" && (
               <PasswordInput
@@ -198,6 +211,9 @@ export default function LoginPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
+                showPassword={showPw}
+                onShowStart={() => setShowPw(true)}
+                onShowEnd={() => setShowPw(false)}
               />
             )}
 
