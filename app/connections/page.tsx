@@ -11,10 +11,10 @@ const config: BrandConfig = {
   navLogo: (
     <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto brightness-0 invert" />
+      <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto brightness-0 invert" />
       <span className="text-white/20 text-xs">|</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections" className="h-3.5 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
+      <img src="/Logo-Connections-2026.svg" alt="Salesforce Connections" className="h-5 w-auto" style={{ filter: "brightness(0) invert(1)" }} />
     </div>
   ),
   navLabel: "",
@@ -38,10 +38,10 @@ const config: BrandConfig = {
   footerLogo: (
     <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/merkle-logo.webp" alt="Merkle" className="h-3.5 w-auto opacity-50" />
+      <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto opacity-50" />
       <span className="text-slate-300 text-[10px]">+</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-4 w-auto opacity-50" />
+      <img src="/Salesforce-color-Logo-Vector.png" alt="Salesforce" className="h-6 w-auto opacity-50" />
     </div>
   ),
   footerText: `© ${new Date().getFullYear()} Merkle, a dentsu company`,

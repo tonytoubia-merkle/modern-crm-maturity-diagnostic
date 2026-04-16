@@ -9,10 +9,10 @@ const config: BrandConfig = {
   navLogo: (
     <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/dentsu-logo-white.png" alt="dentsu" className="h-5 w-auto" />
+      <img src="/dentsu-logo-white.png" alt="dentsu" className="h-7 w-auto" />
       <span className="text-white/20 text-xs">|</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/cannes-lions-icon-logo-transparent.png" alt="Cannes Lions" className="h-4 w-auto invert opacity-70" />
+      <img src="/cannes-lions-icon-logo-transparent.png" alt="Cannes Lions" className="h-6 w-auto invert opacity-70" />
     </div>
   ),
   navLabel: "",
@@ -36,10 +36,10 @@ const config: BrandConfig = {
   footerLogo: (
     <div className="flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/dentsu-logo.png" alt="dentsu" className="h-3.5 w-auto opacity-40" />
+      <img src="/dentsu-logo.png" alt="dentsu" className="h-5 w-auto opacity-40" />
       <span className="text-slate-300 text-[10px]">×</span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/cannes-lions-text-logo-transparent.png" alt="Cannes Lions" className="h-2.5 w-auto opacity-25" />
+      <img src="/cannes-lions-text-logo-transparent.png" alt="Cannes Lions" className="h-4 w-auto opacity-30" />
     </div>
   ),
   footerText: `© ${new Date().getFullYear()} dentsu`,

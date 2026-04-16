@@ -8,7 +8,7 @@ const config: BrandConfig = {
   navBg: "#1a1a1a",
   navLogo: (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/dentsu-logo-white.png" alt="dentsu" className="h-5 w-auto" />
+    <img src="/dentsu-logo-white.png" alt="dentsu" className="h-7 w-auto" />
   ),
   navLabel: "CRM Maturity Diagnostic",
   introBg: "#1a1a1a",
@@ -28,7 +28,7 @@ const config: BrandConfig = {
   ],
   footerLogo: (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/dentsu-logo.png" alt="dentsu" className="h-4 w-auto opacity-40" />
+    <img src="/dentsu-logo.png" alt="dentsu" className="h-5 w-auto opacity-40" />
   ),
   footerText: `© ${new Date().getFullYear()} dentsu`,
   bodyBg: "#fafafa",
