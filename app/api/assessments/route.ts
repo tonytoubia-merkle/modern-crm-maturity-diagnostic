@@ -5,7 +5,7 @@ import { generateShareId } from "@/lib/utils";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clientName, clientCompany, respondentName, repEmail, isRepMode, industry, projectId, stakeholderId } =
+    const { clientName, clientCompany, respondentName, repEmail, isRepMode, industry, projectId, stakeholderId, source } =
       body;
 
     if (!clientName || !respondentName) {
@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
         status: "in_progress",
         project_id: projectId || null,
         stakeholder_id: stakeholderId || null,
+        source: source || null,
       })
       .select()
       .single();
