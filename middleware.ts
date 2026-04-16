@@ -3,12 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
-  "/marketing",
   "/login",
   "/auth/callback",
-  "/api/tts",
-  "/api/chat",
-  "/api/averages",
 ];
 
 // Routes that start with these prefixes are public
