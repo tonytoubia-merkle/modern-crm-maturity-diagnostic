@@ -1,0 +1,100 @@
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
+
+// Routes that don't require authentication
+const PUBLIC_ROUTES = [
+  "/marketing",
+  "/login",
+  "/auth/callback",
+  "/api/tts",
+  "/api/chat",
+  "/api/averages",
+];
+
+// Routes that start with these prefixes are public
+const PUBLIC_PREFIXES = [
+  "/survey/",           // stakeholder survey links
+  "/results/",          // shareable results pages
+  "/api/",              // all API routes (they use service role key server-side)
+];
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Allow public routes
+  if (PUBLIC_ROUTES.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Allow public prefixes
+  if (PUBLIC_PREFIXES.some((p) => pathname.startsWith(p))) {
+    return NextResponse.next();
+  }
+
+  // Allow static assets and Next.js internals
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon") ||
+    pathname.startsWith("/merkle-logo") ||
+    pathname.startsWith("/dentsu-logo") ||
+    pathname.endsWith(".ico") ||
+    pathname.endsWith(".png") ||
+    pathname.endsWith(".webp")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Create Supabase client with cookie handling
+  let response = NextResponse.next({
+    request: { headers: request.headers },
+  });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            request.cookies.set(name, value)
+          );
+          response = NextResponse.next({
+            request: { headers: request.headers },
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  // Refresh session
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // If no user, redirect to login
+  if (!user) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon)
+     */
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
+};
