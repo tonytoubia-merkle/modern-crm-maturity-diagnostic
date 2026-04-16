@@ -94,12 +94,31 @@ export default function HomePage() {
             >
               New Project
             </a>
-            <a
-              href="/assessment/chat"
-              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
-            >
-              Quick Assessment
-            </a>
+            <div className="relative group">
+              <a
+                href="/assessment/new"
+                className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
+              >
+                Quick Assessment
+              </a>
+              {/* Hover dropdown */}
+              <div className="absolute left-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                <a
+                  href="/assessment/new"
+                  className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-t-lg transition-colors"
+                >
+                  <span className="font-medium">Manual Survey</span>
+                  <span className="block text-[10px] text-slate-400 mt-0.5">30 questions, step by step</span>
+                </a>
+                <a
+                  href="/assessment/chat"
+                  className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-b-lg border-t border-slate-100 transition-colors"
+                >
+                  <span className="font-medium">Conversational AI</span>
+                  <span className="block text-[10px] text-slate-400 mt-0.5">Natural dialogue with voice support</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
