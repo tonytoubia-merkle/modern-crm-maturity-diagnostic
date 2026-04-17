@@ -62,13 +62,15 @@ export default function ChatAssessmentPage() {
           </div>
         </div>
 
-        <ChatView
-          assessmentId={assessmentId}
-          shareId={shareId}
-          clientName={clientName}
-          respondentName={respondentName}
-          industry={industry === "none" || industry === "" ? null : industry as Industry}
-        />
+        <div className="flex-1 min-h-0">
+          <ChatView
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={clientName}
+            respondentName={respondentName}
+            industry={industry === "none" || industry === "" ? null : industry as Industry}
+          />
+        </div>
       </div>
     );
   }

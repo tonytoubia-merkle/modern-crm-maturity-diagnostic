@@ -101,6 +101,8 @@ interface ChatViewProps {
   onAssistantComplete?: (text: string) => void;
   onAssistantSentence?: (sentence: string) => void; // called per sentence during streaming
   setSendRef?: (fn: (text: string) => void) => void;
+  /** When true, suppress the textarea input row (voice mode drives input externally). */
+  hideInput?: boolean;
 }
 
 export function ChatView({
@@ -113,6 +115,7 @@ export function ChatView({
   onAssistantComplete,
   onAssistantSentence,
   setSendRef,
+  hideInput = false,
 }: ChatViewProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -405,7 +408,7 @@ export function ChatView({
 
   return (
     <>
-      <div className="flex h-[calc(100vh-44px)]">
+      <div className="flex h-full min-h-0">
         {/* Chat area */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Messages */}
@@ -441,7 +444,8 @@ export function ChatView({
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
+          {/* Input — hidden when voice mode owns the input. Completion UI still shows regardless. */}
+          {(!hideInput || (allCovered && !confirming)) && (
           <div className="border-t border-slate-200 px-4 py-3 bg-white">
             {allCovered && !confirming ? (
               clientFacing && !emailGate ? (
@@ -500,7 +504,7 @@ export function ChatView({
                   </button>
                 </div>
               )
-            ) : (
+            ) : hideInput ? null : (
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <textarea
                   ref={inputRef}
@@ -528,6 +532,7 @@ export function ChatView({
               </form>
             )}
           </div>
+          )}
         </div>
 
         {/* Sidebar — coverage tracker (desktop) */}
