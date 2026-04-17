@@ -89,6 +89,7 @@ export default function HomePage() {
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
             <a href="/badges" className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">Badges</a>
             <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">Admin</a>
+            <a href="/about" className="text-xs text-white/60 hover:text-white transition-colors">About</a>
 
             {/* Profile bubble */}
             {user && (
@@ -255,6 +256,7 @@ export default function HomePage() {
           <div className="flex gap-4">
             <a href="/library" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Library</a>
             <a href="/admin" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Admin</a>
+            <a href="/about" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">About</a>
           </div>
         </div>
       </footer>

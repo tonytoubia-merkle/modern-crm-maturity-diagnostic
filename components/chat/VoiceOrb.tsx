@@ -25,7 +25,7 @@ const STATE_CONFIG: Record<VoiceState, { ring: string; bg: string; label: string
   listening: { ring: "#22c55e", bg: "#f0fdf4", label: "Listening..." },
   countdown: { ring: "#f97316", bg: "#fff7ed", label: "" }, // label set dynamically
   paused: { ring: "#94a3b8", bg: "#f8fafc", label: "Take your time" },
-  speaking: { ring: "#3b82f6", bg: "#eff6ff", label: "Speaking..." },
+  speaking: { ring: "#3b82f6", bg: "#eff6ff", label: "Speaking — talk to interrupt" },
   processing: { ring: "#1a1a1a", bg: "#f4f4f5", label: "Thinking..." },
 };
 

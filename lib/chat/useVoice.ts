@@ -27,14 +27,23 @@ interface UseVoiceOptions {
   silenceDelay?: number;     // ms after last speech before countdown starts (default 1500)
   countdownDuration?: number; // ms for ring to deplete (default 3000)
   maxDuration?: number;       // ms max recording time (default 60000)
+  bargeIn?: boolean;          // allow user to interrupt TTS by speaking (default true)
   onComplete?: (transcript: string) => void;
 }
+
+// Barge-in tuning
+// Energy threshold is an RMS-normalized value (0–1). ~0.04 catches speech while
+// ignoring breath/low-level noise once echo cancellation is active.
+const BARGE_IN_RMS_THRESHOLD = 0.04;
+const BARGE_IN_MIN_DURATION_MS = 160; // sustained voice energy to confirm intent
+const BARGE_IN_WARMUP_MS = 250;       // ignore VAD for this long after TTS starts
 
 export function useVoice(options: UseVoiceOptions = {}) {
   const {
     silenceDelay = 1500,
     countdownDuration = 3000,
     maxDuration = 60000,
+    bargeIn = true,
     onComplete,
   } = options;
 
@@ -54,6 +63,18 @@ export function useVoice(options: UseVoiceOptions = {}) {
   const stateRef = useRef(state);
   stateRef.current = state;
 
+  // --- Playback tracking (lets us hard-stop TTS on barge-in or cancel) ---
+  const activeCtxRef = useRef<AudioContext | null>(null);
+  const activeSourceRef = useRef<AudioBufferSourceNode | null>(null);
+
+  // --- Barge-in VAD (Web Audio AnalyserNode on mic) ---
+  const vadStreamRef = useRef<MediaStream | null>(null);
+  const vadCtxRef = useRef<AudioContext | null>(null);
+  const vadAnalyserRef = useRef<AnalyserNode | null>(null);
+  const vadRafRef = useRef<number | null>(null);
+  const vadActiveSinceRef = useRef<number | null>(null);
+  const vadArmedAtRef = useRef<number>(0);
+
   // Check browser support
   useEffect(() => {
     const SR = typeof window !== "undefined"
@@ -63,6 +84,42 @@ export function useVoice(options: UseVoiceOptions = {}) {
     setIsSupported(!!SR);
   }, []);
 
+  const stopActivePlayback = useCallback(() => {
+    if (activeSourceRef.current) {
+      try { activeSourceRef.current.stop(); } catch {}
+      try { activeSourceRef.current.disconnect(); } catch {}
+      activeSourceRef.current = null;
+    }
+    if (activeCtxRef.current) {
+      try { activeCtxRef.current.close(); } catch {}
+      activeCtxRef.current = null;
+    }
+  }, []);
+
+  const stopBargeInWatch = useCallback(() => {
+    if (vadRafRef.current !== null) {
+      cancelAnimationFrame(vadRafRef.current);
+      vadRafRef.current = null;
+    }
+    vadActiveSinceRef.current = null;
+  }, []);
+
+  const teardownVad = useCallback(() => {
+    stopBargeInWatch();
+    if (vadAnalyserRef.current) {
+      try { vadAnalyserRef.current.disconnect(); } catch {}
+      vadAnalyserRef.current = null;
+    }
+    if (vadCtxRef.current) {
+      try { vadCtxRef.current.close(); } catch {}
+      vadCtxRef.current = null;
+    }
+    if (vadStreamRef.current) {
+      try { vadStreamRef.current.getTracks().forEach((t) => t.stop()); } catch {}
+      vadStreamRef.current = null;
+    }
+  }, [stopBargeInWatch]);
+
   // Cleanup
   useEffect(() => {
     return () => {
@@ -70,9 +127,10 @@ export function useVoice(options: UseVoiceOptions = {}) {
       if (recognitionRef.current) {
         try { recognitionRef.current.stop(); } catch {}
       }
-      speechSynthesis?.cancel();
+      stopActivePlayback();
+      teardownVad();
     };
-  }, []);
+  }, [stopActivePlayback, teardownVad]);
 
   const startListening = useCallback(() => {
     if (!isSupported) return;
@@ -81,8 +139,10 @@ export function useVoice(options: UseVoiceOptions = {}) {
       (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
     if (!SR) return;
 
-    // Cancel any TTS
+    // Cancel any TTS and stop barge-in watch — we own the mic now.
     speechSynthesis?.cancel();
+    stopActivePlayback();
+    stopBargeInWatch();
 
     const recognition = new (SR as new () => SpeechRecognitionInstance)();
     recognition.continuous = true;
@@ -184,7 +244,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
         }
       }
     }, 50);
-  }, [isSupported, silenceDelay, countdownDuration, maxDuration]);
+  }, [isSupported, silenceDelay, countdownDuration, maxDuration, stopActivePlayback, stopBargeInWatch]);
 
   const stopAndSend = useCallback(() => {
     if (intervalRef.current) {
@@ -234,7 +294,79 @@ export function useVoice(options: UseVoiceOptions = {}) {
   const playingRef = useRef(false);
   const cancelledRef = useRef(false);
 
-  // Play a base64 PCM audio chunk via AudioContext
+  // Ensure we have an active mic stream + analyser for barge-in detection.
+  // Returns true if VAD is available, false if mic permission fails.
+  const ensureVad = useCallback(async (): Promise<boolean> => {
+    if (vadAnalyserRef.current && vadStreamRef.current) return true;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      vadStreamRef.current = stream;
+      const AC = (window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }).AudioContext ||
+        (window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AC) return false;
+      const ctx = new AC();
+      const source = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+      analyser.smoothingTimeConstant = 0.3;
+      source.connect(analyser);
+      vadCtxRef.current = ctx;
+      vadAnalyserRef.current = analyser;
+      return true;
+    } catch (err) {
+      console.warn("Barge-in VAD unavailable (mic permission or API):", err);
+      teardownVad();
+      return false;
+    }
+  }, [teardownVad]);
+
+  // Start watching mic energy during TTS playback. On sustained voice, trigger barge-in.
+  const startBargeInWatch = useCallback((onBargeIn: () => void) => {
+    if (!vadAnalyserRef.current) return;
+    stopBargeInWatch();
+    vadArmedAtRef.current = Date.now();
+    vadActiveSinceRef.current = null;
+    const analyser = vadAnalyserRef.current;
+    const buf = new Uint8Array(analyser.fftSize);
+
+    const tick = () => {
+      if (!vadAnalyserRef.current) return;
+      analyser.getByteTimeDomainData(buf);
+      // RMS of zero-centered signal
+      let sum = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = (buf[i] - 128) / 128;
+        sum += v * v;
+      }
+      const rms = Math.sqrt(sum / buf.length);
+      const now = Date.now();
+      const warm = now - vadArmedAtRef.current > BARGE_IN_WARMUP_MS;
+
+      if (warm && rms > BARGE_IN_RMS_THRESHOLD) {
+        if (vadActiveSinceRef.current === null) {
+          vadActiveSinceRef.current = now;
+        } else if (now - vadActiveSinceRef.current > BARGE_IN_MIN_DURATION_MS) {
+          stopBargeInWatch();
+          onBargeIn();
+          return;
+        }
+      } else if (vadActiveSinceRef.current !== null) {
+        // Reset if energy drops before threshold duration met
+        vadActiveSinceRef.current = null;
+      }
+
+      vadRafRef.current = requestAnimationFrame(tick);
+    };
+    vadRafRef.current = requestAnimationFrame(tick);
+  }, [stopBargeInWatch]);
+
+  // Play a base64 PCM audio chunk via AudioContext (trackable for barge-in cancellation)
   const playPcmAudio = useCallback((base64: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       try {
@@ -256,12 +388,40 @@ export function useVoice(options: UseVoiceOptions = {}) {
         const source = ctx.createBufferSource();
         source.buffer = buffer;
         source.connect(ctx.destination);
-        source.onended = () => { ctx.close(); resolve(); };
+        activeCtxRef.current = ctx;
+        activeSourceRef.current = source;
+        source.onended = () => {
+          if (activeSourceRef.current === source) activeSourceRef.current = null;
+          if (activeCtxRef.current === ctx) activeCtxRef.current = null;
+          try { ctx.close(); } catch {}
+          resolve();
+        };
         source.start();
       } catch (err) {
         reject(err);
       }
     });
+  }, []);
+
+  // Fetch a TTS sentence with one retry on failure.
+  const fetchTtsWithRetry = useCallback(async (sentence: string): Promise<string | null> => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: sentence }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.audio) return data.audio as string;
+        }
+      } catch {
+        // fall through to retry
+      }
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 400));
+    }
+    return null;
   }, []);
 
   // Process the sentence queue
@@ -270,30 +430,44 @@ export function useVoice(options: UseVoiceOptions = {}) {
     playingRef.current = true;
     cancelledRef.current = false;
 
-    while (audioQueueRef.current.length > 0 && !cancelledRef.current) {
-      const sentence = audioQueueRef.current.shift()!;
-      try {
-        const res = await fetch("/api/tts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: sentence }),
+    // Arm barge-in detection for this playback session.
+    let bargeInArmed = false;
+    if (bargeIn) {
+      const ok = await ensureVad();
+      if (ok) {
+        bargeInArmed = true;
+        startBargeInWatch(() => {
+          // User interrupted — cancel queue, stop current playback,
+          // and immediately open the mic.
+          cancelledRef.current = true;
+          audioQueueRef.current = [];
+          stopActivePlayback();
+          startListening();
         });
-        if (!res.ok) continue;
-        const data = await res.json();
-        if (data.audio && !cancelledRef.current) {
-          await playPcmAudio(data.audio);
-        }
-      } catch {
-        // Skip failed sentence
       }
     }
 
+    while (audioQueueRef.current.length > 0 && !cancelledRef.current) {
+      const sentence = audioQueueRef.current.shift()!;
+      const audio = await fetchTtsWithRetry(sentence);
+      if (!audio || cancelledRef.current) continue;
+      try {
+        await playPcmAudio(audio);
+      } catch {
+        // Skip failed playback; move to next
+      }
+    }
+
+    if (bargeInArmed) stopBargeInWatch();
     playingRef.current = false;
+
+    // Resume listening immediately once the agent is done speaking
+    // (no artificial gap — "AgentAudioDone" is the trigger).
     if (!cancelledRef.current) {
       setState("inactive");
-      setTimeout(() => startListening(), 300);
+      startListening();
     }
-  }, [playPcmAudio, startListening]);
+  }, [bargeIn, ensureVad, startBargeInWatch, stopBargeInWatch, stopActivePlayback, playPcmAudio, fetchTtsWithRetry, startListening]);
 
   const speak = useCallback((text: string) => {
     // Stop listening while speaking
@@ -349,8 +523,10 @@ export function useVoice(options: UseVoiceOptions = {}) {
   const cancelSpeech = useCallback(() => {
     cancelledRef.current = true;
     audioQueueRef.current = [];
+    stopActivePlayback();
+    stopBargeInWatch();
     setState("inactive");
-  }, []);
+  }, [stopActivePlayback, stopBargeInWatch]);
 
   const manualSend = useCallback(() => {
     stopAndSend();
