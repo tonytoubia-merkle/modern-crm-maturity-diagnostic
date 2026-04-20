@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
+import { isSuperAdmin } from "@/lib/auth/roles";
 
 export async function GET(
   request: NextRequest,
@@ -78,6 +79,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!(await isSuperAdmin())) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
     const supabase = createServerClient();
     const { error } = await supabase
       .from("assessments")

@@ -213,9 +213,11 @@ export default function AboutPage() {
                 enterprise terms apply.
               </GuardItem>
               <GuardItem title="Admin access">
-                <span className="font-mono text-xs">/admin</span> requires an
-                authenticated Merkle session plus an additional admin password
-                set via environment variable.
+                <span className="font-mono text-xs">/admin</span> is gated by a
+                role column on the <span className="font-mono text-xs">app_users</span>{" "}
+                table — only accounts explicitly set to{" "}
+                <span className="font-mono text-xs">super_admin</span> can view
+                the dashboard, export data, or delete assessments.
               </GuardItem>
             </ul>
           </div>

@@ -48,7 +48,6 @@ Edit `.env.local` and fill in:
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase public/anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (secret) |
-| `ADMIN_PASSWORD` | Password for `/admin` dashboard access |
 | `NEXT_PUBLIC_APP_URL` | Your deployment URL (for share links) |
 
 Get your Supabase keys from: **Supabase Dashboard → Project Settings → API**
@@ -169,7 +168,15 @@ Opportunities are triggered when a relevant capability scores below the configur
 
 ## Admin Dashboard
 
-Access at `/admin`. Protected by `ADMIN_PASSWORD` environment variable.
+Access at `/admin`. Gated by the `app_users.role` column (migration `005`) —
+only accounts flagged as `super_admin` can view the dashboard or delete
+assessments. Promote a user by running:
+
+```sql
+INSERT INTO app_users (email, role)
+VALUES ('someone@merkle.com', 'super_admin')
+ON CONFLICT (email) DO UPDATE SET role = 'super_admin';
+```
 
 Features:
 - View all assessments with score and status

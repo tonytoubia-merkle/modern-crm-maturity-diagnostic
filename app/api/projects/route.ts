@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
+import { isSuperAdmin } from "@/lib/auth/roles";
 import { generateShareId } from "@/lib/utils";
 import bcrypt from "bcryptjs";
 
@@ -62,13 +63,13 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get("email");
-    const adminPassword = request.headers.get("x-admin-password");
+    const wantsAdmin = searchParams.get("admin") === "1";
 
     const supabase = createServerClient();
 
-    if (adminPassword) {
-      if (adminPassword !== process.env.ADMIN_PASSWORD) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (wantsAdmin) {
+      if (!(await isSuperAdmin())) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
       const { data, error } = await supabase
         .from("projects")

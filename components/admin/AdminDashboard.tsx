@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { createBrowserClient } from "@supabase/ssr";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { formatDate, formatDateTime } from "@/lib/utils";
+import { formatDateTime } from "@/lib/utils";
 import { MATURITY_STAGES } from "@/lib/scoring";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import type { MaturityStage } from "@/lib/types";
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 interface AssessmentRow {
   id: string;
@@ -48,39 +54,50 @@ interface ProjectRow {
   created_at: string;
 }
 
+type AuthState = "loading" | "authorized" | "forbidden" | "error";
+
 export function AdminDashboard() {
-  const [password, setPassword] = useState("");
-  const [authed, setAuthed] = useState(false);
-  const [error, setError] = useState("");
+  const [authState, setAuthState] = useState<AuthState>("loading");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [assessments, setAssessments] = useState<AssessmentRow[]>([]);
   const [projects, setProjects] = useState<ProjectRow[]>([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<AssessmentRow | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [tab, setTab] = useState<"projects" | "assessments">("projects");
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const loadAdminData = useCallback(async () => {
     try {
       const [assRes, projRes] = await Promise.all([
-        fetch("/api/assessments", { headers: { "x-admin-password": password } }),
-        fetch("/api/projects", { headers: { "x-admin-password": password } }),
+        fetch("/api/assessments?admin=1"),
+        fetch("/api/projects?admin=1"),
       ]);
-      if (assRes.ok) {
-        setAssessments(await assRes.json());
-        setProjects(projRes.ok ? await projRes.json() : []);
-        setAuthed(true);
-        setError("");
-      } else {
-        setError("Incorrect password");
+      if (assRes.status === 403 || projRes.status === 403) {
+        setAuthState("forbidden");
+        return;
       }
+      if (!assRes.ok || !projRes.ok) {
+        setAuthState("error");
+        return;
+      }
+      setAssessments(await assRes.json());
+      setProjects(await projRes.json());
+      setAuthState("authorized");
     } catch {
-      setError("Failed to connect");
-    } finally {
-      setLoading(false);
+      setAuthState("error");
     }
+  }, []);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUserEmail(data.user?.email ?? null);
+      loadAdminData();
+    });
+  }, [loadAdminData]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
   };
 
   const exportCSV = () => {
@@ -148,28 +165,68 @@ export function AdminDashboard() {
     );
   });
 
-  if (!authed) {
+  if (authState === "loading") {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 w-full max-w-sm">
-          <h1 className="text-xl font-bold text-slate-900 mb-1">Admin Access</h1>
-          <p className="text-sm text-slate-500 mb-6">
-            Enter your admin password to view all assessments.
+        <div className="flex items-center gap-2 text-sm text-slate-500">
+          <span className="w-4 h-4 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+          Checking access…
+        </div>
+      </div>
+    );
+  }
+
+  if (authState === "forbidden") {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 w-full max-w-sm text-center">
+          <div className="w-10 h-10 rounded-full bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-base font-bold text-slate-900 mb-1">Not authorized</h1>
+          <p className="text-sm text-slate-500 mb-1">
+            Your account doesn&apos;t have admin access.
           </p>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <Input
-              id="password"
-              type="password"
-              label="Admin Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={error}
-              required
-            />
-            <Button type="submit" loading={loading} className="w-full">
-              Sign In
-            </Button>
-          </form>
+          {userEmail && (
+            <p className="text-xs text-slate-400 mb-5">Signed in as {userEmail}</p>
+          )}
+          <div className="flex flex-col gap-2">
+            <a
+              href="/"
+              className="w-full px-4 py-2 rounded-lg text-sm font-medium text-white hover:opacity-90"
+              style={{ backgroundColor: "#00205B" }}
+            >
+              Back to home
+            </a>
+            <button
+              onClick={handleSignOut}
+              className="w-full px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (authState === "error") {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 w-full max-w-sm text-center">
+          <h1 className="text-base font-bold text-slate-900 mb-1">Couldn&apos;t load admin data</h1>
+          <p className="text-sm text-slate-500 mb-5">
+            Something went wrong fetching assessments and projects.
+          </p>
+          <button
+            onClick={() => { setAuthState("loading"); loadAdminData(); }}
+            className="w-full px-4 py-2 rounded-lg text-sm font-medium text-white hover:opacity-90"
+            style={{ backgroundColor: "#00205B" }}
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -191,7 +248,13 @@ export function AdminDashboard() {
               completed
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-3">
+            {userEmail && (
+              <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-500 bg-white border border-slate-200 rounded-full px-3 py-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                {userEmail}
+              </span>
+            )}
             <Button variant="secondary" size="sm" onClick={exportCSV}>
               Export CSV
             </Button>
