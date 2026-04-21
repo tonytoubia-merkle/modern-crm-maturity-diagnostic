@@ -3,12 +3,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/Button";
 import { StakeholderManager } from "./StakeholderManager";
-import { CAPABILITY_LABELS } from "@/lib/data/questions";
+import { CapabilityHeatmap, type HeatmapBenchmarks } from "@/components/results/CapabilityHeatmap";
+import { CAPABILITY_LABELS, INDUSTRY_LABELS } from "@/lib/data/questions";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { VIGNETTES } from "@/lib/data/vignettes";
 import { getSmeForOpportunity } from "@/lib/data/smeMapping";
 import { CHECKLIST } from "@/lib/data/guide";
-import type { WorkshopAgenda } from "@/lib/types";
+import type { Capability, CapabilityScore, WorkshopAgenda } from "@/lib/types";
 
 const CATEGORY_LABELS: Record<string, string> = {
   logistics: "Logistics",
@@ -69,6 +70,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
   const [project, setProject] = useState<ProjectData | null>(null);
   const [stakeholders, setStakeholders] = useState<StakeholderData[]>([]);
   const [linkedAssessments, setLinkedAssessments] = useState<LinkedAssessment[]>([]);
+  const [benchmarks, setBenchmarks] = useState<HeatmapBenchmarks | null>(null);
   const [loading, setLoading] = useState(true);
   const [aggregating, setAggregating] = useState(false);
   const [showAddMore, setShowAddMore] = useState(false);
@@ -110,6 +112,27 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
   }, [fetchData]);
+
+  // Fetch benchmarks once we have a project (post-aggregation view).
+  useEffect(() => {
+    if (!project?.aggregated_scores) return;
+    const qs = new URLSearchParams();
+    if (project.industry) qs.set("industry", project.industry);
+    fetch(`/api/averages?${qs.toString()}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        setBenchmarks({
+          overall: data.capabilitiesOverall ?? {},
+          industry: data.capabilitiesIndustry ?? undefined,
+          industryLabel: project.industry
+            ? INDUSTRY_LABELS[project.industry] ?? undefined
+            : undefined,
+          sampleSize: data.sampleSize ?? { overall: 0, industry: null },
+        });
+      })
+      .catch(() => {});
+  }, [project?.aggregated_scores, project?.industry]);
 
   // Use linked assessments as source of truth for counts
   const totalAssessments = linkedAssessments.length;
@@ -441,24 +464,26 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
               </p>
             </div>
 
-            {/* Capability scores */}
-            {project.aggregated_scores && (
-              <div>
-                <h4 className="text-sm font-semibold text-slate-700 mb-3">Capability Scores</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {Object.entries(project.aggregated_scores).map(([cap, score]) => (
-                    <div key={cap} className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center">
-                      <p className="text-lg font-bold" style={{ color: "#00205B" }}>
-                        {typeof score === "number" ? score.toFixed(1) : score}
-                      </p>
-                      <p className="text-[11px] text-slate-500 font-medium">
-                        {CAPABILITY_LABELS[cap] || cap}
-                      </p>
-                    </div>
-                  ))}
+            {/* Capability radar + scores */}
+            {project.aggregated_scores && (() => {
+              const capabilityScores: CapabilityScore[] = Object.entries(project.aggregated_scores)
+                .filter(([, v]) => typeof v === "number")
+                .map(([cap, score]) => ({
+                  capability: cap as Capability,
+                  label: CAPABILITY_LABELS[cap] ?? cap,
+                  score: score as number,
+                  questionCount: 0,
+                }));
+              return (
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-700 mb-3">Capability Scores</h4>
+                  <CapabilityHeatmap
+                    scores={capabilityScores}
+                    benchmarks={benchmarks}
+                  />
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Triggered opportunities */}
             {project.triggered_opportunity_ids && project.triggered_opportunity_ids.length > 0 && (

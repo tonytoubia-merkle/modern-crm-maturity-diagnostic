@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MaturityStageCard } from "./MaturityStageCard";
-import { CapabilityHeatmap } from "./CapabilityHeatmap";
+import { CapabilityHeatmap, type HeatmapBenchmarks } from "./CapabilityHeatmap";
 import { OpportunityCards } from "./OpportunityCards";
 import { SalesforceOutput } from "./SalesforceOutput";
 import { Button } from "@/components/ui/Button";
@@ -30,9 +30,31 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
   const [sharecopied, setShareCopied] = useState(false);
   const [exportingPptx, setExportingPptx] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("internal");
+  const [benchmarks, setBenchmarks] = useState<HeatmapBenchmarks | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
   const isClient = viewMode === "client";
+
+  // Fetch benchmark averages post-completion. The pool excludes this
+  // assessment so a client doesn't benchmark themselves against themselves.
+  useEffect(() => {
+    const qs = new URLSearchParams({ excludeId: assessment.id });
+    if (assessment.industry) qs.set("industry", assessment.industry);
+    fetch(`/api/averages?${qs.toString()}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        setBenchmarks({
+          overall: data.capabilitiesOverall ?? {},
+          industry: data.capabilitiesIndustry ?? undefined,
+          industryLabel: assessment.industry
+            ? INDUSTRY_LABELS[assessment.industry] ?? undefined
+            : undefined,
+          sampleSize: data.sampleSize ?? { overall: 0, industry: null },
+        });
+      })
+      .catch(() => {});
+  }, [assessment.id, assessment.industry]);
 
   const shareUrl =
     typeof window !== "undefined"
@@ -223,7 +245,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
             </p>
           </CardHeader>
           <CardContent>
-            <CapabilityHeatmap scores={capabilityScores} />
+            <CapabilityHeatmap scores={capabilityScores} benchmarks={benchmarks} />
           </CardContent>
         </Card>
 

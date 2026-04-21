@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { SetupForm } from "./SetupForm";
 import { CapabilitySection } from "./CapabilitySection";
@@ -49,7 +49,6 @@ export function AssessmentFlow({
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
   const [sectionReady, setSectionReady] = useState(false);
-  const [averages, setAverages] = useState<QuestionAverages>({ overall: {}, industry: null });
   const [scaleExpanded, setScaleExpanded] = useState(false);
 
   const coreQuestionCount = CORE_QUESTIONS.length;
@@ -58,16 +57,6 @@ export function AssessmentFlow({
     : 0;
   const totalQuestionCount = coreQuestionCount + industryQuestionCount;
   const answeredTotalCount = responses.length;
-
-  // Fetch benchmark averages
-  useEffect(() => {
-    const ind = preSelectedIndustry || initialIndustry;
-    const url = ind ? `/api/averages?industry=${ind}` : "/api/averages";
-    fetch(url)
-      .then((r) => r.json())
-      .then((data) => setAverages(data))
-      .catch(() => {});
-  }, [preSelectedIndustry, initialIndustry]);
 
   // Create assessment
   const handleSetup = async (data: {
