@@ -8,7 +8,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Reset content strategy as an audience-led, outcomes-driven portfolio",
     description:
       "Replatform the content strategy as a portfolio of always-on, lifecycle, and campaign content — planned against audience jobs-to-be-done and tied to specific business outcomes. Align brand, media, CRM, and commerce priorities on one plan so the content pipeline stops being a reactive campaign factory and starts being a shared engine for growth.",
-    capabilities: ["strategy"],
+    capabilities: ["strategy_planning"],
     triggerThreshold: 3.0,
     scope:
       "Audience and outcomes mapping, always-on + lifecycle + campaign portfolio design, brief template redesign, and brand-media-CRM-commerce alignment workshops.",
@@ -33,7 +33,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Re-architect creative as reusable atoms, not bespoke executions",
     description:
       "Design and roll out a modular content framework — atomic creative components (hooks, visuals, product blocks, CTAs) that can be reassembled across channels, variants, and personalization logic. Modular design is the structural shift that unlocks variant scale, reduces rebuild cost, and makes the content library genuinely activatable.",
-    capabilities: ["creative", "asset_management"],
+    capabilities: ["strategy_planning", "asset_governance"],
     triggerThreshold: 3.0,
     scope:
       "Modular content taxonomy, atomic component library, brief template upgrade, and creative + production + MarTech alignment on the assembly model.",
@@ -58,7 +58,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Bring GenAI into the production workflow — safely and at scale",
     description:
       "Operationalize generative AI across copy, image, video, layout, translation, and resizing — inside the existing approval, brand, and legal guardrails. Build approved tooling, prompt libraries, and human-in-the-loop review so AI becomes a day-to-day accelerator of production, not a shadow workaround.",
-    capabilities: ["production", "operating_model"],
+    capabilities: ["workflow_production", "intelligence_automation"],
     triggerThreshold: 3.0,
     scope:
       "GenAI tooling selection, prompt and brand voice libraries, review and approval integration, human-in-the-loop workflow design, enablement and training.",
@@ -82,7 +82,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Turn content production into a predictable, repeatable engine",
     description:
       "Standardize production workflows, asset pathways, and approval flows so similar asset types move through predictable, repeatable steps. Eliminate rework, surface bottlenecks, and unlock the foundation required for both AI acceleration and variant scale.",
-    capabilities: ["production"],
+    capabilities: ["workflow_production"],
     triggerThreshold: 2.75,
     scope:
       "Production workflow audit, asset pathway redesign, capacity modeling, workflow platform recommendation, and SLA + governance framework.",
@@ -107,7 +107,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Connect every asset to its outcomes — and learn from it",
     description:
       "Implement the tagging, tracking, and analytics layer that connects each asset to its performance across channels. Standardize creative attribute tagging, capture asset-level outcomes, and surface near-real-time signals into production and activation decisions. Content intelligence is the feedback engine that makes the rest of the supply chain self-improving.",
-    capabilities: ["intelligence", "measurement"],
+    capabilities: ["intelligence_automation", "measurement_insights"],
     triggerThreshold: 3.0,
     scope:
       "Creative attribute taxonomy, asset-level tracking architecture, performance dashboard, near-real-time signal integration, and content intelligence operating cadence.",
@@ -132,7 +132,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Make the content library discoverable, governed, and activatable",
     description:
       "Implement or re-platform the DAM as the single source of truth for approved content, with enforced metadata, rights tracking, and integration into the production and activation stack. Without a trusted asset foundation, teams duplicate, rebuild, and ship off-brand — and personalization cannot scale because the content library is not addressable.",
-    capabilities: ["asset_management"],
+    capabilities: ["asset_governance"],
     triggerThreshold: 3.0,
     scope:
       "DAM selection or re-platform, metadata and taxonomy design, rights and usage automation, integration into production and activation, adoption and governance model.",
@@ -156,7 +156,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Automate rights, usage, and expiration tracking across the portfolio",
     description:
       "Design and implement a content rights management layer — tracking talent, licensing, usage terms, and expiration at the asset level, and automating enforcement across activation systems. Removes a top source of legal exposure and unlocks confident reuse across channels and markets.",
-    capabilities: ["asset_management", "operating_model"],
+    capabilities: ["asset_governance", "workflow_production"],
     triggerThreshold: 2.5,
     scope:
       "Rights metadata schema, contract and talent tracking integration, automated expiration and usage alerts, governance and escalation model.",
@@ -181,7 +181,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Assemble content at the moment of delivery, not months in advance",
     description:
       "Integrate the content supply chain with CRM, CDP, and decisioning platforms so modular content can be assembled dynamically at the moment of delivery — powered by customer signals, segment, and context. This is where the modular library, intelligence layer, and personalization engine converge into real-time 1:1 experiences.",
-    capabilities: ["activation", "creative"],
+    capabilities: ["distribution_activation", "strategy_planning"],
     triggerThreshold: 3.0,
     scope:
       "Dynamic content architecture, CRM/CDP/decisioning integration, modular variant logic, channel-level adaptation automation, and measurement framework.",
@@ -205,7 +205,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Stop doing manual resizes, retrims, and localizations by hand",
     description:
       "Automate channel-specific adaptation — resizing, retrimming, localizing, and reformatting — so the creative team builds a master asset once and every downstream variant is produced programmatically. Typically pairs with modular content and GenAI tooling to collapse production cycles from weeks to days.",
-    capabilities: ["activation", "production"],
+    capabilities: ["distribution_activation", "workflow_production"],
     triggerThreshold: 2.75,
     scope:
       "Adaptation automation tooling, master asset specification, localization workflow, brand guardrails, and measurement of variant performance.",
@@ -230,7 +230,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Prove the business value of content — not just the engagement",
     description:
       "Implement a content measurement framework that ties asset-level performance to business outcomes — revenue, retention, acquisition cost — and that feeds insight directly back into briefing, ideation, and production. Moves content from a cost center reported in vanity metrics to a measurable growth lever.",
-    capabilities: ["measurement", "intelligence"],
+    capabilities: ["measurement_insights", "intelligence_automation"],
     triggerThreshold: 2.75,
     scope:
       "Measurement framework design, attribution methodology, dashboard build, feedback loop process, and investment case development.",
@@ -255,7 +255,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Re-wire in-house, agency, and tech partners into one engine",
     description:
       "Redesign the operating model that sits behind the content supply chain — roles, decision rights, agency mix, technology stack, and governance. Moves the organization from a patchwork of siloed teams and vendors to one integrated engine with clear ownership, faster decisions, and a shared view of performance.",
-    capabilities: ["operating_model"],
+    capabilities: ["workflow_production"],
     triggerThreshold: 3.0,
     scope:
       "Operating model diagnostic, role and decision rights design, agency and partner mix strategy, technology stack alignment, and governance + cadences.",
@@ -280,7 +280,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Produce personalized content at a scale humans cannot",
     description:
       "Deploy generative AI deeply into the content supply chain — using LLMs and multimodal models to generate subject lines, body copy, product narratives, and creative variants tuned to each customer context. For organizations that already have a modular library, asset intelligence, and strong governance, this is where the content engine stops being a factory and starts being a conversation.",
-    capabilities: ["production", "creative", "activation"],
+    capabilities: ["workflow_production", "strategy_planning", "distribution_activation"],
     triggerThreshold: 5,
     minTriggerScore: 3.5,
     scope:
@@ -305,7 +305,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Put AI agents to work inside the content supply chain",
     description:
       "Design and pilot the use of AI agents — autonomous, goal-directed systems capable of taking action across content workflows. Explore use cases in autonomous variant generation, real-time creative rotation, briefing assistance, and QA. Agentic content ops is where the supply chain shifts from AI-assisted to AI-operated.",
-    capabilities: ["production", "operating_model", "intelligence"],
+    capabilities: ["workflow_production", "intelligence_automation"],
     triggerThreshold: 5,
     minTriggerScore: 4.0,
     scope:
@@ -330,7 +330,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline: "Institutionalize the content supply chain as a permanent capability",
     description:
       "Build the CoE charter, governance, talent model, and standards that make the content supply chain a durable organizational capability rather than a project. Codifies best practices, accelerates adoption of new tools and AI, and governs modular, DAM, and measurement standards so capability gains compound rather than decay.",
-    capabilities: ["operating_model", "measurement"],
+    capabilities: ["workflow_production", "measurement_insights"],
     triggerThreshold: 5,
     minTriggerScore: 4.0,
     scope:

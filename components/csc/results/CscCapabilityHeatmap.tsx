@@ -19,14 +19,12 @@ import { CSC_SCORE_LABELS } from "@/lib/csc/data/questions";
 import type { CscCapabilityScore } from "@/lib/csc/types";
 
 const CAPABILITY_SHORT: Record<string, string> = {
-  strategy: "Strategy",
-  creative: "Creative",
-  production: "Production",
-  intelligence: "Intelligence",
-  asset_management: "Assets",
-  activation: "Activation",
-  measurement: "Measurement",
-  operating_model: "Operating Model",
+  strategy_planning: "Strategy",
+  workflow_production: "Workflow",
+  asset_governance: "Assets",
+  distribution_activation: "Activation",
+  measurement_insights: "Measurement",
+  intelligence_automation: "AI & Search",
 };
 
 interface CscCapabilityHeatmapProps {

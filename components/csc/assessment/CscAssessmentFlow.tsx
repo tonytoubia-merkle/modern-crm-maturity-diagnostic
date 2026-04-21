@@ -19,7 +19,7 @@ import {
 } from "@/lib/csc/scoring";
 import type { CscCapability, CscIndustry, CscResponseItem } from "@/lib/csc/types";
 
-const TOTAL_CORE_STEPS = 8;
+const TOTAL_CORE_STEPS = 6;
 
 export function CscAssessmentFlow() {
   const [assessmentId, setAssessmentId] = useState<string | null>(null);

@@ -172,9 +172,10 @@ export function CscResultsView({
                     This report summarizes the findings of a Content Supply
                     Chain Diagnostic conducted for{" "}
                     <strong>{assessment.clientName}</strong>. The assessment
-                    evaluates eight capabilities — Strategy, Creative,
-                    Production, Intelligence, Asset Management, Activation,
-                    Measurement, and Operating Model — that together determine
+                    evaluates six capabilities — Strategy &amp; Planning,
+                    Workflow &amp; Production, Asset Management &amp; Governance,
+                    Distribution &amp; Activation, Measurement &amp; Insights,
+                    and Intelligence &amp; Automation — that together determine
                     how effectively an organization turns creative ideas into
                     personalized content at scale. Each capability is scored on
                     a 1–5 scale and mapped to one of four maturity stages. The
@@ -184,10 +185,11 @@ export function CscResultsView({
                 ) : (
                   <>
                     This diagnostic assessed{" "}
-                    <strong>{assessment.clientName}</strong> across the eight
-                    capabilities of a modern content supply chain — Strategy,
-                    Creative, Production, Intelligence, Asset Management,
-                    Activation, Measurement, and Operating Model. Scores
+                    <strong>{assessment.clientName}</strong> across the six
+                    capabilities of a modern content supply chain — Strategy
+                    &amp; Planning, Workflow &amp; Production, Asset Management
+                    &amp; Governance, Distribution &amp; Activation, Measurement
+                    &amp; Insights, and Intelligence &amp; Automation. Scores
                     reflect the respondent&apos;s assessment on a 1–5 maturity
                     scale (1 = Not in Place, 3 = Operational, 5 = Optimized).
                     Strategic opportunities are triggered by capability gaps and
@@ -213,7 +215,7 @@ export function CscResultsView({
               Capability Heatmap
             </h2>
             <p className="text-sm text-slate-500 mt-0.5">
-              Scores across the eight Content Supply Chain capability
+              Scores across the six Content Supply Chain capability
               dimensions
             </p>
           </CardHeader>
