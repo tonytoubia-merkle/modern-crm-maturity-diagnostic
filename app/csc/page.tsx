@@ -140,7 +140,7 @@ export default function CscHomePage() {
           />
           <div className="flex items-center gap-5">
             <a
-              href="/"
+              href="/crm"
               className="text-xs text-white/60 hover:text-white transition-colors"
             >
               Modern CRM
@@ -377,7 +377,7 @@ export default function CscHomePage() {
           </div>
           <div className="flex gap-4">
             <a
-              href="/"
+              href="/crm"
               className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
             >
               Modern CRM

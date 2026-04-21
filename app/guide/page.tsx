@@ -22,7 +22,7 @@ export default function GuidePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
           <div className="flex items-center gap-5">
-            <a href="/" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
+            <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function GuidePage() {
         <div className="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
           <p className="text-xs text-slate-400">© {new Date().getFullYear()} Merkle</p>
           <div className="flex gap-4">
-            <a href="/" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Home</a>
+            <a href="/crm" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Home</a>
             <a href="/library" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Library</a>
           </div>
         </div>

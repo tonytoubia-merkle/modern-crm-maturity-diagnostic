@@ -346,7 +346,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
         {/* Footer actions */}
         <div className="flex items-center justify-between flex-wrap gap-4 py-4 border-t border-slate-200 print:hidden">
           <a
-            href="/"
+            href="/crm/assessment/new"
             className="text-sm text-slate-500 hover:text-slate-700"
           >
             Start a new assessment

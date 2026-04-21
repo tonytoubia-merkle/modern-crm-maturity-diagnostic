@@ -530,7 +530,7 @@ export function AdminDashboard() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <a
-                                href={`/project/${p.share_id}`}
+                                href={`/crm/project/${p.share_id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-xs font-medium text-blue-600 hover:text-blue-800"
@@ -610,7 +610,7 @@ export function AdminDashboard() {
                     : `/results/${a.share_id}`;
                   const resumeHref = isCsc
                     ? `/csc/assessment/resume/${a.share_id}`
-                    : `/assessment/resume/${a.share_id}`;
+                    : `/crm/assessment/resume/${a.share_id}`;
                   return (
                     <tr
                       key={`${a.kind}-${a.id}`}

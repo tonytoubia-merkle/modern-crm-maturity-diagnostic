@@ -211,7 +211,7 @@ export function AssessmentFlow({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
           <a
-            href="/"
+            href="/crm"
             className="text-xs text-white/70 hover:text-white flex items-center gap-1 transition-colors"
           >
             ← Modern CRM Diagnostic

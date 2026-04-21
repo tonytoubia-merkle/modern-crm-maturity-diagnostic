@@ -71,7 +71,7 @@ export function ProjectSetupForm({ onSubmit }: ProjectSetupFormProps) {
         </p>
         <p className="mt-1.5 text-xs text-slate-400">
           For quick internal discovery without a workshop, use the{" "}
-          <a href="/assessment/new" className="underline hover:text-slate-600">Quick Assessment</a> instead.
+          <a href="/crm/assessment/new" className="underline hover:text-slate-600">Quick Assessment</a> instead.
         </p>
       </div>
 

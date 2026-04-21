@@ -259,7 +259,7 @@ export default function BadgesPage() {
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
-          <a href="/" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
+          <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
         </div>
       </header>
 
