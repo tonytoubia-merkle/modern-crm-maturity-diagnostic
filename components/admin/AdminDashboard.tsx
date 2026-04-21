@@ -59,6 +59,7 @@ type AuthState = "loading" | "authorized" | "forbidden" | "error";
 export function AdminDashboard() {
   const [authState, setAuthState] = useState<AuthState>("loading");
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [canManageAdmins, setCanManageAdmins] = useState(false);
   const [assessments, setAssessments] = useState<AssessmentRow[]>([]);
   const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [search, setSearch] = useState("");
@@ -68,9 +69,13 @@ export function AdminDashboard() {
 
   const loadAdminData = useCallback(async () => {
     try {
-      const [assRes, projRes] = await Promise.all([
+      const [assRes, projRes, usersRes] = await Promise.all([
         fetch("/api/assessments?admin=1"),
         fetch("/api/projects?admin=1"),
+        // Ping the users endpoint — 200 means this user is a super admin and
+        // should see the "Manage admins" link. 403 is expected for CRM-only
+        // admins and is silently ignored.
+        fetch("/api/admin/users"),
       ]);
       if (assRes.status === 403 || projRes.status === 403) {
         setAuthState("forbidden");
@@ -82,6 +87,7 @@ export function AdminDashboard() {
       }
       setAssessments(await assRes.json());
       setProjects(await projRes.json());
+      setCanManageAdmins(usersRes.ok);
       setAuthState("authorized");
     } catch {
       setAuthState("error");
@@ -254,6 +260,14 @@ export function AdminDashboard() {
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                 {userEmail}
               </span>
+            )}
+            {canManageAdmins && (
+              <a
+                href="/admin/users"
+                className="text-xs font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50"
+              >
+                Manage admins
+              </a>
             )}
             <Button variant="secondary" size="sm" onClick={exportCSV}>
               Export CSV
