@@ -8,8 +8,9 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-type ProjectRow = {
+type Row = {
   key: string;
+  kind: "project" | "assessment";
   name: string;
   href: string;
   label: string;
@@ -18,15 +19,81 @@ type ProjectRow = {
   date: string;
   respondent?: string;
   repEmail?: string | null;
+  children?: Row[];
 };
 
 type Scope = "mine" | "all";
 
+type ProjectRaw = Record<string, string | number | null>;
+type AssessmentRaw = Record<string, string | number | null>;
+
+function projectToRow(p: ProjectRaw): Row {
+  return {
+    key: `p-${p.id}`,
+    kind: "project",
+    name: p.client_name as string,
+    href: `/crm/project/${p.share_id}`,
+    label: p.mode === "workshop" ? "Workshop" : "Quick",
+    score: p.aggregated_overall as number | null,
+    status: p.status as string,
+    date: p.created_at as string,
+    respondent: (p.created_by_name as string) ?? undefined,
+    repEmail: (p.created_by_email as string | null) ?? null,
+    children: [],
+  };
+}
+
+function assessmentToRow(a: AssessmentRaw): Row {
+  return {
+    key: `a-${a.id}`,
+    kind: "assessment",
+    name: a.client_name as string,
+    href:
+      a.status === "completed"
+        ? `/results/${a.share_id}`
+        : `/crm/assessment/resume/${a.share_id}`,
+    label: "Assessment",
+    score: a.overall_score as number | null,
+    status: a.status as string,
+    date: a.created_at as string,
+    respondent: (a.respondent_name as string) ?? undefined,
+    repEmail: (a.rep_email as string | null) ?? null,
+  };
+}
+
+/**
+ * Nest each assessment under its parent project when the parent is in the
+ * visible set. Assessments with no project_id, or whose parent isn't in
+ * the visible set, render at the top level.
+ */
+function buildTree(projects: ProjectRaw[], assessments: AssessmentRaw[]): Row[] {
+  const projectRows = projects.map(projectToRow);
+  const byId = new Map<string, Row>();
+  projectRows.forEach((r, i) => byId.set(projects[i].id as string, r));
+
+  const orphans: Row[] = [];
+  for (const a of assessments) {
+    const child = assessmentToRow(a);
+    const parentId = a.project_id as string | null;
+    const parent = parentId ? byId.get(parentId) : undefined;
+    if (parent) {
+      parent.children!.push(child);
+    } else {
+      orphans.push(child);
+    }
+  }
+
+  const byDateDesc = (x: Row, y: Row) =>
+    new Date(y.date).getTime() - new Date(x.date).getTime();
+  projectRows.forEach((p) => p.children!.sort(byDateDesc));
+  return [...projectRows, ...orphans].sort(byDateDesc);
+}
+
 export default function HomePage() {
   const [user, setUser] = useState<{ email?: string; name?: string } | null>(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [mine, setMine] = useState<ProjectRow[]>([]);
-  const [all, setAll] = useState<ProjectRow[] | null>(null);
+  const [mine, setMine] = useState<Row[]>([]);
+  const [all, setAll] = useState<Row[] | null>(null);
   const [scope, setScope] = useState<Scope>("mine");
   const [loadingProjects, setLoadingProjects] = useState(true);
 
@@ -42,38 +109,9 @@ export default function HomePage() {
     });
   }, []);
 
-  const toProjectRow = (p: Record<string, string | number | null>): ProjectRow => ({
-    key: p.id as string,
-    name: p.client_name as string,
-    href: `/crm/project/${p.share_id}`,
-    label: p.mode === "workshop" ? "Workshop" : "Quick",
-    score: p.aggregated_overall as number | null,
-    status: p.status as string,
-    date: p.created_at as string,
-    respondent: (p.created_by_name as string) ?? undefined,
-    repEmail: (p.created_by_email as string | null) ?? null,
-  });
-
-  const toAssessmentRow = (a: Record<string, string | number | null>): ProjectRow => ({
-    key: a.id as string,
-    name: a.client_name as string,
-    href:
-      a.status === "completed"
-        ? `/results/${a.share_id}`
-        : `/crm/assessment/resume/${a.share_id}`,
-    label: "Assessment",
-    score: a.overall_score as number | null,
-    status: a.status as string,
-    date: a.created_at as string,
-    respondent: (a.respondent_name as string) ?? undefined,
-    repEmail: (a.rep_email as string | null) ?? null,
-  });
-
   const loadProjects = async (email: string) => {
     setLoadingProjects(true);
     try {
-      // Fire own + admin requests in parallel. Admin requests 403 for
-      // non-CRM-admins; we quietly fall back to hiding the All toggle.
       const [pMine, aMine, pAll, aAll] = await Promise.all([
         fetch(`/api/projects?email=${encodeURIComponent(email)}`),
         fetch(`/api/assessments?repEmail=${encodeURIComponent(email)}`),
@@ -83,24 +121,12 @@ export default function HomePage() {
 
       const projectsMine = pMine.ok ? await pMine.json() : [];
       const assessmentsMine = aMine.ok ? await aMine.json() : [];
-      const standaloneMine = assessmentsMine.filter(
-        (x: { project_id: string | null }) => !x.project_id
-      );
-      setMine([
-        ...projectsMine.map(toProjectRow),
-        ...standaloneMine.map(toAssessmentRow),
-      ]);
+      setMine(buildTree(projectsMine, assessmentsMine));
 
       if (pAll.ok && aAll.ok) {
         const projectsAll = await pAll.json();
         const assessmentsAll = await aAll.json();
-        const standaloneAll = assessmentsAll.filter(
-          (x: { project_id: string | null }) => !x.project_id
-        );
-        setAll([
-          ...projectsAll.map(toProjectRow),
-          ...standaloneAll.map(toAssessmentRow),
-        ]);
+        setAll(buildTree(projectsAll, assessmentsAll));
       } else {
         setAll(null);
       }
@@ -113,6 +139,8 @@ export default function HomePage() {
 
   const isCrmAdmin = all !== null;
   const visible = scope === "all" && all ? all : mine;
+  const countTotal = (rows: Row[]) =>
+    rows.reduce((n, r) => n + 1 + (r.children?.length ?? 0), 0);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -259,7 +287,7 @@ export default function HomePage() {
                   }`}
                   aria-pressed={scope === "mine"}
                 >
-                  Mine ({mine.length})
+                  Mine ({countTotal(mine)})
                 </button>
                 <button
                   type="button"
@@ -271,7 +299,7 @@ export default function HomePage() {
                   }`}
                   aria-pressed={scope === "all"}
                 >
-                  All ({all?.length ?? 0})
+                  All ({all ? countTotal(all) : 0})
                 </button>
               </div>
             )}
@@ -285,33 +313,7 @@ export default function HomePage() {
           ) : visible.length > 0 ? (
             <div className="space-y-1">
               {visible.map((r) => (
-                <a
-                  key={r.key}
-                  href={r.href}
-                  className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
-                >
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">{r.name}</p>
-                    <p className="text-xs text-slate-400 truncate">
-                      {r.label} · {new Date(r.date).toLocaleDateString()}
-                      {scope === "all" && r.respondent && ` · ${r.respondent}`}
-                      {scope === "all" && r.repEmail && ` · ${r.repEmail}`}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {r.score && (
-                      <span className="text-xs font-semibold" style={{ color: "#00205B" }}>
-                        {Number(r.score).toFixed(1)}
-                      </span>
-                    )}
-                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded ${
-                      r.status === "completed" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
-                    }`}>
-                      {r.status === "completed" ? "Done" : "Active"}
-                    </span>
-                    <span className="text-slate-300 group-hover:text-slate-500 transition-colors">→</span>
-                  </div>
-                </a>
+                <TreeRow key={r.key} row={r} showMeta={scope === "all"} />
               ))}
             </div>
           ) : (
@@ -343,6 +345,119 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function TreeRow({ row, showMeta }: { row: Row; showMeta: boolean }) {
+  const hasChildren = !!row.children && row.children.length > 0;
+  const isProject = row.kind === "project";
+  return (
+    <div>
+      <a
+        href={row.href}
+        className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
+      >
+        <div className="min-w-0 flex items-center gap-2">
+          {isProject && (
+            <span
+              className="flex-shrink-0 w-5 h-5 rounded bg-slate-100 flex items-center justify-center"
+              aria-hidden
+            >
+              <svg
+                className="w-3 h-3 text-slate-500"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"
+                />
+              </svg>
+            </span>
+          )}
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-slate-900 truncate">
+              {row.name}
+            </p>
+            <p className="text-xs text-slate-400 truncate">
+              {row.label} · {new Date(row.date).toLocaleDateString()}
+              {showMeta && row.respondent && ` · ${row.respondent}`}
+              {showMeta && row.repEmail && ` · ${row.repEmail}`}
+              {hasChildren && ` · ${row.children!.length} assessment${row.children!.length === 1 ? "" : "s"}`}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {row.score != null && (
+            <span
+              className="text-xs font-semibold"
+              style={{ color: "#00205B" }}
+            >
+              {Number(row.score).toFixed(1)}
+            </span>
+          )}
+          <span
+            className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+              row.status === "completed"
+                ? "bg-green-100 text-green-700"
+                : "bg-amber-100 text-amber-700"
+            }`}
+          >
+            {row.status === "completed" ? "Done" : "Active"}
+          </span>
+          <span className="text-slate-300 group-hover:text-slate-500 transition-colors">
+            →
+          </span>
+        </div>
+      </a>
+
+      {hasChildren && (
+        <div className="ml-6 pl-3 mt-0.5 border-l border-slate-100 space-y-0.5">
+          {row.children!.map((c) => (
+            <a
+              key={c.key}
+              href={c.href}
+              className="flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors group"
+            >
+              <div className="min-w-0">
+                <p className="text-xs font-medium text-slate-700 truncate">
+                  {c.respondent ?? c.name}
+                </p>
+                <p className="text-[11px] text-slate-400 truncate">
+                  {c.label} · {new Date(c.date).toLocaleDateString()}
+                  {showMeta && c.repEmail && ` · ${c.repEmail}`}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {c.score != null && (
+                  <span
+                    className="text-[11px] font-semibold"
+                    style={{ color: "#00205B" }}
+                  >
+                    {Number(c.score).toFixed(1)}
+                  </span>
+                )}
+                <span
+                  className={`text-[10px] font-medium px-2 py-0.5 rounded ${
+                    c.status === "completed"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-amber-100 text-amber-700"
+                  }`}
+                >
+                  {c.status === "completed" ? "Done" : "Active"}
+                </span>
+                <span className="text-slate-300 group-hover:text-slate-500 transition-colors">
+                  →
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
