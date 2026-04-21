@@ -31,7 +31,9 @@ export async function GET(
 
       const { data: stakeholders } = await supabase
         .from("csc_stakeholders")
-        .select("*, csc_assessments(share_id, status, overall_score, maturity_stage)")
+        .select(
+          "*, csc_assessments!csc_stakeholders_assessment_id_fkey(share_id, status, overall_score, maturity_stage)"
+        )
         .eq("project_id", projByShare.id)
         .order("invited_at", { ascending: true });
 
