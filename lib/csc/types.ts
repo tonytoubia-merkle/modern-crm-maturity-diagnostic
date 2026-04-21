@@ -2,15 +2,15 @@
 // Parallel type system to the Modern CRM diagnostic, kept independent so
 // changes here cannot affect CRM typing.
 
+// The 6 capability dimensions mirror the grouping of the Content Supply
+// Chain Diagnostic source questionnaire (Microsoft Forms export).
 export type CscCapability =
-  | "strategy"
-  | "creative"
-  | "production"
-  | "intelligence"
-  | "asset_management"
-  | "activation"
-  | "measurement"
-  | "operating_model";
+  | "strategy_planning"
+  | "workflow_production"
+  | "asset_governance"
+  | "distribution_activation"
+  | "measurement_insights"
+  | "intelligence_automation";
 
 export type CscIndustry =
   | "retail"
