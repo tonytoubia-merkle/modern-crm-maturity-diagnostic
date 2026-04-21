@@ -21,15 +21,29 @@ import type { CscCapability, CscIndustry, CscResponseItem } from "@/lib/csc/type
 
 const TOTAL_CORE_STEPS = 6;
 
-export function CscAssessmentFlow() {
-  const [assessmentId, setAssessmentId] = useState<string | null>(null);
-  const [shareId, setShareId] = useState<string | null>(null);
-  const [step, setStep] = useState(0);
-  const [responses, setResponses] = useState<CscResponseItem[]>([]);
+interface CscAssessmentFlowProps {
+  initialAssessmentId?: string | null;
+  initialShareId?: string | null;
+  initialResponses?: CscResponseItem[];
+  initialIndustry?: CscIndustry | null;
+  initialStep?: number;
+}
+
+export function CscAssessmentFlow({
+  initialAssessmentId = null,
+  initialShareId = null,
+  initialResponses = [],
+  initialIndustry = null,
+  initialStep = 0,
+}: CscAssessmentFlowProps = {}) {
+  const [assessmentId, setAssessmentId] = useState<string | null>(initialAssessmentId);
+  const [shareId, setShareId] = useState<string | null>(initialShareId);
+  const [step, setStep] = useState(initialStep);
+  const [responses, setResponses] = useState<CscResponseItem[]>(initialResponses);
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] =
-    useState<CscIndustry | null>(null);
+    useState<CscIndustry | null>(initialIndustry);
   const [sectionReady, setSectionReady] = useState(false);
   const [scaleExpanded, setScaleExpanded] = useState(false);
 

@@ -52,7 +52,10 @@ export default function CscHomePage() {
         data.map((a: Record<string, string | number | null>) => ({
           key: a.id as string,
           name: a.client_name as string,
-          href: `/csc/results/${a.share_id}`,
+          href:
+            a.status === "completed"
+              ? `/csc/results/${a.share_id}`
+              : `/csc/assessment/resume/${a.share_id}`,
           score: a.overall_score as number | null,
           status: a.status as string,
           date: a.created_at as string,
