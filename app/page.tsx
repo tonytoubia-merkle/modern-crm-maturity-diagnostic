@@ -8,23 +8,28 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type ProjectRow = {
+  key: string;
+  name: string;
+  href: string;
+  label: string;
+  score: number | null;
+  status: string;
+  date: string;
+  respondent?: string;
+  repEmail?: string | null;
+};
+
+type Scope = "mine" | "all";
+
 export default function HomePage() {
   const [user, setUser] = useState<{ email?: string; name?: string } | null>(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [projects, setProjects] = useState<
-    Array<{
-      key: string;
-      name: string;
-      href: string;
-      label: string;
-      score: number | null;
-      status: string;
-      date: string;
-    }>
-  >([]);
+  const [mine, setMine] = useState<ProjectRow[]>([]);
+  const [all, setAll] = useState<ProjectRow[] | null>(null);
+  const [scope, setScope] = useState<Scope>("mine");
   const [loadingProjects, setLoadingProjects] = useState(true);
 
-  // Get user + auto-load their projects
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) {
@@ -32,41 +37,82 @@ export default function HomePage() {
           email: data.user.email,
           name: data.user.user_metadata?.full_name || data.user.email?.split("@")[0],
         });
-        // Load projects for this user
         loadProjects(data.user.email || "");
       }
     });
   }, []);
 
+  const toProjectRow = (p: Record<string, string | number | null>): ProjectRow => ({
+    key: p.id as string,
+    name: p.client_name as string,
+    href: `/project/${p.share_id}`,
+    label: p.mode === "workshop" ? "Workshop" : "Quick",
+    score: p.aggregated_overall as number | null,
+    status: p.status as string,
+    date: p.created_at as string,
+    respondent: (p.created_by_name as string) ?? undefined,
+    repEmail: (p.created_by_email as string | null) ?? null,
+  });
+
+  const toAssessmentRow = (a: Record<string, string | number | null>): ProjectRow => ({
+    key: a.id as string,
+    name: a.client_name as string,
+    href:
+      a.status === "completed"
+        ? `/results/${a.share_id}`
+        : `/assessment/resume/${a.share_id}`,
+    label: "Assessment",
+    score: a.overall_score as number | null,
+    status: a.status as string,
+    date: a.created_at as string,
+    respondent: (a.respondent_name as string) ?? undefined,
+    repEmail: (a.rep_email as string | null) ?? null,
+  });
+
   const loadProjects = async (email: string) => {
     setLoadingProjects(true);
     try {
-      const [pRes, aRes] = await Promise.all([
+      // Fire own + admin requests in parallel. Admin requests 403 for
+      // non-CRM-admins; we quietly fall back to hiding the All toggle.
+      const [pMine, aMine, pAll, aAll] = await Promise.all([
         fetch(`/api/projects?email=${encodeURIComponent(email)}`),
         fetch(`/api/assessments?repEmail=${encodeURIComponent(email)}`),
+        fetch("/api/projects?admin=1"),
+        fetch("/api/assessments?admin=1"),
       ]);
-      const projectsData = pRes.ok ? await pRes.json() : [];
-      const assessments = aRes.ok ? await aRes.json() : [];
-      const standalone = assessments.filter((x: { project_id: string | null }) => !x.project_id);
 
-      const combined = [
-        ...projectsData.map((p: Record<string, string | number | null>) => ({
-          key: p.id, name: p.client_name, href: `/project/${p.share_id}`,
-          label: p.mode === "workshop" ? "Workshop" : "Quick",
-          score: p.aggregated_overall, status: p.status as string, date: p.created_at as string,
-        })),
-        ...standalone.map((a: Record<string, string | number | null>) => ({
-          key: a.id, name: a.client_name, href: a.status === "completed" ? `/results/${a.share_id}` : `/assessment/resume/${a.share_id}`,
-          label: "Assessment", score: a.overall_score, status: a.status as string, date: a.created_at as string,
-        })),
-      ];
-      setProjects(combined);
+      const projectsMine = pMine.ok ? await pMine.json() : [];
+      const assessmentsMine = aMine.ok ? await aMine.json() : [];
+      const standaloneMine = assessmentsMine.filter(
+        (x: { project_id: string | null }) => !x.project_id
+      );
+      setMine([
+        ...projectsMine.map(toProjectRow),
+        ...standaloneMine.map(toAssessmentRow),
+      ]);
+
+      if (pAll.ok && aAll.ok) {
+        const projectsAll = await pAll.json();
+        const assessmentsAll = await aAll.json();
+        const standaloneAll = assessmentsAll.filter(
+          (x: { project_id: string | null }) => !x.project_id
+        );
+        setAll([
+          ...projectsAll.map(toProjectRow),
+          ...standaloneAll.map(toAssessmentRow),
+        ]);
+      } else {
+        setAll(null);
+      }
     } catch {
       // Silently fail
     } finally {
       setLoadingProjects(false);
     }
   };
+
+  const isCrmAdmin = all !== null;
+  const visible = scope === "all" && all ? all : mine;
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -195,30 +241,64 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Your Projects — auto-loaded */}
+        {/* Projects + standalone assessments — auto-loaded */}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h3 className="text-sm font-bold text-slate-900 mb-4">Your Projects</h3>
+          <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+            <h3 className="text-sm font-bold text-slate-900">
+              {scope === "all" ? "All Projects" : "Your Projects"}
+            </h3>
+            {isCrmAdmin && (
+              <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-medium">
+                <button
+                  type="button"
+                  onClick={() => setScope("mine")}
+                  className={`px-3 py-1 rounded-full transition-colors ${
+                    scope === "mine"
+                      ? "bg-slate-100 text-slate-800"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                  aria-pressed={scope === "mine"}
+                >
+                  Mine ({mine.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setScope("all")}
+                  className={`px-3 py-1 rounded-full transition-colors ${
+                    scope === "all"
+                      ? "bg-slate-100 text-slate-800"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                  aria-pressed={scope === "all"}
+                >
+                  All ({all?.length ?? 0})
+                </button>
+              </div>
+            )}
+          </div>
 
           {loadingProjects ? (
             <div className="flex items-center gap-2 py-4">
               <div className="w-4 h-4 border-2 border-slate-300 border-t-transparent rounded-full animate-spin" />
               <span className="text-xs text-slate-400">Loading your projects...</span>
             </div>
-          ) : projects.length > 0 ? (
+          ) : visible.length > 0 ? (
             <div className="space-y-1">
-              {projects.map((r) => (
+              {visible.map((r) => (
                 <a
                   key={r.key}
                   href={r.href}
                   className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
                 >
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">{r.name}</p>
-                    <p className="text-xs text-slate-400">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-900 truncate">{r.name}</p>
+                    <p className="text-xs text-slate-400 truncate">
                       {r.label} · {new Date(r.date).toLocaleDateString()}
+                      {scope === "all" && r.respondent && ` · ${r.respondent}`}
+                      {scope === "all" && r.repEmail && ` · ${r.repEmail}`}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     {r.score && (
                       <span className="text-xs font-semibold" style={{ color: "#00205B" }}>
                         {Number(r.score).toFixed(1)}
@@ -236,7 +316,9 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="text-center py-6">
-              <p className="text-sm text-slate-500 mb-1">No projects yet</p>
+              <p className="text-sm text-slate-500 mb-1">
+                {scope === "all" ? "No projects yet." : "No projects yet"}
+              </p>
               <p className="text-xs text-slate-400">
                 Create a <a href="/project/new" className="text-blue-600 hover:underline">new project</a> or run a{" "}
                 <a href="/assessment/new" className="text-blue-600 hover:underline">quick assessment</a> to get started.

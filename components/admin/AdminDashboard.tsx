@@ -14,6 +14,8 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type AssessmentKind = "crm" | "csc";
+
 interface AssessmentRow {
   id: string;
   share_id: string;
@@ -27,6 +29,10 @@ interface AssessmentRow {
   maturity_stage: number | null;
   created_at: string;
   updated_at: string;
+  /** Present on CRM rows only; null on CSC (no project concept). */
+  project_id?: string | null;
+  /** Added client-side when we merge CRM + CSC admin data for /admin. */
+  kind: AssessmentKind;
 }
 
 const STAGE_BADGES: Record<
@@ -69,25 +75,37 @@ export function AdminDashboard() {
 
   const loadAdminData = useCallback(async () => {
     try {
-      const [assRes, projRes, usersRes] = await Promise.all([
+      // The unified /admin dashboard is super_admin only. We use the
+      // /api/admin/users endpoint as the gate: it returns 200 only for
+      // super admins (not scoped admins). If that 403s, stop here.
+      const [usersRes, assRes, projRes, cscRes] = await Promise.all([
+        fetch("/api/admin/users"),
         fetch("/api/assessments?admin=1"),
         fetch("/api/projects?admin=1"),
-        // Ping the users endpoint — 200 means this user is a super admin and
-        // should see the "Manage admins" link. 403 is expected for CRM-only
-        // admins and is silently ignored.
-        fetch("/api/admin/users"),
+        fetch("/api/csc/assessments?admin=1"),
       ]);
-      if (assRes.status === 403 || projRes.status === 403) {
+      if (usersRes.status === 403) {
         setAuthState("forbidden");
         return;
       }
-      if (!assRes.ok || !projRes.ok) {
+      if (!usersRes.ok || !assRes.ok || !projRes.ok || !cscRes.ok) {
         setAuthState("error");
         return;
       }
-      setAssessments(await assRes.json());
+
+      const crmRaw = (await assRes.json()) as Omit<AssessmentRow, "kind">[];
+      const cscRaw = (await cscRes.json()) as Omit<AssessmentRow, "kind">[];
+      const merged: AssessmentRow[] = [
+        ...crmRaw.map((a) => ({ ...a, kind: "crm" as const })),
+        ...cscRaw.map((a) => ({ ...a, kind: "csc" as const })),
+      ].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
+      setAssessments(merged);
       setProjects(await projRes.json());
-      setCanManageAdmins(usersRes.ok);
+      setCanManageAdmins(true); // super admins by construction of this gate
       setAuthState("authorized");
     } catch {
       setAuthState("error");
@@ -108,8 +126,10 @@ export function AdminDashboard() {
 
   const exportCSV = () => {
     const headers = [
+      "Type",
       "Client",
       "Sector",
+      "Project",
       "Respondent",
       "Rep Email",
       "Status",
@@ -119,9 +139,12 @@ export function AdminDashboard() {
       "Date",
       "Share ID",
     ];
+    const projectLookup = new Map(projects.map((p) => [p.id, p.client_name]));
     const rows = assessments.map((a) => [
+      a.kind === "csc" ? "CSC" : "CRM",
       a.client_name,
       a.client_company,
+      a.project_id ? projectLookup.get(a.project_id) ?? "" : "",
       a.respondent_name,
       a.rep_email ?? "",
       a.status,
@@ -149,9 +172,11 @@ export function AdminDashboard() {
     if (!deleteTarget) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/assessments/${deleteTarget.id}`, {
-        method: "DELETE",
-      });
+      const endpoint =
+        deleteTarget.kind === "csc"
+          ? `/api/csc/assessments/${deleteTarget.id}`
+          : `/api/assessments/${deleteTarget.id}`;
+      const res = await fetch(endpoint, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete");
       setAssessments((prev) => prev.filter((a) => a.id !== deleteTarget.id));
       setDeleteTarget(null);
@@ -170,6 +195,12 @@ export function AdminDashboard() {
       (a.rep_email ?? "").toLowerCase().includes(q)
     );
   });
+
+  // Lookup: project_id → project client_name (used to show project linkage on each assessment).
+  const projectNameById = new Map<string, string>();
+  for (const p of projects) {
+    projectNameById.set(p.id, p.client_name);
+  }
 
   if (authState === "loading") {
     return (
@@ -191,9 +222,10 @@ export function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h1 className="text-base font-bold text-slate-900 mb-1">Not authorized</h1>
+          <h1 className="text-base font-bold text-slate-900 mb-1">Super admins only</h1>
           <p className="text-sm text-slate-500 mb-1">
-            Your account doesn&apos;t have admin access.
+            This dashboard combines CRM and CSC data and is limited to super
+            admins. Scoped admins — use the Mine/All toggle on the home pages.
           </p>
           {userEmail && (
             <p className="text-xs text-slate-400 mb-5">Signed in as {userEmail}</p>
@@ -451,13 +483,16 @@ export function AdminDashboard() {
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50">
                   <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">
+                    Type
+                  </th>
+                  <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">
                     Client
+                  </th>
+                  <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3 hidden md:table-cell">
+                    Project
                   </th>
                   <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">
                     Respondent
-                  </th>
-                  <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3 hidden md:table-cell">
-                    Industry
                   </th>
                   <th className="text-left text-xs font-semibold text-slate-500 px-4 py-3">
                     Score
@@ -477,33 +512,55 @@ export function AdminDashboard() {
                 {filtered.map((a, i) => {
                   const stage = a.maturity_stage as MaturityStage | null;
                   const badge = stage ? STAGE_BADGES[stage] : null;
+                  const isCsc = a.kind === "csc";
+                  const resultsHref = isCsc
+                    ? `/csc/results/${a.share_id}`
+                    : `/results/${a.share_id}`;
+                  const resumeHref = isCsc
+                    ? `/csc/assessment/resume/${a.share_id}`
+                    : `/assessment/resume/${a.share_id}`;
                   return (
                     <tr
-                      key={a.id}
+                      key={`${a.kind}-${a.id}`}
                       className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${
                         i === filtered.length - 1 ? "border-b-0" : ""
                       }`}
                     >
+                      <td className="px-4 py-3">
+                        <span
+                          className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${
+                            isCsc
+                              ? "bg-purple-50 text-purple-700 border-purple-200"
+                              : "bg-blue-50 text-blue-700 border-blue-200"
+                          }`}
+                        >
+                          {isCsc ? "CSC" : "CRM"}
+                        </span>
+                      </td>
                       <td className="px-4 py-3">
                         <p className="font-semibold text-slate-900">
                           {a.client_name}
                         </p>
                         <p className="text-xs text-slate-500">
                           {a.client_company}
+                          {a.industry &&
+                            ` · ${INDUSTRY_LABELS[a.industry] ?? a.industry}`}
                         </p>
+                      </td>
+                      <td className="px-4 py-3 hidden md:table-cell">
+                        {a.project_id && projectNameById.has(a.project_id) ? (
+                          <p className="text-xs text-slate-700">
+                            {projectNameById.get(a.project_id)}
+                          </p>
+                        ) : (
+                          <span className="text-slate-300 text-xs">—</span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <p className="text-slate-700">{a.respondent_name}</p>
                         {a.rep_email && (
                           <p className="text-xs text-slate-400">{a.rep_email}</p>
                         )}
-                      </td>
-                      <td className="px-4 py-3 hidden md:table-cell">
-                        <p className="text-slate-600 text-xs">
-                          {a.industry
-                            ? INDUSTRY_LABELS[a.industry] ?? a.industry
-                            : "—"}
-                        </p>
                       </td>
                       <td className="px-4 py-3">
                         {a.overall_score && stage && badge ? (
@@ -540,7 +597,7 @@ export function AdminDashboard() {
                         <div className="flex items-center gap-3">
                           {a.status === "completed" && (
                             <a
-                              href={`/results/${a.share_id}`}
+                              href={resultsHref}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-xs font-medium text-blue-600 hover:text-blue-800"
@@ -549,7 +606,7 @@ export function AdminDashboard() {
                             </a>
                           )}
                           <a
-                            href={`/assessment/resume/${a.share_id}`}
+                            href={resumeHref}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`text-xs font-medium ${
@@ -580,7 +637,7 @@ export function AdminDashboard() {
                 {filtered.length === 0 && (
                   <tr>
                     <td
-                      colSpan={7}
+                      colSpan={8}
                       className="px-4 py-8 text-center text-slate-400 text-sm"
                     >
                       No assessments found.

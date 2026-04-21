@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
+import { canAdmin } from "@/lib/auth/roles";
 
 export async function GET(
   request: NextRequest,
@@ -69,6 +70,31 @@ export async function PATCH(
     console.error("PATCH /api/csc/assessments/[id] error:", err);
     return NextResponse.json(
       { error: "Failed to update assessment" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    if (!(await canAdmin("csc"))) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    const supabase = createServerClient();
+    const { error } = await supabase
+      .from("csc_assessments")
+      .delete()
+      .eq("id", params.id);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/csc/assessments/[id] error:", err);
+    return NextResponse.json(
+      { error: "Failed to delete CSC assessment" },
       { status: 500 }
     );
   }
