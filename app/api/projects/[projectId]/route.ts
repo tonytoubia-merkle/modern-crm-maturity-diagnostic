@@ -32,7 +32,9 @@ export async function GET(
 
       const { data: stakeholders } = await supabase
         .from("stakeholders")
-        .select("*, assessments(share_id, status, overall_score, maturity_stage)")
+        .select(
+          "*, assessments!stakeholders_assessment_id_fkey(share_id, status, overall_score, maturity_stage)"
+        )
         .eq("project_id", projByShare.id)
         .order("invited_at", { ascending: true });
 

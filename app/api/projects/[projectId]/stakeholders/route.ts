@@ -110,7 +110,9 @@ export async function GET(
 
     const { data, error } = await supabase
       .from("stakeholders")
-      .select("*, assessments(status, overall_score, maturity_stage, updated_at)")
+      .select(
+        "*, assessments!stakeholders_assessment_id_fkey(status, overall_score, maturity_stage, updated_at)"
+      )
       .eq("project_id", params.projectId)
       .order("invited_at", { ascending: true });
 
