@@ -8,21 +8,27 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type AssessmentRow = {
+  key: string;
+  name: string;
+  href: string;
+  score: number | null;
+  status: string;
+  date: string;
+  respondent?: string;
+  repEmail?: string | null;
+};
+
+type Scope = "mine" | "all";
+
 export default function CscHomePage() {
   const [user, setUser] = useState<{ email?: string; name?: string } | null>(
     null
   );
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [assessments, setAssessments] = useState<
-    Array<{
-      key: string;
-      name: string;
-      href: string;
-      score: number | null;
-      status: string;
-      date: string;
-    }>
-  >([]);
+  const [mine, setMine] = useState<AssessmentRow[]>([]);
+  const [all, setAll] = useState<AssessmentRow[] | null>(null);
+  const [scope, setScope] = useState<Scope>("mine");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,32 +47,48 @@ export default function CscHomePage() {
     });
   }, []);
 
+  const toRow = (a: Record<string, string | number | null>): AssessmentRow => ({
+    key: a.id as string,
+    name: a.client_name as string,
+    href:
+      a.status === "completed"
+        ? `/csc/results/${a.share_id}`
+        : `/csc/assessment/resume/${a.share_id}`,
+    score: a.overall_score as number | null,
+    status: a.status as string,
+    date: a.created_at as string,
+    respondent: (a.respondent_name as string) ?? undefined,
+    repEmail: (a.rep_email as string | null) ?? null,
+  });
+
   const loadAssessments = async (email: string) => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `/api/csc/assessments?repEmail=${encodeURIComponent(email)}`
-      );
-      const data = res.ok ? await res.json() : [];
-      setAssessments(
-        data.map((a: Record<string, string | number | null>) => ({
-          key: a.id as string,
-          name: a.client_name as string,
-          href:
-            a.status === "completed"
-              ? `/csc/results/${a.share_id}`
-              : `/csc/assessment/resume/${a.share_id}`,
-          score: a.overall_score as number | null,
-          status: a.status as string,
-          date: a.created_at as string,
-        }))
-      );
+      // Fetch the user's own list and the admin list in parallel. The
+      // admin call returns 403 for non-admins; we quietly fall back to
+      // hiding the All toggle in that case.
+      const [mineRes, adminRes] = await Promise.all([
+        fetch(`/api/csc/assessments?repEmail=${encodeURIComponent(email)}`),
+        fetch("/api/csc/assessments?admin=1"),
+      ]);
+      const mineData = mineRes.ok ? await mineRes.json() : [];
+      setMine(mineData.map(toRow));
+
+      if (adminRes.ok) {
+        const adminData = await adminRes.json();
+        setAll(adminData.map(toRow));
+      } else {
+        setAll(null);
+      }
     } catch {
       // silent
     } finally {
       setLoading(false);
     }
   };
+
+  const isCscAdmin = all !== null;
+  const visible = scope === "all" && all ? all : mine;
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -205,9 +227,39 @@ export default function CscHomePage() {
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h3 className="text-sm font-bold text-slate-900 mb-4">
-            Your CSC Assessments
-          </h3>
+          <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+            <h3 className="text-sm font-bold text-slate-900">
+              {scope === "all" ? "All CSC Assessments" : "Your CSC Assessments"}
+            </h3>
+            {isCscAdmin && (
+              <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-medium">
+                <button
+                  type="button"
+                  onClick={() => setScope("mine")}
+                  className={`px-3 py-1 rounded-full transition-colors ${
+                    scope === "mine"
+                      ? "bg-slate-100 text-slate-800"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                  aria-pressed={scope === "mine"}
+                >
+                  Mine ({mine.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setScope("all")}
+                  className={`px-3 py-1 rounded-full transition-colors ${
+                    scope === "all"
+                      ? "bg-slate-100 text-slate-800"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                  aria-pressed={scope === "all"}
+                >
+                  All ({all?.length ?? 0})
+                </button>
+              </div>
+            )}
+          </div>
 
           {loading ? (
             <div className="flex items-center gap-2 py-4">
@@ -216,23 +268,25 @@ export default function CscHomePage() {
                 Loading assessments...
               </span>
             </div>
-          ) : assessments.length > 0 ? (
+          ) : visible.length > 0 ? (
             <div className="space-y-1">
-              {assessments.map((r) => (
+              {visible.map((r) => (
                 <a
                   key={r.key}
                   href={r.href}
                   className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
                 >
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-900 truncate">
                       {r.name}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-400 truncate">
                       CSC · {new Date(r.date).toLocaleDateString()}
+                      {scope === "all" && r.respondent && ` · ${r.respondent}`}
+                      {scope === "all" && r.repEmail && ` · ${r.repEmail}`}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     {r.score && (
                       <span
                         className="text-xs font-semibold"
@@ -259,7 +313,9 @@ export default function CscHomePage() {
             </div>
           ) : (
             <div className="text-center py-6">
-              <p className="text-sm text-slate-500 mb-1">No assessments yet</p>
+              <p className="text-sm text-slate-500 mb-1">
+                {scope === "all" ? "No CSC assessments yet." : "No assessments yet"}
+              </p>
               <p className="text-xs text-slate-400">
                 Run a{" "}
                 <a

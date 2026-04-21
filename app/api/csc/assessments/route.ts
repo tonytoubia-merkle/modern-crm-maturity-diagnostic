@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
+import { canAdmin } from "@/lib/auth/roles";
 import { generateShareId } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
@@ -59,17 +60,32 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const repEmail = searchParams.get("repEmail");
+    const wantsAdmin = searchParams.get("admin") === "1";
+
+    const supabase = createServerClient();
+    const SELECT =
+      "id, share_id, client_name, client_company, respondent_name, rep_email, status, industry, overall_score, maturity_stage, created_at, updated_at";
+
+    // Admin mode: return every CSC assessment, CSC admins only.
+    if (wantsAdmin) {
+      if (!(await canAdmin("csc"))) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      const { data, error } = await supabase
+        .from("csc_assessments")
+        .select(SELECT)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
 
     if (!repEmail) {
       return NextResponse.json({ error: "Missing repEmail" }, { status: 400 });
     }
 
-    const supabase = createServerClient();
     const { data, error } = await supabase
       .from("csc_assessments")
-      .select(
-        "id, share_id, client_name, client_company, respondent_name, status, industry, overall_score, maturity_stage, created_at, updated_at"
-      )
+      .select(SELECT)
       .eq("rep_email", repEmail)
       .order("created_at", { ascending: false });
 

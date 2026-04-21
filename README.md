@@ -166,16 +166,33 @@ Opportunities are triggered when a relevant capability scores below the configur
 
 ---
 
-## Admin Dashboard
+## Admin Access
 
-Access at `/admin`. Gated by the `app_users.role` column (migration `005`) —
-only accounts flagged as `super_admin` can view the dashboard or delete
-assessments. Promote a user by running:
+Admin access is scoped per product area via two columns on `app_users`:
+
+| Column | Values | Meaning |
+|---|---|---|
+| `role` | `'user'` (default), `'super_admin'` | `super_admin` grants access to every admin surface, current and future |
+| `admin_scopes` | `TEXT[]` (default `{}`) | Narrow admin grants. Current values: `'crm'`, `'csc'` |
+
+**Surfaces:**
+- `/admin` (Modern CRM dashboard) — requires `super_admin` or `'crm'` in scopes
+- `/csc` "All" tab — requires `super_admin` or `'csc'` in scopes
+
+Promote a full super admin:
 
 ```sql
 INSERT INTO app_users (email, role)
 VALUES ('someone@merkle.com', 'super_admin')
 ON CONFLICT (email) DO UPDATE SET role = 'super_admin';
+```
+
+Promote a CSC-only admin (doesn't grant CRM access):
+
+```sql
+INSERT INTO app_users (email, role, admin_scopes)
+VALUES ('someone@merkle.com', 'user', ARRAY['csc'])
+ON CONFLICT (email) DO UPDATE SET admin_scopes = EXCLUDED.admin_scopes;
 ```
 
 Features:

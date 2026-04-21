@@ -213,11 +213,14 @@ export default function AboutPage() {
                 enterprise terms apply.
               </GuardItem>
               <GuardItem title="Admin access">
-                <span className="font-mono text-xs">/admin</span> is gated by a
-                role column on the <span className="font-mono text-xs">app_users</span>{" "}
-                table — only accounts explicitly set to{" "}
-                <span className="font-mono text-xs">super_admin</span> can view
-                the dashboard, export data, or delete assessments.
+                Admin is scoped per product on{" "}
+                <span className="font-mono text-xs">app_users</span>.{" "}
+                <span className="font-mono text-xs">role = &apos;super_admin&apos;</span>{" "}
+                grants every admin surface;{" "}
+                <span className="font-mono text-xs">admin_scopes</span> (e.g.{" "}
+                <span className="font-mono text-xs">{"{'csc'}"}</span>) grants
+                narrow access to just that diagnostic. CSC-only admins cannot
+                see or mutate CRM data and vice versa.
               </GuardItem>
             </ul>
           </div>

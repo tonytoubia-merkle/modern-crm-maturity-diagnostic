@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
-import { isSuperAdmin } from "@/lib/auth/roles";
+import { canAdmin } from "@/lib/auth/roles";
 import { generateShareId } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
@@ -83,9 +83,9 @@ export async function GET(request: NextRequest) {
 
     const supabase = createServerClient();
 
-    // Admin access: return all assessments (super admins only).
+    // Admin access: return all assessments (CRM admins only).
     if (wantsAdmin) {
-      if (!(await isSuperAdmin())) {
+      if (!(await canAdmin("crm"))) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
       const { data, error } = await supabase
