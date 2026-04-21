@@ -9,7 +9,8 @@ const PUBLIC_ROUTES = [
 
 // Routes that start with these prefixes are public
 const PUBLIC_PREFIXES = [
-  "/survey/",           // stakeholder survey links
+  "/survey/",           // CRM stakeholder survey links
+  "/csc/survey/",       // CSC stakeholder survey links
   "/results/",          // shareable CRM results pages
   "/csc/results/",      // shareable CSC results pages
   "/api/",              // all API routes (they use service role key server-side)

@@ -27,6 +27,11 @@ interface CscAssessmentFlowProps {
   initialResponses?: CscResponseItem[];
   initialIndustry?: CscIndustry | null;
   initialStep?: number;
+  /** When set, the flow is running inside a stakeholder invite — completion
+   *  posts to /api/csc/stakeholders/:id/complete and calls onComplete instead
+   *  of redirecting to the results page. */
+  stakeholderId?: string | null;
+  onComplete?: () => void;
 }
 
 export function CscAssessmentFlow({
@@ -35,6 +40,8 @@ export function CscAssessmentFlow({
   initialResponses = [],
   initialIndustry = null,
   initialStep = 0,
+  stakeholderId = null,
+  onComplete,
 }: CscAssessmentFlowProps = {}) {
   const [assessmentId, setAssessmentId] = useState<string | null>(initialAssessmentId);
   const [shareId, setShareId] = useState<string | null>(initialShareId);
@@ -183,6 +190,20 @@ export function CscAssessmentFlow({
           capabilityScores,
         }),
       });
+
+      // Stakeholder-invite flows: mark stakeholder complete and hand off to
+      // the caller (which typically shows a thank-you screen).
+      if (stakeholderId) {
+        await fetch(`/api/csc/stakeholders/${stakeholderId}/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "completed" }),
+        });
+        if (onComplete) {
+          onComplete();
+          return;
+        }
+      }
 
       window.location.href = `/csc/results/${shareId}`;
     } catch (e) {

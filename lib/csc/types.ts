@@ -97,3 +97,62 @@ export interface CscDiagnosticResults {
   maturityDescription: string;
   opportunities: CscOpportunity[];
 }
+
+// ── Workshop / Project types ───────────────────────────────────────────
+// Parallel to the CRM project types in lib/types.ts. Database tables are
+// csc_projects and csc_stakeholders (migration 009).
+
+export type CscProjectMode = "lite" | "workshop";
+export type CscProjectStatus = "collecting" | "aggregating" | "completed";
+
+export interface CscProject {
+  id: string;
+  shareId: string;
+  clientName: string;
+  clientCompany: string;
+  industry?: CscIndustry | null;
+  createdByName: string;
+  createdByEmail?: string | null;
+  mode: CscProjectMode;
+  maxStakeholders: number;
+  status: CscProjectStatus;
+  aggregatedScores?: Record<CscCapability, number> | null;
+  aggregatedOverall?: number | null;
+  aggregatedMaturity?: CscMaturityStage | null;
+  triggeredOpportunityIds?: string[] | null;
+  workshopAgenda?: CscWorkshopAgenda | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CscStakeholder {
+  id: string;
+  projectId: string;
+  name: string;
+  email?: string | null;
+  role?: string | null;
+  inviteToken: string;
+  assessmentId?: string | null;
+  status: "invited" | "in_progress" | "completed";
+  invitedAt: string;
+  completedAt?: string | null;
+}
+
+// ── Workshop agenda shape ──────────────────────────────────────────────
+// Deliberately left loose at the scaffold stage. The generator will fill
+// this once vignette content is grounded. Follow the CRM workshop_agenda
+// shape in lib/types.ts when authoring.
+
+export interface CscWorkshopAgendaSection {
+  title: string;
+  duration: string;
+  description: string;
+  facilitationGuide?: string;
+  vignetteIds?: string[];
+}
+
+export interface CscWorkshopAgenda {
+  format: "half_day" | "full_day" | "two_day";
+  sections: CscWorkshopAgendaSection[];
+  smeRaci?: Array<{ area: string; responsible: string; accountable: string; consulted?: string[]; informed?: string[] }>;
+}

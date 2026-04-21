@@ -12,6 +12,7 @@ type AssessmentRow = {
   key: string;
   name: string;
   href: string;
+  label: string;
   score: number | null;
   status: string;
   date: string;
@@ -47,13 +48,14 @@ export default function CscHomePage() {
     });
   }, []);
 
-  const toRow = (a: Record<string, string | number | null>): AssessmentRow => ({
-    key: a.id as string,
+  const toAssessmentRow = (a: Record<string, string | number | null>): AssessmentRow => ({
+    key: `a-${a.id}`,
     name: a.client_name as string,
     href:
       a.status === "completed"
         ? `/csc/results/${a.share_id}`
         : `/csc/assessment/resume/${a.share_id}`,
+    label: "Assessment",
     score: a.overall_score as number | null,
     status: a.status as string,
     date: a.created_at as string,
@@ -61,22 +63,44 @@ export default function CscHomePage() {
     repEmail: (a.rep_email as string | null) ?? null,
   });
 
+  const toProjectRow = (p: Record<string, string | number | null>): AssessmentRow => ({
+    key: `p-${p.id}`,
+    name: p.client_name as string,
+    href: `/csc/project/${p.share_id}`,
+    label: "Workshop",
+    score: p.aggregated_overall as number | null,
+    status: p.status as string,
+    date: p.created_at as string,
+    respondent: (p.created_by_name as string) ?? undefined,
+    repEmail: (p.created_by_email as string | null) ?? null,
+  });
+
   const loadAssessments = async (email: string) => {
     setLoading(true);
     try {
-      // Fetch the user's own list and the admin list in parallel. The
-      // admin call returns 403 for non-admins; we quietly fall back to
-      // hiding the All toggle in that case.
-      const [mineRes, adminRes] = await Promise.all([
+      // Fetch own + admin assessments AND own + admin projects in parallel.
+      // Admin endpoints 403 for non-admins; we fall back silently.
+      const [aMineRes, aAdminRes, pMineRes, pAdminRes] = await Promise.all([
         fetch(`/api/csc/assessments?repEmail=${encodeURIComponent(email)}`),
         fetch("/api/csc/assessments?admin=1"),
+        fetch(`/api/csc/projects?email=${encodeURIComponent(email)}`),
+        fetch("/api/csc/projects?admin=1"),
       ]);
-      const mineData = mineRes.ok ? await mineRes.json() : [];
-      setMine(mineData.map(toRow));
 
-      if (adminRes.ok) {
-        const adminData = await adminRes.json();
-        setAll(adminData.map(toRow));
+      const aMine = aMineRes.ok ? await aMineRes.json() : [];
+      const pMine = pMineRes.ok ? await pMineRes.json() : [];
+      setMine([
+        ...pMine.map(toProjectRow),
+        ...aMine.map(toAssessmentRow),
+      ]);
+
+      if (aAdminRes.ok && pAdminRes.ok) {
+        const aAdmin = await aAdminRes.json();
+        const pAdmin = await pAdminRes.json();
+        setAll([
+          ...pAdmin.map(toProjectRow),
+          ...aAdmin.map(toAssessmentRow),
+        ]);
       } else {
         setAll(null);
       }
@@ -177,17 +201,17 @@ export default function CscHomePage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="/csc/assessment/new"
+              href="/csc/project/new"
               className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors hover:bg-white/90"
               style={{ backgroundColor: "white", color: "#00205B" }}
             >
-              Start Assessment
+              New Project
             </a>
             <a
-              href="/"
+              href="/csc/assessment/new"
               className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
             >
-              Switch to Modern CRM
+              Quick Assessment
             </a>
           </div>
         </div>
@@ -229,7 +253,7 @@ export default function CscHomePage() {
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
             <h3 className="text-sm font-bold text-slate-900">
-              {scope === "all" ? "All CSC Assessments" : "Your CSC Assessments"}
+              {scope === "all" ? "All CSC Projects" : "Your CSC Projects"}
             </h3>
             {isCscAdmin && (
               <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-medium">
@@ -281,7 +305,7 @@ export default function CscHomePage() {
                       {r.name}
                     </p>
                     <p className="text-xs text-slate-400 truncate">
-                      CSC · {new Date(r.date).toLocaleDateString()}
+                      {r.label} · {new Date(r.date).toLocaleDateString()}
                       {scope === "all" && r.respondent && ` · ${r.respondent}`}
                       {scope === "all" && r.repEmail && ` · ${r.repEmail}`}
                     </p>
@@ -314,15 +338,22 @@ export default function CscHomePage() {
           ) : (
             <div className="text-center py-6">
               <p className="text-sm text-slate-500 mb-1">
-                {scope === "all" ? "No CSC assessments yet." : "No assessments yet"}
+                {scope === "all" ? "Nothing here yet." : "Nothing here yet."}
               </p>
               <p className="text-xs text-slate-400">
-                Run a{" "}
+                Create a{" "}
+                <a
+                  href="/csc/project/new"
+                  className="text-blue-600 hover:underline"
+                >
+                  new workshop project
+                </a>{" "}
+                or run a{" "}
                 <a
                   href="/csc/assessment/new"
                   className="text-blue-600 hover:underline"
                 >
-                  new CSC assessment
+                  quick assessment
                 </a>{" "}
                 to get started.
               </p>
