@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
+import { canAdmin } from "@/lib/auth/roles";
 
 export async function GET(
   _request: NextRequest,
@@ -111,19 +112,45 @@ export async function PATCH(
   }
 }
 
+/**
+ * DELETE /api/projects/:id?mode=orphan|cascade
+ *
+ * orphan (default): delete the project only. Because
+ *   assessments.project_id has ON DELETE SET NULL, linked assessments are
+ *   retained and simply un-linked.
+ * cascade: delete every assessment linked to the project first (responses
+ *   cascade via their own FK), then the project itself.
+ *
+ * CRM admins only.
+ */
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: { projectId: string } }
 ) {
   try {
+    if (!(await canAdmin("crm"))) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const mode = searchParams.get("mode") === "cascade" ? "cascade" : "orphan";
     const supabase = createServerClient();
+
+    if (mode === "cascade") {
+      const { error: aErr } = await supabase
+        .from("assessments")
+        .delete()
+        .eq("project_id", params.projectId);
+      if (aErr) throw aErr;
+    }
+
     const { error } = await supabase
       .from("projects")
       .delete()
       .eq("id", params.projectId);
 
     if (error) throw error;
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, mode });
   } catch (err) {
     console.error("DELETE /api/projects/[id] error:", err);
     return NextResponse.json(

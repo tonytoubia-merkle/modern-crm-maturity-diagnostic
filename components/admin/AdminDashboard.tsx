@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils";
 import { MATURITY_STAGES } from "@/lib/scoring";
+import { CSC_MATURITY_STAGES } from "@/lib/csc/scoring";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import type { MaturityStage } from "@/lib/types";
 
@@ -62,6 +63,53 @@ interface ProjectRow {
 
 type AuthState = "loading" | "authorized" | "forbidden" | "error";
 
+/** Reusable stage-distribution row rendered once for CRM and once for CSC. */
+function StageRow({
+  title,
+  count,
+  tally,
+  stageLookup,
+}: {
+  title: string;
+  count: number;
+  tally: (stage: MaturityStage) => number;
+  stageLookup: (stage: MaturityStage) => string;
+}) {
+  return (
+    <div>
+      <div className="flex items-baseline justify-between mb-2">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          {title}
+        </h3>
+        <span className="text-[11px] text-slate-400">{count} total</span>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {([1, 2, 3, 4] as MaturityStage[]).map((stage) => {
+          const n = tally(stage);
+          const label = stageLookup(stage);
+          const badge = STAGE_BADGES[stage];
+          return (
+            <div
+              key={`${title}-${stage}`}
+              className="bg-white rounded-xl border border-slate-200 p-4"
+            >
+              <p
+                className={`text-xs font-semibold px-2 py-0.5 rounded inline-block mb-2 ${badge.bg} ${badge.text}`}
+              >
+                Stage {stage}
+              </p>
+              <p className="text-2xl font-bold text-slate-900">{n}</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-tight">
+                {label.split("—")[1]?.trim() ?? label}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function AdminDashboard() {
   const [authState, setAuthState] = useState<AuthState>("loading");
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -71,6 +119,9 @@ export function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<AssessmentRow | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [projectDeleteTarget, setProjectDeleteTarget] = useState<ProjectRow | null>(null);
+  const [projectDeleteMode, setProjectDeleteMode] = useState<"orphan" | "cascade">("orphan");
+  const [projectDeleting, setProjectDeleting] = useState(false);
   const [tab, setTab] = useState<"projects" | "assessments">("projects");
 
   const loadAdminData = useCallback(async () => {
@@ -187,6 +238,39 @@ export function AdminDashboard() {
     }
   };
 
+  const handleProjectDelete = async () => {
+    if (!projectDeleteTarget) return;
+    setProjectDeleting(true);
+    try {
+      const res = await fetch(
+        `/api/projects/${projectDeleteTarget.id}?mode=${projectDeleteMode}`,
+        { method: "DELETE" }
+      );
+      if (!res.ok) throw new Error("Failed to delete project");
+      const targetId = projectDeleteTarget.id;
+      setProjects((prev) => prev.filter((p) => p.id !== targetId));
+      if (projectDeleteMode === "cascade") {
+        setAssessments((prev) =>
+          prev.filter((a) => a.project_id !== targetId)
+        );
+      } else {
+        // Orphan: keep the rows but null out project_id so the UI stops
+        // showing a project association that no longer exists.
+        setAssessments((prev) =>
+          prev.map((a) =>
+            a.project_id === targetId ? { ...a, project_id: null } : a
+          )
+        );
+      }
+      setProjectDeleteTarget(null);
+      setProjectDeleteMode("orphan");
+    } catch {
+      // keep modal open on error
+    } finally {
+      setProjectDeleting(false);
+    }
+  };
+
   const filtered = assessments.filter((a) => {
     const q = search.toLowerCase();
     return (
@@ -281,7 +365,8 @@ export function AdminDashboard() {
               Diagnostic Dashboard
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
-              {assessments.length} assessments total ·{" "}
+              {assessments.filter((a) => a.kind === "crm").length} CRM ·{" "}
+              {assessments.filter((a) => a.kind === "csc").length} CSC ·{" "}
               {assessments.filter((a) => a.status === "completed").length}{" "}
               completed
             </p>
@@ -317,31 +402,24 @@ export function AdminDashboard() {
           />
         </div>
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          {([1, 2, 3, 4] as MaturityStage[]).map((stage) => {
-            const count = assessments.filter(
-              (a) => a.maturity_stage === stage
-            ).length;
-            const info = MATURITY_STAGES[stage];
-            const badge = STAGE_BADGES[stage];
-            return (
-              <div
-                key={stage}
-                className="bg-white rounded-xl border border-slate-200 p-4"
-              >
-                <p
-                  className={`text-xs font-semibold px-2 py-0.5 rounded inline-block mb-2 ${badge.bg} ${badge.text}`}
-                >
-                  Stage {stage}
-                </p>
-                <p className="text-2xl font-bold text-slate-900">{count}</p>
-                <p className="text-xs text-slate-500 mt-0.5 leading-tight">
-                  {info.label.split("—")[1]?.trim()}
-                </p>
-              </div>
-            );
-          })}
+        {/* Stage distribution — CRM and CSC each count against their own rubric */}
+        <div className="mb-8 space-y-4">
+          <StageRow
+            title="Modern CRM"
+            count={assessments.filter((a) => a.kind === "crm").length}
+            stageLookup={(s) => MATURITY_STAGES[s].label}
+            tally={(s) =>
+              assessments.filter((a) => a.kind === "crm" && a.maturity_stage === s).length
+            }
+          />
+          <StageRow
+            title="Content Supply Chain"
+            count={assessments.filter((a) => a.kind === "csc").length}
+            stageLookup={(s) => CSC_MATURITY_STAGES[s].label}
+            tally={(s) =>
+              assessments.filter((a) => a.kind === "csc" && a.maturity_stage === s).length
+            }
+          />
         </div>
 
         {/* Tabs */}
@@ -450,14 +528,28 @@ export function AdminDashboard() {
                             <p className="text-xs text-slate-700">{formatDateTime(p.created_at).date}</p>
                           </td>
                           <td className="px-4 py-3">
-                            <a
-                              href={`/project/${p.share_id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs font-medium text-blue-600 hover:text-blue-800"
-                            >
-                              Open →
-                            </a>
+                            <div className="flex items-center gap-3">
+                              <a
+                                href={`/project/${p.share_id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                              >
+                                Open →
+                              </a>
+                              <button
+                                onClick={() => setProjectDeleteTarget(p)}
+                                className="text-slate-300 hover:text-red-500 transition-colors"
+                                title="Delete project"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="3 6 5 6 21 6" />
+                                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                  <path d="M10 11v6M14 11v6" />
+                                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                </svg>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -710,6 +802,128 @@ export function AdminDashboard() {
         </div>
       </div>
     )}
+
+    {/* Project delete confirmation modal — super admin only, with orphan/cascade choice */}
+    {projectDeleteTarget && (() => {
+      const linkedCount = assessments.filter(
+        (a) => a.project_id === projectDeleteTarget.id
+      ).length;
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => !projectDeleting && setProjectDeleteTarget(null)}
+          />
+          <div className="relative bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-md mx-4 p-6">
+            <div className="w-10 h-10 rounded-full bg-red-50 border border-red-100 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                <path d="M10 11v6M14 11v6" />
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+              </svg>
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-1">
+              Delete Project
+            </h3>
+            <p className="text-sm text-slate-500 mb-4">
+              <span className="font-semibold text-slate-700">{projectDeleteTarget.client_name}</span>
+              {projectDeleteTarget.client_company && (
+                <span className="text-slate-400"> · {projectDeleteTarget.client_company}</span>
+              )}
+              <br />
+              <span className="text-xs text-slate-400">
+                {linkedCount === 0
+                  ? "No linked assessments."
+                  : `${linkedCount} linked assessment${linkedCount === 1 ? "" : "s"}.`}
+              </span>
+            </p>
+
+            {linkedCount > 0 && (
+              <div className="space-y-2 mb-5">
+                <label className={`flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition-colors ${
+                  projectDeleteMode === "orphan"
+                    ? "border-slate-900 bg-slate-50"
+                    : "border-slate-200 hover:border-slate-300"
+                }`}>
+                  <input
+                    type="radio"
+                    name="project-delete-mode"
+                    value="orphan"
+                    checked={projectDeleteMode === "orphan"}
+                    onChange={() => setProjectDeleteMode("orphan")}
+                    disabled={projectDeleting}
+                    className="mt-0.5"
+                  />
+                  <span className="flex-1">
+                    <span className="block text-sm font-semibold text-slate-800">
+                      Keep assessments
+                    </span>
+                    <span className="block text-xs text-slate-500 mt-0.5">
+                      {linkedCount} assessment{linkedCount === 1 ? "" : "s"} will be un-linked from the project and remain accessible on their own.
+                    </span>
+                  </span>
+                </label>
+
+                <label className={`flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition-colors ${
+                  projectDeleteMode === "cascade"
+                    ? "border-red-500 bg-red-50"
+                    : "border-slate-200 hover:border-slate-300"
+                }`}>
+                  <input
+                    type="radio"
+                    name="project-delete-mode"
+                    value="cascade"
+                    checked={projectDeleteMode === "cascade"}
+                    onChange={() => setProjectDeleteMode("cascade")}
+                    disabled={projectDeleting}
+                    className="mt-0.5"
+                  />
+                  <span className="flex-1">
+                    <span className="block text-sm font-semibold text-slate-800">
+                      Delete everything
+                    </span>
+                    <span className="block text-xs text-slate-500 mt-0.5">
+                      Also permanently deletes {linkedCount} linked assessment{linkedCount === 1 ? "" : "s"} and all responses.
+                    </span>
+                  </span>
+                </label>
+              </div>
+            )}
+
+            <p className="text-xs text-slate-400 mb-5">
+              Stakeholder invitations for this project will be removed either way.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setProjectDeleteTarget(null)}
+                disabled={projectDeleting}
+                className="flex-1 px-4 py-2 rounded-xl border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleProjectDelete}
+                disabled={projectDeleting}
+                className="flex-1 px-4 py-2 rounded-xl bg-red-600 text-sm font-medium text-white hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {projectDeleting ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    Deleting…
+                  </>
+                ) : projectDeleteMode === "cascade" ? (
+                  "Delete everything"
+                ) : (
+                  "Delete project"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    })()}
     </>
   );
 }
