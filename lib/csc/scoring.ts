@@ -55,32 +55,34 @@ export function computeCscMaturityStage(overallScore: number): CscMaturityStage 
   return 4;
 }
 
+// Stage labels and narratives aligned to the Merkle CSC practice POV
+// (2026 POV Narrative, "CSC Diagnostic" maturity scale, page 33).
 export const CSC_MATURITY_STAGES: Record<
   CscMaturityStage,
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — Campaign-Driven Content",
+    label: "Stage 1 — Defined",
     description:
-      "Content is produced campaign-by-campaign — bespoke, siloed, and largely bespoke per launch. There is no shared portfolio view, modular design, or content intelligence. Teams rebuild assets that already exist, struggle to find approved content, and cannot produce personalization variants without linear cost growth. This is the starting point of a content supply chain focused on output rather than outcomes — removing friction on individual deliverables while leaving significant trapped value across the portfolio.",
+      "Siloed teams, manual work, and a reactive or chaotic approach to content. Organizations at this stage rely on Excel, email, and file-transfer tools to manage content, with no shared portfolio view, modular design, or content intelligence. Teams rebuild assets that already exist and cannot produce personalization variants without linear cost growth. Stage 1 organizations are typically ready for a CSC Strategy Blueprint — aligning current state, target state, and priority efforts before platform investment.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — Process-Based Content",
+    label: "Stage 2 — Integrated",
     description:
-      "Production workflows have begun to standardize, some asset reuse is happening, and a DAM exists — but modular design, asset-level intelligence, and dynamic activation are still limited. AI use is inconsistent and governance is applied after the fact. Content remains largely channel-shaped rather than audience-shaped, and personalization variants are produced manually. Stage 2 organizations have removed the most obvious inefficiency but have not yet reorganized the supply chain around modular, data-driven content.",
+      "Tools like DAMs and project management systems may be in place, but other workflows are still manual and connections between content, experience, and media teams are limited. AI use is inconsistent, governance is applied after the fact, and content remains largely channel-shaped rather than audience-shaped. Stage 2 organizations have removed the most obvious inefficiency but not yet reorganized the supply chain around modular, data-driven content. Ready to prove value through an Innovation Accelerator on a single high-impact use case.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — Connected Content Supply Chain",
+    label: "Stage 3 — Optimized",
     description:
-      "Content is designed as modular components, the DAM is the trusted source of truth, and asset-level performance feeds back into briefing and production. GenAI is in day-to-day use within brand and legal guardrails, and content is assembled dynamically in CRM, commerce, and media activation. Brand, creative, MarTech, and agency partners operate from a shared operating model. This is the stage where the content supply chain stops being a factory and starts being a connected engine for personalized engagement.",
+      "Connected teams with integrated technology, working to common objectives and measuring against standardized KPIs. Content is designed as modular components, the DAM is the trusted source of truth, and asset-level performance feeds back into briefing and production. GenAI is in day-to-day use within brand and legal guardrails, and content is assembled dynamically in CRM, commerce, and media activation. This is where the content supply chain stops being a factory and starts being a connected engine for personalized engagement.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — Intelligent Content Engine",
+    label: "Stage 4 — Innovative",
     description:
-      "The content supply chain is AI-augmented and self-optimizing. Modular content, asset intelligence, and dynamic activation are fully integrated; agentic workflows and generative AI produce personalized content at a scale humans cannot. A Content Center of Excellence institutionalizes governance, measurement, and continuous improvement. Content is produced against audience outcomes, variants are automated, and every asset learns from the last. The organization has made the full shift from campaigns to conversations — with content as a compounding growth asset.",
+      "Fully connected and integrated teams across markets, powered by data, technology, and intelligence — with a growing proportion of work executed by AI agents. Modular content, asset intelligence, and dynamic activation are fully integrated; agentic workflows and generative AI produce personalized content at a scale humans cannot. A Content Center of Excellence institutionalizes governance, measurement, and continuous improvement. Content has become a compounding growth asset, and the focus shifts to Continuous Value Accelerator programs that keep the engine ahead of emerging technologies.",
     color: "green",
   },
 };

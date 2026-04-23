@@ -1,352 +1,386 @@
 import type { CscOpportunity } from "@/lib/csc/types";
 
+/**
+ * Merkle Content Supply Chain offerings, grounded in the 2026 CSC POV,
+ * Build Offering Toolkit v1.0, and Activate Offering Toolkit v1.0.
+ *
+ * Organized in two layers:
+ *   1. Seven named Merkle engagements ("what we sell") — Blueprint, Innovation
+ *      Accelerator, Turnaround & Recovery, Enterprise Transformation,
+ *      Platform Value Realization, Continuous Value Accelerator, Managed
+ *      Content Production. These map directly to the investment bands,
+ *      timings, and outcomes documented in the offering toolkits.
+ *   2. Seven capability-level initiatives ("what sits inside") — the data
+ *      fabric, modular design, AI production, workflow, activation,
+ *      intelligence, and operating-model work that the named engagements
+ *      pull together. Useful when a client only needs a targeted scope.
+ */
 export const CSC_OPPORTUNITIES: CscOpportunity[] = [
-  // ── STRATEGY ──────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════════════
+  // NAMED MERKLE ENGAGEMENTS — Build stream
+  // ══════════════════════════════════════════════════════════════════
   {
-    id: "content_strategy_blueprint",
-    title: "Content Strategy Blueprint",
-    tagline: "Reset content strategy as an audience-led, outcomes-driven portfolio",
+    id: "csc_strategy_blueprint",
+    title: "CSC Strategy Blueprint",
+    tagline:
+      "Align current state, target state, and priority efforts before platform investment",
     description:
-      "Replatform the content strategy as a portfolio of always-on, lifecycle, and campaign content — planned against audience jobs-to-be-done and tied to specific business outcomes. Align brand, media, CRM, and commerce priorities on one plan so the content pipeline stops being a reactive campaign factory and starts being a shared engine for growth.",
-    capabilities: ["strategy_planning"],
+      "The foundational wedge engagement. Assesses current content supply chain workflows, technology, and organizational readiness; defines a clear target state; aligns stakeholders on priority initiatives and sequencing; delivers a business case that enables confident investment decisions.",
+    capabilities: ["strategy_planning", "workflow_production"],
     triggerThreshold: 3.0,
     scope:
-      "Audience and outcomes mapping, always-on + lifecycle + campaign portfolio design, brief template redesign, and brand-media-CRM-commerce alignment workshops.",
+      "Current/target state assessment, operating model design, prioritized implementation roadmap, business case for transformation investment.",
     methods: [
-      "Audience jobs-to-be-done and outcome mapping",
-      "Portfolio split across always-on, lifecycle, and campaign content",
-      "Brief template redesign (audience, variants, channels, personalization)",
-      "Brand + media + CRM + commerce alignment working sessions",
-      "Content-to-outcome KPI framework and investment rebalancing",
+      "Stakeholder alignment sessions and discovery interviews",
+      "Current state workflow, technology, and organizational maturity assessment",
+      "Target operating model and process map design",
+      "Prioritized implementation roadmap with crawl-walk-run phasing",
+      "Business case with ROI model and investment prioritization",
     ],
     valueNarrative:
-      "Most content still gets planned around product and launch calendars rather than audience need — which drives up waste and collapses the value of each asset. A portfolio-led strategy shifts investment toward content that compounds, reduces duplicate effort across brand, CRM, and commerce, and makes the whole supply chain easier to measure and optimize.",
-    sfType: "Content Strategy",
-    engagementSize: "Medium (10–14 weeks)",
+      "Build before Buy. Blueprint content supply chain processes before touching technology — map workflows, design governance, architect role-based operations, and establish marketing data fabric. Princess Cruises started here and unlocked $5.7M in identified operational value with $486K in year-one quick wins. Without a blueprint, platform decisions default to vendor preferences rather than your architecture.",
+    sfType: "CSC Strategy",
+    engagementSize: "8–16 weeks · $350K–$500K",
     priority: "critical",
   },
 
-  // ── CREATIVE ──────────────────────────────────────────────────────
   {
-    id: "modular_content_framework",
-    title: "Modular Content Framework",
-    tagline: "Re-architect creative as reusable atoms, not bespoke executions",
+    id: "innovation_accelerator",
+    title: "Innovation Accelerator",
+    tagline:
+      "Rapidly validate a high-value use case before committing to enterprise scale",
     description:
-      "Design and roll out a modular content framework — atomic creative components (hooks, visuals, product blocks, CTAs) that can be reassembled across channels, variants, and personalization logic. Modular design is the structural shift that unlocks variant scale, reduces rebuild cost, and makes the content library genuinely activatable.",
-    capabilities: ["strategy_planning", "asset_governance"],
-    triggerThreshold: 3.0,
-    scope:
-      "Modular content taxonomy, atomic component library, brief template upgrade, and creative + production + MarTech alignment on the assembly model.",
-    methods: [
-      "Modular taxonomy design (atoms, molecules, experiences)",
-      "Atomic component library build inside DAM",
-      "Brief and concept template upgrade for modular thinking",
-      "Creative, production, and MarTech alignment on assembly model",
-      "Governance model for module reuse, versioning, and retirement",
-    ],
-    valueNarrative:
-      "Monolithic creative breaks the economics of personalization — every variant costs another bespoke build. Modular content reverses that: one strong concept can produce hundreds of compliant variants at a fraction of the cost, and every asset becomes re-activatable across channels. This is typically the single highest-leverage change in the content supply chain.",
-    sfType: "Content Operations",
-    engagementSize: "Medium (10–16 weeks)",
-    priority: "critical",
-  },
-
-  // ── PRODUCTION ────────────────────────────────────────────────────
-  {
-    id: "ai_assisted_production",
-    title: "AI-Assisted Content Production",
-    tagline: "Bring GenAI into the production workflow — safely and at scale",
-    description:
-      "Operationalize generative AI across copy, image, video, layout, translation, and resizing — inside the existing approval, brand, and legal guardrails. Build approved tooling, prompt libraries, and human-in-the-loop review so AI becomes a day-to-day accelerator of production, not a shadow workaround.",
+      "A focused program that anchors in a single use case, channel, market, or portion of the supply chain — typically AI content production, modular design, or intelligent workflow orchestration. Proves business value, configures a pilot platform environment, and establishes a clear path from experimentation to scalable transformation.",
     capabilities: ["workflow_production", "intelligence_automation"],
     triggerThreshold: 3.0,
     scope:
-      "GenAI tooling selection, prompt and brand voice libraries, review and approval integration, human-in-the-loop workflow design, enablement and training.",
+      "Pilot use case definition, platform configuration, workflow design, AI production proof, scale readiness assessment.",
     methods: [
-      "Approved GenAI tooling selection across modalities",
-      "Brand voice and visual prompt libraries",
-      "Human-in-the-loop review and approval integration",
-      "Workflow redesign for AI-accelerated asset pathways",
-      "Content team enablement, training, and responsible-use standards",
+      "Define pilot scope criteria and success metrics",
+      "Configure pilot platform environment (Workfront, AEM, GenStudio, Firefly)",
+      "Implement targeted workflow design and taxonomy deployment",
+      "Execute AI production proof with brand and legal guardrails",
+      "Performance measurement framework and enterprise scale readiness assessment",
     ],
     valueNarrative:
-      "GenAI compresses production cycles from weeks to days and unlocks variant scale without linear cost growth. The brands that win will be the ones that move AI from 'experiment' to 'embedded' inside their content supply chain — with governance, guardrails, and measurable productivity gains — while the rest stay stuck in bespoke, campaign-shaped production.",
-    sfType: "Content Operations",
-    engagementSize: "Medium to Large (12–20 weeks)",
+      "Innovation is slow, risky, and hard to operationalize when teams try to transform everything at once. The Innovation Accelerator lets you prove the economics of one high-value use case — typically AI-accelerated production or modular personalization — before committing enterprise-scale investment. Adobe saw 82% efficiency gained per campaign via this exact pattern.",
+    sfType: "CSC Implementation",
+    engagementSize: "9–12 months · $700K–$1.5M",
     priority: "critical",
   },
 
   {
-    id: "production_ops_transformation",
-    title: "Production Operations Transformation",
-    tagline: "Turn content production into a predictable, repeatable engine",
+    id: "turnaround_recovery",
+    title: "Turnaround & Recovery",
+    tagline: "Stabilize a failing or stalled content platform implementation",
     description:
-      "Standardize production workflows, asset pathways, and approval flows so similar asset types move through predictable, repeatable steps. Eliminate rework, surface bottlenecks, and unlock the foundation required for both AI acceleration and variant scale.",
-    capabilities: ["workflow_production"],
+      "Rescue program for content supply chain initiatives in trouble — stalled ownership, fragmented configurations, low adoption, over-customization, implementation debt. Rapid diagnosis, executive governance reset, and targeted remediation across technology, process, and organizational dimensions to restore operational stability and a credible foundation for sustained optimization.",
+    capabilities: [
+      "workflow_production",
+      "asset_governance",
+      "distribution_activation",
+    ],
+    triggerThreshold: 3.0,
+    scope:
+      "Operational diagnostic, stabilization plan, workflow remediation, governance reset, recovery roadmap with re-baselined metrics.",
+    methods: [
+      "Comprehensive operational diagnostic and root cause analysis",
+      "Recovery PMO with decision rights, escalation paths, and delivery cadence",
+      "Rapid stabilization actions and workflow rationalization",
+      "Platform configuration and integration remediation using native patterns",
+      "Adoption recovery with targeted enablement tied to real work, not generic training",
+    ],
+    valueNarrative:
+      "Standard vendor support addresses technical issues, not human ones. Help desks fix bugs but can't fix adoption. Novo Nordisk and Highmark Health turned to T&R to stabilize failing implementations before they calcified into shelfware. A recovery PMO, executive decision-rights reset, and remediation of customization debt moves platforms from stranded investments back to delivery engines.",
+    sfType: "CSC Recovery",
+    engagementSize: "5–12 months · $500K–$2M+",
+    priority: "high",
+  },
+
+  {
+    id: "enterprise_transformation",
+    title: "Enterprise Transformation",
+    tagline:
+      "Rebuild content operations holistically through unified strategy, implementation, and change",
+    description:
+      "Multi-year, PMO-anchored program for enterprises ready to reimagine content operations at scale. Unifies platform implementation, workflow redesign, data architecture, AI integration, and organizational change under a single program. Coordinates across internal stakeholders and external vendors to deliver sustained efficiency, governance, and adaptability.",
+    capabilities: [
+      "strategy_planning",
+      "workflow_production",
+      "asset_governance",
+    ],
     triggerThreshold: 2.75,
     scope:
-      "Production workflow audit, asset pathway redesign, capacity modeling, workflow platform recommendation, and SLA + governance framework.",
+      "Program governance, enterprise platform implementation, content data fabric, AI governance, organizational change, vendor coordination.",
     methods: [
-      "End-to-end workflow audit and bottleneck mapping",
-      "Asset pathway standardization by content type",
-      "Capacity modeling and throughput forecasting",
-      "Workflow platform evaluation and rollout plan",
-      "SLAs, governance, and production ops operating model",
+      "Program governance framework and PMO structure",
+      "Enterprise platform implementation (Workfront, AEM, GenStudio, Firefly)",
+      "Content data fabric architecture with enriched metadata",
+      "AI adoption and governance framework for enterprise-scale automation",
+      "Organizational change management across 100+ FTE content teams",
+      "Vendor coordination and cross-platform integration management",
     ],
     valueNarrative:
-      "Ad-hoc production is the root cause of most content waste — duplicated effort, late approvals, off-brand output, and linear cost growth. A standardized production engine typically unlocks 20–40% throughput improvement and is the structural foundation on which modular content and AI acceleration pay off.",
-    sfType: "Content Operations",
-    engagementSize: "Medium (10–14 weeks)",
-    priority: "high",
-  },
-
-  // ── INTELLIGENCE ──────────────────────────────────────────────────
-  {
-    id: "content_intelligence_platform",
-    title: "Content Intelligence Platform",
-    tagline: "Connect every asset to its outcomes — and learn from it",
-    description:
-      "Implement the tagging, tracking, and analytics layer that connects each asset to its performance across channels. Standardize creative attribute tagging, capture asset-level outcomes, and surface near-real-time signals into production and activation decisions. Content intelligence is the feedback engine that makes the rest of the supply chain self-improving.",
-    capabilities: ["intelligence_automation", "measurement_insights"],
-    triggerThreshold: 3.0,
-    scope:
-      "Creative attribute taxonomy, asset-level tracking architecture, performance dashboard, near-real-time signal integration, and content intelligence operating cadence.",
-    methods: [
-      "Creative attribute tagging taxonomy and enforcement",
-      "Asset-level tracking architecture across channels",
-      "Content performance dashboard and executive view",
-      "Near-real-time signal integration into rotation and spend decisions",
-      "Content intelligence review cadence across strategy, creative, and media",
-    ],
-    valueNarrative:
-      "Without asset-level intelligence, content decisions — what to refresh, reuse, retire — are driven by opinion and anecdote. A content intelligence platform typically improves creative win-rate by 20–40%, reduces waste on under-performing assets, and becomes the feedback loop that powers both human and AI-driven improvement.",
-    sfType: "Analytics & Decisioning",
-    engagementSize: "Large (14–22 weeks)",
+      "Highmark Health moved from a 45–60 day content cycle toward a 15-day target via an Enterprise Transformation anchored in Merkle's PMO — 200,000 CSC-influenced hours, $21.7M net benefit over five years, 149% ROI, 28-month payback. When the ambition is not to fix one pain point but to rebuild the operating system, this is the engagement.",
+    sfType: "CSC Enterprise Program",
+    engagementSize: "2–5 years · $5M+/year",
     priority: "critical",
   },
 
-  // ── ASSET MANAGEMENT ──────────────────────────────────────────────
+  // ══════════════════════════════════════════════════════════════════
+  // NAMED MERKLE ENGAGEMENTS — Activate stream
+  // ══════════════════════════════════════════════════════════════════
   {
-    id: "dam_foundation",
-    title: "DAM & Metadata Foundation",
-    tagline: "Make the content library discoverable, governed, and activatable",
+    id: "platform_value_realization",
+    title: "Platform Value Realization",
+    tagline:
+      "Recover stranded platform ROI by fixing adoption, not adding features",
     description:
-      "Implement or re-platform the DAM as the single source of truth for approved content, with enforced metadata, rights tracking, and integration into the production and activation stack. Without a trusted asset foundation, teams duplicate, rebuild, and ship off-brand — and personalization cannot scale because the content library is not addressable.",
-    capabilities: ["asset_governance"],
-    triggerThreshold: 3.0,
+      "The Activate wedge — for enterprises whose content platforms are live but whose teams have reverted to manual workarounds. Diagnoses adoption barriers, reconfigures workflows, delivers embedded enablement, and establishes governance that prevents regression. Typical outcome: utilization moves from under 40% to over 70% within 90 days.",
+    capabilities: ["workflow_production", "asset_governance"],
+    triggerThreshold: 3.5,
     scope:
-      "DAM selection or re-platform, metadata and taxonomy design, rights and usage automation, integration into production and activation, adoption and governance model.",
+      "Adoption barrier diagnostic, current state workflow readout, embedded enablement, governance framework, champion training, stabilization metrics dashboard.",
     methods: [
-      "DAM evaluation, selection, or re-platform",
-      "Metadata and taxonomy design with enforced tagging",
-      "Rights, talent, and usage expiration automation",
-      "Integration with production workflow and activation systems",
-      "Adoption, training, and governance model",
+      "Adoption barrier diagnostic across all user groups",
+      "Current workflow analysis and pain point identification",
+      "Workflow reconfiguration and quick-win adjustments",
+      "Embedded enablement programs launched inside delivery teams",
+      "Platform champion intensive training and certification",
+      "Stabilization metrics dashboard with business value assessment",
     ],
     valueNarrative:
-      "A DAM without discipline is just a storage locker — and a fragmented asset library is the silent tax on every downstream content investment. A governed DAM foundation typically reclaims 25–40% of content spend through reuse, prevents rights and compliance failures, and is the addressable library that personalization and AI both require to work at scale.",
-    sfType: "Content Technology",
-    engagementSize: "Large (16–24 weeks)",
+      "Only 28% of employees can effectively use their organization's AI tools today. A global CPG client had a $2M DAM investment sitting at 35% utilization six months post-launch; within 60 days of Merkle intervention, utilization jumped to 72%, asset search time dropped from 45 minutes to under 5, and duplicate content creation fell 60%. Platform Value Realization is operational rescue and scale preparation, not traditional consulting.",
+    sfType: "CSC Adoption & Value",
+    engagementSize: "3–8 months · $400K–$800K",
     priority: "critical",
   },
 
   {
-    id: "content_rights_governance",
-    title: "Content Rights & Governance",
-    tagline: "Automate rights, usage, and expiration tracking across the portfolio",
+    id: "continuous_value_accelerator",
+    title: "Continuous Value Accelerator",
+    tagline: "PMO-anchored run & optimize for sustained competitive advantage",
     description:
-      "Design and implement a content rights management layer — tracking talent, licensing, usage terms, and expiration at the asset level, and automating enforcement across activation systems. Removes a top source of legal exposure and unlocks confident reuse across channels and markets.",
-    capabilities: ["asset_governance", "workflow_production"],
-    triggerThreshold: 2.5,
-    scope:
-      "Rights metadata schema, contract and talent tracking integration, automated expiration and usage alerts, governance and escalation model.",
-    methods: [
-      "Rights metadata schema and contract taxonomy",
-      "Talent and licensing tracking integration",
-      "Automated expiration, usage, and geography enforcement",
-      "Legal and brand escalation workflow",
-      "Training and governance model for content owners",
-    ],
-    valueNarrative:
-      "Rights and talent exposure is typically the largest quiet risk in the content library — and the biggest barrier to confident reuse. Automated rights governance removes fear as a reason not to reuse content, protects the brand from compliance failure, and is a prerequisite for AI-driven content generation using approved source material.",
-    sfType: "Content Technology",
-    engagementSize: "Medium (10–14 weeks)",
-    priority: "high",
-  },
-
-  // ── ACTIVATION ────────────────────────────────────────────────────
-  {
-    id: "dynamic_content_activation",
-    title: "Dynamic Content Activation",
-    tagline: "Assemble content at the moment of delivery, not months in advance",
-    description:
-      "Integrate the content supply chain with CRM, CDP, and decisioning platforms so modular content can be assembled dynamically at the moment of delivery — powered by customer signals, segment, and context. This is where the modular library, intelligence layer, and personalization engine converge into real-time 1:1 experiences.",
-    capabilities: ["distribution_activation", "strategy_planning"],
-    triggerThreshold: 3.0,
-    scope:
-      "Dynamic content architecture, CRM/CDP/decisioning integration, modular variant logic, channel-level adaptation automation, and measurement framework.",
-    methods: [
-      "Dynamic content architecture and assembly logic",
-      "CRM, CDP, and decisioning integration",
-      "Modular variant logic and channel-level adaptation",
-      "Automated format, aspect ratio, length, and localization adaptation",
-      "Content personalization measurement and governance framework",
-    ],
-    valueNarrative:
-      "Pre-building every variant is the old model; dynamic assembly is the new one. Brands running dynamic content activation typically see 25–50% lift in engagement and conversion — because every experience is assembled from the best-performing modules for that specific customer in that specific context. This is the bridge between a modern CRM engine and a modern content supply chain.",
-    sfType: "CRM Strategy & Activation",
-    engagementSize: "Large (16–22 weeks)",
-    priority: "critical",
-  },
-
-  {
-    id: "channel_variant_automation",
-    title: "Channel & Variant Automation",
-    tagline: "Stop doing manual resizes, retrims, and localizations by hand",
-    description:
-      "Automate channel-specific adaptation — resizing, retrimming, localizing, and reformatting — so the creative team builds a master asset once and every downstream variant is produced programmatically. Typically pairs with modular content and GenAI tooling to collapse production cycles from weeks to days.",
-    capabilities: ["distribution_activation", "workflow_production"],
-    triggerThreshold: 2.75,
-    scope:
-      "Adaptation automation tooling, master asset specification, localization workflow, brand guardrails, and measurement of variant performance.",
-    methods: [
-      "Adaptation tooling selection and configuration",
-      "Master asset specification and modular structure",
-      "Automated localization and language variant workflow",
-      "Brand guardrails and QA for automated variants",
-      "Variant performance feedback into master design",
-    ],
-    valueNarrative:
-      "Manual variant work is one of the largest hidden costs inside most content supply chains — and the main reason campaigns launch late or incomplete. Automating channel and language variants typically compresses time-to-market by 40–60% and makes it economically viable to deliver the number of variants personalization actually requires.",
-    sfType: "Content Operations",
-    engagementSize: "Medium (10–14 weeks)",
-    priority: "high",
-  },
-
-  // ── MEASUREMENT ───────────────────────────────────────────────────
-  {
-    id: "content_measurement_framework",
-    title: "Content Measurement & Attribution",
-    tagline: "Prove the business value of content — not just the engagement",
-    description:
-      "Implement a content measurement framework that ties asset-level performance to business outcomes — revenue, retention, acquisition cost — and that feeds insight directly back into briefing, ideation, and production. Moves content from a cost center reported in vanity metrics to a measurable growth lever.",
+      "Long-horizon, PMO-anchored engagement that turns a stabilized content supply chain into a compounding growth asset. Closed-loop measurement, AI enhancement, cross-functional adoption at scale, and optimization cycles aligned to agentic and emerging technologies. For enterprises who have built — now ready to keep ahead.",
     capabilities: ["measurement_insights", "intelligence_automation"],
-    triggerThreshold: 2.75,
+    triggerThreshold: 4.0,
+    minTriggerScore: 3.0,
     scope:
-      "Measurement framework design, attribution methodology, dashboard build, feedback loop process, and investment case development.",
+      "PMO governance, enterprise adoption program, continuous optimization roadmap, performance analytics dashboard, AI enhancement plan, knowledge transfer.",
     methods: [
-      "Content-to-outcome attribution methodology",
-      "Experimentation and lift measurement design",
-      "Executive and operator content performance dashboards",
-      "Feedback loop into briefing, ideation, and production",
-      "Investment case and portfolio rebalancing framework",
+      "PMO establishment and enterprise governance framework",
+      "Adoption program design across markets and business units",
+      "Performance analytics dashboard and insights generation",
+      "AI enhancement plan and agentic capability activation",
+      "Continuous optimization cycles aligned to emerging technologies",
     ],
     valueNarrative:
-      "Most content still gets reported in impressions and engagement — which is fine for a post-mortem and useless for planning. Attribution-based measurement redirects investment toward content that drives outcomes, typically yielding 10–25% improvement in content ROI within a year and turning measurement from a reporting exercise into a creative input.",
-    sfType: "Analytics & Decisioning",
-    engagementSize: "Medium (10–14 weeks)",
+      "Organizations with specialist support achieve 196% ROI versus 30% for those going it alone. A global technology client reduced content production time by 65%, improved asset reuse by 80%, and generated $4.2M annual savings through continuous optimization — with ROI compounding as insights feed back into strategic decisions. Static platforms become liabilities; continuously optimized ones become differentiators.",
+    sfType: "CSC Managed Optimization",
+    engagementSize: "1–3+ years · $1.0M–$2M+",
     priority: "high",
   },
 
-  // ── OPERATING MODEL ───────────────────────────────────────────────
   {
-    id: "content_operating_model",
-    title: "Content Supply Chain Operating Model",
-    tagline: "Re-wire in-house, agency, and tech partners into one engine",
+    id: "managed_content_production",
+    title: "Managed Content Production",
+    tagline: "Fully outsourced content operations via GenStudio dentsu+",
     description:
-      "Redesign the operating model that sits behind the content supply chain — roles, decision rights, agency mix, technology stack, and governance. Moves the organization from a patchwork of siloed teams and vendors to one integrated engine with clear ownership, faster decisions, and a shared view of performance.",
-    capabilities: ["workflow_production"],
-    triggerThreshold: 3.0,
-    scope:
-      "Operating model diagnostic, role and decision rights design, agency and partner mix strategy, technology stack alignment, and governance + cadences.",
-    methods: [
-      "Current-state operating model and partner diagnostic",
-      "Role, decision rights, and RACI redesign",
-      "In-house, agency, and partner mix strategy",
-      "Technology stack rationalization and integration",
-      "Governance, rituals, and performance cadences",
-    ],
-    valueNarrative:
-      "The content supply chain rarely fails because of missing tools — it fails because the operating model hasn't caught up with modular, personalized, AI-accelerated content. An operating model redesign typically reduces cycle time by 25–40%, rebalances spend between in-house and agency, and creates the structural clarity required for both speed and governance at scale.",
-    sfType: "Content Operations",
-    engagementSize: "Medium to Large (12–20 weeks)",
-    priority: "high",
-  },
-
-  // ── ADVANCED / INNOVATION (fire for high-scoring mature orgs) ─────
-  {
-    id: "genai_content_at_scale",
-    title: "Generative AI Content at Scale",
-    tagline: "Produce personalized content at a scale humans cannot",
-    description:
-      "Deploy generative AI deeply into the content supply chain — using LLMs and multimodal models to generate subject lines, body copy, product narratives, and creative variants tuned to each customer context. For organizations that already have a modular library, asset intelligence, and strong governance, this is where the content engine stops being a factory and starts being a conversation.",
-    capabilities: ["workflow_production", "strategy_planning", "distribution_activation"],
+      "For enterprises recognizing that content operations excellence requires capabilities beyond their strategic focus. A complete outsourced solution through Dentsu's integrated creative, production, and media network — AI-accelerated workflows, global transcreation, performance-driven optimization, all powered by GenStudio dentsu+, the first agency ecosystem built on Adobe's platform.",
+    capabilities: ["workflow_production", "distribution_activation"],
     triggerThreshold: 5,
     minTriggerScore: 3.5,
     scope:
-      "GenAI content strategy at scale, brand-safe generation framework, integration with CRM/CDP/decisioning, measurement framework, and responsible-use governance.",
+      "Full-service creative operations, AI-powered production, multi-market transcreation, omnichannel adaptation, brand governance, performance analytics.",
     methods: [
-      "GenAI content strategy at scale and brand voice governance",
-      "Multimodal model integration with CRM, CDP, and ESP stack",
-      "Dynamic 1:1 content template architecture",
-      "Prompt engineering and content generation workflow design",
-      "A/B testing framework for AI-generated versus human-authored content",
+      "Full-service content production and creative operations",
+      "GenStudio dentsu+ AI-powered production ecosystem",
+      "Multi-market transcreation and localization at scale",
+      "Omnichannel asset adaptation and versioning",
+      "Real-time compliance and brand governance",
+      "Content performance analytics and continuous optimization",
     ],
     valueNarrative:
-      "Generative AI at scale enables brands to produce hundreds of context-specific content variations per send — matching each customer's lifecycle stage, signal, and intent with messaging no human team could produce at scale. Early adopters are seeing 15–25% improvement in engagement from AI-generated copy alone; the leaders will use this to close the personalization gap that CRM alone cannot close.",
-    sfType: "Content Operations",
-    engagementSize: "Medium (12–16 weeks)",
+      "When content operations excellence is needed but isn't the strategic focus of the organization, outsourcing to Dentsu's integrated ecosystem delivers enterprise-grade production without the operational burden. We use GenStudio dentsu+ ourselves every day — the same platform we build for clients becomes the engine we run for you.",
+    sfType: "Managed Content Services",
+    engagementSize: "1–3+ years · custom",
     priority: "innovation",
   },
 
+  // ══════════════════════════════════════════════════════════════════
+  // CAPABILITY-LEVEL INITIATIVES — what sits inside the named engagements
+  // ══════════════════════════════════════════════════════════════════
   {
-    id: "agentic_content_operations",
-    title: "Agentic Content Operations",
-    tagline: "Put AI agents to work inside the content supply chain",
+    id: "content_data_fabric",
+    title: "Content Data Fabric & Taxonomy",
+    tagline: "Metadata, rights, and taxonomy that make every asset addressable",
     description:
-      "Design and pilot the use of AI agents — autonomous, goal-directed systems capable of taking action across content workflows. Explore use cases in autonomous variant generation, real-time creative rotation, briefing assistance, and QA. Agentic content ops is where the supply chain shifts from AI-assisted to AI-operated.",
+      "Architect the marketing data fabric that sits underneath the content supply chain — enterprise campaign taxonomy, enriched metadata, content schema, and rights tracking — so every asset is discoverable, governed, compliant, and reusable at scale. Without a data fabric, personalization, AI, and measurement cannot work.",
+    capabilities: ["asset_governance"],
+    triggerThreshold: 3.0,
+    scope:
+      "Enterprise taxonomy design, metadata schema, rights and talent tracking, compliance enforcement, integration into DAM and activation.",
+    methods: [
+      "Enterprise campaign taxonomy and content schema design",
+      "Enriched metadata architecture with efficiency and performance KPIs",
+      "Rights, talent, and licensing tracking at the asset level",
+      "Automated expiration and usage enforcement by geography and channel",
+      "Integration with DAM, workflow, and activation systems",
+    ],
+    valueNarrative:
+      "A DAM without a data fabric is just a storage locker. Merkle's CSC Build is anchored on a content data fabric so assets aren't just stored — they're addressable, activatable, and traceable to outcomes. Princess Cruises and Highmark both started with taxonomy and metadata remediation before any platform work.",
+    sfType: "Content Data Fabric",
+    engagementSize: "10–16 weeks · $250K–$500K",
+    priority: "high",
+  },
+
+  {
+    id: "modular_content_framework",
+    title: "Modular Content & Atomic Design",
+    tagline:
+      "Reusable atoms that assemble into channel, variant, and market experiences",
+    description:
+      "Design and operationalize a modular content framework — atomic creative components (hooks, visuals, product blocks, CTAs) that reassemble across channels, variants, and personalization logic. This is the structural shift that unlocks variant scale, collapses rebuild cost, and makes content truly activatable via CRM, decisioning, and commerce.",
+    capabilities: ["strategy_planning", "asset_governance"],
+    triggerThreshold: 3.0,
+    scope:
+      "Modular taxonomy, atomic component library in DAM, brief template upgrade, creative + production + MarTech alignment, governance for reuse and versioning.",
+    methods: [
+      "Modular taxonomy design (atoms, molecules, experiences)",
+      "Atomic component library build inside the DAM",
+      "Brief and concept template upgrade for modular thinking",
+      "Creative, production, and MarTech alignment on the assembly model",
+      "Governance model for module reuse, versioning, and retirement",
+    ],
+    valueNarrative:
+      "Monolithic creative breaks the economics of personalization — every variant costs another bespoke build. Modular content reverses that: one concept produces hundreds of compliant variants at a fraction of the cost. A global brand needing 600,000 assets to cover 5 products × 4 personas × 12 campaigns × 10 channels × 50 markets can't get there without modularity.",
+    sfType: "Content Strategy & Design",
+    engagementSize: "12–20 weeks · $500K–$900K",
+    priority: "high",
+  },
+
+  {
+    id: "ai_accelerated_production",
+    title: "AI-Accelerated Production (GenStudio / Firefly)",
+    tagline:
+      "Bring generative AI into production with brand and legal guardrails",
+    description:
+      "Operationalize generative AI across copy, image, video, layout, translation, and resizing — inside existing approval, brand, and legal guardrails. Build approved tooling, prompt libraries, custom Firefly models trained on brand assets, and human-in-the-loop review so AI becomes a day-to-day accelerator, not a shadow workaround.",
     capabilities: ["workflow_production", "intelligence_automation"],
-    triggerThreshold: 5,
-    minTriggerScore: 4.0,
+    triggerThreshold: 3.0,
     scope:
-      "Agentic use-case discovery workshop, pilot scope for one to two autonomous workflows, agent architecture and guardrails, POC delivery and measurement plan.",
+      "GenAI tooling selection, Firefly custom models, prompt and brand voice libraries, human-in-the-loop integration, enablement and responsible-use governance.",
     methods: [
-      "Agentic CSC use-case discovery and prioritization workshop",
-      "Pilot workflow design for one to two autonomous content operations",
-      "Agent architecture: tools, memory, context, and action framework",
-      "Guardrail and escalation framework for autonomous action governance",
-      "POC delivery with performance measurement and scale-readiness assessment",
+      "Approved GenAI tooling selection (Firefly, Express, GenStudio, content AI)",
+      "Custom Firefly model training on brand assets and guidelines",
+      "Brand voice and visual prompt libraries",
+      "Human-in-the-loop review and approval integration",
+      "Adoption program with measurable lift tied to real campaigns",
     ],
     valueNarrative:
-      "Agentic AI is the next paradigm shift in content — moving from AI-assisted production to AI-driven action. Mature supply chains with strong modular, DAM, and intelligence foundations are uniquely positioned to pilot agentic workflows today and build the operational experience to scale autonomous content operations before it becomes a market standard.",
-    sfType: "Analytics & Decisioning",
-    engagementSize: "Small to Medium (6–12 weeks)",
-    priority: "innovation",
+      "Microsoft bought Firefly, Express, and GenStudio — and no one used them. Merkle's brand-kit configuration, custom Firefly training, and GenStudio workflow integration restored confidence through quick wins tied to real campaigns. By 2028, organizations optimizing AI automation will report 70%+ higher ROI and 50% faster time-to-proficiency — the gap will widen fast.",
+    sfType: "Content AI & Automation",
+    engagementSize: "12–20 weeks · $500K–$1.2M",
+    priority: "critical",
   },
 
   {
-    id: "content_center_of_excellence",
-    title: "Content Center of Excellence",
-    tagline: "Institutionalize the content supply chain as a permanent capability",
+    id: "workflow_orchestration",
+    title: "Workflow Orchestration (Workfront / AEM)",
+    tagline:
+      "One intake, one source of truth, orchestrated reviews and approvals",
     description:
-      "Build the CoE charter, governance, talent model, and standards that make the content supply chain a durable organizational capability rather than a project. Codifies best practices, accelerates adoption of new tools and AI, and governs modular, DAM, and measurement standards so capability gains compound rather than decay.",
-    capabilities: ["workflow_production", "measurement_insights"],
-    triggerThreshold: 5,
-    minTriggerScore: 4.0,
+      "Stand up enterprise work management as the orchestrating layer for content — Workfront for intake, review stages, and proofing; AEM for content and asset workflows; integrated across existing MarTech, Jira, Figma, and Creative Cloud. Replaces \"every team uses Excel/Jira/Trello\" with one source of truth and leadership visibility without status meetings.",
+    capabilities: ["workflow_production"],
+    triggerThreshold: 3.0,
     scope:
-      "CoE charter and operating model, capability maturity roadmap, cross-functional governance, talent and skills framework, technology standards, and executive activation.",
+      "Workfront architecture, request intake design, review/proofing workflows, AEM integration, role-based access, standardized templates.",
     methods: [
-      "Content CoE charter, scope, and operating model design",
-      "Cross-functional governance framework and decision rights mapping",
-      "Capability maturity roadmap and investment prioritization",
-      "Talent and AI skills gap assessment with hiring and upskilling plan",
-      "Technology standards, vendor framework, and measurement standards",
+      "Workfront deployment with request intake and campaign orchestration",
+      "Review stages with SLAs, proofing, and deadline enforcement",
+      "AEM workflow automation for asset routing and publication",
+      "Integrations with Jira, Figma, Creative Cloud, AEM, and DI Studio",
+      "Standardized templates across regions and product lines",
     ],
     valueNarrative:
-      "Organizations with a dedicated Content CoE sustain materially higher capability maturity over three years — because CoEs prevent regression, accelerate AI and tool adoption, and build the internal expertise that reduces dependency on external partners. Building a CoE is the difference between content as a one-time transformation and content as a permanent competitive advantage.",
-    sfType: "Content Operations",
-    engagementSize: "Medium (10–16 weeks)",
-    priority: "innovation",
+      "A global semiconductor manufacturer reduced creative briefing cycle time 40% and eliminated non-budget-approved content production after deploying Workfront with standardized templates and automated workflows. Results scaled across 4 regions and 80+ workshops, with 60% reduction in duplicate briefs. ROI on workflow orchestration is visible within weeks.",
+    sfType: "Content Workflow Implementation",
+    engagementSize: "12–20 weeks · $500K–$1.2M",
+    priority: "high",
+  },
+
+  {
+    id: "dynamic_content_activation",
+    title: "Dynamic Content Activation & Localization",
+    tagline:
+      "Assemble content at the moment of delivery — by locale, segment, and signal",
+    description:
+      "Connect the content supply chain to AEP, AEM, AJO, and decisioning platforms so modular content can be assembled dynamically at send and render — powered by customer signals, segment, and market context. Automate channel-specific adaptation (format, aspect ratio, length, localization) so creative teams build once and every downstream variant renders programmatically.",
+    capabilities: ["distribution_activation", "strategy_planning"],
+    triggerThreshold: 3.0,
+    scope:
+      "Dynamic content architecture, AEP + AEM + AJO integration, decisioning logic, automated format adaptation, localization workflow, measurement.",
+    methods: [
+      "Dynamic content architecture and assembly logic",
+      "AEP, AEM, AJO, and decisioning integration",
+      "Real-time segmentation and experience delivery by locale and persona",
+      "Automated format, aspect ratio, length, and translation adaptation",
+      "AI-assisted translation review with legal and market-owner workflow",
+    ],
+    valueNarrative:
+      "Lumen accelerated content creation from 25 days to 9 days via GenStudio and delivered 3× faster time-to-market for social campaigns with 64% reduction in content creation time. Dynamic activation is where modular content, intelligent production, and CRM decisioning converge into real 1:1 experiences at scale.",
+    sfType: "Content Activation",
+    engagementSize: "14–22 weeks · $700K–$1.5M",
+    priority: "high",
+  },
+
+  {
+    id: "content_performance_intelligence",
+    title: "Content Performance & Intelligence",
+    tagline: "Closed-loop measurement tying every asset to business outcomes",
+    description:
+      "Implement the analytics, CJA, and content intelligence layer that ties asset-level performance to business outcomes — revenue, retention, acquisition cost — and that feeds insight directly back into briefing, ideation, production, and activation. Moves content from a cost center reported in vanity metrics to a measurable, optimizable growth lever.",
+    capabilities: ["measurement_insights", "intelligence_automation"],
+    triggerThreshold: 3.0,
+    scope:
+      "Content-to-outcome attribution, CJA + CDP unification, asset performance dashboards, feedback loop into briefing, experimentation framework.",
+    methods: [
+      "Content-to-outcome attribution methodology",
+      "Adobe CJA + CDP unification for asset-to-outcome traceability",
+      "Asset performance dashboards tied to campaign outcomes",
+      "Feedback loop into briefing, ideation, and production",
+      "Experimentation and lift measurement design with AI-assisted model insight",
+    ],
+    valueNarrative:
+      "Highmark couldn't tell which content performed or why — analytics, CRM, and DAM were siloed. Merkle built CJA + CDP integration and asset-performance dashboards that made content ROI visible for the first time. Attribution-based measurement typically redirects 10–25% of content spend toward higher-performing assets within a year.",
+    sfType: "Content Intelligence",
+    engagementSize: "12–20 weeks · $600K–$1.2M",
+    priority: "high",
+  },
+
+  {
+    id: "operating_model_adoption",
+    title: "Operating Model & Adoption",
+    tagline:
+      "Rewire in-house, agency, AI tools, and data into one integrated engine",
+    description:
+      "Redesign the operating model behind the content supply chain — roles, decision rights, agency mix, technology stack, governance — and deliver the change management that makes new ways of working stick. Addresses the root cause of most CSC failures: the organization hasn't caught up with modular, personalized, AI-accelerated content.",
+    capabilities: ["strategy_planning", "workflow_production"],
+    triggerThreshold: 3.0,
+    scope:
+      "Operating model diagnostic, role and RACI redesign, agency/partner mix, change management program, champion network, adoption measurement.",
+    methods: [
+      "Current-state operating model and partner diagnostic",
+      "Role, decision rights, and RACI redesign for 12+ reviewer workflows",
+      "In-house, agency, and partner mix strategy (buy / build / borrow)",
+      "Change management program with identified champions and roadmap",
+      "Adoption measurement tied to platform utilization and cycle time",
+    ],
+    valueNarrative:
+      "CSC Value Realization = Change & Adoption. Billions are invested in CSC tech, but 55% of marketing leaders report a gap between expectations and reality — with only 49% of MarTech capabilities actually being used. The upside is already paid for; it's waiting for the organization to catch up. Highmark's $21.7M transformation depended on 97+ FTE adoption, not on the tools themselves.",
+    sfType: "Operating Model",
+    engagementSize: "12–20 weeks · $500K–$1.2M",
+    priority: "critical",
   },
 ];
 
