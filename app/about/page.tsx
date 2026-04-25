@@ -1,5 +1,7 @@
+import { M2Logo } from "@/components/brand/M2Logo";
+
 export const metadata = {
-  title: "About — Modern CRM Maturity Diagnostic",
+  title: "About — Merkle Maturity Assessment",
   description:
     "Product overview, technical architecture, and security & legal guardrails.",
 };
@@ -10,15 +12,7 @@ export default function AboutPage() {
       {/* Header */}
       <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/merkle-logo.webp"
-              alt="Merkle"
-              className="h-6 w-auto brightness-0 invert"
-            />
-            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
-          </div>
+          <M2Logo tone="dark" height={32} />
           <div className="flex items-center gap-5">
             <a
               href="/"

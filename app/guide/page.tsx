@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GUIDE_STEPS, EMAIL_TEMPLATES } from "@/lib/data/guide";
+import { M2Logo } from "@/components/brand/M2Logo";
 
 export default function GuidePage() {
   const [expandedStep, setExpandedStep] = useState<number | null>(1);
@@ -19,11 +20,7 @@ export default function GuidePage() {
       {/* Header */}
       <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
-            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
-          </div>
+          <M2Logo tone="dark" height={32} />
           <div className="flex items-center gap-5">
             <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>

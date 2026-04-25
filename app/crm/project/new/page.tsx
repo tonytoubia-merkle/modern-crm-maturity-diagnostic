@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ProjectSetupForm } from "@/components/project/ProjectSetupForm";
 import { StakeholderManager } from "@/components/project/StakeholderManager";
+import { M2Logo } from "@/components/brand/M2Logo";
 import type { Industry, ProjectMode } from "@/lib/types";
 
 export default function NewProjectPage() {
@@ -48,11 +49,7 @@ export default function NewProjectPage() {
       {/* Branded nav */}
       <div className="bg-m2-navy">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
-          <div className="flex items-baseline gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
-            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
-          </div>
+          <M2Logo tone="dark" height={26} />
           <a href="/crm" className="text-xs text-white/70 hover:text-white transition-colors">
             ← Merkle Maturity Assessment
           </a>

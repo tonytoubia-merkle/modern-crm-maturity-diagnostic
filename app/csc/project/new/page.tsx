@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CscProjectSetupForm } from "@/components/csc/project/CscProjectSetupForm";
 import { CscStakeholderManager } from "@/components/csc/project/CscStakeholderManager";
+import { M2Logo } from "@/components/brand/M2Logo";
 import type { CscIndustry, CscProjectMode } from "@/lib/csc/types";
 
 export default function NewCscProjectPage() {
@@ -45,15 +46,7 @@ export default function NewCscProjectPage() {
     <div className="min-h-screen font-m2 bg-m2-surface-light">
       <div className="bg-m2-navy">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
-          <div className="flex items-baseline gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/merkle-logo.webp"
-              alt="Merkle"
-              className="h-4 w-auto brightness-0 invert"
-            />
-            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
-          </div>
+          <M2Logo tone="dark" height={26} />
           <a
             href="/csc"
             className="text-xs text-white/70 hover:text-white transition-colors"

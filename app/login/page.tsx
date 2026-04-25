@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
+import { M2Logo } from "@/components/brand/M2Logo";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -164,10 +165,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm mx-4">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-baseline gap-2 mb-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto" />
-            <span className="text-xs font-bold tracking-widest text-m2-blue">M2</span>
+          <div className="inline-flex items-center gap-3 mb-3">
+            <M2Logo tone="light" height={36} />
           </div>
           <p className="text-xs text-slate-500">Merkle Maturity Assessment</p>
         </div>
