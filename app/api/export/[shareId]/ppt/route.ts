@@ -51,7 +51,9 @@ export async function GET(
     };
 
     const results = buildDiagnosticResults(normalizedAssessment, responses);
-    const buffer = await generatePptx(results, responses);
+    const buffer = await generatePptx(results, responses, {
+      source: assessment.source ?? null,
+    });
 
     const filename = `${assessment.client_name}_CRM_Diagnostic`
       .replace(/[^a-zA-Z0-9_-]/g, "_")

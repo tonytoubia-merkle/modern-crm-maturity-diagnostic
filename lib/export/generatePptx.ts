@@ -10,25 +10,110 @@ import {
 import { MATURITY_STAGES } from "@/lib/scoring";
 import { formatDate } from "@/lib/utils";
 
-// ── Palette (hex without #) ───────────────────────────────────────────────────
-const C = {
-  navy:    "0F172A",
-  navyMid: "1E293B",
-  navySoft:"334155",
-  blue:    "2563EB",
-  blueLight:"DBEAFE",
-  slate7:  "334155",
-  slate6:  "475569",
-  slate5:  "64748B",
-  slate3:  "CBD5E1",
-  slate1:  "F1F5F9",
-  white:   "FFFFFF",
-  red:     "EF4444",
-  orange:  "F97316",
-  amber:   "F59E0B",
-  green:   "22C55E",
-  purple:  "8B5CF6",
+// ── Palette ────────────────────────────────────────────────────────────────
+// pptxgenjs expects hex strings WITHOUT a leading "#". Each palette mirrors
+// one of the three brand systems in lib/brand/tokens.ts:
+//   - "merkle"   (default)        — Merkle ARC, deep blue + coral
+//   - "dentsu"   (cannes/dentsu)  — DDS Light, mono ink
+//   - "connections"               — Salesforce Lightning + Merkle blend
+type Palette = {
+  navy: string;     // hero / cover background
+  navyMid: string;  // secondary dark surface
+  navySoft: string; // tertiary dark accent
+  blue: string;     // primary brand accent
+  blueLight: string;// soft tinted accent
+  slate7: string;   // body ink
+  slate6: string;   // supportive ink
+  slate5: string;   // meta ink
+  slate3: string;   // borders
+  slate1: string;   // page tint
+  white: string;
+  red: string;
+  orange: string;
+  amber: string;
+  green: string;
+  purple: string;
+  brandLabel: string;  // wordmark text, e.g. "MERKLE" / "DENTSU"
+  productLabel: string;// product line, e.g. "Merkle Maturity Assessment"
 };
+
+const MERKLE_PALETTE: Palette = {
+  navy:      "040E4B", // secondary-600
+  navyMid:   "0C1E48", // secondary-700
+  navySoft:  "12295D", // secondary-500
+  blue:      "8F1D0E", // primary-500 (Merkle coral as accent)
+  blueLight: "FFE0DC", // tinted coral
+  slate7:    "171717", // grey-900
+  slate6:    "454545", // grey-700
+  slate5:    "5C5C5C", // grey-600
+  slate3:    "B2B2B2", // grey-300
+  slate1:    "F2F1F6", // grey-60
+  white:     "FFFFFF",
+  red:       "DB1616", // notification-red
+  orange:    "D5402B", // primary-400
+  amber:     "C84B38", // primary-300
+  green:     "154734", // brandGreen
+  purple:    "0058AA", // notification-blue (purple slot)
+  brandLabel:   "MERKLE",
+  productLabel: "Merkle Maturity Assessment",
+};
+
+const DENTSU_PALETTE: Palette = {
+  navy:      "040406", // surfaceGlobalHeader
+  navyMid:   "0D0D11", // fillAccent1 / Neutral 1250
+  navySoft:  "262631", // borderGlobalNav
+  blue:      "076CDF", // fillAccent2 / DDS Blue
+  blueLight: "E6F0FB", // blue-50
+  slate7:    "0D0D11", // textDefault
+  slate6:    "60607B", // textSupportive
+  slate5:    "8E8EA0",
+  slate3:    "CECED6", // borderDefault
+  slate1:    "F7F7F8", // bgBase
+  white:     "FFFFFF",
+  red:       "DC2F23",
+  orange:    "FF9B3F", // warningAmber
+  amber:     "C6992E", // Cannes gold-friendly
+  green:     "3ED483", // successGreen
+  purple:    "5B19C4", // aiAccent
+  brandLabel:   "DENTSU",
+  productLabel: "CRM Maturity Diagnostic",
+};
+
+const CONNECTIONS_PALETTE: Palette = {
+  navy:      "032E61", // Salesforce brand-dark
+  navyMid:   "014486",
+  navySoft:  "0B5CAB",
+  blue:      "0176D3", // Lightning brand-primary
+  blueLight: "F3F9FF",
+  slate7:    "1F2937",
+  slate6:    "475569",
+  slate5:    "64748B",
+  slate3:    "CFE5FB",
+  slate1:    "F8FAFC",
+  white:     "FFFFFF",
+  red:       "DB1616",
+  orange:    "F97316",
+  amber:     "F59E0B",
+  green:     "22C55E",
+  purple:    "8F1D0E", // Merkle coral co-presence
+  brandLabel:   "MERKLE × SALESFORCE",
+  productLabel: "Merkle at Salesforce Connections",
+};
+
+function paletteFor(source?: string | null): Palette {
+  switch (source) {
+    case "cannes":
+    case "dentsu":
+      return DENTSU_PALETTE;
+    case "connections":
+      return CONNECTIONS_PALETTE;
+    default:
+      return MERKLE_PALETTE;
+  }
+}
+
+// Active palette — set inside generatePptx() based on the source.
+let C: Palette = MERKLE_PALETTE;
 
 function scoreHex(score: number): string {
   if (score < 1.75) return C.red;
@@ -92,9 +177,9 @@ function addHeader(
     });
   }
   // Right-aligned label
-  slide.addText("Modern CRM Maturity Diagnostic  ·  Merkle", {
+  slide.addText(`${C.productLabel}  ·  ${C.brandLabel}`, {
     x: 0, y: 0, w: W - PAD, h: HEADER_H,
-    fontSize: 9, color: "475569", align: "right", valign: "middle",
+    fontSize: 9, color: C.slate6, align: "right", valign: "middle",
   });
 }
 
@@ -108,14 +193,20 @@ function addFooter(pptx: PptxGenJS, slide: PptxGenJS.Slide) {
 // ─────────────────────────────────────────────────────────────────────────────
 export async function generatePptx(
   results: DiagnosticResults,
-  responses: ResponseItem[]
+  responses: ResponseItem[],
+  options?: { source?: string | null }
 ): Promise<Buffer> {
+  // Switch the module-level palette based on the assessment source. This lets
+  // every helper in this file (addHeader, addFooter, the cover, every chart)
+  // read the brand from `C` without changing call sites.
+  C = paletteFor(options?.source);
+
   const pptx = new PptxGenJS();
   pptx.layout = "LAYOUT_WIDE";
-  pptx.author = "Merkle";
-  pptx.company = "Merkle";
-  pptx.subject = "Modern CRM Maturity Diagnostic";
-  pptx.title = `CRM Diagnostic — ${results.assessment.clientName}`;
+  pptx.author = C.brandLabel;
+  pptx.company = C.brandLabel;
+  pptx.subject = C.productLabel;
+  pptx.title = `${C.productLabel} — ${results.assessment.clientName}`;
 
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const stageInfo = MATURITY_STAGES[maturityStage];
@@ -133,14 +224,14 @@ export async function generatePptx(
     fill: { color: C.blue }, line: { color: C.blue },
   });
 
-  // MERKLE wordmark
-  cover.addText("MERKLE", {
-    x: PAD, y: 0.22, w: 4, h: 0.4,
+  // Brand wordmark — switches based on source
+  cover.addText(C.brandLabel, {
+    x: PAD, y: 0.22, w: 6, h: 0.4,
     fontSize: 13, bold: true, color: C.blue, charSpacing: 4,
   });
 
   // Eyebrow
-  cover.addText("Modern CRM Maturity Diagnostic", {
+  cover.addText(C.productLabel, {
     x: PAD, y: 1.0, w: W - PAD * 2, h: 0.5,
     fontSize: 18, color: "94A3B8",
   });
