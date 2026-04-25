@@ -1,7 +1,7 @@
 import { AdminUsersPanel } from "@/components/admin/AdminUsersPanel";
 
 export const metadata = {
-  title: "Admin Users · Modern CRM Diagnostic",
+  title: "Admin Users · Merkle Maturity Assessment",
   robots: { index: false },
 };
 

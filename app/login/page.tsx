@@ -166,7 +166,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-8 w-auto mx-auto mb-3" />
-          <p className="text-xs text-slate-400">Modern CRM Diagnostic</p>
+          <p className="text-xs text-slate-400">Merkle Maturity Assessment</p>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
@@ -175,7 +175,7 @@ export default function LoginPage() {
           </h1>
           <p className="text-sm text-slate-500 mb-5">
             {mode === "signin"
-              ? "Sign in to access the diagnostic tool."
+              ? "Sign in to access the assessment workspace."
               : "Use your Merkle or dentsu email to create an account."}
           </p>
 
