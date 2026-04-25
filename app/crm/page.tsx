@@ -152,12 +152,15 @@ export default function HomePage() {
     : "?";
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
       {/* Header */}
-      <header style={{ backgroundColor: "#00205B" }}>
+      <header className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <div className="flex items-center gap-5">
             <a href="/guide" className="text-xs text-white/60 hover:text-white transition-colors">Guide</a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
@@ -202,9 +205,9 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section style={{ backgroundColor: "#00205B" }}>
+      <section className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
-          <p className="text-sm font-medium text-white/50 mb-3">Merkle CRM Practice</p>
+          <p className="text-sm font-medium text-m2-sky mb-3">Merkle CRM Practice</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
             Modern CRM Maturity Diagnostic
           </h1>
@@ -215,8 +218,7 @@ export default function HomePage() {
           <div className="flex flex-wrap gap-3">
             <a
               href="/crm/project/new"
-              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors hover:bg-white/90"
-              style={{ backgroundColor: "white", color: "#00205B" }}
+              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors bg-white text-m2-navy hover:bg-white/90"
             >
               New Project
             </a>
@@ -395,7 +397,7 @@ function TreeRow({ row, showMeta }: { row: Row; showMeta: boolean }) {
           {row.score != null && (
             <span
               className="text-xs font-semibold"
-              style={{ color: "#00205B" }}
+              style={{ color: "#0328d1" }}
             >
               {Number(row.score).toFixed(1)}
             </span>
@@ -436,7 +438,7 @@ function TreeRow({ row, showMeta }: { row: Row; showMeta: boolean }) {
                 {c.score != null && (
                   <span
                     className="text-[11px] font-semibold"
-                    style={{ color: "#00205B" }}
+                    style={{ color: "#0328d1" }}
                   >
                     {Number(c.score).toFixed(1)}
                   </span>

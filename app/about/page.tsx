@@ -6,16 +6,19 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
       {/* Header */}
-      <header style={{ backgroundColor: "#00205B" }}>
+      <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/merkle-logo.webp"
-            alt="Merkle"
-            className="h-6 w-auto brightness-0 invert"
-          />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/merkle-logo.webp"
+              alt="Merkle"
+              className="h-6 w-auto brightness-0 invert"
+            />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <div className="flex items-center gap-5">
             <a
               href="/"
@@ -40,16 +43,17 @@ export default function AboutPage() {
       </header>
 
       {/* Hero */}
-      <section style={{ backgroundColor: "#00205B" }}>
+      <section className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 pt-10 pb-12">
-          <p className="text-sm font-medium text-white/50 mb-2">About</p>
+          <p className="text-sm font-medium text-m2-sky mb-2">About</p>
           <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight mb-3">
-            Modern CRM Maturity Diagnostic
+            Merkle Maturity Assessment
           </h1>
           <p className="text-sm text-white/70 leading-relaxed max-w-2xl">
-            A Merkle-internal consulting tool for diagnosing client CRM maturity,
-            generating transformation opportunities, and running structured
-            workshop engagements — from first conversation to Salesforce pipeline.
+            A Merkle-internal consulting workspace for diagnosing client CRM
+            and Content Supply Chain maturity, generating transformation
+            opportunities, and running structured workshop engagements — from
+            first conversation to Salesforce pipeline.
           </p>
         </div>
       </section>
@@ -338,8 +342,7 @@ function GuardItem({
   return (
     <li className="flex gap-3">
       <span
-        className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "#00205B" }}
+        className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-m2-blue"
       />
       <div>
         <p className="font-semibold text-slate-900 mb-0.5">{title}</p>

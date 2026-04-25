@@ -288,7 +288,7 @@ export function AdminDashboard() {
 
   if (authState === "loading") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-m2-surface-light font-m2 flex items-center justify-center">
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <span className="w-4 h-4 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
           Checking access…
@@ -299,7 +299,7 @@ export function AdminDashboard() {
 
   if (authState === "forbidden") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-m2-surface-light font-m2 flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 w-full max-w-sm text-center">
           <div className="w-10 h-10 rounded-full bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-4">
             <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -318,7 +318,7 @@ export function AdminDashboard() {
             <a
               href="/"
               className="w-full px-4 py-2 rounded-lg text-sm font-medium text-white hover:opacity-90"
-              style={{ backgroundColor: "#00205B" }}
+              style={{ backgroundColor: "#0328d1" }}
             >
               Back to home
             </a>
@@ -336,7 +336,7 @@ export function AdminDashboard() {
 
   if (authState === "error") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-m2-surface-light font-m2 flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 w-full max-w-sm text-center">
           <h1 className="text-base font-bold text-slate-900 mb-1">Couldn&apos;t load admin data</h1>
           <p className="text-sm text-slate-500 mb-5">
@@ -345,7 +345,7 @@ export function AdminDashboard() {
           <button
             onClick={() => { setAuthState("loading"); loadAdminData(); }}
             className="w-full px-4 py-2 rounded-lg text-sm font-medium text-white hover:opacity-90"
-            style={{ backgroundColor: "#00205B" }}
+            style={{ backgroundColor: "#0328d1" }}
           >
             Retry
           </button>
@@ -356,7 +356,7 @@ export function AdminDashboard() {
 
   return (
     <>
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-m2-surface-light font-m2">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">

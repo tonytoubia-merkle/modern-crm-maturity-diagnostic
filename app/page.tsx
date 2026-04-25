@@ -42,15 +42,18 @@ export default function ChooserHome() {
     : "?";
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
-      <header style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
+      <header className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/merkle-logo.webp"
-            alt="Merkle"
-            className="h-6 w-auto brightness-0 invert"
-          />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/merkle-logo.webp"
+              alt="Merkle"
+              className="h-6 w-auto brightness-0 invert"
+            />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <div className="flex items-center gap-5">
             <a
               href="/about"
@@ -102,9 +105,9 @@ export default function ChooserHome() {
         </div>
       </header>
 
-      <section style={{ backgroundColor: "#00205B" }}>
+      <section className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 pt-14 pb-20">
-          <p className="text-sm font-medium text-white/50 mb-3">
+          <p className="text-sm font-medium text-m2-sky mb-3">
             Merkle Maturity Assessment
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
@@ -187,17 +190,14 @@ function ChooserCard({
       href={href}
       className="group bg-white border border-slate-200 rounded-2xl p-8 hover:border-slate-300 hover:shadow-sm transition-all flex flex-col"
     >
-      <p
-        className="text-xs font-semibold uppercase tracking-wider mb-2"
-        style={{ color: "#00205B" }}
-      >
+      <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-m2-blue">
         {eyebrow}
       </p>
-      <h2 className="text-xl font-bold text-slate-900 mb-3">{title}</h2>
+      <h2 className="text-xl font-bold text-m2-text mb-3">{title}</h2>
       <p className="text-sm text-slate-600 leading-relaxed flex-1">
         {description}
       </p>
-      <div className="mt-6 inline-flex items-center text-sm font-semibold text-slate-900 group-hover:gap-2 transition-all">
+      <div className="mt-6 inline-flex items-center text-sm font-semibold text-m2-text group-hover:gap-2 transition-all">
         {ctaLabel}
         <span className="ml-1.5 group-hover:translate-x-0.5 transition-transform">
           →

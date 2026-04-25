@@ -160,17 +160,20 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#f8f9fb" }}>
+    <div className="min-h-screen flex items-center justify-center font-m2 bg-m2-surface-light">
       <div className="w-full max-w-sm mx-4">
         {/* Logo */}
         <div className="text-center mb-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/merkle-logo.webp" alt="Merkle" className="h-8 w-auto mx-auto mb-3" />
-          <p className="text-xs text-slate-400">Merkle Maturity Assessment</p>
+          <div className="inline-flex items-baseline gap-2 mb-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto" />
+            <span className="text-xs font-bold tracking-widest text-m2-blue">M2</span>
+          </div>
+          <p className="text-xs text-slate-500">Merkle Maturity Assessment</p>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-          <h1 className="text-xl font-bold text-slate-900 mb-1">
+          <h1 className="text-xl font-bold text-m2-text mb-1">
             {mode === "signin" ? "Sign in" : "Create account"}
           </h1>
           <p className="text-sm text-slate-500 mb-5">
@@ -223,8 +226,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg transition-colors hover:opacity-90 disabled:opacity-50"
-              style={{ backgroundColor: "#00205B" }}
+              className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
             >
               {loading ? "..." : mode === "signin" ? "Sign In" : "Create Account"}
             </button>
@@ -254,14 +256,14 @@ export default function LoginPage() {
             {mode === "signin" ? (
               <>
                 No account?{" "}
-                <button onClick={() => { setMode("signup"); setError(""); setMessage(""); }} className="text-blue-600 hover:underline">
+                <button onClick={() => { setMode("signup"); setError(""); setMessage(""); }} className="text-m2-blue hover:underline">
                   Create one
                 </button>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <button onClick={() => { setMode("signin"); setError(""); setMessage(""); }} className="text-blue-600 hover:underline">
+                <button onClick={() => { setMode("signin"); setError(""); setMessage(""); }} className="text-m2-blue hover:underline">
                   Sign in
                 </button>
               </>
