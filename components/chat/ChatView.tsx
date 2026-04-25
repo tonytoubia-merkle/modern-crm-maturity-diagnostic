@@ -63,7 +63,7 @@ function AssistantMessage({ content }: { content: string }) {
         ))}
       </div>
       {/* Questions — structured, distinct */}
-      <div className="rounded-xl px-4 py-3 text-sm leading-relaxed border-l-[3px]" style={{ borderColor: "#00205B", backgroundColor: "#f0f4ff" }}>
+      <div className="rounded-xl px-4 py-3 text-sm leading-relaxed border-l-[3px]" style={{ borderColor: "#040e4b", backgroundColor: "#f0f4ff" }}>
         {questionParagraphs.map((p, i) => {
           // Check if the paragraph contains numbered items or bullet-like content
           const lines = p.split(/\n/).filter((l) => l.trim());
@@ -74,7 +74,7 @@ function AssistantMessage({ content }: { content: string }) {
               <ul key={i} className={`space-y-1 ${i > 0 ? "mt-2" : ""}`}>
                 {lines.map((l, li) => (
                   <li key={li} className="flex gap-2 text-slate-700">
-                    <span className="flex-shrink-0" style={{ color: "#00205B" }}>
+                    <span className="flex-shrink-0" style={{ color: "#040e4b" }}>
                       {l.match(/^\d+/)?.[0] ? `${l.match(/^\d+/)?.[0]}.` : "•"}
                     </span>
                     <span>{l.replace(/^\d+[\.\)]\s*|^[-•]\s*/, "")}</span>
@@ -477,7 +477,7 @@ export function ChatView({
                       }}
                       disabled={!gateEmail.includes("@")}
                       className="px-5 py-2.5 text-sm font-semibold text-white rounded-lg hover:opacity-90 disabled:opacity-40"
-                      style={{ backgroundColor: "#00205B" }}
+                      style={{ backgroundColor: "#040e4b" }}
                     >
                       View Results
                     </button>
@@ -498,7 +498,7 @@ export function ChatView({
                   <button
                     onClick={handleConfirm}
                     className="text-xs font-semibold px-4 py-2 rounded-lg text-white hover:opacity-90"
-                    style={{ backgroundColor: "#00205B" }}
+                    style={{ backgroundColor: "#040e4b" }}
                   >
                     Generate Results →
                   </button>
@@ -525,7 +525,7 @@ export function ChatView({
                   type="submit"
                   disabled={streaming || !input.trim()}
                   className="px-4 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-30 hover:opacity-90 transition-colors"
-                  style={{ backgroundColor: "#00205B" }}
+                  style={{ backgroundColor: "#040e4b" }}
                 >
                   →
                 </button>
@@ -550,7 +550,7 @@ export function ChatView({
         <button
           onClick={() => setMobileSidebar(!mobileSidebar)}
           className="lg:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xs font-bold text-white"
-          style={{ backgroundColor: "#00205B" }}
+          style={{ backgroundColor: "#040e4b" }}
         >
           {scores.size + skipped.size}/{totalQuestions}
         </button>

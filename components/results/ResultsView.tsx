@@ -94,15 +94,15 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
     : opportunities;
 
   return (
-    <div className="min-h-screen bg-slate-50 print:bg-white">
-      {/* Branded header bar */}
-      <div className="print:hidden" style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-merkle bg-merkle-grey-60 print:bg-white">
+      {/* Branded header bar — Merkle artifact treatment */}
+      <div className="print:hidden bg-merkle-secondary-600">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto brightness-0 invert" />
             <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-              Modern CRM Diagnostic
+              Merkle Maturity Assessment
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -165,7 +165,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           <div className="flex items-center gap-2 mb-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#00205B" }}>
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#040e4b" }}>
               Modern CRM Maturity Diagnostic
             </span>
           </div>

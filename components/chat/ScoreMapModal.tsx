@@ -152,7 +152,7 @@ export function ScoreMapModal({
             const qs = CORE_QUESTIONS.filter((q) => q.capability === cap);
             return (
               <div key={cap}>
-                <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#00205B" }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#040e4b" }}>
                   {CAPABILITY_LABELS[cap]}
                 </p>
                 {qs.map((q) => (
@@ -175,7 +175,7 @@ export function ScoreMapModal({
           {/* Industry questions — same treatment as core */}
           {industryQuestions.length > 0 && (
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#00205B" }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#040e4b" }}>
                 {CAPABILITY_LABELS[industry!] || industry} — Industry Context
               </p>
               {industryQuestions.map((q) => (
@@ -205,7 +205,7 @@ export function ScoreMapModal({
               onClick={onConfirm}
               disabled={confirming}
               className="px-5 py-2 text-sm font-semibold text-white rounded-lg transition-colors hover:opacity-90 disabled:opacity-50"
-              style={{ backgroundColor: "#00205B" }}
+              style={{ backgroundColor: "#040e4b" }}
             >
               {confirming ? "Saving..." : clientFacing ? "See Full Results →" : "Confirm & Generate Results"}
             </button>

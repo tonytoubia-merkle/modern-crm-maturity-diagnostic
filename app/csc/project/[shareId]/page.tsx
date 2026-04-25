@@ -8,8 +8,8 @@ export default function CscProjectPage({
   params: { shareId: string };
 }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-merkle bg-merkle-grey-60">
+      <div className="bg-merkle-secondary-600">
         <div className="max-w-4xl mx-auto px-4 py-2 flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -21,7 +21,7 @@ export default function CscProjectPage({
             href="/csc"
             className="text-xs text-white/70 hover:text-white transition-colors"
           >
-            ← CSC Diagnostic
+            ← Content Supply Chain Assessment
           </a>
         </div>
       </div>

@@ -45,15 +45,15 @@ export default function ChatAssessmentPage() {
   // Chat view
   if (assessmentId && shareId) {
     return (
-      <div className="h-screen flex flex-col">
+      <div className="h-screen flex flex-col font-merkle">
         {/* Nav */}
-        <div style={{ backgroundColor: "#00205B" }}>
+        <div className="bg-merkle-secondary-600">
           <div className="max-w-full mx-auto px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
               <span className="text-xs text-white/50">
-                Conversational Diagnostic · {clientName}
+                Conversational Assessment · {clientName}
               </span>
             </div>
             <a href="/crm/assessment/new" className="text-xs text-white/50 hover:text-white transition-colors">
@@ -77,13 +77,13 @@ export default function ChatAssessmentPage() {
 
   // Setup form
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-merkle bg-merkle-grey-60">
+      <div className="bg-merkle-secondary-600">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
           <a href="/crm" className="text-xs text-white/70 hover:text-white transition-colors">
-            ← Modern CRM Diagnostic
+            ← Merkle Maturity Assessment
           </a>
         </div>
       </div>

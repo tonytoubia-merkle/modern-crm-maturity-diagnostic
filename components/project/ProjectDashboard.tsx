@@ -180,7 +180,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "#00205B" }}>
+        <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "#040e4b" }}>
           Workshop Project
         </p>
         <h1 className="text-2xl font-bold text-slate-900">{project.client_name}</h1>
@@ -198,7 +198,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
           <p className="text-xs text-slate-500 mt-0.5">Stakeholders</p>
         </div>
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold" style={{ color: completedCount === totalCount && totalCount > 0 ? "#16a34a" : "#00205B" }}>
+          <p className="text-2xl font-bold" style={{ color: completedCount === totalCount && totalCount > 0 ? "#16a34a" : "#040e4b" }}>
             {completedCount}/{totalCount}
           </p>
           <p className="text-xs text-slate-500 mt-0.5">Completed</p>
@@ -249,7 +249,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                 className={`px-3 py-1.5 transition-colors ${
                   checklistFormat === "onsite" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
                 }`}
-                style={checklistFormat === "onsite" ? { backgroundColor: "#00205B" } : undefined}
+                style={checklistFormat === "onsite" ? { backgroundColor: "#040e4b" } : undefined}
               >
                 On-Site
               </button>
@@ -258,7 +258,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                 className={`px-3 py-1.5 transition-colors ${
                   checklistFormat === "virtual" ? "text-white" : "bg-white text-slate-600 hover:bg-slate-50"
                 }`}
-                style={checklistFormat === "virtual" ? { backgroundColor: "#00205B" } : undefined}
+                style={checklistFormat === "virtual" ? { backgroundColor: "#040e4b" } : undefined}
               >
                 Virtual
               </button>
@@ -452,7 +452,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
             <div>
               <h3 className="font-bold text-slate-900 mb-3">Aggregated Results</h3>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-3xl font-bold" style={{ color: "#00205B" }}>
+                <span className="text-3xl font-bold" style={{ color: "#040e4b" }}>
                   {project.aggregated_overall.toFixed(1)}
                 </span>
                 <span className="text-sm text-slate-500">
@@ -500,7 +500,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                       <div
                         key={oppId}
                         className="border border-slate-200 rounded-lg p-3 bg-white"
-                        style={{ borderLeftWidth: "3px", borderLeftColor: "#00205B" }}
+                        style={{ borderLeftWidth: "3px", borderLeftColor: "#040e4b" }}
                       >
                         <p className="text-sm font-semibold text-slate-900">{opp.title}</p>
                         <p className="text-xs text-slate-500 mt-0.5">{opp.tagline}</p>
@@ -520,7 +520,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                         {sme && (
                           <div className="mt-2 pt-2 border-t border-slate-100 flex items-center gap-2 flex-wrap">
                             <span className="text-[10px] font-semibold text-slate-400">SME:</span>
-                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded text-white" style={{ backgroundColor: "#00205B" }}>
+                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded text-white" style={{ backgroundColor: "#040e4b" }}>
                               {sme.leadSmeRole}
                             </span>
                             <span className="text-[10px] text-slate-400">{sme.leadPractice}</span>
@@ -588,7 +588,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                             }`}
                             style={
                               block.type === "vignette"
-                                ? { borderLeftWidth: "3px", borderLeftColor: "#00205B" }
+                                ? { borderLeftWidth: "3px", borderLeftColor: "#040e4b" }
                                 : undefined
                             }
                           >

@@ -41,12 +41,12 @@ export function CoverageTracker({
       <div>
         <div className="flex items-center justify-between mb-1">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Coverage</p>
-          <p className="text-xs font-bold" style={{ color: "#00205B" }}>{covered}/{totalQuestions}</p>
+          <p className="text-xs font-bold" style={{ color: "#040e4b" }}>{covered}/{totalQuestions}</p>
         </div>
         <div className="w-full bg-slate-100 rounded-full h-2">
           <div
             className="h-2 rounded-full transition-all duration-500"
-            style={{ width: `${pct}%`, backgroundColor: "#00205B" }}
+            style={{ width: `${pct}%`, backgroundColor: "#040e4b" }}
           />
         </div>
       </div>
@@ -71,7 +71,7 @@ export function CoverageTracker({
                   className="h-1 rounded-full transition-all duration-500"
                   style={{
                     width: `${capPct}%`,
-                    backgroundColor: capPct === 100 ? "#16a34a" : "#00205B",
+                    backgroundColor: capPct === 100 ? "#16a34a" : "#040e4b",
                   }}
                 />
               </div>

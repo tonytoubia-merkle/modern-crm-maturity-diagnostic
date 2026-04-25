@@ -70,8 +70,8 @@ export function CscResultsView({
     : opportunities;
 
   return (
-    <div className="min-h-screen bg-slate-50 print:bg-white">
-      <div className="print:hidden" style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-merkle bg-merkle-grey-60 print:bg-white">
+      <div className="print:hidden bg-merkle-secondary-600">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -81,7 +81,7 @@ export function CscResultsView({
               className="h-5 w-auto brightness-0 invert"
             />
             <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-              Content Supply Chain Diagnostic
+              Content Supply Chain Assessment
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -139,10 +139,9 @@ export function CscResultsView({
               className="h-5 w-auto"
             />
             <span
-              className="text-xs font-semibold uppercase tracking-wider"
-              style={{ color: "#00205B" }}
+              className="text-xs font-semibold uppercase tracking-wider text-merkle-secondary-600"
             >
-              Content Supply Chain Diagnostic
+              Content Supply Chain Assessment
             </span>
           </div>
         </div>
