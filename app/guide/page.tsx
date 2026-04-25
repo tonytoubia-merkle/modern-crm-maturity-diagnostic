@@ -15,12 +15,15 @@ export default function GuidePage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f8f9fb" }}>
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
       {/* Header */}
-      <header style={{ backgroundColor: "#00205B" }}>
+      <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <div className="flex items-center gap-5">
             <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
@@ -29,12 +32,12 @@ export default function GuidePage() {
       </header>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
-        <p className="text-sm font-medium mb-2" style={{ color: "#00205B" }}>Internal Guide</p>
+        <p className="text-sm font-medium mb-2 text-m2-blue">Internal Guide</p>
         <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
           Workshop Facilitator Playbook
         </h1>
         <p className="text-sm text-slate-500 mb-10 max-w-2xl">
-          Everything you need to run a Modern CRM Diagnostic workshop from start to finish.
+          Everything you need to run a Merkle Maturity Assessment workshop from start to finish.
           Step-by-step instructions, email templates, logistics checklist, and SME guidance.
         </p>
 
@@ -56,7 +59,7 @@ export default function GuidePage() {
                   >
                     <span
                       className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white"
-                      style={{ backgroundColor: "#00205B" }}
+                      style={{ backgroundColor: "#0328d1" }}
                     >
                       {step.stepNumber}
                     </span>
@@ -116,7 +119,7 @@ export default function GuidePage() {
                                 Subject: {emailTemplate.subject}
                               </p>
                             </div>
-                            <span className="text-[10px] font-medium" style={{ color: "#00205B" }}>
+                            <span className="text-[10px] font-medium" style={{ color: "#0328d1" }}>
                               {expandedEmails.has(emailTemplate.id) ? "Collapse" : "Expand to copy"}
                             </span>
                           </button>
@@ -129,7 +132,7 @@ export default function GuidePage() {
                                     emailTemplate.id
                                   )}
                                   className="text-xs font-medium px-3 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition-colors"
-                                  style={{ color: "#00205B" }}
+                                  style={{ color: "#0328d1" }}
                                 >
                                   {copied === emailTemplate.id ? "Copied!" : "Copy Full Email"}
                                 </button>

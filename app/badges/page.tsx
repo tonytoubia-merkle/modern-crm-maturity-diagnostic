@@ -253,12 +253,15 @@ export default function BadgesPage() {
   const earnedIds = new Set(earned.map((b) => b.id));
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#1a1a2e" }}>
+    <div className="min-h-screen font-m2" style={{ backgroundColor: "#1a1a2e" }}>
       {/* Header */}
-      <header style={{ backgroundColor: "#00205B" }}>
+      <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-6 w-auto brightness-0 invert" />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
         </div>
       </header>

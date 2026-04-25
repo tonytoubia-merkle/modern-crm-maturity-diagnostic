@@ -42,15 +42,18 @@ export default function NewCscProjectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div style={{ backgroundColor: "#00205B" }}>
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
+      <div className="bg-m2-navy">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/merkle-logo.webp"
-            alt="Merkle"
-            className="h-4 w-auto brightness-0 invert"
-          />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/merkle-logo.webp"
+              alt="Merkle"
+              className="h-4 w-auto brightness-0 invert"
+            />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <a
             href="/csc"
             className="text-xs text-white/70 hover:text-white transition-colors"

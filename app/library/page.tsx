@@ -19,14 +19,17 @@ export default function LibraryPage() {
       : VIGNETTES.filter((v) => v.category === filter);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen font-m2 bg-m2-surface-light">
       {/* Nav */}
-      <div style={{ backgroundColor: "#00205B" }}>
+      <div className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-4 py-2 flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
+          <div className="flex items-baseline gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/merkle-logo.webp" alt="Merkle" className="h-4 w-auto brightness-0 invert" />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-m2-sky">M2</span>
+          </div>
           <a href="/crm" className="text-xs text-white/70 hover:text-white transition-colors">
-            ← Modern CRM Diagnostic
+            ← Merkle Maturity Assessment
           </a>
         </div>
       </div>
@@ -34,7 +37,7 @@ export default function LibraryPage() {
       <div className="max-w-5xl mx-auto px-4 py-10">
         {/* Header */}
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "#00205B" }}>
+          <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-m2-blue">
             Workshop Library
           </p>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">
@@ -56,7 +59,7 @@ export default function LibraryPage() {
                 ? "text-white border-transparent"
                 : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
             }`}
-            style={filter === "all" ? { backgroundColor: "#00205B" } : undefined}
+            style={filter === "all" ? { backgroundColor: "#0328d1" } : undefined}
           >
             All ({VIGNETTES.length})
           </button>
@@ -71,7 +74,7 @@ export default function LibraryPage() {
                     ? "text-white border-transparent"
                     : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
                 }`}
-                style={filter === cat ? { backgroundColor: "#00205B" } : undefined}
+                style={filter === cat ? { backgroundColor: "#0328d1" } : undefined}
               >
                 {cat} ({count})
               </button>
@@ -82,17 +85,17 @@ export default function LibraryPage() {
         {/* Summary stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#00205B" }}>{VIGNETTES.length}</p>
+            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>{VIGNETTES.length}</p>
             <p className="text-xs text-slate-500">Total Vignettes</p>
           </div>
           <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#00205B" }}>
+            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>
               {Math.round(VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60)}h
             </p>
             <p className="text-xs text-slate-500">Total Content</p>
           </div>
           <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#00205B" }}>{CATEGORIES.length}</p>
+            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>{CATEGORIES.length}</p>
             <p className="text-xs text-slate-500">Categories</p>
           </div>
         </div>
@@ -109,7 +112,7 @@ export default function LibraryPage() {
               <div
                 key={v.id}
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
-                style={{ borderLeftWidth: "4px", borderLeftColor: "#00205B" }}
+                style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
               >
                 <button
                   type="button"
@@ -119,7 +122,7 @@ export default function LibraryPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-xs font-medium px-2 py-0.5 rounded" style={{ backgroundColor: "#00205B", color: "white" }}>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-m2-navy text-white">
                           {v.durationMinutes} min
                         </span>
                         <span className="text-xs font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
