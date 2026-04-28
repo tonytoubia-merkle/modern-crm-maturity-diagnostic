@@ -47,7 +47,7 @@ const config: BrandConfig = {
       </span>
       <br />
       <span className="font-semibold" style={{ color: DENTSU.textDefault }}>
-        CRM Maturity Diagnostic
+        How mature is your CX?
       </span>
     </>
   ),

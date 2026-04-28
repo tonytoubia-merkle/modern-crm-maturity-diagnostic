@@ -46,12 +46,12 @@ const config: BrandConfig = {
         className="font-semibold"
         style={{ color: DENTSU.textDefault }}
       >
-        CRM Maturity Diagnostic
+        Maturity Assessments
       </span>
     </>
   ),
   subheadline:
-    "Pick a diagnostic to take in the next 10–15 minutes — an AI-led conversation about your CRM, or a guided Content Supply Chain survey. Built by Merkle, the customer experience practice of dentsu, and grounded in real client engagements.",
+    "Pick a diagnostic to take in the next 10–15 minutes — an AI-led conversation about your CRM, or about your content supply chain. Built by Merkle, the customer experience practice of dentsu, and grounded in real client engagements.",
   steps: [
     { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
     { n: "02", text: "AI or guided survey maps your capability scores" },
