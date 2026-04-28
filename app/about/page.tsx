@@ -12,7 +12,7 @@ export default function AboutPage() {
       {/* Header */}
       <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <M2Logo tone="dark" height={32} />
+          <M2Logo tone="dark" height={44} />
           <div className="flex items-center gap-5">
             <a
               href="/"

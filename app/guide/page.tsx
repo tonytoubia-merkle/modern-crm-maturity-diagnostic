@@ -20,7 +20,7 @@ export default function GuidePage() {
       {/* Header */}
       <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <M2Logo tone="dark" height={32} />
+          <M2Logo tone="dark" height={44} />
           <div className="flex items-center gap-5">
             <a href="/crm" className="text-xs text-white/60 hover:text-white transition-colors">Home</a>
             <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>

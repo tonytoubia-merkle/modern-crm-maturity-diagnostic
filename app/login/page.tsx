@@ -166,7 +166,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-3">
-            <M2Logo tone="light" height={36} />
+            <M2Logo tone="light" height={52} />
           </div>
           <p className="text-xs text-slate-500">Merkle Maturity Assessment</p>
         </div>

@@ -1,21 +1,17 @@
 /**
  * M2 logo lockup — Merkle's internal-tool brand mark.
  *
- * Sourced visually from the M2 Brand guide
- * (Figma file Gnio37paX1klQL0zrXefj3).
+ * Paths exported directly from the M2 Brand guide
+ * (Figma file Gnio37paX1klQL0zrXefj3, node 2003:226 — "Group 99",
+ * the primary mark lockup at 3973 × 2243).
  *
- * Composition:
- *   MERKLE   ← small-caps wordmark, sits above
- *   ▶ M²    ← bold sans-serif mark with a sky chevron at the
- *             bottom-left, and a smaller superscript "2".
+ * The lockup has two color groups in the source SVG:
+ *   - chevron wedge:        #0328D1   (M2 blue)
+ *   - "MERKLE" wordmark + M²: #05051E (M2 navy)
  *
- * The chevron color shifts depending on background:
- *   - on dark surfaces: M2 sky (#2f98f7)
- *   - on light surfaces: M2 blue (#0328d1)
- *
- * Usage:
- *   <M2Logo tone="dark" />     // for navy/dark headers — fills are white
- *   <M2Logo tone="light" />    // for light surfaces — fills are M2 navy
+ * For tone-aware rendering we map those two roles:
+ *   tone="light"  → ink #05051E,  accent #0328D1   (default Figma colors)
+ *   tone="dark"   → ink #FFFFFF,  accent #2F98F7   (M2 sky on dark — per Brand Mark Rules slide)
  */
 
 type Tone = "dark" | "light";
@@ -23,63 +19,69 @@ type Tone = "dark" | "light";
 interface M2LogoProps {
   tone?: Tone;
   className?: string;
-  /** pixel height of the lockup; width is derived from aspect ratio */
+  /** Pixel height of the lockup. Width is derived from aspect ratio. */
   height?: number;
 }
 
-export function M2Logo({ tone = "dark", className, height = 32 }: M2LogoProps) {
-  const ink = tone === "dark" ? "#ffffff" : "#05051e";
-  const accent = tone === "dark" ? "#2f98f7" : "#0328d1";
+const ASPECT = 3973 / 2243; // ≈ 1.7713
 
-  // viewBox: 110 × 56 — wordmark on top row, mark+chevron on bottom row
+export function M2Logo({ tone = "dark", className, height = 32 }: M2LogoProps) {
+  const ink = tone === "dark" ? "#FFFFFF" : "#05051E";
+  const accent = tone === "dark" ? "#2F98F7" : "#0328D1";
+
   return (
     <svg
       role="img"
       aria-label="Merkle M2"
-      viewBox="0 0 110 56"
+      viewBox="0 0 3973 2243"
+      width={Math.round(height * ASPECT)}
       height={height}
-      width={(height * 110) / 56}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
+      fill="none"
     >
-      {/* "MERKLE" — small wordmark across the top */}
-      <text
-        x="0"
-        y="13"
-        fill={ink}
-        fontFamily='"Work Sans", Inter, system-ui, sans-serif'
-        fontWeight={500}
-        fontSize="11"
-        letterSpacing="1.8"
-      >
-        MERKLE
-      </text>
+      {/* Chevron wedge — accent color */}
+      <path d="M785.361 2243L0 1456.1H785.361V2243Z" fill={accent} />
 
-      {/* Sky chevron — small right-pointing triangle at bottom-left */}
-      <polygon
-        points="0,54 0,32 11,43"
-        fill={accent}
+      {/* MERKLE wordmark — six glyphs, ink color */}
+      <path
+        d="M1532.92 0V347.211H1438.01V208.495L1439.69 96.681H1438.85L1362.41 347.211H1275.9L1201.14 96.681H1199.46L1201.14 208.495V347.211H1106.22V0H1257.42L1304.45 164.778L1322.09 233.716H1322.93L1340.57 164.778L1387.61 0H1532.08H1532.92Z"
+        fill={ink}
+      />
+      <path
+        d="M1731.15 347.211V0H2010.86V80.7076H1838.67V137.035H1976.42V211.858H1838.67V267.344H2017.58V348.052H1731.15V347.211Z"
+        fill={ink}
+      />
+      <path
+        d="M2545.07 347.211L2456.88 209.335C2469.48 205.132 2481.24 200.088 2490.48 192.521C2513.15 173.185 2524.91 145.442 2524.91 108.451C2524.91 75.6634 2513.15 48.7609 2489.64 29.4247C2466.12 10.0885 2432.52 0 2389.68 0H2212.45V347.211H2317.44V226.99H2361.12L2428.32 347.211H2545.07ZM2317.44 78.1855H2372.88C2388 78.1855 2398.92 80.7076 2406.48 87.4333C2414.04 93.3182 2417.4 103.407 2417.4 116.017C2417.4 128.628 2414.04 138.716 2406.48 144.601C2398.92 150.486 2388 153.008 2372.88 153.008H2317.44V78.1855Z"
+        fill={ink}
+      />
+      <path
+        d="M2966.73 350.574H3088.52L2968.41 142.92L3080.12 4.20355H2964.21L2857.54 145.442V4.20355H2750.86V350.574H2857.54V257.256L2892.81 211.858L2966.73 350.574Z"
+        fill={ink}
+      />
+      <path
+        d="M3364.03 266.503H3528.66V347.211H3256.52V0H3364.03V266.503Z"
+        fill={ink}
+      />
+      <path
+        d="M3672.29 347.211V0H3952V80.7076H3779.81V137.035H3917.56V211.858H3779.81V267.344H3958.72V348.052H3672.29V347.211Z"
+        fill={ink}
       />
 
-      {/* "M²" mark — bold sans-serif, large */}
-      <text
-        x="14"
-        y="52"
+      {/* M² mark — three glyph shapes (the bowl of the "²", the M body, and the loop). All ink. */}
+      <path
+        d="M3624.42 649.024C3624.42 649.024 3884.8 668.36 3973 969.332V649.024C3973 649.024 3610.98 649.024 3624.42 649.024Z"
         fill={ink}
-        fontFamily='"Work Sans", Inter, system-ui, sans-serif'
-        fontWeight={900}
-        fontSize="38"
-        letterSpacing="-1"
-      >
-        M
-        <tspan
-          fontSize="22"
-          dy="-14"
-          dx="-2"
-        >
-          2
-        </tspan>
-      </text>
+      />
+      <path
+        d="M3590.82 1264.42C3620.22 1222.38 3637.86 1171.94 3637.86 1117.3C3637.86 976.058 3523.62 860.882 3381.67 860.882C3239.72 860.882 3125.48 975.217 3125.48 1117.3C3125.48 1145.88 3131.36 1173.62 3139.76 1199.69H2767.66V1117.3C2767.66 762.519 3089.36 649.024 3089.36 649.024H2602.19L1937.78 1321.59L1273.38 649.024H1107.9V2243H1438.85V1291.32L1937.78 1799.95L2436.72 1291.32V2243H2767.66C2767.66 1828.53 3002.01 1680.57 3248.96 1531.76C3568.98 1337.56 3590.82 1264.42 3590.82 1264.42Z"
+        fill={ink}
+      />
+      <path
+        d="M3612.66 1637.69C3292.63 1820.13 3221.24 1962.2 3221.24 1962.2C3217.88 1962.2 3973 1962.2 3973 1962.2V1238.36C3973 1238.36 3912.52 1467.03 3612.66 1637.69Z"
+        fill={ink}
+      />
     </svg>
   );
 }

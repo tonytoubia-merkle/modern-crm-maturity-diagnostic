@@ -49,7 +49,7 @@ export default function NewProjectPage() {
       {/* Branded nav */}
       <div className="bg-m2-navy">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
-          <M2Logo tone="dark" height={26} />
+          <M2Logo tone="dark" height={36} />
           <a href="/crm" className="text-xs text-white/70 hover:text-white transition-colors">
             ← Merkle Maturity Assessment
           </a>
