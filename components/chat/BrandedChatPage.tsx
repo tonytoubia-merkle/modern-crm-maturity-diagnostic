@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { VoiceChat } from "./VoiceChat";
+import { CscVoiceChat } from "@/components/csc/chat/CscVoiceChat";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import { CSC_INDUSTRY_LABELS } from "@/lib/csc/data/questions";
 import type { Industry } from "@/lib/types";
@@ -93,8 +94,8 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         setShareId(data.shareId);
         setStep("chat");
       } else {
-        // CSC has no voice flow yet — create the assessment with the
-        // source tag, then hand off to the manual flow.
+        // CSC voice flow — create the assessment with the source tag,
+        // then drop into the in-page CscVoiceChat (mirrors the CRM path).
         const resolvedIndustry =
           cscIndustry === "none" || cscIndustry === "" ? null : cscIndustry;
         const res = await fetch("/api/csc/assessments", {
@@ -114,14 +115,16 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         });
         if (!res.ok) throw new Error("Failed");
         const data = await res.json();
-        window.location.href = `/csc/assessment/resume/${data.shareId}`;
+        setAssessmentId(data.id);
+        setShareId(data.shareId);
+        setStep("chat");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // ── Chat (CRM only) ──────────────────────────────────────────────
+  // ── Chat (CRM voice or CSC voice) ────────────────────────────────
   if (step === "chat" && assessmentId && shareId) {
     return (
       <div className="h-screen flex flex-col">
@@ -135,18 +138,33 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             )}
           </div>
         </div>
-        <VoiceChat
-          assessmentId={assessmentId}
-          shareId={shareId}
-          clientName={orgName}
-          respondentName={respondentName || "Participant"}
-          industry={
-            crmIndustry === "none" || crmIndustry === ""
-              ? null
-              : (crmIndustry as Industry)
-          }
-          clientFacing
-        />
+        {diagnostic === "crm" ? (
+          <VoiceChat
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={orgName}
+            respondentName={respondentName || "Participant"}
+            industry={
+              crmIndustry === "none" || crmIndustry === ""
+                ? null
+                : (crmIndustry as Industry)
+            }
+            clientFacing
+          />
+        ) : (
+          <CscVoiceChat
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={orgName}
+            respondentName={respondentName || "Participant"}
+            industry={
+              cscIndustry === "none" || cscIndustry === ""
+                ? null
+                : (cscIndustry as CscIndustry)
+            }
+            clientFacing
+          />
+        )}
       </div>
     );
   }
@@ -254,20 +272,15 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
               <DiagnosticCard
                 eyebrow="Content Practice"
                 title="Content Supply Chain"
-                pace="~15 min · guided survey"
-                description="A guided 45-question survey across six capabilities — strategy, workflow, asset governance, distribution, measurement, and AI. Pick a score for each on a 1–5 scale."
-                cta="Start CSC survey"
+                pace="~12 min · voice conversation"
+                description="An AI consultant has a natural conversation with you about content strategy, production workflow, asset governance, distribution, measurement, and how AI is starting to fit in. Scores are inferred from what you say."
+                cta="Start CSC conversation"
                 config={config}
                 onClick={() => goToSetup("csc")}
-                badge="Survey"
+                badge="Voice"
               />
             )}
           </div>
-
-          <p className="text-xs text-slate-400 mt-6">
-            Voice version of the CSC diagnostic is on the roadmap. For now, CSC
-            uses the same guided survey consultants run with stakeholders.
-          </p>
         </div>
       </PageShell>
     );
@@ -278,8 +291,8 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
   const setupTitle = isCrm ? "Quick setup" : "Quick setup";
   const setupBlurb = isCrm
     ? "A couple of details before we begin the conversation."
-    : "A couple of details before we open the survey.";
-  const ctaLabel = isCrm ? "Start Conversation" : "Open Survey";
+    : "A couple of details before we begin the conversation.";
+  const ctaLabel = isCrm ? "Start Conversation" : "Start Conversation";
   const industryEntries = isCrm
     ? (Object.entries(INDUSTRY_LABELS) as [string, string][])
     : (Object.entries(CSC_INDUSTRY_LABELS) as [string, string][]);
