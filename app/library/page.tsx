@@ -4,20 +4,18 @@ import { useState } from "react";
 import { VIGNETTES } from "@/lib/data/vignettes";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { CAPABILITY_LABELS } from "@/lib/data/questions";
+import { CSC_VIGNETTES } from "@/lib/csc/data/vignettes";
+import { CSC_CAPABILITY_LABELS } from "@/lib/csc/data/questions";
 import { M2Logo } from "@/components/brand/M2Logo";
 
-const CATEGORIES = Array.from(new Set(VIGNETTES.map((v) => v.category))).sort();
+const CRM_CATEGORIES = Array.from(
+  new Set(VIGNETTES.map((v) => v.category))
+).sort();
+
+type Suite = "crm" | "csc";
 
 export default function LibraryPage() {
-  const [filter, setFilter] = useState<string>("all");
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const [miroUrls, setMiroUrls] = useState<Record<string, string>>({});
-  const [miroLoading, setMiroLoading] = useState<string | null>(null);
-
-  const filtered =
-    filter === "all"
-      ? VIGNETTES
-      : VIGNETTES.filter((v) => v.category === filter);
+  const [suite, setSuite] = useState<Suite>("crm");
 
   return (
     <div className="min-h-screen font-m2 bg-m2-surface-light">
@@ -25,7 +23,10 @@ export default function LibraryPage() {
       <div className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-4 py-2 flex items-center gap-3">
           <M2Logo tone="dark" height={36} />
-          <a href="/crm" className="text-xs text-white/70 hover:text-white transition-colors">
+          <a
+            href="/crm"
+            className="text-xs text-white/70 hover:text-white transition-colors"
+          >
             ← Merkle Maturity Assessment
           </a>
         </div>
@@ -38,220 +39,474 @@ export default function LibraryPage() {
             Workshop Library
           </p>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">
-            Workshop Vignettes & Exercises
+            Vignettes & Exercises
           </h1>
           <p className="text-sm text-slate-600 max-w-2xl">
-            Browse all available workshop exercises. Each vignette is triggered by
-            specific diagnostic outcomes and includes a facilitation guide,
-            required inputs, and expected deliverables.
+            Two libraries, one workspace. Modern CRM ships workshop exercises
+            with facilitation guides, durations, and Miro boards. Content
+            Supply Chain ships anonymized client stories with capabilities,
+            outcomes, and discussion prompts. Use the toggle below to switch.
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
-              filter === "all"
-                ? "text-white border-transparent"
-                : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
-            }`}
-            style={filter === "all" ? { backgroundColor: "#0328d1" } : undefined}
-          >
-            All ({VIGNETTES.length})
-          </button>
-          {CATEGORIES.map((cat) => {
-            const count = VIGNETTES.filter((v) => v.category === cat).length;
-            return (
+        {/* Suite tabs */}
+        <div className="inline-flex bg-white border border-slate-200 rounded-lg p-1 mb-8">
+          <SuiteTab
+            active={suite === "crm"}
+            onClick={() => setSuite("crm")}
+            label="Modern CRM"
+            sublabel={`${VIGNETTES.length} workshop vignettes`}
+          />
+          <SuiteTab
+            active={suite === "csc"}
+            onClick={() => setSuite("csc")}
+            label="Content Supply Chain"
+            sublabel={`${CSC_VIGNETTES.length} client stories`}
+          />
+        </div>
+
+        {suite === "crm" ? <CrmLibrary /> : <CscLibrary />}
+      </div>
+    </div>
+  );
+}
+
+// ── Suite tabs ─────────────────────────────────────────────────────
+
+function SuiteTab({
+  active,
+  onClick,
+  label,
+  sublabel,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+  sublabel: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-4 py-2 rounded-md text-left transition-colors ${
+        active
+          ? "bg-m2-navy text-white"
+          : "text-slate-600 hover:bg-slate-50"
+      }`}
+    >
+      <span className="block text-sm font-semibold">{label}</span>
+      <span
+        className={`block text-[10px] mt-0.5 ${
+          active ? "text-white/70" : "text-slate-400"
+        }`}
+      >
+        {sublabel}
+      </span>
+    </button>
+  );
+}
+
+// ── Modern CRM library — workshop vignettes ───────────────────────
+
+function CrmLibrary() {
+  const [filter, setFilter] = useState<string>("all");
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [miroUrls, setMiroUrls] = useState<Record<string, string>>({});
+  const [miroLoading, setMiroLoading] = useState<string | null>(null);
+
+  const filtered =
+    filter === "all"
+      ? VIGNETTES
+      : VIGNETTES.filter((v) => v.category === filter);
+
+  return (
+    <>
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        <button
+          onClick={() => setFilter("all")}
+          className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
+            filter === "all"
+              ? "text-white border-transparent"
+              : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+          }`}
+          style={
+            filter === "all" ? { backgroundColor: "#0328d1" } : undefined
+          }
+        >
+          All ({VIGNETTES.length})
+        </button>
+        {CRM_CATEGORIES.map((cat) => {
+          const count = VIGNETTES.filter((v) => v.category === cat).length;
+          return (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
+                filter === cat
+                  ? "text-white border-transparent"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+              }`}
+              style={
+                filter === cat ? { backgroundColor: "#0328d1" } : undefined
+              }
+            >
+              {cat} ({count})
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Summary stats */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <Stat
+          value={String(VIGNETTES.length)}
+          label="Total Vignettes"
+        />
+        <Stat
+          value={`${Math.round(
+            VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60
+          )}h`}
+          label="Total Content"
+        />
+        <Stat
+          value={String(CRM_CATEGORIES.length)}
+          label="Categories"
+        />
+      </div>
+
+      {/* Vignette cards */}
+      <div className="space-y-3">
+        {filtered.map((v) => {
+          const isOpen = expanded === v.id;
+          const relatedOpps = v.relatedOpportunityIds
+            .map((id) => OPPORTUNITIES.find((o) => o.id === id))
+            .filter(Boolean);
+
+          return (
+            <div
+              key={v.id}
+              className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
+              style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
+            >
               <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
-                  filter === cat
-                    ? "text-white border-transparent"
-                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
-                }`}
-                style={filter === cat ? { backgroundColor: "#0328d1" } : undefined}
+                type="button"
+                className="w-full text-left px-5 py-4"
+                onClick={() => setExpanded(isOpen ? null : v.id)}
               >
-                {cat} ({count})
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Summary stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>{VIGNETTES.length}</p>
-            <p className="text-xs text-slate-500">Total Vignettes</p>
-          </div>
-          <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>
-              {Math.round(VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60)}h
-            </p>
-            <p className="text-xs text-slate-500">Total Content</p>
-          </div>
-          <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-            <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>{CATEGORIES.length}</p>
-            <p className="text-xs text-slate-500">Categories</p>
-          </div>
-        </div>
-
-        {/* Vignette cards */}
-        <div className="space-y-3">
-          {filtered.map((v) => {
-            const isOpen = expanded === v.id;
-            const relatedOpps = v.relatedOpportunityIds
-              .map((id) => OPPORTUNITIES.find((o) => o.id === id))
-              .filter(Boolean);
-
-            return (
-              <div
-                key={v.id}
-                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
-                style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
-              >
-                <button
-                  type="button"
-                  className="w-full text-left px-5 py-4"
-                  onClick={() => setExpanded(isOpen ? null : v.id)}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-m2-navy text-white">
-                          {v.durationMinutes} min
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-xs font-medium px-2 py-0.5 rounded bg-m2-navy text-white">
+                        {v.durationMinutes} min
+                      </span>
+                      <span className="text-xs font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                        {v.category}
+                      </span>
+                      {v.triggerCapabilities.map((c) => (
+                        <span
+                          key={c}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600"
+                        >
+                          {CAPABILITY_LABELS[c] || c}
                         </span>
-                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
-                          {v.category}
-                        </span>
-                        {v.triggerCapabilities.map((c) => (
-                          <span key={c} className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">
-                            {CAPABILITY_LABELS[c] || c}
-                          </span>
-                        ))}
-                      </div>
-                      <h3 className="text-base font-bold text-slate-900">{v.title}</h3>
-                      <p className="text-sm text-slate-500 mt-0.5">{v.description}</p>
+                      ))}
                     </div>
-                    <svg
-                      className={`w-5 h-5 text-slate-400 flex-shrink-0 mt-1 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {v.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 mt-0.5">
+                      {v.description}
+                    </p>
                   </div>
-                </button>
+                  <Chevron open={isOpen} />
+                </div>
+              </button>
 
-                {isOpen && (
-                  <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
-                    {/* Facilitation guide */}
-                    <div>
-                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                        Facilitation Guide
-                      </p>
-                      <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-slate-50 border border-slate-100 rounded-lg p-4">
-                        {v.facilitationGuide.split("**").map((part, i) =>
-                          i % 2 === 1 ? <strong key={i}>{part}</strong> : <span key={i}>{part}</span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Required inputs */}
-                      <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                          Required Inputs / Pre-Work
-                        </p>
-                        <ul className="space-y-1">
-                          {v.requiredInputs.map((input, i) => (
-                            <li key={i} className="text-sm text-slate-700 flex gap-2">
-                              <span className="text-amber-500 mt-0.5 flex-shrink-0">*</span>
-                              {input}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Expected outputs */}
-                      <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                          Expected Outputs
-                        </p>
-                        <ul className="space-y-1">
-                          {v.expectedOutputs.map((output, i) => (
-                            <li key={i} className="text-sm text-slate-700 flex gap-2">
-                              <span className="text-green-500 mt-0.5 flex-shrink-0">+</span>
-                              {output}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Triggered by */}
-                    {relatedOpps.length > 0 && (
-                      <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                          Triggered By These Opportunities
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {relatedOpps.map((opp) => opp && (
-                            <span
-                              key={opp.id}
-                              className="text-xs font-medium px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100"
-                            >
-                              {opp.title}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Miro board */}
-                    <div className="pt-2 border-t border-slate-100">
-                      {miroUrls[v.id] ? (
-                        <a
-                          href={miroUrls[v.id]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
-                          style={{ backgroundColor: "#FFD02F", color: "#050038" }}
-                        >
-                          Open Miro Board →
-                        </a>
-                      ) : (
-                        <button
-                          onClick={async () => {
-                            setMiroLoading(v.id);
-                            try {
-                              const res = await fetch(`/api/vignettes/${v.id}/miro`, { method: "POST" });
-                              if (!res.ok) {
-                                const err = await res.json();
-                                alert(err.error || "Failed to create Miro board");
-                                return;
-                              }
-                              const data = await res.json();
-                              setMiroUrls((prev) => ({ ...prev, [v.id]: data.boardUrl }));
-                              window.open(data.boardUrl, "_blank");
-                            } finally {
-                              setMiroLoading(null);
-                            }
-                          }}
-                          disabled={miroLoading === v.id}
-                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
-                        >
-                          {miroLoading === v.id ? "Creating..." : "Generate Miro Board"}
-                        </button>
+              {isOpen && (
+                <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                      Facilitation Guide
+                    </p>
+                    <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-slate-50 border border-slate-100 rounded-lg p-4">
+                      {v.facilitationGuide.split("**").map((part, i) =>
+                        i % 2 === 1 ? (
+                          <strong key={i}>{part}</strong>
+                        ) : (
+                          <span key={i}>{part}</span>
+                        )
                       )}
                     </div>
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <BulletList
+                      title="Required Inputs / Pre-Work"
+                      items={v.requiredInputs}
+                      bulletClass="text-amber-500"
+                      bullet="*"
+                    />
+                    <BulletList
+                      title="Expected Outputs"
+                      items={v.expectedOutputs}
+                      bulletClass="text-green-500"
+                      bullet="+"
+                    />
+                  </div>
+
+                  {relatedOpps.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Triggered By These Opportunities
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {relatedOpps.map(
+                          (opp) =>
+                            opp && (
+                              <span
+                                key={opp.id}
+                                className="text-xs font-medium px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100"
+                              >
+                                {opp.title}
+                              </span>
+                            )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Miro board */}
+                  <div className="pt-2 border-t border-slate-100">
+                    {miroUrls[v.id] ? (
+                      <a
+                        href={miroUrls[v.id]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
+                        style={{
+                          backgroundColor: "#FFD02F",
+                          color: "#050038",
+                        }}
+                      >
+                        Open Miro Board →
+                      </a>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          setMiroLoading(v.id);
+                          try {
+                            const res = await fetch(
+                              `/api/vignettes/${v.id}/miro`,
+                              { method: "POST" }
+                            );
+                            if (!res.ok) {
+                              const err = await res.json();
+                              alert(err.error || "Failed to create Miro board");
+                              return;
+                            }
+                            const data = await res.json();
+                            setMiroUrls((prev) => ({
+                              ...prev,
+                              [v.id]: data.boardUrl,
+                            }));
+                            window.open(data.boardUrl, "_blank");
+                          } finally {
+                            setMiroLoading(null);
+                          }
+                        }}
+                        disabled={miroLoading === v.id}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
+                      >
+                        {miroLoading === v.id
+                          ? "Creating..."
+                          : "Generate Miro Board"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
+    </>
+  );
+}
+
+// ── CSC library — anonymized client stories ──────────────────────
+
+function CscLibrary() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  return (
+    <>
+      {/* Summary stats */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <Stat value={String(CSC_VIGNETTES.length)} label="Client Stories" />
+        <Stat
+          value={String(
+            new Set(CSC_VIGNETTES.flatMap((v) => v.capabilities)).size
+          )}
+          label="Capabilities Covered"
+        />
+        <Stat
+          value={String(
+            new Set(CSC_VIGNETTES.flatMap((v) => v.industries ?? [])).size ||
+              "—"
+          )}
+          label="Industries"
+        />
+      </div>
+
+      <div className="space-y-3">
+        {CSC_VIGNETTES.map((v) => {
+          const isOpen = expanded === v.id;
+          return (
+            <div
+              key={v.id}
+              className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
+              style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
+            >
+              <button
+                type="button"
+                className="w-full text-left px-5 py-4"
+                onClick={() => setExpanded(isOpen ? null : v.id)}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      {v.capabilities.map((c) => (
+                        <span
+                          key={c}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600"
+                        >
+                          {CSC_CAPABILITY_LABELS[c] || c}
+                        </span>
+                      ))}
+                      {v.industries?.map((ind) => (
+                        <span
+                          key={ind}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 capitalize"
+                        >
+                          {ind.replace(/_/g, " ")}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {v.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 mt-0.5 italic">
+                      {v.tagline}
+                    </p>
+                  </div>
+                  <Chevron open={isOpen} />
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                      Narrative
+                    </p>
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-lg p-4">
+                      {v.narrative}
+                    </p>
+                  </div>
+
+                  {v.outcomes && v.outcomes.length > 0 && (
+                    <BulletList
+                      title="Outcomes"
+                      items={v.outcomes}
+                      bulletClass="text-green-500"
+                      bullet="+"
+                    />
+                  )}
+
+                  {v.prompts && v.prompts.length > 0 && (
+                    <BulletList
+                      title="Discussion Prompts"
+                      items={v.prompts}
+                      bulletClass="text-amber-500"
+                      bullet="?"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {CSC_VIGNETTES.length === 0 && (
+        <p className="text-sm text-slate-500">
+          No CSC stories yet — they&apos;ll appear here as the catalog grows.
+        </p>
+      )}
+    </>
+  );
+}
+
+// ── Shared bits ───────────────────────────────────────────────────
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
+      <p className="text-2xl font-bold" style={{ color: "#0328d1" }}>
+        {value}
+      </p>
+      <p className="text-xs text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={`w-5 h-5 text-slate-400 flex-shrink-0 mt-1 transition-transform ${
+        open ? "rotate-180" : ""
+      }`}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  );
+}
+
+function BulletList({
+  title,
+  items,
+  bulletClass,
+  bullet,
+}: {
+  title: string;
+  items: string[];
+  bulletClass: string;
+  bullet: string;
+}) {
+  return (
+    <div>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+        {title}
+      </p>
+      <ul className="space-y-1">
+        {items.map((item, i) => (
+          <li key={i} className="text-sm text-slate-700 flex gap-2">
+            <span className={`mt-0.5 flex-shrink-0 ${bulletClass}`}>
+              {bullet}
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
