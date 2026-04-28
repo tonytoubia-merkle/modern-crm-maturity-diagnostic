@@ -138,6 +138,49 @@ export interface CscStakeholder {
   completedAt?: string | null;
 }
 
+// ── Workshop vignettes (facilitation exercises) ───────────────────────
+// CSC parallel to the CRM Vignette type — a workshop exercise the
+// consultant runs against the client team to develop one or more
+// capability areas. Distinct from CscClientStory below, which is the
+// anchor narrative used as a credibility/proof point during pitch.
+export interface CscWorkshopVignette {
+  id: string;
+  title: string;
+  description: string;
+  durationMinutes: number;
+  category: string;
+  requiredInputs: string[];
+  /** Markdown-flavored facilitation guide. Use **bold** for section
+   * headers (e.g. **Setup (10 min):**) — the library renderer parses
+   * `**…**` runs as bold. */
+  facilitationGuide: string;
+  expectedOutputs: string[];
+  /** IDs from CSC_OPPORTUNITIES this exercise commonly anchors. */
+  relatedOpportunityIds: string[];
+  /** CSC capabilities this exercise primarily develops. */
+  triggerCapabilities: CscCapability[];
+  sortOrder: number;
+}
+
+// ── Anonymized client stories (proof points / pitch anchors) ──────────
+// What used to live in CSC_VIGNETTES — kept as a separate dataset so
+// workshop exercises and proof stories don't get conflated.
+export interface CscClientStory {
+  id: string;
+  title: string;
+  tagline: string;
+  /** Capabilities this story illustrates — drives matching to opportunities. */
+  capabilities: CscCapability[];
+  /** 1–2 paragraph anonymized (or Merkle-public) client story. */
+  narrative: string;
+  /** Outcomes or measured impact claimed in the story. */
+  outcomes?: string[];
+  /** Industry codes (matching CscIndustry) where the story is most relevant. */
+  industries?: string[];
+  /** Suggested facilitation prompts / discussion questions. */
+  prompts?: string[];
+}
+
 // ── Workshop agenda shape ──────────────────────────────────────────────
 // Deliberately left loose at the scaffold stage. The generator will fill
 // this once vignette content is grounded. Follow the CRM workshop_agenda

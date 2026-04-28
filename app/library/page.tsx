@@ -4,7 +4,11 @@ import { useState } from "react";
 import { VIGNETTES } from "@/lib/data/vignettes";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { CAPABILITY_LABELS } from "@/lib/data/questions";
-import { CSC_VIGNETTES } from "@/lib/csc/data/vignettes";
+import {
+  CSC_VIGNETTES,
+  CSC_CLIENT_STORIES,
+} from "@/lib/csc/data/vignettes";
+import { CSC_OPPORTUNITIES } from "@/lib/csc/data/opportunities";
 import { CSC_CAPABILITY_LABELS } from "@/lib/csc/data/questions";
 import { M2Logo } from "@/components/brand/M2Logo";
 
@@ -42,10 +46,11 @@ export default function LibraryPage() {
             Vignettes & Exercises
           </h1>
           <p className="text-sm text-slate-600 max-w-2xl">
-            Two libraries, one workspace. Modern CRM ships workshop exercises
-            with facilitation guides, durations, and Miro boards. Content
-            Supply Chain ships anonymized client stories with capabilities,
-            outcomes, and discussion prompts. Use the toggle below to switch.
+            Two libraries, one workspace. Each diagnostic ships workshop
+            vignettes — facilitation exercises with required inputs,
+            timed agendas, and expected outputs. Content Supply Chain also
+            ships anonymized client stories used as proof points during
+            pitch. Use the toggle below to switch.
           </p>
         </div>
 
@@ -61,7 +66,7 @@ export default function LibraryPage() {
             active={suite === "csc"}
             onClick={() => setSuite("csc")}
             label="Content Supply Chain"
-            sublabel={`${CSC_VIGNETTES.length} client stories`}
+            sublabel={`${CSC_VIGNETTES.length} vignettes · ${CSC_CLIENT_STORIES.length} stories`}
           />
         </div>
 
@@ -334,34 +339,148 @@ function CrmLibrary() {
   );
 }
 
-// ── CSC library — anonymized client stories ──────────────────────
+// ── CSC library — workshop exercises + anonymized client stories ──
 
 function CscLibrary() {
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [view, setView] = useState<"vignettes" | "stories">("vignettes");
 
   return (
     <>
       {/* Summary stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <Stat value={String(CSC_VIGNETTES.length)} label="Client Stories" />
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <Stat
+          value={String(CSC_VIGNETTES.length)}
+          label="Workshop Vignettes"
+        />
+        <Stat
+          value={`${Math.round(
+            CSC_VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60
+          )}h`}
+          label="Total Content"
+        />
+        <Stat
+          value={String(CSC_CLIENT_STORIES.length)}
+          label="Client Stories"
+        />
         <Stat
           value={String(
-            new Set(CSC_VIGNETTES.flatMap((v) => v.capabilities)).size
+            new Set([
+              ...CSC_VIGNETTES.flatMap((v) => v.triggerCapabilities),
+              ...CSC_CLIENT_STORIES.flatMap((s) => s.capabilities),
+            ]).size
           )}
           label="Capabilities Covered"
         />
-        <Stat
-          value={String(
-            new Set(CSC_VIGNETTES.flatMap((v) => v.industries ?? [])).size ||
-              "—"
-          )}
-          label="Industries"
+      </div>
+
+      {/* Sub-section toggle */}
+      <div className="inline-flex bg-white border border-slate-200 rounded-lg p-1 mb-6">
+        <SubTab
+          active={view === "vignettes"}
+          onClick={() => setView("vignettes")}
+          label="Workshop Vignettes"
+          sublabel="Facilitation exercises"
+        />
+        <SubTab
+          active={view === "stories"}
+          onClick={() => setView("stories")}
+          label="Client Stories"
+          sublabel="Proof points"
         />
       </div>
 
+      {view === "vignettes" ? <CscWorkshopVignettesList /> : <CscClientStoriesList />}
+    </>
+  );
+}
+
+function SubTab({
+  active,
+  onClick,
+  label,
+  sublabel,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+  sublabel: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-4 py-2 rounded-md text-left transition-colors ${
+        active ? "bg-m2-navy text-white" : "text-slate-600 hover:bg-slate-50"
+      }`}
+    >
+      <span className="block text-xs font-semibold">{label}</span>
+      <span
+        className={`block text-[10px] mt-0.5 ${
+          active ? "text-white/70" : "text-slate-400"
+        }`}
+      >
+        {sublabel}
+      </span>
+    </button>
+  );
+}
+
+// Workshop vignettes — same UI shape as the CRM vignette cards.
+function CscWorkshopVignettesList() {
+  const [filter, setFilter] = useState<string>("all");
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const categories = Array.from(
+    new Set(CSC_VIGNETTES.map((v) => v.category))
+  ).sort();
+  const filtered =
+    filter === "all"
+      ? CSC_VIGNETTES
+      : CSC_VIGNETTES.filter((v) => v.category === filter);
+
+  return (
+    <>
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          onClick={() => setFilter("all")}
+          className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
+            filter === "all"
+              ? "text-white border-transparent"
+              : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+          }`}
+          style={
+            filter === "all" ? { backgroundColor: "#0328d1" } : undefined
+          }
+        >
+          All ({CSC_VIGNETTES.length})
+        </button>
+        {categories.map((cat) => {
+          const count = CSC_VIGNETTES.filter((v) => v.category === cat).length;
+          return (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
+                filter === cat
+                  ? "text-white border-transparent"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+              }`}
+              style={
+                filter === cat ? { backgroundColor: "#0328d1" } : undefined
+              }
+            >
+              {cat} ({count})
+            </button>
+          );
+        })}
+      </div>
+
       <div className="space-y-3">
-        {CSC_VIGNETTES.map((v) => {
+        {filtered.map((v) => {
           const isOpen = expanded === v.id;
+          const relatedOpps = v.relatedOpportunityIds
+            .map((id) => CSC_OPPORTUNITIES.find((o) => o.id === id))
+            .filter(Boolean);
+
           return (
             <div
               key={v.id}
@@ -376,7 +495,13 @@ function CscLibrary() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      {v.capabilities.map((c) => (
+                      <span className="text-xs font-medium px-2 py-0.5 rounded bg-m2-navy text-white">
+                        {v.durationMinutes} min
+                      </span>
+                      <span className="text-xs font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                        {v.category}
+                      </span>
+                      {v.triggerCapabilities.map((c) => (
                         <span
                           key={c}
                           className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600"
@@ -384,20 +509,12 @@ function CscLibrary() {
                           {CSC_CAPABILITY_LABELS[c] || c}
                         </span>
                       ))}
-                      {v.industries?.map((ind) => (
-                        <span
-                          key={ind}
-                          className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 capitalize"
-                        >
-                          {ind.replace(/_/g, " ")}
-                        </span>
-                      ))}
                     </div>
                     <h3 className="text-base font-bold text-slate-900">
                       {v.title}
                     </h3>
-                    <p className="text-sm text-slate-500 mt-0.5 italic">
-                      {v.tagline}
+                    <p className="text-sm text-slate-500 mt-0.5">
+                      {v.description}
                     </p>
                   </div>
                   <Chevron open={isOpen} />
@@ -408,29 +525,53 @@ function CscLibrary() {
                 <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
                   <div>
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                      Narrative
+                      Facilitation Guide
                     </p>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-lg p-4">
-                      {v.narrative}
-                    </p>
+                    <div className="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-slate-50 border border-slate-100 rounded-lg p-4">
+                      {v.facilitationGuide.split("**").map((part, i) =>
+                        i % 2 === 1 ? (
+                          <strong key={i}>{part}</strong>
+                        ) : (
+                          <span key={i}>{part}</span>
+                        )
+                      )}
+                    </div>
                   </div>
 
-                  {v.outcomes && v.outcomes.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <BulletList
-                      title="Outcomes"
-                      items={v.outcomes}
+                      title="Required Inputs / Pre-Work"
+                      items={v.requiredInputs}
+                      bulletClass="text-amber-500"
+                      bullet="*"
+                    />
+                    <BulletList
+                      title="Expected Outputs"
+                      items={v.expectedOutputs}
                       bulletClass="text-green-500"
                       bullet="+"
                     />
-                  )}
+                  </div>
 
-                  {v.prompts && v.prompts.length > 0 && (
-                    <BulletList
-                      title="Discussion Prompts"
-                      items={v.prompts}
-                      bulletClass="text-amber-500"
-                      bullet="?"
-                    />
+                  {relatedOpps.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                        Anchors These Opportunities
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {relatedOpps.map(
+                          (opp) =>
+                            opp && (
+                              <span
+                                key={opp.id}
+                                className="text-xs font-medium px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100"
+                              >
+                                {opp.title}
+                              </span>
+                            )
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
@@ -438,13 +579,100 @@ function CscLibrary() {
           );
         })}
       </div>
+    </>
+  );
+}
 
-      {CSC_VIGNETTES.length === 0 && (
+// Client stories — kept for proof-point recall during pitch.
+function CscClientStoriesList() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  return (
+    <div className="space-y-3">
+      {CSC_CLIENT_STORIES.map((s) => {
+        const isOpen = expanded === s.id;
+        return (
+          <div
+            key={s.id}
+            className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
+            style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
+          >
+            <button
+              type="button"
+              className="w-full text-left px-5 py-4"
+              onClick={() => setExpanded(isOpen ? null : s.id)}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    {s.capabilities.map((c) => (
+                      <span
+                        key={c}
+                        className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600"
+                      >
+                        {CSC_CAPABILITY_LABELS[c] || c}
+                      </span>
+                    ))}
+                    {s.industries?.map((ind) => (
+                      <span
+                        key={ind}
+                        className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 capitalize"
+                      >
+                        {ind.replace(/_/g, " ")}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {s.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 mt-0.5 italic">
+                    {s.tagline}
+                  </p>
+                </div>
+                <Chevron open={isOpen} />
+              </div>
+            </button>
+
+            {isOpen && (
+              <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
+                <div>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    Narrative
+                  </p>
+                  <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-lg p-4">
+                    {s.narrative}
+                  </p>
+                </div>
+
+                {s.outcomes && s.outcomes.length > 0 && (
+                  <BulletList
+                    title="Outcomes"
+                    items={s.outcomes}
+                    bulletClass="text-green-500"
+                    bullet="+"
+                  />
+                )}
+
+                {s.prompts && s.prompts.length > 0 && (
+                  <BulletList
+                    title="Discussion Prompts"
+                    items={s.prompts}
+                    bulletClass="text-amber-500"
+                    bullet="?"
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {CSC_CLIENT_STORIES.length === 0 && (
         <p className="text-sm text-slate-500">
           No CSC stories yet — they&apos;ll appear here as the catalog grows.
         </p>
       )}
-    </>
+    </div>
   );
 }
 

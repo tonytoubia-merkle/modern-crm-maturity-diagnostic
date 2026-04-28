@@ -1,22 +1,55 @@
-import type { CscWorkshopAgenda, CscWorkshopAgendaSection } from "@/lib/csc/types";
+import type {
+  CscWorkshopAgenda,
+  CscWorkshopAgendaSection,
+  CscCapability,
+} from "@/lib/csc/types";
 import { CSC_VIGNETTES } from "@/lib/csc/data/vignettes";
+import { CSC_OPPORTUNITIES } from "@/lib/csc/data/opportunities";
 
 /**
- * CSC workshop agenda builder — scaffold.
+ * CSC workshop agenda builder.
  *
- * Produces a valid CscWorkshopAgenda from a list of triggered opportunity
- * IDs. Today vignettes are empty (awaiting practice input) so this returns
- * a minimal "opening + capability deep-dives + closing" skeleton. Once
- * CSC_VIGNETTES is populated, extend this to mirror the CRM builder's
- * capability-deduped, exclusion-aware selection logic.
+ * Produces a CscWorkshopAgenda from a list of triggered opportunity IDs.
+ * Strategy:
+ *   1. Resolve the capabilities those opportunities live under.
+ *   2. Pull workshop vignettes (CSC_VIGNETTES) whose triggerCapabilities
+ *      intersect with that set, deduped by capability so we don't run
+ *      two strategy_planning vignettes back-to-back.
+ *   3. Format wraps the session in opening + capability deep-dives +
+ *      prioritisation + close, scaling format by section count.
  */
 export function buildCscWorkshopAgenda(
   triggeredOpportunityIds: string[],
   _industry?: string
 ): CscWorkshopAgenda {
-  const count = triggeredOpportunityIds.length;
+  // Resolve target capabilities from the triggered opportunities.
+  const targetCapabilities = new Set<CscCapability>();
+  for (const oppId of triggeredOpportunityIds) {
+    const opp = CSC_OPPORTUNITIES.find((o) => o.id === oppId);
+    if (opp) {
+      for (const cap of opp.capabilities) targetCapabilities.add(cap);
+    }
+  }
+
+  // Match workshop vignettes whose triggerCapabilities intersect with
+  // the target set. Dedupe by primary capability so we don't pile up
+  // multiple sessions in the same area.
+  const seenCapabilities = new Set<CscCapability>();
+  const matched = CSC_VIGNETTES.filter((v) => {
+    const overlap = v.triggerCapabilities.find((c) =>
+      targetCapabilities.has(c)
+    );
+    if (!overlap) return false;
+    if (seenCapabilities.has(overlap)) return false;
+    seenCapabilities.add(overlap);
+    return true;
+  })
+    .slice() // copy before sort
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const deepDiveCount = matched.length;
   const format: CscWorkshopAgenda["format"] =
-    count <= 3 ? "half_day" : count <= 5 ? "full_day" : "two_day";
+    deepDiveCount <= 2 ? "half_day" : deepDiveCount <= 4 ? "full_day" : "two_day";
 
   const sections: CscWorkshopAgendaSection[] = [
     {
@@ -27,27 +60,22 @@ export function buildCscWorkshopAgenda(
     },
   ];
 
-  // Capability deep-dive section — pulls any matching vignettes when present.
-  const matchedVignettes = CSC_VIGNETTES.filter((v) =>
-    v.capabilities.some(() => true)
-  );
-
-  if (matchedVignettes.length > 0) {
+  if (matched.length > 0) {
     sections.push(
-      ...matchedVignettes.slice(0, count).map((v) => ({
+      ...matched.map<CscWorkshopAgendaSection>((v) => ({
         title: v.title,
-        duration: "45 min",
-        description: v.tagline,
+        duration: `${v.durationMinutes} min`,
+        description: v.description,
         vignetteIds: [v.id],
-        facilitationGuide: v.prompts?.join("\n\n"),
+        facilitationGuide: v.facilitationGuide,
       }))
     );
   } else {
     sections.push({
-      title: "Capability deep-dives (placeholder)",
+      title: "Capability deep-dives",
       duration: "60 min",
       description:
-        "Workshop vignettes have not yet been authored. Once CSC practice content is added to lib/csc/data/vignettes.ts the agenda builder will surface matched case studies here.",
+        "No vignettes matched the triggered opportunities. Walk the team through the lowest-scoring capability and discuss target-state behaviors live.",
     });
   }
 
