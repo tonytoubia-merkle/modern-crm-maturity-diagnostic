@@ -58,16 +58,60 @@ export default function AboutPage() {
           <h2 className="text-lg font-bold text-slate-900 mb-4">
             What this product is
           </h2>
-          <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 text-sm text-slate-600 leading-relaxed">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 text-sm text-slate-600 leading-relaxed">
             <p>
-              The Modern CRM Maturity Diagnostic assesses an organization&apos;s
-              CRM capabilities across eight dimensions — Identity, Signals,
-              Decisioning, Engagement, Media Activation, Measurement, Operating
-              Model, and Learning &amp; Optimization — on a 1–5 scale. It
-              produces a maturity stage, a capability heatmap, prioritized
-              transformation opportunities, Salesforce-ready pipeline records,
-              and facilitator-ready workshop materials.
+              The Merkle Maturity Assessment is a Merkle/Dentsu-internal suite
+              of consulting diagnostics that share one workspace, one consultant
+              experience, and one set of scoring, workshop, and export
+              primitives. Each diagnostic in the suite assesses a different
+              practice area on a common 1–5 scale, produces a maturity stage,
+              a capability heatmap, prioritized transformation opportunities,
+              Salesforce-ready pipeline records, and facilitator-ready workshop
+              materials.
             </p>
+
+            <div>
+              <p className="font-semibold text-slate-900 mb-2">
+                Diagnostics in the suite
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
+                    Modern CRM Practice
+                  </p>
+                  <p className="font-semibold text-slate-900 mb-1.5">
+                    Modern CRM Maturity
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Eight capabilities — Identity, Signals, Decisioning,
+                    Engagement, Media Activation, Measurement, Operating Model,
+                    and Learning &amp; Optimization.
+                  </p>
+                </div>
+                <div className="border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
+                    Content Practice
+                  </p>
+                  <p className="font-semibold text-slate-900 mb-1.5">
+                    Content Supply Chain
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Six capabilities — Strategy &amp; Planning, Workflow &amp;
+                    Production, Asset Management &amp; Governance, Distribution
+                    &amp; Activation, Measurement &amp; Insights, and
+                    Intelligence &amp; Automation.
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-2">
+                Each diagnostic owns its own questions, scoring model,
+                opportunity catalog, and admin scope — but inherits the same
+                shell, branding (M2 internal / Merkle artifact),
+                survey/aggregation engine, conversational and PPTX/PDF exports.
+                Additional diagnostics will be added to the suite over time.
+              </p>
+            </div>
+
             <div>
               <p className="font-semibold text-slate-900 mb-1.5">
                 Who it&apos;s for
@@ -75,16 +119,17 @@ export default function AboutPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   <span className="font-medium text-slate-800">
-                    Merkle strategists and consultants
+                    Merkle/Dentsu strategists and consultants
                   </span>{" "}
                   running client discovery, pursuits, and transformation
-                  roadmaps.
+                  roadmaps across CRM and Content engagements.
                 </li>
                 <li>
                   <span className="font-medium text-slate-800">
                     Merkle sellers
                   </span>{" "}
-                  qualifying accounts and framing Salesforce opportunities.
+                  qualifying accounts and framing Salesforce opportunities for
+                  either practice.
                 </li>
                 <li>
                   <span className="font-medium text-slate-800">
@@ -95,16 +140,18 @@ export default function AboutPage() {
                 </li>
               </ul>
             </div>
+
             <div>
               <p className="font-semibold text-slate-900 mb-1.5">Intended use</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   Workshop projects with multi-stakeholder surveys, aggregation,
-                  and facilitation guides.
+                  and facilitation guides — available for both Modern CRM and
+                  Content Supply Chain.
                 </li>
                 <li>
                   Quick assessments — a single consultant or seller completing
-                  a 30-question diagnostic solo.
+                  a diagnostic solo for either practice.
                 </li>
                 <li>
                   Conversational assessments — voice- or chat-driven interviews
@@ -275,7 +322,8 @@ export default function AboutPage() {
             </ul>
             <p className="text-xs text-slate-400 mt-4">
               Questions about appropriate use, data handling, or client consent
-              — contact the Merkle CRM Practice lead before proceeding.
+              — contact the relevant practice lead (Modern CRM or Content)
+              before proceeding.
             </p>
           </div>
         </section>
