@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CscChatView } from "@/components/csc/chat/CscChatView";
+import { CscVoiceChat } from "@/components/csc/chat/CscVoiceChat";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { CSC_INDUSTRY_LABELS } from "@/lib/csc/data/questions";
@@ -78,7 +78,7 @@ export default function CscChatAssessmentPage() {
         </div>
 
         <div className="flex-1 min-h-0">
-          <CscChatView
+          <CscVoiceChat
             assessmentId={assessmentId}
             shareId={shareId}
             clientName={clientName}

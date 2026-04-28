@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChatView } from "@/components/chat/ChatView";
+import { VoiceChat } from "@/components/chat/VoiceChat";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
@@ -63,7 +63,7 @@ export default function ChatAssessmentPage() {
         </div>
 
         <div className="flex-1 min-h-0">
-          <ChatView
+          <VoiceChat
             assessmentId={assessmentId}
             shareId={shareId}
             clientName={clientName}
