@@ -5,6 +5,9 @@ import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 
 const config: BrandConfig = {
   source: "marketing",
+  // Marketing landing stays CRM-only by request; remove this line to
+  // also offer CSC behind a picker.
+  diagnostics: ["crm"],
   navBg: "#1a1a1a",
   navLogo: (
     // eslint-disable-next-line @next/next/no-img-element

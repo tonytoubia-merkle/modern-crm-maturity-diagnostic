@@ -52,10 +52,10 @@ const config: BrandConfig = {
     </>
   ),
   subheadline:
-    "How mature is your CRM? Have a quick conversation with our AI consultant and discover where your organization stands across identity, engagement, decisioning, and more — powered by dentsu.",
+    "How mature is your customer experience? Pick a diagnostic — an AI-led CRM conversation, or a guided Content Supply Chain survey — and discover where your organization stands. Powered by dentsu.",
   steps: [
-    { n: "01", text: "Tell us about your CRM in your own words" },
-    { n: "02", text: "AI maps your maturity across 8 dimensions" },
+    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "02", text: "Get scored across the practice's capability areas" },
     { n: "03", text: "See how you compare to industry benchmarks" },
   ],
   footerLogo: (

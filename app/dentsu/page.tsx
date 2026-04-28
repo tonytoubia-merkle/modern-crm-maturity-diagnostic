@@ -51,10 +51,10 @@ const config: BrandConfig = {
     </>
   ),
   subheadline:
-    "A 10-minute AI-led conversation that benchmarks your CRM across identity, engagement, decisioning, and more. Built by Merkle, the customer experience practice of dentsu — and grounded in real client engagements.",
+    "Pick a diagnostic to take in the next 10–15 minutes — an AI-led conversation about your CRM, or a guided Content Supply Chain survey. Built by Merkle, the customer experience practice of dentsu, and grounded in real client engagements.",
   steps: [
-    { n: "01", text: "Describe your CRM in your own words" },
-    { n: "02", text: "AI maps maturity across 8 capability areas" },
+    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "02", text: "AI or guided survey maps your capability scores" },
     { n: "03", text: "Receive a benchmark and an opportunity map" },
   ],
   footerLogo: (

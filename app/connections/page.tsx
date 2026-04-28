@@ -66,10 +66,10 @@ const config: BrandConfig = {
     </>
   ),
   subheadline:
-    "Discover your CRM maturity in a 10-minute conversation. Our AI consultant assesses your capabilities across identity, engagement, decisioning, and more — and shows you exactly where the biggest opportunities are.",
+    "Two ways to size up where you stand. Take an AI-led conversation about your CRM, or run our guided Content Supply Chain survey. Either way, you walk away with a maturity score, an opportunity map, and how you compare to industry benchmarks.",
   steps: [
-    { n: "01", text: "Have a conversation about your CRM" },
-    { n: "02", text: "Get scored across 8 capability areas" },
+    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "02", text: "Get scored across the practice's capability areas" },
     { n: "03", text: "See opportunities and benchmarks" },
   ],
   footerLogo: (
