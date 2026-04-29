@@ -157,6 +157,18 @@ export function CscChatView({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Ref-track the streaming callbacks so sendMessage's closure always
+  // sees the latest handler. See ChatView for the full reasoning — same
+  // first-message-not-spoken bug applies here.
+  const onAssistantSentenceRef = useRef(onAssistantSentence);
+  const onAssistantCompleteRef = useRef(onAssistantComplete);
+  useEffect(() => {
+    onAssistantSentenceRef.current = onAssistantSentence;
+  }, [onAssistantSentence]);
+  useEffect(() => {
+    onAssistantCompleteRef.current = onAssistantComplete;
+  }, [onAssistantComplete]);
+
   const totalQuestions = getCscTotalQuestionCount(industry);
   const phase = calculateCscPhase(scores, skipped, totalQuestions);
   const allCovered = scores.size + skipped.size >= totalQuestions;
@@ -263,12 +275,16 @@ export function CscChatView({
                   )
                 );
 
-                if (onAssistantSentence && displayContent) {
+                // Pipe complete sentences to TTS via ref so the latest
+                // handler is always used (see comment on
+                // onAssistantSentenceRef above).
+                const sentenceHandler = onAssistantSentenceRef.current;
+                if (sentenceHandler && displayContent) {
                   const sentences = displayContent
                     .split(/(?<=[.!?])\s+/)
                     .filter((s: string) => s.trim().length > 5);
                   while (sentencesSpoken < sentences.length - 1) {
-                    onAssistantSentence(sentences[sentencesSpoken]);
+                    sentenceHandler(sentences[sentencesSpoken]);
                     sentencesSpoken++;
                   }
                 }
@@ -288,18 +304,20 @@ export function CscChatView({
           )
         );
 
-        if (onAssistantSentence && displayContent) {
+        const finalSentenceHandler = onAssistantSentenceRef.current;
+        if (finalSentenceHandler && displayContent) {
           const sentences = displayContent
             .split(/(?<=[.!?])\s+/)
             .filter((s: string) => s.trim().length > 5);
           while (sentencesSpoken < sentences.length) {
-            onAssistantSentence(sentences[sentencesSpoken]);
+            finalSentenceHandler(sentences[sentencesSpoken]);
             sentencesSpoken++;
           }
         }
 
-        if (onAssistantComplete && displayContent) {
-          onAssistantComplete(displayContent);
+        const completeHandler = onAssistantCompleteRef.current;
+        if (completeHandler && displayContent) {
+          completeHandler(displayContent);
         }
 
         if (scoreUpdate) {

@@ -257,13 +257,45 @@ export function useVoice(options: UseVoiceOptions = {}) {
     }
 
     const text = finalTranscriptRef.current.trim();
-    setState("processing");
     setCountdown(1);
     setInterimText("");
 
     if (text && onComplete) {
+      setState("processing");
       onComplete(text);
+      return;
     }
+
+    // Empty transcript — the user tapped Send (or the orb) without
+    // anything captured. Don't spin forever; play a brief reprompt
+    // and re-open the mic. processQueue auto-restarts listening once
+    // playback finishes, so we just drop into that path.
+    // Note: startListening, processQueue, and fetchTtsWithRetry are
+    // declared later in this hook. We capture them via closure rather
+    // than including them in the deps array — putting them in deps would
+    // TDZ-fire when useCallback evaluates the array during render. By
+    // the time stopAndSend is actually invoked (button click / timer),
+    // those identifiers have been bound, so the closure resolves fine.
+    if (repromptingRef.current) {
+      setState("inactive");
+      startListening();
+      return;
+    }
+    repromptingRef.current = true;
+    setState("speaking");
+    cancelledRef.current = false;
+    const promptText =
+      "I didn't quite catch that — could you say that again?";
+    audioQueueRef.current = [
+      {
+        sentence: promptText,
+        audio: fetchTtsWithRetry(promptText),
+      },
+    ];
+    processQueue().finally(() => {
+      repromptingRef.current = false;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onComplete]);
 
   const stopListening = useCallback(() => {
@@ -290,9 +322,18 @@ export function useVoice(options: UseVoiceOptions = {}) {
     setState("listening");
   }, []);
 
-  const audioQueueRef = useRef<string[]>([]);
+  // Pipelined TTS queue. Each item is the raw sentence and a Promise
+  // that resolves to its base64 audio. Pushing a sentence kicks off its
+  // fetch immediately, so by the time the player is ready for it the
+  // network round-trip is usually already done.
+  const audioQueueRef = useRef<
+    Array<{ sentence: string; audio: Promise<string | null> }>
+  >([]);
   const playingRef = useRef(false);
   const cancelledRef = useRef(false);
+  // Tracks the most recent "didn't catch that" reprompt so we can
+  // avoid stacking them if the user repeatedly taps with no transcript.
+  const repromptingRef = useRef(false);
 
   // Ensure we have an active mic stream + analyser for barge-in detection.
   // Returns true if VAD is available, false if mic permission fails.
@@ -448,8 +489,11 @@ export function useVoice(options: UseVoiceOptions = {}) {
     }
 
     while (audioQueueRef.current.length > 0 && !cancelledRef.current) {
-      const sentence = audioQueueRef.current.shift()!;
-      const audio = await fetchTtsWithRetry(sentence);
+      const item = audioQueueRef.current.shift()!;
+      // Audio fetch was already kicked off when this sentence was
+      // queued, so this await usually returns near-instantly. Anything
+      // we wait on here happens in parallel with the previous play.
+      const audio = await item.audio;
       if (!audio || cancelledRef.current) continue;
       try {
         await playPcmAudio(audio);
@@ -495,11 +539,19 @@ export function useVoice(options: UseVoiceOptions = {}) {
     if (sentences.length === 0) return;
 
     setState("speaking");
-    audioQueueRef.current = sentences;
+    // Kick off all TTS fetches in parallel. They'll resolve in order
+    // when processQueue awaits them.
+    audioQueueRef.current = sentences.map((sentence) => ({
+      sentence,
+      audio: fetchTtsWithRetry(sentence),
+    }));
     processQueue();
-  }, [processQueue]);
+  }, [processQueue, fetchTtsWithRetry]);
 
-  // Queue a single sentence for TTS (called during streaming)
+  // Queue a single sentence for TTS (called during streaming).
+  // Kicks off the TTS fetch immediately so the audio is ready by the
+  // time the player gets to it — that's what closes the gap between
+  // text appearing and TTS playing.
   const queueSentence = useCallback((sentence: string) => {
     const clean = sentence.replace(/\*\*([^*]+)\*\*/g, "$1").replace(/<[^>]+>/g, "").trim();
     if (clean.length < 5) return;
@@ -516,9 +568,12 @@ export function useVoice(options: UseVoiceOptions = {}) {
       setState("speaking");
     }
 
-    audioQueueRef.current.push(clean);
+    audioQueueRef.current.push({
+      sentence: clean,
+      audio: fetchTtsWithRetry(clean), // fire fetch now, await later
+    });
     if (!playingRef.current) processQueue();
-  }, [processQueue]);
+  }, [processQueue, fetchTtsWithRetry]);
 
   const cancelSpeech = useCallback(() => {
     cancelledRef.current = true;

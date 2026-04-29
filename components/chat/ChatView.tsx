@@ -131,6 +131,21 @@ export function ChatView({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Ref-track the streaming callbacks so sendMessage's closure always
+  // sees the latest handler. This matters for the auto-start path:
+  // ChatView's mount useEffect fires before VoiceChat's voice.isSupported
+  // useEffect, so on the very first call onAssistantSentence is still
+  // undefined. Without this ref the first agent message never gets piped
+  // to TTS — the cached sendMessage closure stays stale.
+  const onAssistantSentenceRef = useRef(onAssistantSentence);
+  const onAssistantCompleteRef = useRef(onAssistantComplete);
+  useEffect(() => {
+    onAssistantSentenceRef.current = onAssistantSentence;
+  }, [onAssistantSentence]);
+  useEffect(() => {
+    onAssistantCompleteRef.current = onAssistantComplete;
+  }, [onAssistantComplete]);
+
   const totalQuestions = getTotalQuestionCount(industry);
   const phase = calculatePhase(scores, skipped, totalQuestions);
   const allCovered = scores.size + skipped.size >= totalQuestions;
@@ -245,12 +260,15 @@ export function ChatView({
                 )
               );
 
-              // Pipe complete sentences to TTS during streaming
-              if (onAssistantSentence && displayContent) {
+              // Pipe complete sentences to TTS during streaming.
+              // Read via ref so the latest handler is always used —
+              // see the comment on onAssistantSentenceRef above.
+              const sentenceHandler = onAssistantSentenceRef.current;
+              if (sentenceHandler && displayContent) {
                 const sentences = displayContent.split(/(?<=[.!?])\s+/).filter((s: string) => s.trim().length > 5);
                 while (sentencesSpoken < sentences.length - 1) {
                   // Only send sentences that are complete (not the last one which may be partial)
-                  onAssistantSentence(sentences[sentencesSpoken]);
+                  sentenceHandler(sentences[sentencesSpoken]);
                   sentencesSpoken++;
                 }
               }
@@ -271,18 +289,20 @@ export function ChatView({
         )
       );
 
-      // Send any remaining sentences to TTS
-      if (onAssistantSentence && displayContent) {
+      // Send any remaining sentences to TTS (via ref — see comment above)
+      const finalSentenceHandler = onAssistantSentenceRef.current;
+      if (finalSentenceHandler && displayContent) {
         const sentences = displayContent.split(/(?<=[.!?])\s+/).filter((s: string) => s.trim().length > 5);
         while (sentencesSpoken < sentences.length) {
-          onAssistantSentence(sentences[sentencesSpoken]);
+          finalSentenceHandler(sentences[sentencesSpoken]);
           sentencesSpoken++;
         }
       }
 
-      // Notify parent
-      if (onAssistantComplete && displayContent) {
-        onAssistantComplete(displayContent);
+      // Notify parent (via ref so the latest handler always wins)
+      const completeHandler = onAssistantCompleteRef.current;
+      if (completeHandler && displayContent) {
+        completeHandler(displayContent);
       }
 
       // Process score updates
