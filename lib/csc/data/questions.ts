@@ -203,10 +203,10 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 18,
-    text: "To what extent is content localization managed dynamically — with AI predicting needs and generating culturally resonant content?",
+    text: "To what extent is content localization or market/audience variant production managed dynamically — with AI predicting needs and generating culturally and contextually resonant content (or, for single-market businesses, audience- and segment-specific variants)?",
     capability: "workflow_production",
     tooltip:
-      "Optimized: AI predicts localization needs and auto-generates culturally resonant content across markets.",
+      "Optimized: AI predicts localization or audience-variant needs and auto-generates resonant content across markets, regions, or audience segments. Applies whether the business operates internationally or in a single market with multiple audience or regional variants.",
   },
 
   // ── Asset Management & Governance (9) ─────────────────────────────

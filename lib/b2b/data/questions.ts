@@ -188,17 +188,17 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
   },
   {
     id: 15,
-    text: "To what extent is the quote-to-cash motion modernised with AI-powered configure-price-quote (CPQ) and contracting — rather than manual quoting and legacy CPQ?",
+    text: "To what extent is the quote-to-cash (or proposal-to-contract) motion modernised with AI-powered configuration, pricing, and contracting — rather than manual quoting, legacy CPQ, or freehand proposal documents?",
     capability: "abs",
     tooltip:
-      "Optimized: a Revenue Cloud (or equivalent) deployment runs CPQ + billing on a single platform with AI-assisted configuration and self-service quoting.",
+      "Optimized: a unified revenue platform runs CPQ + billing for product-led businesses, or AI-assisted proposal / SOW / engagement contracting for services-led businesses, with shared pricing and approval governance.",
   },
   {
     id: 16,
-    text: "To what extent are deal review and forecasting driven by structured signals (engagement, MEDDIC fields, AI risk scoring) — rather than rep gut?",
+    text: "To what extent are deal review and forecasting driven by structured signals (engagement, qualification fields such as MEDDIC / MEDDPICC / BANT, AI risk scoring) — rather than rep gut?",
     capability: "abs",
     tooltip:
-      "Optimized: deal hygiene is enforced; AI surfaces deal risk, deal-slippage prediction, and recommended interventions to managers in real time.",
+      "Optimized: deal hygiene is enforced through whichever B2B qualification framework fits the practice (MEDDIC, MEDDPICC, BANT, Miller-Heiman, etc.); AI surfaces deal risk, slippage prediction, and recommended interventions to managers in real time.",
   },
   {
     id: 17,
@@ -239,10 +239,10 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
   },
   {
     id: 22,
-    text: "To what extent are renewals managed proactively with structured plays, multi-quarter coverage, and renewal-risk scoring — rather than scrambled as the contract date approaches?",
+    text: "To what extent are renewals, contract extensions, or re-purchase cycles managed proactively with structured plays, multi-quarter coverage, and risk scoring — rather than scrambled as the renewal / extension / next-engagement window approaches?",
     capability: "service_advocacy",
     tooltip:
-      "Optimized: renewals are scoped 12+ months out, scored for risk, multi-threaded across the buying group, and supported by AI-generated value summaries.",
+      "Optimized: renewals (SaaS), contract extensions (manufacturing / industrial / services), and re-purchase cycles are scoped 12+ months out, scored for risk, multi-threaded across the buying group, and supported by AI-generated value summaries.",
   },
   {
     id: 23,
@@ -253,26 +253,26 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
   },
   {
     id: 24,
-    text: "To what extent is field service / on-site service operations connected back to the account record — feeding signals into expansion, retention, and product roadmaps?",
+    text: "To what extent are in-person customer touchpoints — field service, on-site delivery, customer success engagements, or professional services work — connected back to the account record and feeding signals into expansion, retention, and product / service roadmaps?",
     capability: "service_advocacy",
     tooltip:
-      "Optimized: field service work orders, parts usage, and customer feedback feed the account record live; product, sales, and service share the same view.",
+      "Optimized: field service work orders, on-site delivery notes, customer success activity, and professional services engagement data feed the account record live; product, sales, and service share the same view (whether the work is physical, digital, or advisory).",
   },
 
   // ── Account-Based Operations & Commerce (6) ──────────────────────
   {
     id: 25,
-    text: "To what extent is the order-to-fulfillment process orchestrated end-to-end (OMS, inventory, shipping, billing) — rather than handled by disconnected systems and manual handoffs?",
+    text: "To what extent is the order-to-fulfillment process — OMS, inventory, shipping, and billing for goods, or engagement / project / service-fulfillment systems for services — orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
     capability: "operations_commerce",
     tooltip:
-      "Optimized: an AI-orchestrated OMS routes orders across channels, optimizes inventory and fulfillment, and gives customers real-time visibility.",
+      "Optimized: an AI-orchestrated platform routes orders or engagements across channels, optimises fulfillment (inventory and shipping for goods; staffing, scheduling, and delivery milestones for services), and gives customers real-time visibility into status.",
   },
   {
     id: 26,
-    text: "To what extent does B2B commerce offer customers a true self-service experience — account-pricing, configurations, repeat ordering, marketplace — rather than rep-mediated transactions?",
+    text: "To what extent do customers have a true self-service experience — account-pricing, configurations, repeat ordering, or marketplace for product-led businesses; account portal, status visibility, or partner self-service for services-led businesses — rather than every routine transaction needing a rep?",
     capability: "operations_commerce",
     tooltip:
-      "Optimized: 50%+ of revenue runs through self-service / marketplace; reps focus on consultative, complex, or strategic deals.",
+      "Optimized: routine transactions and information requests run through self-service (commerce / marketplace for goods; account portal, KYC-style flows, statement / engagement self-service for services); reps focus on consultative, complex, or strategic conversations.",
   },
   {
     id: 27,
@@ -283,10 +283,10 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
   },
   {
     id: 28,
-    text: "To what extent is supply chain visibility shared with customers — proactive shipment and exception alerts, real-time inventory, lead-time accuracy?",
+    text: "To what extent is real-time delivery / status visibility shared with customers — for goods this is shipment tracking, exception alerts, and inventory / lead-time accuracy; for services it is engagement / project status, milestone progress, and proactive issue alerts?",
     capability: "operations_commerce",
     tooltip:
-      "Optimized: customers see live order status, predicted delivery, and proactive exception notices through a connected portal and APIs.",
+      "Optimized: customers see live status — order / shipment / inventory for goods, or project / engagement / milestone / case status for services — plus proactive exception or risk alerts through a connected portal and APIs.",
   },
   {
     id: 29,
@@ -320,10 +320,10 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
   },
   {
     id: 33,
-    text: "To what extent is product, pricing, and contract data clean, structured, and AI-ready — rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+    text: "To what extent is the canonical sales-relevant data — product / service catalog, pricing, contract / SOW / proposal IP — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, partner laptops, and tribal knowledge?",
     capability: "tech_data_intelligence",
     tooltip:
-      "Optimized: PIM, CPQ, and CLM systems hold canonical product/pricing/contract data; AI agents read and write from these systems within governance.",
+      "Optimized: structured systems of record hold canonical pricing and contract data — PIM + CPQ + CLM for product-led businesses, service catalog + proposal IP repository + engagement IP for services-led businesses; AI agents read and write from these systems within governance.",
   },
   {
     id: 34,
