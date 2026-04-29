@@ -44,8 +44,8 @@ export default function AboutPage() {
             Merkle Maturity Assessment
           </h1>
           <p className="text-sm text-white/70 leading-relaxed max-w-2xl">
-            A Merkle-internal consulting workspace for diagnosing client CRM
-            and Content Supply Chain maturity, generating transformation
+            A Merkle-internal consulting workspace for diagnosing client CRM,
+            Content Supply Chain, and B2B Transformation maturity, generating
             opportunities, and running structured workshop engagements — from
             first conversation to Salesforce pipeline.
           </p>
@@ -74,7 +74,7 @@ export default function AboutPage() {
               <p className="font-semibold text-slate-900 mb-2">
                 Diagnostics in the suite
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="border border-slate-200 rounded-lg p-4">
                   <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
                     Modern CRM Practice
@@ -100,6 +100,20 @@ export default function AboutPage() {
                     Production, Asset Management &amp; Governance, Distribution
                     &amp; Activation, Measurement &amp; Insights, and
                     Intelligence &amp; Automation.
+                  </p>
+                </div>
+                <div className="border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
+                    B2B Transformation Practice
+                  </p>
+                  <p className="font-semibold text-slate-900 mb-1.5">
+                    B2B Transformation
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Six capabilities — Vision &amp; Operating Model,
+                    Account-Based Marketing, Account-Based Selling,
+                    Account-Based Service &amp; Advocacy, Account-Based
+                    Operations &amp; Commerce, and Tech, Data &amp; Intelligence.
                   </p>
                 </div>
               </div>
@@ -146,8 +160,8 @@ export default function AboutPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   Workshop projects with multi-stakeholder surveys, aggregation,
-                  and facilitation guides — available for both Modern CRM and
-                  Content Supply Chain.
+                  and facilitation guides — available for Modern CRM, Content
+                  Supply Chain, and B2B Transformation.
                 </li>
                 <li>
                   Quick assessments — a single consultant or seller completing

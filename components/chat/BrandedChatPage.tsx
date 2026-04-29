@@ -3,28 +3,25 @@
 import { useState } from "react";
 import { VoiceChat } from "./VoiceChat";
 import { CscVoiceChat } from "@/components/csc/chat/CscVoiceChat";
+import { B2bVoiceChat } from "@/components/b2b/chat/B2bVoiceChat";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import { CSC_INDUSTRY_LABELS } from "@/lib/csc/data/questions";
+import { B2B_INDUSTRY_LABELS } from "@/lib/b2b/data/questions";
 import type { Industry } from "@/lib/types";
 import type { CscIndustry } from "@/lib/csc/types";
+import type { B2bIndustry } from "@/lib/b2b/types";
 
 /**
  * BrandedChatPage powers /connections, /dentsu, /cannes, /marketing.
  *
- * Each landing page passes a `BrandConfig` describing nav, hero, palette,
- * and source tag. The page itself runs a small state machine:
+ * State machine: intro → choose → setup → chat (in-page voice for
+ * whichever diagnostic the user selected).
  *
- *   intro  → choose  → setup  →  chat (CRM)         (in-page voice)
- *                              \→  redirect (CSC)   (manual survey)
- *
- * If `diagnostics` lists both "crm" and "csc" (default), the user picks
- * one on the intro screen. If only one is listed, the picker is skipped
- * and the page goes straight from intro → setup. CRM today is the only
- * diagnostic with a conversational/voice flow; CSC routes the user to
- * the standard CSC manual assessment with the source tag preserved.
+ * If `diagnostics` lists multiple, the picker shows on the intro
+ * screen. If only one is listed, the picker is skipped.
  */
 
-type Diagnostic = "crm" | "csc";
+type Diagnostic = "crm" | "csc" | "b2b";
 
 export interface BrandConfig {
   source: string;
@@ -42,12 +39,12 @@ export interface BrandConfig {
   footerText: string;
   bodyBg: string;
   extraHero?: React.ReactNode;
-  /** Which diagnostics this surface offers. Defaults to ["crm", "csc"]. */
+  /** Which diagnostics this surface offers. Defaults to ["crm", "csc", "b2b"]. */
   diagnostics?: Diagnostic[];
 }
 
 export function BrandedChatPage({ config }: { config: BrandConfig }) {
-  const offered: Diagnostic[] = config.diagnostics ?? ["crm", "csc"];
+  const offered: Diagnostic[] = config.diagnostics ?? ["crm", "csc", "b2b"];
 
   const [step, setStep] = useState<"intro" | "choose" | "setup" | "chat">(
     "intro"
@@ -59,6 +56,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
   const [respondentName, setRespondentName] = useState("");
   const [crmIndustry, setCrmIndustry] = useState<Industry | "none" | "">("");
   const [cscIndustry, setCscIndustry] = useState<CscIndustry | "none" | "">("");
+  const [b2bIndustry, setB2bIndustry] = useState<B2bIndustry | "none" | "">("");
   const [loading, setLoading] = useState(false);
 
   const goToSetup = (d: Diagnostic) => {
@@ -93,7 +91,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         setAssessmentId(data.id);
         setShareId(data.shareId);
         setStep("chat");
-      } else {
+      } else if (diagnostic === "csc") {
         // CSC voice flow — create the assessment with the source tag,
         // then drop into the in-page CscVoiceChat (mirrors the CRM path).
         const resolvedIndustry =
@@ -105,6 +103,30 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             clientName: orgName.trim(),
             clientCompany: resolvedIndustry
               ? CSC_INDUSTRY_LABELS[resolvedIndustry] || ""
+              : "",
+            respondentName: respondentName.trim() || "Participant",
+            repEmail: "",
+            isRepMode: false,
+            industry: resolvedIndustry,
+            source: config.source,
+          }),
+        });
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        setAssessmentId(data.id);
+        setShareId(data.shareId);
+        setStep("chat");
+      } else {
+        // B2B voice flow — same shape, against the B2B endpoint.
+        const resolvedIndustry =
+          b2bIndustry === "none" || b2bIndustry === "" ? null : b2bIndustry;
+        const res = await fetch("/api/b2b/assessments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: orgName.trim(),
+            clientCompany: resolvedIndustry
+              ? B2B_INDUSTRY_LABELS[resolvedIndustry] || ""
               : "",
             respondentName: respondentName.trim() || "Participant",
             repEmail: "",
@@ -138,7 +160,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             )}
           </div>
         </div>
-        {diagnostic === "crm" ? (
+        {diagnostic === "crm" && (
           <VoiceChat
             assessmentId={assessmentId}
             shareId={shareId}
@@ -151,7 +173,8 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             }
             clientFacing
           />
-        ) : (
+        )}
+        {diagnostic === "csc" && (
           <CscVoiceChat
             assessmentId={assessmentId}
             shareId={shareId}
@@ -161,6 +184,20 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
               cscIndustry === "none" || cscIndustry === ""
                 ? null
                 : (cscIndustry as CscIndustry)
+            }
+            clientFacing
+          />
+        )}
+        {diagnostic === "b2b" && (
+          <B2bVoiceChat
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={orgName}
+            respondentName={respondentName || "Participant"}
+            industry={
+              b2bIndustry === "none" || b2bIndustry === ""
+                ? null
+                : (b2bIndustry as B2bIndustry)
             }
             clientFacing
           />
@@ -255,7 +292,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             other.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {offered.includes("crm") && (
               <DiagnosticCard
                 eyebrow="Modern CRM Practice"
@@ -273,10 +310,22 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
                 eyebrow="Content Practice"
                 title="Content Supply Chain"
                 pace="~12 min · voice conversation"
-                description="An AI consultant has a natural conversation with you about content strategy, production workflow, asset governance, distribution, measurement, and how AI is starting to fit in. Scores are inferred from what you say."
+                description="An AI consultant has a natural conversation with you about content strategy, production workflow, asset governance, distribution, measurement, and how AI is starting to fit in."
                 cta="Start CSC conversation"
                 config={config}
                 onClick={() => goToSetup("csc")}
+                badge="Voice"
+              />
+            )}
+            {offered.includes("b2b") && (
+              <DiagnosticCard
+                eyebrow="B2B Transformation Practice"
+                title="B2B Transformation"
+                pace="~15 min · voice conversation"
+                description="An AI consultant has a natural conversation with you about your account-based motion — vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation behind it."
+                cta="Start B2B conversation"
+                config={config}
+                onClick={() => goToSetup("b2b")}
                 badge="Voice"
               />
             )}
@@ -287,24 +336,33 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
   }
 
   // ── Setup ─────────────────────────────────────────────────────
-  const isCrm = diagnostic === "crm";
-  const setupTitle = isCrm ? "Quick setup" : "Quick setup";
-  const setupBlurb = isCrm
-    ? "A couple of details before we begin the conversation."
-    : "A couple of details before we begin the conversation.";
-  const ctaLabel = isCrm ? "Start Conversation" : "Start Conversation";
-  const industryEntries = isCrm
-    ? (Object.entries(INDUSTRY_LABELS) as [string, string][])
-    : (Object.entries(CSC_INDUSTRY_LABELS) as [string, string][]);
-  const selectedIndustry: string = isCrm ? crmIndustry : cscIndustry;
+  const setupTitle = "Quick setup";
+  const setupBlurb = "A couple of details before we begin the conversation.";
+  const ctaLabel = "Start Conversation";
+  const industryEntries =
+    diagnostic === "crm"
+      ? (Object.entries(INDUSTRY_LABELS) as [string, string][])
+      : diagnostic === "csc"
+      ? (Object.entries(CSC_INDUSTRY_LABELS) as [string, string][])
+      : (Object.entries(B2B_INDUSTRY_LABELS) as [string, string][]);
+  const selectedIndustry: string =
+    diagnostic === "crm"
+      ? crmIndustry
+      : diagnostic === "csc"
+      ? cscIndustry
+      : b2bIndustry;
   const setIndustry = (key: string) => {
-    if (isCrm) {
+    if (diagnostic === "crm") {
       setCrmIndustry(
         crmIndustry === key ? "" : (key as Industry | "none" | "")
       );
-    } else {
+    } else if (diagnostic === "csc") {
       setCscIndustry(
         cscIndustry === key ? "" : (key as CscIndustry | "none" | "")
+      );
+    } else {
+      setB2bIndustry(
+        b2bIndustry === key ? "" : (key as B2bIndustry | "none" | "")
       );
     }
   };
@@ -334,7 +392,11 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
           </h2>
           <p className="text-sm font-light mb-1 text-slate-500">{setupBlurb}</p>
           <p className="text-[11px] font-medium uppercase tracking-wider mb-4" style={{ color: config.accentColor }}>
-            {isCrm ? "Modern CRM" : "Content Supply Chain"}
+            {diagnostic === "crm"
+              ? "Modern CRM"
+              : diagnostic === "csc"
+              ? "Content Supply Chain"
+              : "B2B Transformation"}
           </p>
 
           <div className="space-y-4">

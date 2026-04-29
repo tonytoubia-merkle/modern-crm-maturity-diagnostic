@@ -114,7 +114,7 @@ export default function ChooserHome() {
       </section>
 
       <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <ChooserCard
             href="/crm"
             eyebrow="Modern CRM Practice"
@@ -128,6 +128,13 @@ export default function ChooserHome() {
             title="Content Supply Chain"
             description="Assess CSC maturity across six capabilities — strategy, workflow, asset governance, distribution, measurement, and AI. Run single respondents or multi-stakeholder workshops."
             ctaLabel="Open Content Supply Chain"
+          />
+          <ChooserCard
+            href="/b2b"
+            eyebrow="B2B Transformation Practice"
+            title="B2B Transformation"
+            description="Assess account-based maturity across vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation. Grounded in the 2025 Account-Based Everything framework."
+            ctaLabel="Open B2B Transformation"
           />
         </div>
       </div>

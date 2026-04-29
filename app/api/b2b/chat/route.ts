@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 
 /**
  * POST /api/b2b/chat — streaming Gemini chat for the B2B Transformation
- * conversational diagnostic. Mirrors /api/chat and /api/csc/chat.
+ * conversational diagnostic. Mirrors /api/chat and /api/b2b/chat.
  */
 export async function POST(request: NextRequest) {
   try {

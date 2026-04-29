@@ -12,8 +12,10 @@ const PUBLIC_ROUTES = [
 const PUBLIC_PREFIXES = [
   "/survey/",           // CRM stakeholder survey links
   "/csc/survey/",       // CSC stakeholder survey links
+  "/b2b/survey/",       // B2B stakeholder survey links
   "/results/",          // shareable CRM results pages
   "/csc/results/",      // shareable CSC results pages
+  "/b2b/results/",      // shareable B2B results pages
   "/api/",              // all API routes (they use service role key server-side)
 ];
 
