@@ -5,7 +5,7 @@ import { createServerClient } from "@/lib/supabase/server";
 export type AppRole = "user" | "super_admin";
 
 /** Product areas that can be independently admin-scoped. */
-export type AdminScope = "crm" | "csc";
+export type AdminScope = "crm" | "csc" | "b2b";
 
 export interface AdminAccess {
   /** role = 'super_admin' — grants access to all current and future scopes. */
@@ -55,7 +55,9 @@ export async function getAdminAccess(): Promise<AdminAccess> {
   const role = (data?.role as AppRole | undefined) ?? "user";
   const raw = Array.isArray(data?.admin_scopes) ? (data!.admin_scopes as string[]) : [];
   const scopes = new Set<AdminScope>(
-    raw.filter((s): s is AdminScope => s === "crm" || s === "csc")
+    raw.filter(
+      (s): s is AdminScope => s === "crm" || s === "csc" || s === "b2b"
+    )
   );
   return { isSuperAdmin: role === "super_admin", scopes, email };
 }
