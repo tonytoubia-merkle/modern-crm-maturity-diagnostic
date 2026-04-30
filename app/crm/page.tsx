@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { M2Logo } from "@/components/brand/M2Logo";
+import { DiagnosticHeader } from "@/components/nav/DiagnosticHeader";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -92,7 +92,6 @@ function buildTree(projects: ProjectRaw[], assessments: AssessmentRaw[]): Row[] 
 
 export default function HomePage() {
   const [user, setUser] = useState<{ email?: string; name?: string } | null>(null);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [mine, setMine] = useState<Row[]>([]);
   const [all, setAll] = useState<Row[] | null>(null);
   const [scope, setScope] = useState<Scope>("mine");
@@ -148,58 +147,9 @@ export default function HomePage() {
     window.location.href = "/login";
   };
 
-  const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : "?";
-
   return (
     <div className="min-h-screen font-m2 bg-m2-surface-light">
-      {/* Header */}
-      <header className="bg-m2-navy">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <M2Logo tone="dark" height={44} />
-          <div className="flex items-center gap-5">
-            <a href="/guide" className="text-xs text-white/60 hover:text-white transition-colors">Guide</a>
-            <a href="/library" className="text-xs text-white/60 hover:text-white transition-colors">Library</a>
-            <a href="/badges" className="text-xs text-yellow-400 hover:text-yellow-300 transition-colors">Badges</a>
-            <a href="/csc" className="text-xs text-white/60 hover:text-white transition-colors">CSC Diagnostic</a>
-            <a href="/admin" className="text-xs text-white/60 hover:text-white transition-colors">Admin</a>
-            <a href="/about" className="text-xs text-white/60 hover:text-white transition-colors">About</a>
-
-            {/* Profile bubble */}
-            {user && (
-              <div className="relative">
-                <button
-                  onClick={() => setShowProfileMenu(!showProfileMenu)}
-                  className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-bold text-white hover:bg-white/30 transition-colors"
-                >
-                  {initials}
-                </button>
-                {showProfileMenu && (
-                  <>
-                    <div className="fixed inset-0 z-30" onClick={() => setShowProfileMenu(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 z-40">
-                      <div className="px-4 py-3 border-b border-slate-100">
-                        <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
-                        <p className="text-xs text-slate-400 truncate">{user.email}</p>
-                      </div>
-                      <a href="/badges" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                        Badges
-                      </a>
-                      <button
-                        onClick={handleSignOut}
-                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-lg transition-colors"
-                      >
-                        Sign out
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <DiagnosticHeader current="crm" user={user} onSignOut={handleSignOut} />
 
       {/* Hero */}
       <section className="bg-m2-navy">
