@@ -160,6 +160,17 @@ export interface Vignette {
   sortOrder: number;
 }
 
+export interface ClientStory {
+  id: string;
+  title: string;
+  tagline: string;
+  capabilities: Capability[];
+  narrative: string;
+  outcomes?: string[];
+  industries?: string[];
+  prompts?: string[];
+}
+
 export interface AgendaBlock {
   type: "vignette" | "break" | "intro" | "closing" | "discussion";
   vignetteId?: string;

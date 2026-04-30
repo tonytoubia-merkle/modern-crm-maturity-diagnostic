@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { VIGNETTES } from "@/lib/data/vignettes";
+import { VIGNETTES, CLIENT_STORIES } from "@/lib/data/vignettes";
 import { OPPORTUNITIES } from "@/lib/data/opportunities";
 import { CAPABILITY_LABELS } from "@/lib/data/questions";
 import {
@@ -64,11 +64,11 @@ export default function LibraryPage() {
             Vignettes & Exercises
           </h1>
           <p className="text-sm text-slate-600 max-w-2xl">
-            Two libraries, one workspace. Each diagnostic ships workshop
+            Five libraries, one workspace. Each diagnostic ships workshop
             vignettes — facilitation exercises with required inputs,
-            timed agendas, and expected outputs. Content Supply Chain also
-            ships anonymized client stories used as proof points during
-            pitch. Use the toggle below to switch.
+            timed agendas, and expected outputs — plus anonymized client
+            stories used as proof points during pitch. Use the toggle
+            below to switch.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function LibraryPage() {
             active={suite === "crm"}
             onClick={() => setSuite("crm")}
             label="Modern CRM"
-            sublabel={`${VIGNETTES.length} workshop vignettes`}
+            sublabel={`${VIGNETTES.length} vignettes · ${CLIENT_STORIES.length} stories`}
           />
           <SuiteTab
             active={suite === "csc"}
@@ -154,6 +154,55 @@ function SuiteTab({
 // ── Modern CRM library — workshop vignettes ───────────────────────
 
 function CrmLibrary() {
+  const [view, setView] = useState<"vignettes" | "stories">("vignettes");
+
+  return (
+    <>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <Stat value={String(VIGNETTES.length)} label="Workshop Vignettes" />
+        <Stat
+          value={`${Math.round(
+            VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60
+          )}h`}
+          label="Total Content"
+        />
+        <Stat value={String(CLIENT_STORIES.length)} label="Client Stories" />
+        <Stat
+          value={String(
+            new Set([
+              ...VIGNETTES.flatMap((v) => v.triggerCapabilities),
+              ...CLIENT_STORIES.flatMap((s) => s.capabilities),
+            ]).size
+          )}
+          label="Capabilities Covered"
+        />
+      </div>
+
+      <div className="inline-flex bg-white border border-slate-200 rounded-lg p-1 mb-6">
+        <SubTab
+          active={view === "vignettes"}
+          onClick={() => setView("vignettes")}
+          label="Workshop Vignettes"
+          sublabel="Facilitation exercises"
+        />
+        <SubTab
+          active={view === "stories"}
+          onClick={() => setView("stories")}
+          label="Client Stories"
+          sublabel="Proof points"
+        />
+      </div>
+
+      {view === "vignettes" ? (
+        <CrmWorkshopVignettesList />
+      ) : (
+        <CrmClientStoriesList />
+      )}
+    </>
+  );
+}
+
+function CrmWorkshopVignettesList() {
   const [filter, setFilter] = useState<string>("all");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [miroUrls, setMiroUrls] = useState<Record<string, string>>({});
@@ -167,7 +216,7 @@ function CrmLibrary() {
   return (
     <>
       {/* Filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setFilter("all")}
           className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors ${
@@ -200,24 +249,6 @@ function CrmLibrary() {
             </button>
           );
         })}
-      </div>
-
-      {/* Summary stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <Stat
-          value={String(VIGNETTES.length)}
-          label="Total Vignettes"
-        />
-        <Stat
-          value={`${Math.round(
-            VIGNETTES.reduce((s, v) => s + v.durationMinutes, 0) / 60
-          )}h`}
-          label="Total Content"
-        />
-        <Stat
-          value={String(CRM_CATEGORIES.length)}
-          label="Categories"
-        />
       </div>
 
       {/* Vignette cards */}
@@ -376,6 +407,92 @@ function CrmLibrary() {
         })}
       </div>
     </>
+  );
+}
+
+function CrmClientStoriesList() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  return (
+    <div className="space-y-3">
+      {CLIENT_STORIES.map((s) => {
+        const isOpen = expanded === s.id;
+        return (
+          <div
+            key={s.id}
+            className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm"
+            style={{ borderLeftWidth: "4px", borderLeftColor: "#0328d1" }}
+          >
+            <button
+              type="button"
+              className="w-full text-left px-5 py-4"
+              onClick={() => setExpanded(isOpen ? null : s.id)}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    {s.capabilities.map((c) => (
+                      <span
+                        key={c}
+                        className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600"
+                      >
+                        {CAPABILITY_LABELS[c] || c}
+                      </span>
+                    ))}
+                    {s.industries?.map((ind) => (
+                      <span
+                        key={ind}
+                        className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 capitalize"
+                      >
+                        {ind.replace(/_/g, " ")}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {s.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 mt-0.5 italic">
+                    {s.tagline}
+                  </p>
+                </div>
+                <Chevron open={isOpen} />
+              </div>
+            </button>
+
+            {isOpen && (
+              <div className="px-5 pb-5 space-y-4 border-t border-slate-100 pt-4">
+                <div>
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    Narrative
+                  </p>
+                  <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-lg p-4">
+                    {s.narrative}
+                  </p>
+                </div>
+
+                {s.outcomes && s.outcomes.length > 0 && (
+                  <BulletList
+                    title="Outcomes"
+                    items={s.outcomes}
+                    bulletClass="text-green-500"
+                    bullet="+"
+                  />
+                )}
+
+                {s.prompts && s.prompts.length > 0 && (
+                  <BulletList
+                    title="Discussion Prompts"
+                    items={s.prompts}
+                    bulletClass="text-amber-500"
+                    bullet="?"
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }
 

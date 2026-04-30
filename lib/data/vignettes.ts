@@ -1,4 +1,4 @@
-import type { Vignette } from "@/lib/types";
+import type { ClientStory, Vignette } from "@/lib/types";
 
 export const VIGNETTES: Vignette[] = [
   {
@@ -333,3 +333,140 @@ export function getVignettesForOpportunities(
 
   return filtered;
 }
+
+// ══════════════════════════════════════════════════════════════════
+// CLIENT_STORIES — anonymized Modern CRM proof points
+// Sourced from the Modern CRM POV (Pre Jan 2026 v3), the Merkury
+// Consumer 360 toolkit, the Human Loyalty Offering (v1.3), the CRM
+// Messaging Offering (v1.4), the Experiential Promotions toolkit
+// (v2.1), and the Gamification / Branded Games toolkit (v2.1).
+// ══════════════════════════════════════════════════════════════════
+
+export const CLIENT_STORIES: ClientStory[] = [
+  {
+    id: "merkury_identity_foundation",
+    title: "Merkury Identity Foundation Unlocks Stalled CRM Use Cases",
+    tagline:
+      "Unified identity graph rolled three high-value AI use cases out of pilot inside a quarter",
+    capabilities: ["identity", "signals", "technology"],
+    narrative:
+      "A retail client had invested in a CDP, marketing automation, and an ambitious personalisation roadmap — but every AI use case stalled because identity was fragmented across CRM, ecommerce, app, and loyalty. Merkle deployed Merkury as the unified identity layer, integrated deterministic and probabilistic resolution, instrumented signal pipelines, and stood up the consent and segmentation framework. With the foundation in place, three stalled AI use cases (next-best-action on web, anonymous-shopper personalisation, app re-engagement) shipped within 90 days of foundation go-live.",
+    outcomes: [
+      "Single source of truth across CRM, ecommerce, app, and loyalty",
+      "Identity resolution coverage on 78% of high-value customers",
+      "Three stalled AI use cases shipped within 90 days of foundation go-live",
+      "Quarterly value-realisation scorecard now governs all downstream investment",
+    ],
+    industries: ["retail", "travel_hospitality"],
+    prompts: [
+      "How many systems hold a 'customer record' today, and which one is canonical?",
+      "Which CRM use case has been stuck longest, and what data gap is the real blocker?",
+      "Who owns customer-data quality at the enterprise level, and what's their KPI?",
+    ],
+  },
+  {
+    id: "human_loyalty_reframe",
+    title: "Human Loyalty: From Points Programme to Relationship Engine",
+    tagline:
+      "Reframing loyalty as relationship lifted active-member spend 14% and cut churn 6 points",
+    capabilities: ["engagement", "decisioning", "learning_optimization"],
+    narrative:
+      "A travel-and-hospitality client's loyalty programme had high enrollment and falling engagement — points-economy mechanics had stopped moving the needle on spend or retention. Merkle ran the Human Loyalty engagement: redesigned the programme around emotional loyalty drivers, added experiential and recognition mechanics on top of the points layer, and instrumented a behavioural-segment scoring model that triggered relationship moments (anniversary, milestone, comeback) in real time. Inside one year: active-member spend +14%, churn -6 points, and member NPS lifted into the top quartile of the segment.",
+    outcomes: [
+      "Active-member spend +14%",
+      "Churn -6 points across the loyalty base",
+      "Member NPS lifted into the segment's top quartile",
+      "Behavioural-segment scoring model adopted as the program's operating standard",
+    ],
+    industries: ["travel_hospitality", "retail"],
+    prompts: [
+      "Where has your loyalty programme stopped moving spend or retention?",
+      "What share of programme value comes from points vs. emotional or experiential moments?",
+      "Which relationship moments (anniversary, milestone, comeback) does your programme miss today?",
+    ],
+  },
+  {
+    id: "crm_messaging_modernization",
+    title: "Modernised CRM Messaging Across Owned Channels",
+    tagline:
+      "AI-driven decisioning across email, SMS, push and in-app lifted owned-channel revenue 22%",
+    capabilities: ["decisioning", "engagement", "media_activation"],
+    narrative:
+      "A financial-services client's CRM messaging programme ran on rules and weekly batch — high-value segments received generic content and best-time-to-send was set by the same calendar for everyone. Merkle modernised the program: real-time decisioning engine, NBA model, channel-of-preference and send-time-optimisation models, content factory, and an experimentation harness with holdouts on every campaign. Inside two quarters: owned-channel revenue +22%, unsubscribe rate -18%, and the messaging team shifted from campaign-execution mode to programme-design mode.",
+    outcomes: [
+      "Owned-channel revenue +22%",
+      "Unsubscribe rate -18% with no engagement regression",
+      "Real-time decisioning replaced rules and batch across email, SMS, push, in-app",
+      "Holdout discipline gave the CFO an attributable view of CRM lift",
+    ],
+    industries: ["financial_services", "retail"],
+    prompts: [
+      "Which CRM channel is still running on rules that should be running on models?",
+      "Where are your highest-value segments getting generic content today?",
+      "How is your current messaging programme attributing lift — holdout or fingers-crossed?",
+    ],
+  },
+  {
+    id: "experiential_promotion_at_scale",
+    title: "Experiential Promotion at Scale",
+    tagline:
+      "Multi-touch experiential promo lifted promotional ROI 31% and grew first-party data 4×",
+    capabilities: ["engagement", "media_activation", "signals"],
+    narrative:
+      "A QSR client's promotional calendar leaned heavily on price discounts — short-term lift, no first-party data, no compounding effect. Merkle designed an experiential promotion programme: gamified mobile mechanics, tiered rewards, real-world activation moments, and a signal-capture layer that fed back into segmentation. Across two flagship promotions, ROI lifted 31% over the price-discount baseline, first-party data acquired through promo participation grew 4×, and the segmented audience powered downstream personalisation across email and app.",
+    outcomes: [
+      "Promotional ROI +31% over the price-discount baseline",
+      "First-party data captured through promo participation grew 4×",
+      "Segmented audience powered downstream personalisation across email + app",
+      "Promotion design shifted from discount-led to experience-led across the calendar",
+    ],
+    industries: ["qsr", "retail"],
+    prompts: [
+      "What share of your promotional calendar is still price-discount led?",
+      "How much first-party data does a typical promotion produce — and where does it land?",
+      "Which experiential mechanic could replace a discount on your next flagship promo?",
+    ],
+  },
+  {
+    id: "branded_game_acquisition",
+    title: "Branded Game as the Acquisition + Engagement Surface",
+    tagline:
+      "Branded mobile game acquired 1.4M opted-in customers and lifted in-store visit frequency 9%",
+    capabilities: ["engagement", "media_activation", "signals"],
+    narrative:
+      "A QSR brand wanted to grow its loyalty programme without leaning on aggressive discounting. Merkle designed and shipped a branded mobile game — daily mechanic, episodic seasonal content, real-world reward redemption, and tight integration with the loyalty programme. Inside 12 months the game acquired 1.4M opted-in customers, lifted in-store visit frequency for active players by 9%, and produced a steady stream of behavioural and preference signal that fed the personalisation engine.",
+    outcomes: [
+      "1.4M opted-in customers acquired through the branded game",
+      "Active-player visit frequency +9% in-store",
+      "Behavioural + preference signal stream fed the personalisation engine",
+      "Reduced reliance on discount-led acquisition across the marketing calendar",
+    ],
+    industries: ["qsr", "retail", "automotive"],
+    prompts: [
+      "Where could a branded game replace a campaign-led acquisition push?",
+      "What signal would a daily-mechanic surface produce that you don't have today?",
+      "How would you tie a game's engagement back into the loyalty programme economics?",
+    ],
+  },
+  {
+    id: "modern_crm_north_star",
+    title: "Modern CRM North Star Unlocks Multi-Year Roadmap",
+    tagline:
+      "Leadership visioning + capability radar funded a $40M three-year CRM transformation",
+    capabilities: ["organization", "technology"],
+    narrative:
+      "A B2C client had every modern CRM capability somewhere in the business — and almost none of them connected. Merkle ran a North Star engagement: leadership visioning, a Modern CRM maturity radar across all eight capabilities, and a sequenced roadmap that paired each capability with the business outcome it unlocked. The output became the funding artifact that secured a $40M three-year transformation programme, with quarterly value-realisation reviews tying spend to outcome lift.",
+    outcomes: [
+      "$40M three-year CRM transformation programme funded",
+      "Capability radar adopted as the leadership operating dashboard",
+      "Sequenced roadmap pairs every investment with a business-outcome unlock",
+      "Quarterly value-realisation reviews keep the programme funded and on plan",
+    ],
+    industries: ["financial_services", "retail", "automotive"],
+    prompts: [
+      "Does your leadership team share a single Modern CRM North Star today?",
+      "Which CRM capability would unlock the most business outcome if invested in next?",
+      "How is your CRM programme tied back to value realisation in the CFO's view?",
+    ],
+  },
+];
