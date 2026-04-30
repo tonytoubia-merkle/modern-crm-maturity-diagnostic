@@ -6,6 +6,7 @@ import {
   CSC_CAPABILITIES_ORDER,
   CSC_CAPABILITY_LABELS,
   CSC_SCORE_LABELS,
+  resolveCscQuestionText,
 } from "@/lib/csc/data/questions";
 import type { CscInferredScore } from "@/lib/csc/chat/types";
 import type { CscIndustry } from "@/lib/csc/types";
@@ -144,7 +145,7 @@ export function CscScoreMapModal({
                   <ScoreRow
                     key={q.id}
                     qId={String(q.id)}
-                    text={q.text}
+                    text={resolveCscQuestionText(q, industry)}
                     score={scores.get(String(q.id))}
                     isSkipped={skipped.has(String(q.id))}
                     onUpdateScore={onUpdateScore}

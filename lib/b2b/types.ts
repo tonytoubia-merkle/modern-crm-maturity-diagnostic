@@ -30,9 +30,14 @@ export type B2bMaturityStage = 1 | 2 | 3 | 4;
 
 export interface B2bQuestion {
   id: number;
+  /** Default question text — used when no industry is selected or when
+   *  the selected industry has no override in `byIndustry`. */
   text: string;
   capability: B2bCapability;
   tooltip?: string;
+  /** Optional per-industry overrides. See lib/types.ts:Question for
+   *  full notes. */
+  byIndustry?: Partial<Record<B2bIndustry, string>>;
 }
 
 export interface B2bIndustryQuestion {

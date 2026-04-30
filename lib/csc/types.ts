@@ -23,9 +23,15 @@ export type CscMaturityStage = 1 | 2 | 3 | 4;
 
 export interface CscQuestion {
   id: number;
+  /** Default question text — used when no industry is selected or when
+   *  the selected industry has no override in `byIndustry`. */
   text: string;
   capability: CscCapability;
   tooltip?: string;
+  /** Optional per-industry overrides. See lib/types.ts:Question for
+   *  full notes. CSC currently has no dynamic questions but the field
+   *  is wired up so it can grow without further infrastructure work. */
+  byIndustry?: Partial<Record<CscIndustry, string>>;
 }
 
 export interface CscIndustryQuestion {

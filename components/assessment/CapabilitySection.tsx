@@ -8,8 +8,9 @@ import {
   CAPABILITY_SCOPE_HINTS,
   QUESTIONS_BY_CAPABILITY,
   SCORE_LABELS,
+  resolveQuestionText,
 } from "@/lib/data/questions";
-import type { Capability, ResponseItem } from "@/lib/types";
+import type { Capability, Industry, ResponseItem } from "@/lib/types";
 import type { QuestionAverages } from "./AssessmentFlow";
 
 interface CapabilitySectionProps {
@@ -20,6 +21,9 @@ interface CapabilitySectionProps {
   onRemoveResponse?: (questionId: number | string) => void;
   onReadyChange?: (isReady: boolean) => void;
   averages?: QuestionAverages;
+  /** Optional — passed when an industry has been selected so dynamic
+   *  question text can render in industry-natural wording. */
+  industry?: Industry | null;
 }
 
 export function CapabilitySection({
@@ -30,6 +34,7 @@ export function CapabilitySection({
   onRemoveResponse,
   onReadyChange,
   averages,
+  industry,
 }: CapabilitySectionProps) {
   const questions = QUESTIONS_BY_CAPABILITY[capability];
   const [skipped, setSkipped] = useState<Set<number>>(new Set());
@@ -112,7 +117,7 @@ export function CapabilitySection({
                       isSkipped ? "line-through text-slate-400" : "text-slate-900"
                     }`}
                   >
-                    {question.text}
+                    {resolveQuestionText(question, industry)}
                   </p>
                   {question.tooltip && !isSkipped && (
                     <p className="mt-1 text-xs text-slate-500 leading-relaxed italic">

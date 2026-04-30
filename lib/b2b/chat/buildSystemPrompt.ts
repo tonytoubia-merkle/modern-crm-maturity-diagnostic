@@ -7,6 +7,7 @@ import {
   B2B_QUESTIONS_BY_CAPABILITY,
   B2B_SCORE_LABELS,
   B2B_SCORE_DESCRIPTIONS,
+  resolveB2bQuestionText,
 } from "@/lib/b2b/data/questions";
 import type { B2bInferredScore, B2bChatPhase } from "./types";
 import type { B2bIndustry } from "@/lib/b2b/types";
@@ -50,7 +51,10 @@ ${Object.entries(B2B_SCORE_LABELS)
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
-      const shortText = q.text
+      // Resolve against industry so dynamic-text questions present
+      // their industry-natural wording to the LLM.
+      const fullText = resolveB2bQuestionText(q, industry);
+      const shortText = fullText
         .replace(
           /^To what extent (does |are |is |can )?the organization('s)? /i,
           ""

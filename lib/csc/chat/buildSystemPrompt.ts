@@ -7,6 +7,7 @@ import {
   CSC_QUESTIONS_BY_CAPABILITY,
   CSC_SCORE_LABELS,
   CSC_SCORE_DESCRIPTIONS,
+  resolveCscQuestionText,
 } from "@/lib/csc/data/questions";
 import type { CscInferredScore, CscChatPhase } from "./types";
 import type { CscIndustry } from "@/lib/csc/types";
@@ -50,7 +51,10 @@ ${Object.entries(CSC_SCORE_LABELS)
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
-      const shortText = q.text
+      // Resolve against industry so dynamic-text questions present
+      // their industry-natural wording to the LLM.
+      const fullText = resolveCscQuestionText(q, industry);
+      const shortText = fullText
         .replace(
           /^To what extent (does |are |is |can )?the organization('s)? /i,
           ""

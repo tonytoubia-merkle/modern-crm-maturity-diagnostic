@@ -2,7 +2,22 @@ import type {
   CscQuestion,
   CscIndustryQuestion,
   CscCapability,
+  CscIndustry,
 } from "@/lib/csc/types";
+
+/**
+ * Resolves a question's display text given the assessment's industry.
+ * Mirrors lib/data/questions.ts:resolveQuestionText — see notes there.
+ */
+export function resolveCscQuestionText(
+  q: Pick<CscQuestion, "text" | "byIndustry">,
+  industry: CscIndustry | null | undefined
+): string {
+  if (industry && q.byIndustry?.[industry]) {
+    return q.byIndustry[industry] as string;
+  }
+  return q.text;
+}
 
 // ── Content Supply Chain Maturity Questions ─────────────────────────
 // Sourced from the Content Supply Chain Diagnostic.xlsx (Microsoft Forms

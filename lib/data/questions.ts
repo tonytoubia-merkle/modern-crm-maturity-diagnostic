@@ -1,4 +1,29 @@
-import type { Question, IndustryQuestion, Capability } from "@/lib/types";
+import type {
+  Question,
+  IndustryQuestion,
+  Capability,
+  Industry,
+} from "@/lib/types";
+
+/**
+ * Resolves a question's display text given the assessment's industry.
+ *
+ * If `byIndustry` is set on the question and contains an entry for the
+ * selected industry, that override wins. Otherwise the default `text`
+ * is returned. Used by the chat prompt builder, score map, capability
+ * section, and any other surface that renders question text — every
+ * consumer should route through this helper instead of reading
+ * `q.text` directly so the dynamic-text feature works end-to-end.
+ */
+export function resolveQuestionText(
+  q: Pick<Question, "text" | "byIndustry">,
+  industry: Industry | null | undefined
+): string {
+  if (industry && q.byIndustry?.[industry]) {
+    return q.byIndustry[industry] as string;
+  }
+  return q.text;
+}
 
 export const CAPABILITY_LABELS: Record<string, string> = {
   identity: "Identity",
@@ -93,6 +118,18 @@ export const CORE_QUESTIONS: Question[] = [
     id: 3,
     text: "To what extent are households, joint accounts, related parties, or other customer relationships (family members, gift buyers, account beneficiaries, fleet relationships) identified and connected?",
     capability: "identity",
+    byIndustry: {
+      retail:
+        "To what extent are households, family members, and gift buyers identified and connected — so a single member's purchase, return, or loyalty activity links cleanly to the rest of the household?",
+      qsr:
+        "To what extent are households and family or group dining patterns identified and connected — so app, loyalty, and order activity rolls up to a household view rather than treating each member as a separate guest?",
+      financial_services:
+        "To what extent are joint accounts, household balances, account beneficiaries, and authorised users identified and connected — so the whole financial relationship is visible across products and channels?",
+      travel_hospitality:
+        "To what extent are households, travelling parties, and group bookings identified and connected — so loyalty status, preferences, and history span every guest in the relationship rather than the booker alone?",
+      automotive:
+        "To what extent are households, multi-vehicle owners, fleet relationships, and authorised drivers identified and connected — so the full vehicle relationship is visible across sales, service, and engagement?",
+    },
   },
   {
     id: 4,
@@ -142,6 +179,18 @@ export const CORE_QUESTIONS: Question[] = [
     text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, physical locations (store, branch, property, dealership), and service?",
     capability: "engagement",
     tooltip: "Orchestration means channels are coordinated so each interaction builds on the last — rather than operating independently in silos with separate strategies. Physical channels include whatever in-person environment the industry uses: stores for retail, branches for financial services, properties for hospitality, dealerships for automotive.",
+    byIndustry: {
+      retail:
+        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, store, and service?",
+      qsr:
+        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, in-restaurant, drive-thru, and service?",
+      financial_services:
+        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, branch, contact center, and service?",
+      travel_hospitality:
+        "To what extent are guest journeys orchestrated across channels such as email, mobile, app, web, on-property, and service — covering pre-trip, on-trip, and post-trip moments?",
+      automotive:
+        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, dealership, and service — across sales, ownership, and re-purchase?",
+    },
   },
   {
     id: 12,
@@ -196,6 +245,18 @@ export const CORE_QUESTIONS: Question[] = [
     text: "To what extent does the organization measure incremental lift from loyalty, promotions, offers, incentives, and messaging programs?",
     capability: "learning_optimization",
     tooltip: "Incremental lift measures the true causal impact of a program — the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway. Programs include traditional loyalty and promotions for retail / QSR / travel, as well as rate offers and fee incentives for financial services, and trade-in / lease incentives for automotive.",
+    byIndustry: {
+      retail:
+        "To what extent does the organization measure incremental lift from loyalty, promotions, and messaging programs?",
+      qsr:
+        "To what extent does the organization measure incremental lift from loyalty, LTOs, promotions, and messaging programs?",
+      financial_services:
+        "To what extent does the organization measure incremental lift from rate offers, fee incentives, account-opening offers, and engagement messaging?",
+      travel_hospitality:
+        "To what extent does the organization measure incremental lift from loyalty, status benefits, package offers, and messaging programs?",
+      automotive:
+        "To what extent does the organization measure incremental lift from trade-in offers, lease incentives, service offers, and engagement messaging?",
+    },
   },
   {
     id: 22,

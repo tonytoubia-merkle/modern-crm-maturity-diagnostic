@@ -19,9 +19,21 @@ export type MaturityStage = 1 | 2 | 3 | 4;
 
 export interface Question {
   id: number;
+  /**
+   * Default question text. Used when no industry is selected, or when
+   * the selected industry has no entry in `byIndustry`. The default is
+   * always the broadest, all-industry-friendly wording.
+   */
   text: string;
   capability: Capability;
   tooltip?: string;
+  /**
+   * Optional per-industry overrides. When present and the assessment
+   * has an industry selected, the matching string is rendered in place
+   * of `text` everywhere — chat prompt, score map, capability section,
+   * voice agent. Keys not listed fall back to `text`.
+   */
+  byIndustry?: Partial<Record<Industry, string>>;
 }
 
 export interface IndustryQuestion {

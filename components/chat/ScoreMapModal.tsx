@@ -1,6 +1,6 @@
 "use client";
 
-import { CORE_QUESTIONS, INDUSTRY_QUESTIONS, CAPABILITIES_ORDER, CAPABILITY_LABELS, SCORE_LABELS } from "@/lib/data/questions";
+import { CORE_QUESTIONS, INDUSTRY_QUESTIONS, CAPABILITIES_ORDER, CAPABILITY_LABELS, SCORE_LABELS, resolveQuestionText } from "@/lib/data/questions";
 import type { InferredScore } from "@/lib/chat/types";
 import type { Industry } from "@/lib/types";
 
@@ -159,7 +159,7 @@ export function ScoreMapModal({
                   <ScoreRow
                     key={q.id}
                     qId={String(q.id)}
-                    text={q.text}
+                    text={resolveQuestionText(q, industry)}
                     score={scores.get(String(q.id))}
                     isSkipped={skipped.has(String(q.id))}
                     overallAvg={averages?.overall?.[String(q.id)]}

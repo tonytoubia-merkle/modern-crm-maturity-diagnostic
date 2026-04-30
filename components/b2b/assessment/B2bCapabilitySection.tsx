@@ -8,8 +8,13 @@ import {
   B2B_CAPABILITY_SCOPE_HINTS,
   B2B_QUESTIONS_BY_CAPABILITY,
   B2B_SCORE_LABELS,
+  resolveB2bQuestionText,
 } from "@/lib/b2b/data/questions";
-import type { B2bCapability, B2bResponseItem } from "@/lib/b2b/types";
+import type {
+  B2bCapability,
+  B2bIndustry,
+  B2bResponseItem,
+} from "@/lib/b2b/types";
 
 interface B2bCapabilitySectionProps {
   capability: B2bCapability;
@@ -22,6 +27,8 @@ interface B2bCapabilitySectionProps {
   onNotes?: (questionId: number | string, notes: string) => void;
   onRemoveResponse?: (questionId: number | string) => void;
   onReadyChange?: (isReady: boolean) => void;
+  /** Optional — when set, dynamic-text questions render in industry-natural wording. */
+  industry?: B2bIndustry | null;
 }
 
 export function B2bCapabilitySection({
@@ -31,6 +38,7 @@ export function B2bCapabilitySection({
   onNotes,
   onRemoveResponse,
   onReadyChange,
+  industry,
 }: B2bCapabilitySectionProps) {
   const questions = B2B_QUESTIONS_BY_CAPABILITY[capability];
   const [skipped, setSkipped] = useState<Set<number>>(new Set());
@@ -109,7 +117,7 @@ export function B2bCapabilitySection({
                       isSkipped ? "line-through text-slate-400" : "text-slate-900"
                     }`}
                   >
-                    {question.text}
+                    {resolveB2bQuestionText(question, industry)}
                   </p>
                   {question.tooltip && !isSkipped && (
                     <p className="mt-1 text-xs text-slate-500 leading-relaxed italic">

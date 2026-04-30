@@ -6,6 +6,7 @@ import {
   B2B_CAPABILITIES_ORDER,
   B2B_CAPABILITY_LABELS,
   B2B_SCORE_LABELS,
+  resolveB2bQuestionText,
 } from "@/lib/b2b/data/questions";
 import type { B2bInferredScore } from "@/lib/b2b/chat/types";
 import type { B2bIndustry } from "@/lib/b2b/types";
@@ -144,7 +145,7 @@ export function B2bScoreMapModal({
                   <ScoreRow
                     key={q.id}
                     qId={String(q.id)}
-                    text={q.text}
+                    text={resolveB2bQuestionText(q, industry)}
                     score={scores.get(String(q.id))}
                     isSkipped={skipped.has(String(q.id))}
                     onUpdateScore={onUpdateScore}

@@ -315,6 +315,7 @@ export function CscAssessmentFlow({
                 onNotes={handleNotes}
                 onRemoveResponse={handleRemoveResponse}
                 onReadyChange={setSectionReady}
+                industry={preSelectedIndustry}
               />
               <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                 <Button variant="ghost" onClick={handlePrev} disabled={step === 1}>

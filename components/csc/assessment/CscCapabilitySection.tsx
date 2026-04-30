@@ -8,8 +8,13 @@ import {
   CSC_CAPABILITY_SCOPE_HINTS,
   CSC_QUESTIONS_BY_CAPABILITY,
   CSC_SCORE_LABELS,
+  resolveCscQuestionText,
 } from "@/lib/csc/data/questions";
-import type { CscCapability, CscResponseItem } from "@/lib/csc/types";
+import type {
+  CscCapability,
+  CscIndustry,
+  CscResponseItem,
+} from "@/lib/csc/types";
 
 interface CscCapabilitySectionProps {
   capability: CscCapability;
@@ -22,6 +27,8 @@ interface CscCapabilitySectionProps {
   onNotes?: (questionId: number | string, notes: string) => void;
   onRemoveResponse?: (questionId: number | string) => void;
   onReadyChange?: (isReady: boolean) => void;
+  /** Optional — when set, dynamic-text questions render in industry-natural wording. */
+  industry?: CscIndustry | null;
 }
 
 export function CscCapabilitySection({
@@ -31,6 +38,7 @@ export function CscCapabilitySection({
   onNotes,
   onRemoveResponse,
   onReadyChange,
+  industry,
 }: CscCapabilitySectionProps) {
   const questions = CSC_QUESTIONS_BY_CAPABILITY[capability];
   const [skipped, setSkipped] = useState<Set<number>>(new Set());
@@ -109,7 +117,7 @@ export function CscCapabilitySection({
                       isSkipped ? "line-through text-slate-400" : "text-slate-900"
                     }`}
                   >
-                    {question.text}
+                    {resolveCscQuestionText(question, industry)}
                   </p>
                   {question.tooltip && !isSkipped && (
                     <p className="mt-1 text-xs text-slate-500 leading-relaxed italic">

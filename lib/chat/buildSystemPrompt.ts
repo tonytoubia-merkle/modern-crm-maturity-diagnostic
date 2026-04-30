@@ -7,6 +7,7 @@ import {
   QUESTIONS_BY_CAPABILITY,
   SCORE_LABELS,
   SCORE_DESCRIPTIONS,
+  resolveQuestionText,
 } from "@/lib/data/questions";
 import type { InferredScore, ChatPhase } from "./types";
 import type { Industry } from "@/lib/types";
@@ -45,8 +46,11 @@ ${Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}: ${SCORE_DESCRIPTION
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
-      // Use a shortened version of the question
-      const shortText = q.text.replace(/^To what extent (does |are |is |can )?the organization('s)? /i, "").replace(/\?$/, "");
+      // Use a shortened version of the question — resolved against
+      // the selected industry so dynamic-text questions present their
+      // industry-natural wording to the LLM.
+      const fullText = resolveQuestionText(q, industry);
+      const shortText = fullText.replace(/^To what extent (does |are |is |can )?the organization('s)? /i, "").replace(/\?$/, "");
       questionBank.push(`  Q${q.id}: ${shortText} ${status}`);
     }
   }

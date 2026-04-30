@@ -5,6 +5,20 @@ import type {
   B2bIndustry,
 } from "@/lib/b2b/types";
 
+/**
+ * Resolves a question's display text given the assessment's industry.
+ * Mirrors lib/data/questions.ts:resolveQuestionText — see notes there.
+ */
+export function resolveB2bQuestionText(
+  q: Pick<B2bQuestion, "text" | "byIndustry">,
+  industry: B2bIndustry | null | undefined
+): string {
+  if (industry && q.byIndustry?.[industry]) {
+    return q.byIndustry[industry] as string;
+  }
+  return q.text;
+}
+
 // ── B2B Transformation Diagnostic — Questions ───────────────────────
 // Sourced from the Merkle 2025 B2B Transformation GTM narrative,
 // Account-Based Marketing / Selling / Service & Advocacy offering
@@ -192,6 +206,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "abs",
     tooltip:
       "Optimized: a unified revenue platform runs CPQ + billing for product-led businesses, or AI-assisted proposal / SOW / engagement contracting for services-led businesses, with shared pricing and approval governance.",
+    byIndustry: {
+      technology_saas:
+        "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, subscription billing, and contracting — rather than manual quoting and legacy CPQ?",
+      manufacturing:
+        "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, configurable product pricing, and contracting — rather than manual quoting, ERP-tethered pricing, or legacy CPQ?",
+      industrial_b2b:
+        "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, configurable bundles, and service-contract management — rather than manual quoting and legacy CPQ?",
+      financial_services:
+        "To what extent are pricing, fee schedules, and client agreements modernised with AI-powered configuration and CLM — rather than spreadsheets, freehand drafting, and disconnected approval flows?",
+      healthcare_lifesciences:
+        "To what extent is the quoting and contracting motion modernised with AI-powered CPQ + CLM (for product / device deals) or proposal-to-contract automation (for services and partnerships) — rather than manual quoting and disconnected legal handoffs?",
+      professional_services:
+        "To what extent is the proposal-to-contract motion modernised with AI-assisted proposal and SOW generation, structured pricing, and contracting — rather than freehand decks, manual rate cards, and disconnected approval flows?",
+    },
   },
   {
     id: 16,
@@ -243,6 +271,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "service_advocacy",
     tooltip:
       "Optimized: renewals (SaaS), contract extensions (manufacturing / industrial / services), and re-purchase cycles are scoped 12+ months out, scored for risk, multi-threaded across the buying group, and supported by AI-generated value summaries.",
+    byIndustry: {
+      technology_saas:
+        "To what extent are subscription renewals managed proactively with structured plays, multi-quarter coverage, and renewal-risk scoring — rather than scrambled as the contract date approaches?",
+      manufacturing:
+        "To what extent are service contracts, parts agreements, and equipment re-purchase cycles managed proactively with structured plays, multi-quarter coverage, and risk scoring — rather than reactive at expiration?",
+      industrial_b2b:
+        "To what extent are service contracts, consumables agreements, and equipment re-purchase cycles managed proactively with structured plays, multi-quarter coverage, and risk scoring?",
+      financial_services:
+        "To what extent are mandate renewals, fee-schedule reviews, and contract extensions managed proactively with structured plays, multi-quarter coverage, and risk scoring — rather than reactive at the relationship review?",
+      healthcare_lifesciences:
+        "To what extent are contract renewals (device service, formulary, license) managed proactively with structured plays, multi-quarter coverage, and risk scoring?",
+      professional_services:
+        "To what extent are engagement re-engagement, retainer renewals, and follow-on opportunities managed proactively with structured plays and multi-quarter coverage — rather than scrambled as the current engagement closes?",
+    },
   },
   {
     id: 23,
@@ -257,6 +299,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "service_advocacy",
     tooltip:
       "Optimized: field service work orders, on-site delivery notes, customer success activity, and professional services engagement data feed the account record live; product, sales, and service share the same view (whether the work is physical, digital, or advisory).",
+    byIndustry: {
+      technology_saas:
+        "To what extent are customer success engagements (QBRs, deployments, training, support touchpoints) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
+      manufacturing:
+        "To what extent are field service operations (work orders, on-site visits, parts usage, customer feedback) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
+      industrial_b2b:
+        "To what extent are field service and on-site service operations (work orders, parts usage, equipment health, customer feedback) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
+      financial_services:
+        "To what extent are advisor / relationship-manager touchpoints, branch interactions, and on-site client engagements connected back to the account record and feeding signals into expansion, retention, and service roadmaps?",
+      healthcare_lifesciences:
+        "To what extent are field-based touchpoints (MSL visits, device service, in-clinic training, conference engagements) connected back to the account record and feeding signals into evidence, expansion, and product / service roadmaps?",
+      professional_services:
+        "To what extent is professional-services delivery work — engagement progress, on-site presence, deliverable feedback — connected back to the account record and feeding signals into expansion and account-development plans?",
+    },
   },
 
   // ── Account-Based Operations & Commerce (6) ──────────────────────
@@ -266,6 +322,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "operations_commerce",
     tooltip:
       "Optimized: an AI-orchestrated platform routes orders or engagements across channels, optimises fulfillment (inventory and shipping for goods; staffing, scheduling, and delivery milestones for services), and gives customers real-time visibility into status.",
+    byIndustry: {
+      technology_saas:
+        "To what extent is the order-to-cash and provisioning process — subscription order management, entitlements, provisioning, and billing — orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
+      manufacturing:
+        "To what extent is the order-to-fulfillment process (OMS, inventory, shipping, billing) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
+      industrial_b2b:
+        "To what extent is the order-to-fulfillment process (OMS, inventory, parts, shipping, billing) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
+      financial_services:
+        "To what extent is the client onboarding and servicing process (KYC, account opening, agreement execution, fee setup, statements) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
+      healthcare_lifesciences:
+        "To what extent are order, contract, and fulfillment processes (device or product OMS, sample management, formulary execution, service contracting, billing) orchestrated end-to-end rather than handled by disconnected systems?",
+      professional_services:
+        "To what extent are engagement-fulfillment processes (resource staffing, project setup, time/expense, milestone billing) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
+    },
   },
   {
     id: 26,
@@ -273,6 +343,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "operations_commerce",
     tooltip:
       "Optimized: routine transactions and information requests run through self-service (commerce / marketplace for goods; account portal, KYC-style flows, statement / engagement self-service for services); reps focus on consultative, complex, or strategic conversations.",
+    byIndustry: {
+      technology_saas:
+        "To what extent do customers have a true self-service experience — license management, seat provisioning, plan changes, usage visibility — rather than every routine transaction needing a rep?",
+      manufacturing:
+        "To what extent does B2B commerce offer customers a true self-service experience — account-pricing, configurations, repeat ordering, marketplace, dealer portals — rather than rep-mediated transactions?",
+      industrial_b2b:
+        "To what extent does B2B commerce offer customers a true self-service experience — account-pricing, parts catalog, repeat ordering, configurations, channel-partner portal — rather than rep-mediated transactions?",
+      financial_services:
+        "To what extent do clients have a true self-service experience — account access, document execution, statement and reporting access, status visibility — rather than every request needing a relationship manager?",
+      healthcare_lifesciences:
+        "To what extent do customers have a true self-service experience appropriate to the channel — provider portals, device-management portals, sample-request flows, partner self-service — rather than every routine interaction needing a rep?",
+      professional_services:
+        "To what extent do clients and partners have a true self-service experience — engagement-status portal, deliverable access, billing visibility, partner self-service — rather than every status check or document request needing a partner / engagement lead?",
+    },
   },
   {
     id: 27,
@@ -287,6 +371,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "operations_commerce",
     tooltip:
       "Optimized: customers see live status — order / shipment / inventory for goods, or project / engagement / milestone / case status for services — plus proactive exception or risk alerts through a connected portal and APIs.",
+    byIndustry: {
+      technology_saas:
+        "To what extent is real-time status visibility shared with customers — provisioning state, deployment progress, system health, support-case status, usage and entitlement reporting — through a connected portal and APIs?",
+      manufacturing:
+        "To what extent is supply chain visibility shared with customers — proactive shipment and exception alerts, real-time inventory, lead-time accuracy?",
+      industrial_b2b:
+        "To what extent is supply chain visibility shared with customers — proactive shipment and exception alerts, real-time inventory, parts availability, lead-time accuracy — through a connected portal and APIs?",
+      financial_services:
+        "To what extent is real-time status visibility shared with clients — onboarding stage, document execution, fund status, statement availability, request progress — through a connected portal?",
+      healthcare_lifesciences:
+        "To what extent is real-time order, sample, and service-status visibility shared with customers — shipment tracking and inventory for goods, case / engagement / evidence status for services — through a connected portal and APIs?",
+      professional_services:
+        "To what extent is engagement status visibility shared with clients — milestone progress, deliverable status, risk / exception alerts, billing visibility — through a connected portal?",
+    },
   },
   {
     id: 29,
@@ -324,6 +422,20 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
     capability: "tech_data_intelligence",
     tooltip:
       "Optimized: structured systems of record hold canonical pricing and contract data — PIM + CPQ + CLM for product-led businesses, service catalog + proposal IP repository + engagement IP for services-led businesses; AI agents read and write from these systems within governance.",
+    byIndustry: {
+      technology_saas:
+        "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, entitlements — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+      manufacturing:
+        "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, configurator rules — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+      industrial_b2b:
+        "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, parts catalog, service-contract definitions — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+      financial_services:
+        "To what extent are pricing schedules, fee structures, and client agreements — CPQ, CLM, pricing repositories — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+      healthcare_lifesciences:
+        "To what extent is product, pricing, contract, and evidence data — PIM, CPQ, CLM, MLR-approved content repositories — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
+      professional_services:
+        "To what extent is the practice's IP — service catalog, rate cards, proposal and SOW templates, case-study and credential libraries — clean, structured, and AI-ready, rather than scattered across email, decks, and partner laptops?",
+    },
   },
   {
     id: 34,
