@@ -91,7 +91,7 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 3,
-    text: "To what extent are households or customer relationships (family members, shared accounts, gift buyers) identified and connected?",
+    text: "To what extent are households, joint accounts, related parties, or other customer relationships (family members, gift buyers, account beneficiaries, fleet relationships) identified and connected?",
     capability: "identity",
   },
   {
@@ -139,9 +139,9 @@ export const CORE_QUESTIONS: Question[] = [
   // Engagement / Orchestration
   {
     id: 11,
-    text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, store, and service?",
+    text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, physical locations (store, branch, property, dealership), and service?",
     capability: "engagement",
-    tooltip: "Orchestration means channels are coordinated so each interaction builds on the last — rather than operating independently in silos with separate strategies.",
+    tooltip: "Orchestration means channels are coordinated so each interaction builds on the last — rather than operating independently in silos with separate strategies. Physical channels include whatever in-person environment the industry uses: stores for retail, branches for financial services, properties for hospitality, dealerships for automotive.",
   },
   {
     id: 12,
@@ -193,9 +193,9 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: 21,
-    text: "To what extent does the organization measure incremental lift from loyalty, promotions, and messaging programs?",
+    text: "To what extent does the organization measure incremental lift from loyalty, promotions, offers, incentives, and messaging programs?",
     capability: "learning_optimization",
-    tooltip: "Incremental lift measures the true causal impact of a program — the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway.",
+    tooltip: "Incremental lift measures the true causal impact of a program — the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway. Programs include traditional loyalty and promotions for retail / QSR / travel, as well as rate offers and fee incentives for financial services, and trade-in / lease incentives for automotive.",
   },
   {
     id: 22,
