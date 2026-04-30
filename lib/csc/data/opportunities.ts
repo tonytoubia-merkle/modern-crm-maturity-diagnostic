@@ -5,19 +5,19 @@ import type { CscOpportunity } from "@/lib/csc/types";
  * Build Offering Toolkit v1.0, and Activate Offering Toolkit v1.0.
  *
  * Organized in two layers:
- *   1. Seven named Merkle engagements ("what we sell") — Blueprint, Innovation
+ *   1. Seven named Merkle engagements ("what we sell") – Blueprint, Innovation
  *      Accelerator, Turnaround & Recovery, Enterprise Transformation,
  *      Platform Value Realization, Continuous Value Accelerator, Managed
  *      Content Production. These map directly to the investment bands,
  *      timings, and outcomes documented in the offering toolkits.
- *   2. Seven capability-level initiatives ("what sits inside") — the data
+ *   2. Seven capability-level initiatives ("what sits inside") – the data
  *      fabric, modular design, AI production, workflow, activation,
  *      intelligence, and operating-model work that the named engagements
  *      pull together. Useful when a client only needs a targeted scope.
  */
 export const CSC_OPPORTUNITIES: CscOpportunity[] = [
   // ══════════════════════════════════════════════════════════════════
-  // NAMED MERKLE ENGAGEMENTS — Build stream
+  // NAMED MERKLE ENGAGEMENTS – Build stream
   // ══════════════════════════════════════════════════════════════════
   {
     id: "csc_strategy_blueprint",
@@ -38,7 +38,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Business case with ROI model and investment prioritization",
     ],
     valueNarrative:
-      "Build before Buy. Blueprint content supply chain processes before touching technology — map workflows, design governance, architect role-based operations, and establish marketing data fabric. Princess Cruises started here and unlocked $5.7M in identified operational value with $486K in year-one quick wins. Without a blueprint, platform decisions default to vendor preferences rather than your architecture.",
+      "Build before Buy. Blueprint content supply chain processes before touching technology – map workflows, design governance, architect role-based operations, and establish marketing data fabric. Princess Cruises started here and unlocked $5.7M in identified operational value with $486K in year-one quick wins. Without a blueprint, platform decisions default to vendor preferences rather than your architecture.",
     sfType: "CSC Strategy",
     engagementSize: "8–16 weeks · $350K–$500K",
     priority: "critical",
@@ -50,7 +50,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "Rapidly validate a high-value use case before committing to enterprise scale",
     description:
-      "A focused program that anchors in a single use case, channel, market, or portion of the supply chain — typically AI content production, modular design, or intelligent workflow orchestration. Proves business value, configures a pilot platform environment, and establishes a clear path from experimentation to scalable transformation.",
+      "A focused program that anchors in a single use case, channel, market, or portion of the supply chain – typically AI content production, modular design, or intelligent workflow orchestration. Proves business value, configures a pilot platform environment, and establishes a clear path from experimentation to scalable transformation.",
     capabilities: ["workflow_production", "intelligence_automation"],
     triggerThreshold: 3.0,
     scope:
@@ -63,7 +63,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Performance measurement framework and enterprise scale readiness assessment",
     ],
     valueNarrative:
-      "Innovation is slow, risky, and hard to operationalize when teams try to transform everything at once. The Innovation Accelerator lets you prove the economics of one high-value use case — typically AI-accelerated production or modular personalization — before committing enterprise-scale investment. Adobe saw 82% efficiency gained per campaign via this exact pattern.",
+      "Innovation is slow, risky, and hard to operationalize when teams try to transform everything at once. The Innovation Accelerator lets you prove the economics of one high-value use case – typically AI-accelerated production or modular personalization – before committing enterprise-scale investment. Adobe saw 82% efficiency gained per campaign via this exact pattern.",
     sfType: "CSC Implementation",
     engagementSize: "9–12 months · $700K–$1.5M",
     priority: "critical",
@@ -74,7 +74,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     title: "Turnaround & Recovery",
     tagline: "Stabilize a failing or stalled content platform implementation",
     description:
-      "Rescue program for content supply chain initiatives in trouble — stalled ownership, fragmented configurations, low adoption, over-customization, implementation debt. Rapid diagnosis, executive governance reset, and targeted remediation across technology, process, and organizational dimensions to restore operational stability and a credible foundation for sustained optimization.",
+      "Rescue program for content supply chain initiatives in trouble – stalled ownership, fragmented configurations, low adoption, over-customization, implementation debt. Rapid diagnosis, executive governance reset, and targeted remediation across technology, process, and organizational dimensions to restore operational stability and a credible foundation for sustained optimization.",
     capabilities: [
       "workflow_production",
       "asset_governance",
@@ -121,14 +121,14 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Vendor coordination and cross-platform integration management",
     ],
     valueNarrative:
-      "Highmark Health moved from a 45–60 day content cycle toward a 15-day target via an Enterprise Transformation anchored in Merkle's PMO — 200,000 CSC-influenced hours, $21.7M net benefit over five years, 149% ROI, 28-month payback. When the ambition is not to fix one pain point but to rebuild the operating system, this is the engagement.",
+      "Highmark Health moved from a 45–60 day content cycle toward a 15-day target via an Enterprise Transformation anchored in Merkle's PMO – 200,000 CSC-influenced hours, $21.7M net benefit over five years, 149% ROI, 28-month payback. When the ambition is not to fix one pain point but to rebuild the operating system, this is the engagement.",
     sfType: "CSC Enterprise Program",
     engagementSize: "2–5 years · $5M+/year",
     priority: "critical",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // NAMED MERKLE ENGAGEMENTS — Activate stream
+  // NAMED MERKLE ENGAGEMENTS – Activate stream
   // ══════════════════════════════════════════════════════════════════
   {
     id: "platform_value_realization",
@@ -136,7 +136,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "Recover stranded platform ROI by fixing adoption, not adding features",
     description:
-      "The Activate wedge — for enterprises whose content platforms are live but whose teams have reverted to manual workarounds. Diagnoses adoption barriers, reconfigures workflows, delivers embedded enablement, and establishes governance that prevents regression. Typical outcome: utilization moves from under 40% to over 70% within 90 days.",
+      "The Activate wedge – for enterprises whose content platforms are live but whose teams have reverted to manual workarounds. Diagnoses adoption barriers, reconfigures workflows, delivers embedded enablement, and establishes governance that prevents regression. Typical outcome: utilization moves from under 40% to over 70% within 90 days.",
     capabilities: ["workflow_production", "asset_governance"],
     triggerThreshold: 3.5,
     scope:
@@ -161,7 +161,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     title: "Continuous Value Accelerator",
     tagline: "PMO-anchored run & optimize for sustained competitive advantage",
     description:
-      "Long-horizon, PMO-anchored engagement that turns a stabilized content supply chain into a compounding growth asset. Closed-loop measurement, AI enhancement, cross-functional adoption at scale, and optimization cycles aligned to agentic and emerging technologies. For enterprises who have built — now ready to keep ahead.",
+      "Long-horizon, PMO-anchored engagement that turns a stabilized content supply chain into a compounding growth asset. Closed-loop measurement, AI enhancement, cross-functional adoption at scale, and optimization cycles aligned to agentic and emerging technologies. For enterprises who have built – now ready to keep ahead.",
     capabilities: ["measurement_insights", "intelligence_automation"],
     triggerThreshold: 4.0,
     minTriggerScore: 3.0,
@@ -175,7 +175,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Continuous optimization cycles aligned to emerging technologies",
     ],
     valueNarrative:
-      "Organizations with specialist support achieve 196% ROI versus 30% for those going it alone. A global technology client reduced content production time by 65%, improved asset reuse by 80%, and generated $4.2M annual savings through continuous optimization — with ROI compounding as insights feed back into strategic decisions. Static platforms become liabilities; continuously optimized ones become differentiators.",
+      "Organizations with specialist support achieve 196% ROI versus 30% for those going it alone. A global technology client reduced content production time by 65%, improved asset reuse by 80%, and generated $4.2M annual savings through continuous optimization – with ROI compounding as insights feed back into strategic decisions. Static platforms become liabilities; continuously optimized ones become differentiators.",
     sfType: "CSC Managed Optimization",
     engagementSize: "1–3+ years · $1.0M–$2M+",
     priority: "high",
@@ -186,7 +186,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     title: "Managed Content Production",
     tagline: "Fully outsourced content operations via GenStudio dentsu+",
     description:
-      "For enterprises recognizing that content operations excellence requires capabilities beyond their strategic focus. A complete outsourced solution through Dentsu's integrated creative, production, and media network — AI-accelerated workflows, global transcreation, performance-driven optimization, all powered by GenStudio dentsu+, the first agency ecosystem built on Adobe's platform.",
+      "For enterprises recognizing that content operations excellence requires capabilities beyond their strategic focus. A complete outsourced solution through Dentsu's integrated creative, production, and media network – AI-accelerated workflows, global transcreation, performance-driven optimization, all powered by GenStudio dentsu+, the first agency ecosystem built on Adobe's platform.",
     capabilities: ["workflow_production", "distribution_activation"],
     triggerThreshold: 5,
     minTriggerScore: 3.5,
@@ -201,21 +201,21 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Content performance analytics and continuous optimization",
     ],
     valueNarrative:
-      "When content operations excellence is needed but isn't the strategic focus of the organization, outsourcing to Dentsu's integrated ecosystem delivers enterprise-grade production without the operational burden. We use GenStudio dentsu+ ourselves every day — the same platform we build for clients becomes the engine we run for you.",
+      "When content operations excellence is needed but isn't the strategic focus of the organization, outsourcing to Dentsu's integrated ecosystem delivers enterprise-grade production without the operational burden. We use GenStudio dentsu+ ourselves every day – the same platform we build for clients becomes the engine we run for you.",
     sfType: "Managed Content Services",
     engagementSize: "1–3+ years · custom",
     priority: "innovation",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY-LEVEL INITIATIVES — what sits inside the named engagements
+  // CAPABILITY-LEVEL INITIATIVES – what sits inside the named engagements
   // ══════════════════════════════════════════════════════════════════
   {
     id: "content_data_fabric",
     title: "Content Data Fabric & Taxonomy",
     tagline: "Metadata, rights, and taxonomy that make every asset addressable",
     description:
-      "Architect the marketing data fabric that sits underneath the content supply chain — enterprise campaign taxonomy, enriched metadata, content schema, and rights tracking — so every asset is discoverable, governed, compliant, and reusable at scale. Without a data fabric, personalization, AI, and measurement cannot work.",
+      "Architect the marketing data fabric that sits underneath the content supply chain – enterprise campaign taxonomy, enriched metadata, content schema, and rights tracking – so every asset is discoverable, governed, compliant, and reusable at scale. Without a data fabric, personalization, AI, and measurement cannot work.",
     capabilities: ["asset_governance"],
     triggerThreshold: 3.0,
     scope:
@@ -228,7 +228,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Integration with DAM, workflow, and activation systems",
     ],
     valueNarrative:
-      "A DAM without a data fabric is just a storage locker. Merkle's CSC Build is anchored on a content data fabric so assets aren't just stored — they're addressable, activatable, and traceable to outcomes. Princess Cruises and Highmark both started with taxonomy and metadata remediation before any platform work.",
+      "A DAM without a data fabric is just a storage locker. Merkle's CSC Build is anchored on a content data fabric so assets aren't just stored – they're addressable, activatable, and traceable to outcomes. Princess Cruises and Highmark both started with taxonomy and metadata remediation before any platform work.",
     sfType: "Content Data Fabric",
     engagementSize: "10–16 weeks · $250K–$500K",
     priority: "high",
@@ -240,7 +240,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "Reusable atoms that assemble into channel, variant, and market experiences",
     description:
-      "Design and operationalize a modular content framework — atomic creative components (hooks, visuals, product blocks, CTAs) that reassemble across channels, variants, and personalization logic. This is the structural shift that unlocks variant scale, collapses rebuild cost, and makes content truly activatable via CRM, decisioning, and commerce.",
+      "Design and operationalize a modular content framework – atomic creative components (hooks, visuals, product blocks, CTAs) that reassemble across channels, variants, and personalization logic. This is the structural shift that unlocks variant scale, collapses rebuild cost, and makes content truly activatable via CRM, decisioning, and commerce.",
     capabilities: ["strategy_planning", "asset_governance"],
     triggerThreshold: 3.0,
     scope:
@@ -253,7 +253,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Governance model for module reuse, versioning, and retirement",
     ],
     valueNarrative:
-      "Monolithic creative breaks the economics of personalization — every variant costs another bespoke build. Modular content reverses that: one concept produces hundreds of compliant variants at a fraction of the cost. A global brand needing 600,000 assets to cover 5 products × 4 personas × 12 campaigns × 10 channels × 50 markets can't get there without modularity.",
+      "Monolithic creative breaks the economics of personalization – every variant costs another bespoke build. Modular content reverses that: one concept produces hundreds of compliant variants at a fraction of the cost. A global brand needing 600,000 assets to cover 5 products × 4 personas × 12 campaigns × 10 channels × 50 markets can't get there without modularity.",
     sfType: "Content Strategy & Design",
     engagementSize: "12–20 weeks · $500K–$900K",
     priority: "high",
@@ -265,7 +265,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "Bring generative AI into production with brand and legal guardrails",
     description:
-      "Operationalize generative AI across copy, image, video, layout, translation, and resizing — inside existing approval, brand, and legal guardrails. Build approved tooling, prompt libraries, custom Firefly models trained on brand assets, and human-in-the-loop review so AI becomes a day-to-day accelerator, not a shadow workaround.",
+      "Operationalize generative AI across copy, image, video, layout, translation, and resizing – inside existing approval, brand, and legal guardrails. Build approved tooling, prompt libraries, custom Firefly models trained on brand assets, and human-in-the-loop review so AI becomes a day-to-day accelerator, not a shadow workaround.",
     capabilities: ["workflow_production", "intelligence_automation"],
     triggerThreshold: 3.0,
     scope:
@@ -278,7 +278,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Adoption program with measurable lift tied to real campaigns",
     ],
     valueNarrative:
-      "Microsoft bought Firefly, Express, and GenStudio — and no one used them. Merkle's brand-kit configuration, custom Firefly training, and GenStudio workflow integration restored confidence through quick wins tied to real campaigns. By 2028, organizations optimizing AI automation will report 70%+ higher ROI and 50% faster time-to-proficiency — the gap will widen fast.",
+      "Microsoft bought Firefly, Express, and GenStudio – and no one used them. Merkle's brand-kit configuration, custom Firefly training, and GenStudio workflow integration restored confidence through quick wins tied to real campaigns. By 2028, organizations optimizing AI automation will report 70%+ higher ROI and 50% faster time-to-proficiency – the gap will widen fast.",
     sfType: "Content AI & Automation",
     engagementSize: "12–20 weeks · $500K–$1.2M",
     priority: "critical",
@@ -290,7 +290,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "One intake, one source of truth, orchestrated reviews and approvals",
     description:
-      "Stand up enterprise work management as the orchestrating layer for content — Workfront for intake, review stages, and proofing; AEM for content and asset workflows; integrated across existing MarTech, Jira, Figma, and Creative Cloud. Replaces \"every team uses Excel/Jira/Trello\" with one source of truth and leadership visibility without status meetings.",
+      "Stand up enterprise work management as the orchestrating layer for content – Workfront for intake, review stages, and proofing; AEM for content and asset workflows; integrated across existing MarTech, Jira, Figma, and Creative Cloud. Replaces \"every team uses Excel/Jira/Trello\" with one source of truth and leadership visibility without status meetings.",
     capabilities: ["workflow_production"],
     triggerThreshold: 3.0,
     scope:
@@ -313,9 +313,9 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     id: "dynamic_content_activation",
     title: "Dynamic Content Activation & Localization",
     tagline:
-      "Assemble content at the moment of delivery — by locale, segment, and signal",
+      "Assemble content at the moment of delivery – by locale, segment, and signal",
     description:
-      "Connect the content supply chain to AEP, AEM, AJO, and decisioning platforms so modular content can be assembled dynamically at send and render — powered by customer signals, segment, and market context. Automate channel-specific adaptation (format, aspect ratio, length, localization) so creative teams build once and every downstream variant renders programmatically.",
+      "Connect the content supply chain to AEP, AEM, AJO, and decisioning platforms so modular content can be assembled dynamically at send and render – powered by customer signals, segment, and market context. Automate channel-specific adaptation (format, aspect ratio, length, localization) so creative teams build once and every downstream variant renders programmatically.",
     capabilities: ["distribution_activation", "strategy_planning"],
     triggerThreshold: 3.0,
     scope:
@@ -339,7 +339,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     title: "Content Performance & Intelligence",
     tagline: "Closed-loop measurement tying every asset to business outcomes",
     description:
-      "Implement the analytics, CJA, and content intelligence layer that ties asset-level performance to business outcomes — revenue, retention, acquisition cost — and that feeds insight directly back into briefing, ideation, production, and activation. Moves content from a cost center reported in vanity metrics to a measurable, optimizable growth lever.",
+      "Implement the analytics, CJA, and content intelligence layer that ties asset-level performance to business outcomes – revenue, retention, acquisition cost – and that feeds insight directly back into briefing, ideation, production, and activation. Moves content from a cost center reported in vanity metrics to a measurable, optimizable growth lever.",
     capabilities: ["measurement_insights", "intelligence_automation"],
     triggerThreshold: 3.0,
     scope:
@@ -352,7 +352,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Experimentation and lift measurement design with AI-assisted model insight",
     ],
     valueNarrative:
-      "Highmark couldn't tell which content performed or why — analytics, CRM, and DAM were siloed. Merkle built CJA + CDP integration and asset-performance dashboards that made content ROI visible for the first time. Attribution-based measurement typically redirects 10–25% of content spend toward higher-performing assets within a year.",
+      "Highmark couldn't tell which content performed or why – analytics, CRM, and DAM were siloed. Merkle built CJA + CDP integration and asset-performance dashboards that made content ROI visible for the first time. Attribution-based measurement typically redirects 10–25% of content spend toward higher-performing assets within a year.",
     sfType: "Content Intelligence",
     engagementSize: "12–20 weeks · $600K–$1.2M",
     priority: "high",
@@ -364,7 +364,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
     tagline:
       "Rewire in-house, agency, AI tools, and data into one integrated engine",
     description:
-      "Redesign the operating model behind the content supply chain — roles, decision rights, agency mix, technology stack, governance — and deliver the change management that makes new ways of working stick. Addresses the root cause of most CSC failures: the organization hasn't caught up with modular, personalized, AI-accelerated content.",
+      "Redesign the operating model behind the content supply chain – roles, decision rights, agency mix, technology stack, governance – and deliver the change management that makes new ways of working stick. Addresses the root cause of most CSC failures: the organization hasn't caught up with modular, personalized, AI-accelerated content.",
     capabilities: ["strategy_planning", "workflow_production"],
     triggerThreshold: 3.0,
     scope:
@@ -377,7 +377,7 @@ export const CSC_OPPORTUNITIES: CscOpportunity[] = [
       "Adoption measurement tied to platform utilization and cycle time",
     ],
     valueNarrative:
-      "CSC Value Realization = Change & Adoption. Billions are invested in CSC tech, but 55% of marketing leaders report a gap between expectations and reality — with only 49% of MarTech capabilities actually being used. The upside is already paid for; it's waiting for the organization to catch up. Highmark's $21.7M transformation depended on 97+ FTE adoption, not on the tools themselves.",
+      "CSC Value Realization = Change & Adoption. Billions are invested in CSC tech, but 55% of marketing leaders report a gap between expectations and reality – with only 49% of MarTech capabilities actually being used. The upside is already paid for; it's waiting for the organization to catch up. Highmark's $21.7M transformation depended on 97+ FTE adoption, not on the tools themselves.",
     sfType: "Operating Model",
     engagementSize: "12–20 weeks · $500K–$1.2M",
     priority: "critical",

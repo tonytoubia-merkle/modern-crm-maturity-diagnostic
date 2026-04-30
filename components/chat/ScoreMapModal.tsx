@@ -172,11 +172,11 @@ export function ScoreMapModal({
             );
           })}
 
-          {/* Industry questions — same treatment as core */}
+          {/* Industry questions – same treatment as core */}
           {industryQuestions.length > 0 && (
             <div>
               <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#040e4b" }}>
-                {CAPABILITY_LABELS[industry!] || industry} — Industry Context
+                {CAPABILITY_LABELS[industry!] || industry} – Industry Context
               </p>
               {industryQuestions.map((q) => (
                 <ScoreRow

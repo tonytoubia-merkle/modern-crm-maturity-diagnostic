@@ -27,7 +27,7 @@ interface B2bCapabilitySectionProps {
   onNotes?: (questionId: number | string, notes: string) => void;
   onRemoveResponse?: (questionId: number | string) => void;
   onReadyChange?: (isReady: boolean) => void;
-  /** Optional — when set, dynamic-text questions render in industry-natural wording. */
+  /** Optional – when set, dynamic-text questions render in industry-natural wording. */
   industry?: B2bIndustry | null;
 }
 

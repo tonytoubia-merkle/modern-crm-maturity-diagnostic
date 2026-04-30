@@ -27,7 +27,7 @@ interface AicxAssessmentFlowProps {
   initialResponses?: AicxResponseItem[];
   initialIndustry?: AicxIndustry | null;
   initialStep?: number;
-  /** When set, the flow is running inside a stakeholder invite — completion
+  /** When set, the flow is running inside a stakeholder invite – completion
    *  posts to /api/aicx/stakeholders/:id/complete and calls onComplete instead
    *  of redirecting to the results page. */
   stakeholderId?: string | null;
@@ -280,7 +280,7 @@ export function AicxAssessmentFlow({
                           <strong className="text-slate-700">
                             {v} {AICX_SCORE_LABELS[v]}
                           </strong>
-                          <span className="text-slate-400"> — </span>
+                          <span className="text-slate-400"> – </span>
                           {v === 1 &&
                             "Capability does not exist or is highly fragmented."}
                           {v === 2 &&

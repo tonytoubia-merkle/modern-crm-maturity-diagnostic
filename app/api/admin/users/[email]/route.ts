@@ -17,7 +17,7 @@ function normalizeScopes(input: unknown): string[] | null {
   );
 }
 
-/** PATCH /api/admin/users/[email] — update role and/or scopes. Super admins only. */
+/** PATCH /api/admin/users/[email] – update role and/or scopes. Super admins only. */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { email: string } }
@@ -41,7 +41,7 @@ export async function PATCH(
     if (!VALID_ROLES.has(body.role)) {
       return NextResponse.json({ error: "Invalid role" }, { status: 400 });
     }
-    // Guard: prevent a caller from demoting themselves out of super_admin —
+    // Guard: prevent a caller from demoting themselves out of super_admin –
     // would lock themselves out of this very surface.
     if (
       access.email &&
@@ -83,7 +83,7 @@ export async function PATCH(
   return NextResponse.json(data);
 }
 
-/** DELETE /api/admin/users/[email] — remove a user row. Super admins only.
+/** DELETE /api/admin/users/[email] – remove a user row. Super admins only.
  *  Removing a row returns the user to default ('user', no scopes) on next lookup. */
 export async function DELETE(
   _request: NextRequest,

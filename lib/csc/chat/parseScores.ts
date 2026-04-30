@@ -4,7 +4,7 @@ import type { CscScoreUpdate } from "./types";
  * Strips the <scores> JSON block (complete or partial) from an assistant
  * message. Returns the clean display content and parsed scores (if complete).
  *
- * Same shape as the CRM parser at lib/chat/parseScores.ts — kept as a
+ * Same shape as the CRM parser at lib/chat/parseScores.ts – kept as a
  * separate module so the CSC chat surface can evolve independently.
  */
 export function parseCscAssistantMessage(raw: string): {
@@ -21,7 +21,7 @@ export function parseCscAssistantMessage(raw: string): {
     try {
       scoreUpdate = JSON.parse(completeMatch[1]) as CscScoreUpdate;
     } catch {
-      // Malformed JSON — ignore
+      // Malformed JSON – ignore
     }
   }
 

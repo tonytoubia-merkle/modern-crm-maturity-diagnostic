@@ -1,4 +1,4 @@
-// ── AI for Enterprise Diagnostic — Types ─────────────────────────
+// ── AI for Enterprise Diagnostic – Types ─────────────────────────
 // Parallel type system to the Modern CRM, CSC, B2B, and AI for CX
 // diagnostics.
 //

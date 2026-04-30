@@ -56,7 +56,7 @@ export function VoiceChat(props: VoiceChatProps) {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      {/* Input-mode toggle — segmented control */}
+      {/* Input-mode toggle – segmented control */}
       <div className="flex items-center justify-center gap-2 py-1.5 bg-slate-50 border-b border-slate-100">
         <div className="inline-flex rounded-full border border-slate-200 bg-white p-0.5 text-[11px] font-medium">
           <button
@@ -97,7 +97,7 @@ export function VoiceChat(props: VoiceChatProps) {
         )}
       </div>
 
-      {/* Chat view — hides its own text input when voice owns input */}
+      {/* Chat view – hides its own text input when voice owns input */}
       <div className="flex-1 min-h-0">
         <ChatView
           {...props}
@@ -107,7 +107,7 @@ export function VoiceChat(props: VoiceChatProps) {
         />
       </div>
 
-      {/* Voice orb — only visible when voice mode is active */}
+      {/* Voice orb – only visible when voice mode is active */}
       {voiceActive && (
         <div className="border-t border-slate-200 bg-white">
           <VoiceOrb

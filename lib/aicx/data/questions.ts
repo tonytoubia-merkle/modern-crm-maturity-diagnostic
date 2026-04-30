@@ -19,7 +19,7 @@ export function resolveAicxQuestionText(
   return q.text;
 }
 
-// ── AI for CX Diagnostic — Questions ──────────────────────────────
+// ── AI for CX Diagnostic – Questions ──────────────────────────────
 // Sourced from the Merkle 2026 "AI for CX" deep dive (March 2026)
 // and the Customer Experience Optimization (EXO) offering toolkit
 // (v2.0, January 2026). Six capabilities × six questions = 36 core
@@ -46,17 +46,17 @@ export const AICX_CAPABILITY_SUBTITLES: Record<AicxCapability, string> = {
 
 export const AICX_CAPABILITY_DESCRIPTIONS: Record<AicxCapability, string> = {
   agentic_discoverability:
-    "Assess the extent to which the brand's content is structured, trustworthy, and consistently representable to AI agents and LLMs — so the brand is included rather than excluded when an AI decides what to surface.",
+    "Assess the extent to which the brand's content is structured, trustworthy, and consistently representable to AI agents and LLMs – so the brand is included rather than excluded when an AI decides what to surface.",
   agentic_experience:
-    "Assess the extent to which the digital experience is designed for AI-native users — conversational interfaces, video-led discovery, AI-safe interactions, and Gen-Alpha-ready research patterns.",
+    "Assess the extent to which the digital experience is designed for AI-native users – conversational interfaces, video-led discovery, AI-safe interactions, and Gen-Alpha-ready research patterns.",
   adaptive_personalization:
-    "Assess the extent to which AI agents personalise the experience in real time based on user behaviour, data, and context — rather than static rules or scheduled batch decisioning.",
+    "Assess the extent to which AI agents personalise the experience in real time based on user behaviour, data, and context – rather than static rules or scheduled batch decisioning.",
   experimentation:
     "Assess the extent to which testing and experimentation infrastructure (A/B, multi-arm bandits, holdout groups, factorial design) is in place to validate AI investments at scale.",
   identity_data:
     "Assess the extent to which a unified identity, segmentation, predictive model, and lifetime-value foundation gives every AI use case the customer signal it needs to act intelligently.",
   measurement_trust:
-    "Assess the extent to which AI confidence, trigger logic, model-level optimization, and brand-safety guardrails ensure AI acts only where it should — and is measured against business outcomes, not faith.",
+    "Assess the extent to which AI confidence, trigger logic, model-level optimization, and brand-safety guardrails ensure AI acts only where it should – and is measured against business outcomes, not faith.",
 };
 
 export const AICX_CAPABILITY_SCOPE_HINTS: Record<AicxCapability, string> = {
@@ -139,42 +139,42 @@ export const AICX_CORE_QUESTIONS: AicxQuestion[] = [
   // ── Agentic Experience (6) ──────────────────────────────────────
   {
     id: 7,
-    text: "To what extent does the digital experience support conversational and natural-language interaction patterns — rather than relying purely on traditional menus, search, and forms?",
+    text: "To what extent does the digital experience support conversational and natural-language interaction patterns – rather than relying purely on traditional menus, search, and forms?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: conversational interfaces are first-class citizens of the experience; users can ask natural-language questions and complete tasks without learning the navigation.",
   },
   {
     id: 8,
-    text: "To what extent is video and rich media used as a default content format — recognising that AI bandwidth and production capability have shifted user expectations toward video-first discovery?",
+    text: "To what extent is video and rich media used as a default content format – recognising that AI bandwidth and production capability have shifted user expectations toward video-first discovery?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: high-quality video is generated, distributed, and personalised at scale; product, support, and brand content are video-first by default.",
   },
   {
     id: 9,
-    text: "To what extent is the experience explicitly designed to handle AI-native deep research — surfacing comparison data, evidence, and structured answers that an AI-equipped buyer expects?",
+    text: "To what extent is the experience explicitly designed to handle AI-native deep research – surfacing comparison data, evidence, and structured answers that an AI-equipped buyer expects?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: comparison content, evidence repositories, and structured answers are designed for users arriving with AI-prepared questions; the brand wins the moment of validation.",
   },
   {
     id: 10,
-    text: "To what extent does the experience guard against \"AI oops\" moments — guardrails, fallbacks, and human escalation paths that prevent AI-driven mistakes from becoming brand damage?",
+    text: "To what extent does the experience guard against \"AI oops\" moments – guardrails, fallbacks, and human escalation paths that prevent AI-driven mistakes from becoming brand damage?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: AI surfaces have explicit guardrails, escalation paths, and brand-safe fallback content; failure modes are catalogued and mitigated before launch.",
   },
   {
     id: 11,
-    text: "To what extent is the experience designed for Gen Alpha and AI-native users — who default to voice, image, and conversational input, and who research differently than prior generations?",
+    text: "To what extent is the experience designed for Gen Alpha and AI-native users – who default to voice, image, and conversational input, and who research differently than prior generations?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: voice, image search, and AI-mediated discovery patterns are core surfaces; experience research includes Gen-Alpha cohorts, not just legacy segments.",
   },
   {
     id: 12,
-    text: "To what extent does the digital experience adapt across devices, modalities, and entry points (web, app, voice assistant, AI agent, chat surface) — so the brand presence is consistent wherever the user shows up?",
+    text: "To what extent does the digital experience adapt across devices, modalities, and entry points (web, app, voice assistant, AI agent, chat surface) – so the brand presence is consistent wherever the user shows up?",
     capability: "agentic_experience",
     tooltip:
       "Optimized: a single experience system serves every modality; brand presence in voice / agent / chat surfaces is governed alongside web and app.",
@@ -183,42 +183,42 @@ export const AICX_CORE_QUESTIONS: AicxQuestion[] = [
   // ── Adaptive Personalization (6) ────────────────────────────────
   {
     id: 13,
-    text: "To what extent are personalised experiences assembled by AI agents in real time based on individual user behaviour, data, and context — rather than rule-based segmentation or batch-scheduled variants?",
+    text: "To what extent are personalised experiences assembled by AI agents in real time based on individual user behaviour, data, and context – rather than rule-based segmentation or batch-scheduled variants?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: AI agents assemble experiences per user in real time, drawing on first-party data, intent signals, and context; static rules are the exception, not the rule.",
   },
   {
     id: 14,
-    text: "To what extent is the personalization stack capable of rapid prototyping — testing new AI-driven personalization patterns against the live experience in days, not quarters?",
+    text: "To what extent is the personalization stack capable of rapid prototyping – testing new AI-driven personalization patterns against the live experience in days, not quarters?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: a sandbox + agent + test framework lets product teams ship and validate new personalization patterns inside a single sprint.",
   },
   {
     id: 15,
-    text: "To what extent does personalization span paid, owned, and service surfaces — so the experience is consistent whether a user arrives from media, search, the app, or the contact center?",
+    text: "To what extent does personalization span paid, owned, and service surfaces – so the experience is consistent whether a user arrives from media, search, the app, or the contact center?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: an orchestration layer carries the same personalization context across paid media, owned channels, and service interactions.",
   },
   {
     id: 16,
-    text: "To what extent are recommendations and next-best-actions powered by collaborative filtering and AI models that learn from real behaviour — rather than rules-based product affinity or merchandising calendars?",
+    text: "To what extent are recommendations and next-best-actions powered by collaborative filtering and AI models that learn from real behaviour – rather than rules-based product affinity or merchandising calendars?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: collaborative-filtering and reinforcement-learning models drive recommendations; merchandising calendars are inputs, not outputs.",
   },
   {
     id: 17,
-    text: "To what extent is the brand actively building agentic delivery — AI agents that take action on behalf of the user (bookings, reorders, configurations, support resolution) — rather than only providing information?",
+    text: "To what extent is the brand actively building agentic delivery – AI agents that take action on behalf of the user (bookings, reorders, configurations, support resolution) – rather than only providing information?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: branded AI agents complete real transactions and tasks within user-granted authority; the experience moves from informational to action-oriented.",
   },
   {
     id: 18,
-    text: "To what extent are personalization signals refreshed in real time — new behaviour reflected in the next interaction within seconds, not the next campaign cycle?",
+    text: "To what extent are personalization signals refreshed in real time – new behaviour reflected in the next interaction within seconds, not the next campaign cycle?",
     capability: "adaptive_personalization",
     tooltip:
       "Optimized: signal capture, profile update, and personalization activation are sub-second; the experience adapts within the same session.",
@@ -234,35 +234,35 @@ export const AICX_CORE_QUESTIONS: AicxQuestion[] = [
   },
   {
     id: 20,
-    text: "To what extent are multi-arm bandits or contextual-bandit experiments routing real-time traffic to winning combinations — rather than waiting for fixed-window A/B tests to conclude?",
+    text: "To what extent are multi-arm bandits or contextual-bandit experiments routing real-time traffic to winning combinations – rather than waiting for fixed-window A/B tests to conclude?",
     capability: "experimentation",
     tooltip:
       "Optimized: multi-arm bandits route live traffic to winning variants in real time; experiments balance exploration and exploitation against business KPIs.",
   },
   {
     id: 21,
-    text: "To what extent are AI models tested upstream of the user experience — evaluating model assumptions, training data, and prompt logic — not just the outputs?",
+    text: "To what extent are AI models tested upstream of the user experience – evaluating model assumptions, training data, and prompt logic – not just the outputs?",
     capability: "experimentation",
     tooltip:
       "Optimized: model-level testing (data drift, prompt regression, eval suites) runs alongside experience-level A/B testing; both flow into a unified signal.",
   },
   {
     id: 22,
-    text: "To what extent does the organization maintain persistent holdout groups that reveal the true cumulative impact of AI on lifetime value over months — not just per-campaign lift?",
+    text: "To what extent does the organization maintain persistent holdout groups that reveal the true cumulative impact of AI on lifetime value over months – not just per-campaign lift?",
     capability: "experimentation",
     tooltip:
       "Optimized: persistent global / segment-level holdouts measure cumulative AI impact on LTV across multiple quarters, not just per-test lift.",
   },
   {
     id: 23,
-    text: "To what extent does experimentation use factorial design to evaluate content, personalization logic, and channel simultaneously — rather than testing one variable at a time?",
+    text: "To what extent does experimentation use factorial design to evaluate content, personalization logic, and channel simultaneously – rather than testing one variable at a time?",
     capability: "experimentation",
     tooltip:
       "Optimized: factorial designs evaluate multiple variables (content × audience × channel) simultaneously, generating statistically meaningful signal without testing every combination.",
   },
   {
     id: 24,
-    text: "To what extent is the agentic layer (chat triggers, AI offer placements, adaptive flows) explicitly tested against static or rule-based controls — proving where AI truly outperforms?",
+    text: "To what extent is the agentic layer (chat triggers, AI offer placements, adaptive flows) explicitly tested against static or rule-based controls – proving where AI truly outperforms?",
     capability: "experimentation",
     tooltip:
       "Optimized: every agentic intervention is tested against a control; AI is scaled where it wins on validated KPIs and retired where it doesn't.",
@@ -278,35 +278,35 @@ export const AICX_CORE_QUESTIONS: AicxQuestion[] = [
   },
   {
     id: 26,
-    text: "To what extent are customer segments dynamic and AI-generated — refreshed continuously based on behaviour and intent — rather than static rules-based segments refreshed annually?",
+    text: "To what extent are customer segments dynamic and AI-generated – refreshed continuously based on behaviour and intent – rather than static rules-based segments refreshed annually?",
     capability: "identity_data",
     tooltip:
       "Optimized: AI-generated segments refresh continuously based on real behaviour and intent; static rule-based segments are deprecated.",
   },
   {
     id: 27,
-    text: "To what extent are predictive models in production for customer behaviour (response, churn, lifetime value, retention) — and are they retrained as the data and business shift?",
+    text: "To what extent are predictive models in production for customer behaviour (response, churn, lifetime value, retention) – and are they retrained as the data and business shift?",
     capability: "identity_data",
     tooltip:
       "Optimized: response, churn, LTV, and retention models run in production with monitored accuracy and structured retraining cadence.",
   },
   {
     id: 28,
-    text: "To what extent is content metadata, taxonomy, and tagging structured well enough for AI agents to assemble personalised experiences — rather than treating content as opaque assets?",
+    text: "To what extent is content metadata, taxonomy, and tagging structured well enough for AI agents to assemble personalised experiences – rather than treating content as opaque assets?",
     capability: "identity_data",
     tooltip:
       "Optimized: every content asset carries machine-usable metadata (audience, intent, lifecycle stage); AI agents can compose experiences from atomic content components.",
   },
   {
     id: 29,
-    text: "To what extent is data privacy, consent, and AI governance baked into the foundation — so the data layer is AI-ready and audit-ready by default?",
+    text: "To what extent is data privacy, consent, and AI governance baked into the foundation – so the data layer is AI-ready and audit-ready by default?",
     capability: "identity_data",
     tooltip:
       "Optimized: a single privacy + AI governance layer enforces consent, model access, and PII handling across every AI use case; usage is auditable.",
   },
   {
     id: 30,
-    text: "To what extent are content supply chain analytics — what content was made, what performed, what cost — connected back into the customer-data foundation so AI personalization learns from full-funnel signal?",
+    text: "To what extent are content supply chain analytics – what content was made, what performed, what cost – connected back into the customer-data foundation so AI personalization learns from full-funnel signal?",
     capability: "identity_data",
     tooltip:
       "Optimized: content production, performance, and cost data flows into the same foundation as customer behaviour; AI personalization optimises across both axes.",
@@ -315,42 +315,42 @@ export const AICX_CORE_QUESTIONS: AicxQuestion[] = [
   // ── Measurement & AI Trust (6) ──────────────────────────────────
   {
     id: 31,
-    text: "To what extent does the brand have explicit AI-confidence and trigger-logic rules — clear definitions of when AI should act, when it should defer to a human, and how decisions are audited?",
+    text: "To what extent does the brand have explicit AI-confidence and trigger-logic rules – clear definitions of when AI should act, when it should defer to a human, and how decisions are audited?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: every AI surface has documented confidence thresholds, escalation logic, and audit trails; confidence is a primary KPI alongside accuracy.",
   },
   {
     id: 32,
-    text: "To what extent are model-level optimization decisions (prompt tuning, retrieval improvements, model swaps) made on data and persistent holdout signal — not stakeholder anecdote?",
+    text: "To what extent are model-level optimization decisions (prompt tuning, retrieval improvements, model swaps) made on data and persistent holdout signal – not stakeholder anecdote?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: model improvements are gated by structured eval suites and holdout-validated lift; subjective stakeholder feedback informs but does not drive model changes.",
   },
   {
     id: 33,
-    text: "To what extent are brand-safety guardrails (PII handling, factual claim guardrails, brand voice, regulated-content review) embedded in every AI surface from day one — not retrofitted after a public miss?",
+    text: "To what extent are brand-safety guardrails (PII handling, factual claim guardrails, brand voice, regulated-content review) embedded in every AI surface from day one – not retrofitted after a public miss?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: brand-safety guardrails are first-class platform requirements; failure modes are catalogued, monitored, and reviewed quarterly.",
   },
   {
     id: 34,
-    text: "To what extent are AI investments evaluated against revenue and engagement KPIs — conversion lift, traffic optimised, LTV lift, brand-safe action rate, ROI validated before scaling?",
+    text: "To what extent are AI investments evaluated against revenue and engagement KPIs – conversion lift, traffic optimised, LTV lift, brand-safe action rate, ROI validated before scaling?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: every AI investment carries a value-realization scorecard tied to revenue / engagement / risk KPIs; under-performing investments are sunset or refactored.",
   },
   {
     id: 35,
-    text: "To what extent does the organization measure the cumulative impact of AI on customer experience metrics (NPS, satisfaction, frustration signals) — not just immediate conversion?",
+    text: "To what extent does the organization measure the cumulative impact of AI on customer experience metrics (NPS, satisfaction, frustration signals) – not just immediate conversion?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: NPS, satisfaction, and frustration signals are tracked alongside conversion; AI surfaces are monitored for long-term experience impact.",
   },
   {
     id: 36,
-    text: "To what extent are AI failures, drift, and degradation surfaced and addressed continuously — rather than discovered after the fact through customer complaints?",
+    text: "To what extent are AI failures, drift, and degradation surfaced and addressed continuously – rather than discovered after the fact through customer complaints?",
     capability: "measurement_trust",
     tooltip:
       "Optimized: AI monitoring detects drift and degradation in near-real-time; closed-loop remediation runs as a structured engineering practice.",
@@ -401,7 +401,7 @@ export const AICX_INDUSTRY_QUESTIONS: AicxIndustryQuestion[] = [
   },
   {
     id: "retail_3",
-    text: "To what extent is the brand visible — and accurately represented — when shoppers ask AI assistants for product, price, or comparison answers?",
+    text: "To what extent is the brand visible – and accurately represented – when shoppers ask AI assistants for product, price, or comparison answers?",
     industry: "retail",
     capability: "agentic_discoverability",
   },
@@ -414,7 +414,7 @@ export const AICX_INDUSTRY_QUESTIONS: AicxIndustryQuestion[] = [
   },
   {
     id: "qsr_2",
-    text: "To what extent are mobile and app experiences personalised in real time by AI based on visit frequency, daypart, and ordering history — not static segments?",
+    text: "To what extent are mobile and app experiences personalised in real time by AI based on visit frequency, daypart, and ordering history – not static segments?",
     industry: "qsr",
     capability: "adaptive_personalization",
   },
@@ -427,13 +427,13 @@ export const AICX_INDUSTRY_QUESTIONS: AicxIndustryQuestion[] = [
   // Financial Services
   {
     id: "fs_1",
-    text: "To what extent is regulated and disclosure content represented to AI surfaces in a way that meets compliance — and is monitored for misrepresentation in AI-generated answers?",
+    text: "To what extent is regulated and disclosure content represented to AI surfaces in a way that meets compliance – and is monitored for misrepresentation in AI-generated answers?",
     industry: "financial_services",
     capability: "agentic_discoverability",
   },
   {
     id: "fs_2",
-    text: "To what extent are AI personalization decisions auditable — explaining why a given offer, rate, or experience was surfaced to a given customer?",
+    text: "To what extent are AI personalization decisions auditable – explaining why a given offer, rate, or experience was surfaced to a given customer?",
     industry: "financial_services",
     capability: "measurement_trust",
   },
@@ -452,13 +452,13 @@ export const AICX_INDUSTRY_QUESTIONS: AicxIndustryQuestion[] = [
   },
   {
     id: "th_2",
-    text: "To what extent are AI agents adapting the trip experience in real time — pre-trip planning, on-property concierge, post-trip follow-up — based on guest signals?",
+    text: "To what extent are AI agents adapting the trip experience in real time – pre-trip planning, on-property concierge, post-trip follow-up – based on guest signals?",
     industry: "travel_hospitality",
     capability: "adaptive_personalization",
   },
   {
     id: "th_3",
-    text: "To what extent is loyalty / tier / status signal connected to the AI personalization layer — so recognised guests get experiences that reflect their value?",
+    text: "To what extent is loyalty / tier / status signal connected to the AI personalization layer – so recognised guests get experiences that reflect their value?",
     industry: "travel_hospitality",
     capability: "identity_data",
   },
@@ -471,13 +471,13 @@ export const AICX_INDUSTRY_QUESTIONS: AicxIndustryQuestion[] = [
   },
   {
     id: "tech_2",
-    text: "To what extent is the product itself adopting AI agents that act on the user's behalf — bookings, configurations, optimisations, support resolution — within governed authority?",
+    text: "To what extent is the product itself adopting AI agents that act on the user's behalf – bookings, configurations, optimisations, support resolution – within governed authority?",
     industry: "technology_saas",
     capability: "adaptive_personalization",
   },
   {
     id: "tech_3",
-    text: "To what extent are AI features in the product evaluated through structured experimentation against control — proving lift on conversion, retention, and expansion KPIs?",
+    text: "To what extent are AI features in the product evaluated through structured experimentation against control – proving lift on conversion, retention, and expansion KPIs?",
     industry: "technology_saas",
     capability: "experimentation",
   },

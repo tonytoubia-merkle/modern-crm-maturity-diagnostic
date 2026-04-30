@@ -4,7 +4,7 @@ export const EMAIL_TEMPLATES: EmailTemplate[] = [
   {
     id: "survey_distribution",
     name: "Survey Distribution",
-    subject: "Modern CRM Maturity Diagnostic — Your Input Needed",
+    subject: "Modern CRM Maturity Diagnostic – Your Input Needed",
     body: `Hi [STAKEHOLDER_NAME],
 
 As part of our upcoming CRM diagnostic engagement with [CLIENT_NAME], we're gathering input from key stakeholders to assess your organization's current CRM maturity.
@@ -37,7 +37,7 @@ Merkle | a dentsu company`,
     subject: "Reminder: CRM Maturity Survey Due [DUE_DATE]",
     body: `Hi [STAKEHOLDER_NAME],
 
-Friendly reminder — we haven't yet received your CRM Maturity Diagnostic survey response for [CLIENT_NAME]. Your input is important for an accurate assessment.
+Friendly reminder – we haven't yet received your CRM Maturity Diagnostic survey response for [CLIENT_NAME]. Your input is important for an accurate assessment.
 
 The survey takes about 15-20 minutes:
 [SURVEY_URL]
@@ -55,7 +55,7 @@ Merkle | a dentsu company`,
   {
     id: "workshop_invite",
     name: "Workshop Invite",
-    subject: "Modern CRM Workshop — [CLIENT_NAME] | [DATE]",
+    subject: "Modern CRM Workshop – [CLIENT_NAME] | [DATE]",
     body: `Hi [STAKEHOLDER_NAME],
 
 Thank you for completing the CRM Maturity Diagnostic survey. We've aggregated the results and are ready to dive deeper in a collaborative workshop.
@@ -92,14 +92,14 @@ Merkle | a dentsu company`,
   {
     id: "post_workshop_followup",
     name: "Post-Workshop Follow-Up",
-    subject: "Modern CRM Workshop Recap & Next Steps — [CLIENT_NAME]",
+    subject: "Modern CRM Workshop Recap & Next Steps – [CLIENT_NAME]",
     body: `Hi [STAKEHOLDER_NAME],
 
 Thank you for your time and engagement during the Modern CRM Workshop on [DATE]. Your contributions were invaluable.
 
 Attached:
-1. Workshop summary deck (PPTX) — maturity results, capability scores, and opportunity roadmap
-2. Miro board export (PDF) — collaborative exercise outputs
+1. Workshop summary deck (PPTX) – maturity results, capability scores, and opportunity roadmap
+2. Miro board export (PDF) – collaborative exercise outputs
 
 Key findings:
 - Overall CRM maturity: [MATURITY_STAGE] ([SCORE]/5.0)
@@ -161,16 +161,16 @@ export const GUIDE_STEPS: GuideStep[] = [
   {
     stepNumber: 1,
     title: "Organize for Success",
-    description: "You likely already know the client — this step is about lining up the right people and setting the stage for a productive diagnostic.",
+    description: "You likely already know the client – this step is about lining up the right people and setting the stage for a productive diagnostic.",
     timing: "3-4 weeks before workshop",
     substeps: [
-      "Confirm the industry vertical — this unlocks industry-specific questions in the survey",
-      "Identify 4-8 stakeholders to participate — aim for a mix: marketing leadership, CRM/loyalty, data/analytics, technology, and channel leads",
+      "Confirm the industry vertical – this unlocks industry-specific questions in the survey",
+      "Identify 4-8 stakeholders to participate – aim for a mix: marketing leadership, CRM/loyalty, data/analytics, technology, and channel leads",
       "Gather stakeholder names, emails, and titles for the survey distribution",
       "Align internally on who from Merkle should be involved (the tool will surface SME recommendations based on results)",
     ],
     tips: [
-      "More diverse roles = richer diagnostic. The tool highlights where stakeholders diverge — that's some of the most valuable signal.",
+      "More diverse roles = richer diagnostic. The tool highlights where stakeholders diverge – that's some of the most valuable signal.",
       "If you can't get 4+ stakeholders, the Quick Assessment (/assessment/new) is useful for internal discovery and triage before committing to a full workshop.",
     ],
   },
@@ -184,7 +184,7 @@ export const GUIDE_STEPS: GuideStep[] = [
       "Fill in client details and optionally set a survey password",
       "Add each stakeholder by name, email, and role",
       "Copy each stakeholder's unique survey link",
-      "Bookmark the project dashboard URL — this is your command center",
+      "Bookmark the project dashboard URL – this is your command center",
     ],
   },
   {
@@ -197,7 +197,7 @@ export const GUIDE_STEPS: GuideStep[] = [
       "Personalize each email with the stakeholder's name and unique URL",
       "Include the password if set",
       "Set a clear deadline (at least 5 business days before workshop)",
-      "Send individually — each link is unique per stakeholder",
+      "Send individually – each link is unique per stakeholder",
     ],
     emailTemplateId: "survey_distribution",
   },
@@ -223,7 +223,7 @@ export const GUIDE_STEPS: GuideStep[] = [
       "Click 'Aggregate Results' on the project dashboard",
       "Review capability scores, maturity stage, and triggered opportunities",
       "Review the auto-generated workshop agenda and vignette selection",
-      "Check the SME mapping for each triggered opportunity — these are the Merkle experts to invite",
+      "Check the SME mapping for each triggered opportunity – these are the Merkle experts to invite",
       "Confirm SME availability and brief them on their vignettes",
     ],
   },
@@ -241,7 +241,7 @@ export const GUIDE_STEPS: GuideStep[] = [
       "Print materials if on-site: agenda, results one-pager, vignette handouts, name tags",
     ],
     tips: [
-      "On-site strongly preferred — whiteboards and sticky notes drive better engagement",
+      "On-site strongly preferred – whiteboards and sticky notes drive better engagement",
       "For virtual: test Miro access for all participants beforehand",
     ],
     emailTemplateId: "workshop_invite",
@@ -254,15 +254,15 @@ export const GUIDE_STEPS: GuideStep[] = [
     substeps: [
       "Arrive 30 min early to set up room/AV/materials",
       "Welcome, introductions, and ground rules (phones silent, candid discussion, no wrong answers)",
-      "Walk through aggregated scores — highlight strengths, gaps, and stakeholder divergence",
+      "Walk through aggregated scores – highlight strengths, gaps, and stakeholder divergence",
       "For each vignette: follow the facilitation guide (setup, exercises, wrap-up)",
       "Capture all outputs on Miro or whiteboard",
       "Close with summary of findings, priorities, and 2-3 concrete next steps with owners",
     ],
     tips: [
-      "Stakeholder divergence is a feature — it reveals organizational misalignment worth discussing",
+      "Stakeholder divergence is a feature – it reveals organizational misalignment worth discussing",
       "Don't try to solve everything. The goal is to identify and prioritize.",
-      "Time management is critical — assign a dedicated timekeeper",
+      "Time management is critical – assign a dedicated timekeeper",
     ],
   },
   {

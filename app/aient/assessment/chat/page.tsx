@@ -8,7 +8,7 @@ import { AIENT_INDUSTRY_LABELS } from "@/lib/aient/data/questions";
 import type { AientIndustry } from "@/lib/aient/types";
 
 /**
- * /aient/assessment/chat — internal-consultant conversational entry point
+ * /aient/assessment/chat – internal-consultant conversational entry point
  * for the CSC diagnostic. Mirrors /crm/assessment/chat: setup form
  * collects basic context, then renders AientChatView for a text-driven
  * conversation. Voice input is available externally through the branded

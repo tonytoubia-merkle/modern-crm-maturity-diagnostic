@@ -14,7 +14,7 @@ export function parseAicxAssistantMessage(raw: string): {
     try {
       scoreUpdate = JSON.parse(completeMatch[1]) as AicxScoreUpdate;
     } catch {
-      // malformed JSON — ignore
+      // malformed JSON – ignore
     }
   }
 

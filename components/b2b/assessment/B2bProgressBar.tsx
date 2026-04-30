@@ -97,7 +97,7 @@ export function B2bProgressBar({
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
           {currentStep > 0 && currentStep <= B2B_CAPABILITIES_ORDER.length
-            ? `${B2B_CAPABILITY_LABELS[B2B_CAPABILITIES_ORDER[currentStep - 1]]} — ${B2B_CAPABILITY_SUBTITLES[B2B_CAPABILITIES_ORDER[currentStep - 1]]}`
+            ? `${B2B_CAPABILITY_LABELS[B2B_CAPABILITIES_ORDER[currentStep - 1]]} – ${B2B_CAPABILITY_SUBTITLES[B2B_CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"
             : "Industry context"}

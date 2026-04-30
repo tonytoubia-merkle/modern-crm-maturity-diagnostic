@@ -128,7 +128,7 @@ export function CapabilityHeatmap({
                     hasIndustry
                       ? undefined
                       : industryN > 0
-                      ? `Only ${industryN} completed — need ≥ ${minSample}`
+                      ? `Only ${industryN} completed – need ≥ ${minSample}`
                       : "No industry benchmark available"
                   }
                 >
@@ -197,10 +197,10 @@ export function CapabilityHeatmap({
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => {
-                    if (typeof value !== "number") return ["—", name];
+                    if (typeof value !== "number") return ["–", name];
                     const rounded = Math.round(value);
                     const label = SCORE_LABELS[rounded] ?? "";
-                    return [`${formatScore(value)}${label ? ` — ${label}` : ""}`, name];
+                    return [`${formatScore(value)}${label ? ` – ${label}` : ""}`, name];
                   }}
                   contentStyle={{
                     borderRadius: "8px",
@@ -316,7 +316,7 @@ export function CapabilityHeatmap({
               )}
             >
               <span className="font-bold">{v}</span>
-              <span>—</span>
+              <span>–</span>
               <span>{SCORE_LABELS[v]}</span>
             </div>
           ))}

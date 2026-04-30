@@ -8,7 +8,7 @@ import { B2B_INDUSTRY_LABELS } from "@/lib/b2b/data/questions";
 import type { B2bIndustry } from "@/lib/b2b/types";
 
 /**
- * /b2b/assessment/chat — internal-consultant conversational entry point
+ * /b2b/assessment/chat – internal-consultant conversational entry point
  * for the CSC diagnostic. Mirrors /crm/assessment/chat: setup form
  * collects basic context, then renders B2bChatView for a text-driven
  * conversation. Voice input is available externally through the branded

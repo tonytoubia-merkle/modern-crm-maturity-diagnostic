@@ -21,7 +21,7 @@ import type { CscIndustry, CscCapability } from "@/lib/csc/types";
 /**
  * Splits an assistant message into acknowledgement (observations) and
  * questions (follow-up prompts) and renders them with different UI
- * treatments — same heuristic as the CRM ChatView.
+ * treatments – same heuristic as the CRM ChatView.
  */
 function AssistantMessage({ content }: { content: string }) {
   const paragraphs = content.split(/\n\n+/).filter((p) => p.trim());
@@ -158,7 +158,7 @@ export function CscChatView({
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Ref-track the streaming callbacks so sendMessage's closure always
-  // sees the latest handler. See ChatView for the full reasoning — same
+  // sees the latest handler. See ChatView for the full reasoning – same
   // first-message-not-spoken bug applies here.
   const onAssistantSentenceRef = useRef(onAssistantSentence);
   const onAssistantCompleteRef = useRef(onAssistantComplete);

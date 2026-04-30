@@ -178,7 +178,7 @@ export function SurveyFlow({
               Rate each question on a <strong>1–5 scale</strong>: {Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}`).join(", ")}.
             </li>
             <li>
-              <strong>It&apos;s OK to select &quot;Not sure&quot;</strong> for areas outside your expertise. We&apos;ll be averaging all responses across participants — your perspective on the areas you do cover is what matters.
+              <strong>It&apos;s OK to select &quot;Not sure&quot;</strong> for areas outside your expertise. We&apos;ll be averaging all responses across participants – your perspective on the areas you do cover is what matters.
             </li>
             <li>
               Use the <strong>notes field</strong> to add context, caveats, or concerns on any question. These are reviewed by the Merkle team and help inform the workshop.

@@ -7,7 +7,7 @@ import { useVoice } from "@/lib/chat/useVoice";
 import type { AicxIndustry } from "@/lib/aicx/types";
 
 /**
- * AI for CX voice/chat shell — pairs AicxChatView with the shared VoiceOrb +
+ * AI for CX voice/chat shell – pairs AicxChatView with the shared VoiceOrb +
  * useVoice hook from the CRM surface. The voice plumbing (Web Speech API,
  * TTS, sentence chunking) is brand-neutral, so we reuse it directly.
  */

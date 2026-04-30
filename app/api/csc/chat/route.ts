@@ -10,7 +10,7 @@ import type { CscIndustry } from "@/lib/csc/types";
 export const runtime = "nodejs";
 
 /**
- * POST /api/csc/chat — streaming Gemini chat for the CSC voice/chat
+ * POST /api/csc/chat – streaming Gemini chat for the CSC voice/chat
  * conversational diagnostic. Mirrors /api/chat but builds a CSC-aware
  * system prompt (45 questions, 6 capabilities, content-supply-chain
  * vocabulary) instead of the CRM one.

@@ -33,7 +33,7 @@ export async function createWorkshopBoard(
 ): Promise<{ boardUrl: string; boardId: string }> {
   // 1. Create the board
   const board = await miroFetch("/boards", {
-    name: `${clientName} — Modern CRM Workshop`,
+    name: `${clientName} – Modern CRM Workshop`,
     description: `Auto-generated workshop board · ${agenda.format.replace("_", " ")} format · ${agenda.days.length} day(s)`,
   });
 
@@ -64,7 +64,7 @@ export async function createWorkshopBoard(
         // Small break indicator
         await miroFetch(`/boards/${boardId}/shapes`, {
           data: {
-            content: `☕ ${block.title} — ${block.durationMinutes}m`,
+            content: `☕ ${block.title} – ${block.durationMinutes}m`,
             shape: "round_rectangle",
           },
           style: {
@@ -97,7 +97,7 @@ export async function createWorkshopBoard(
         continue;
       }
 
-      // Vignette block — create a full exercise frame
+      // Vignette block – create a full exercise frame
       const vignette = block.vignetteId
         ? VIGNETTES.find((v) => v.id === block.vignetteId)
         : null;

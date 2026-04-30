@@ -1,4 +1,4 @@
-// ── AI for CX Diagnostic — Types ───────────────────────────────────
+// ── AI for CX Diagnostic – Types ───────────────────────────────────
 // Parallel type system to the Modern CRM, CSC, and B2B diagnostics.
 //
 // Sourced from the Merkle 2026 "AI for CX" deep dive (March 2026)

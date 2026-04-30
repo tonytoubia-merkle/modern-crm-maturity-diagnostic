@@ -22,9 +22,9 @@ const config: BrandConfig = {
     </>
   ),
   subheadline:
-    "Pick a 10–15 minute diagnostic — an AI-led conversation about your CRM, or about your content supply chain. Either way you walk away with a maturity score, industry benchmarks, and the highest-impact opportunities.",
+    "Pick a 10–15 minute diagnostic – an AI-led conversation about your CRM, or about your content supply chain. Either way you walk away with a maturity score, industry benchmarks, and the highest-impact opportunities.",
   steps: [
-    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "01", text: "Pick your diagnostic – CRM or Content Supply Chain" },
     { n: "02", text: "AI assesses your capability areas in conversation" },
     { n: "03", text: "Get benchmarked maturity scores and opportunities" },
   ],

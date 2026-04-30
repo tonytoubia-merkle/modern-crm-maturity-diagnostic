@@ -9,11 +9,11 @@ import type { B2bOpportunity } from "@/lib/b2b/types";
  * (March 2026).
  *
  * Organized in two layers:
- *   1. Five named "wedge" engagements — North Star Visioning, Agile Op
+ *   1. Five named "wedge" engagements – North Star Visioning, Agile Op
  *      Model Assessment, B2B Customer Experience Assessment, Tech &
  *      Data Modernization, Value Realization & Growth Optimization.
  *      These set up the bigger transformation programs.
- *   2. Eleven capability- or platform-level engagements — ABM, ABS,
+ *   2. Eleven capability- or platform-level engagements – ABM, ABS,
  *      Service & Advocacy, Operations & Commerce, plus the Salesforce
  *      Revenue platform, Data Cloud + Identity, Agentforce/agentic
  *      operations, marketplace strategy, and the operating-model
@@ -21,7 +21,7 @@ import type { B2bOpportunity } from "@/lib/b2b/types";
  */
 export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
   // ══════════════════════════════════════════════════════════════════
-  // WEDGE ENGAGEMENTS — set up the bigger transformation
+  // WEDGE ENGAGEMENTS – set up the bigger transformation
   // ══════════════════════════════════════════════════════════════════
   {
     id: "north_star_digital_visioning",
@@ -29,7 +29,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Reimagine the business in a digital-first, account-based world before any platform decision",
     description:
-      "Leadership visioning engagement that defines a future-state vision for the customer experience, the strategic focus areas needed to get there, and the investment themes that will fund it. The deliverable is a shared, compelling North Star aligned to business ambition — the foundation every downstream B2B transformation engagement is anchored against.",
+      "Leadership visioning engagement that defines a future-state vision for the customer experience, the strategic focus areas needed to get there, and the investment themes that will fund it. The deliverable is a shared, compelling North Star aligned to business ambition – the foundation every downstream B2B transformation engagement is anchored against.",
     capabilities: ["vision_strategy"],
     triggerThreshold: 3.0,
     scope:
@@ -42,7 +42,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "High-level roadmap with sequenced investment themes",
     ],
     valueNarrative:
-      "The digital landscape is changing rapidly, with companies struggling to meet customers' increasing expectations. Without a North Star, platform decisions default to vendor preferences rather than business architecture. Every B2B Transformation engagement Merkle anchors begins here — a shared vision is the prerequisite for $250K+ wedges and $1M+ transformation programs that follow.",
+      "The digital landscape is changing rapidly, with companies struggling to meet customers' increasing expectations. Without a North Star, platform decisions default to vendor preferences rather than business architecture. Every B2B Transformation engagement Merkle anchors begins here – a shared vision is the prerequisite for $250K+ wedges and $1M+ transformation programs that follow.",
     sfType: "Strategy & Vision",
     engagementSize: "8–12 weeks · $250K–$500K",
     priority: "critical",
@@ -66,7 +66,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Pilot implementation and change enablement",
     ],
     valueNarrative:
-      "Many companies are stuck in outdated project delivery models that can't keep up with business needs. This isn't process change — it's a new way of working that aligns strategy, funding, and execution. Cross-functional, persistent product teams aligned to value streams routinely deliver 25%+ faster time-to-value than project-funded initiatives.",
+      "Many companies are stuck in outdated project delivery models that can't keep up with business needs. This isn't process change – it's a new way of working that aligns strategy, funding, and execution. Cross-functional, persistent product teams aligned to value streams routinely deliver 25%+ faster time-to-value than project-funded initiatives.",
     sfType: "Operating Model",
     engagementSize: "8–14 weeks · $150K–$300K",
     priority: "critical",
@@ -90,7 +90,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Prioritised roadmap of improvements",
     ],
     valueNarrative:
-      "B2B has never been more competitive — the average B2B purchase now considers 62% more brands and runs 4.5 weeks longer than in 2022. 71% of B2B buyers want suppliers to spend more time understanding their problems. The gap between marketing investment and account experience is where value leaks. A clear view of the full account journey — across functions and touchpoints — is the data set every B2B leadership team is missing.",
+      "B2B has never been more competitive – the average B2B purchase now considers 62% more brands and runs 4.5 weeks longer than in 2022. 71% of B2B buyers want suppliers to spend more time understanding their problems. The gap between marketing investment and account experience is where value leaks. A clear view of the full account journey – across functions and touchpoints – is the data set every B2B leadership team is missing.",
     sfType: "CX Strategy",
     engagementSize: "10–16 weeks · $250K–$750K",
     priority: "critical",
@@ -102,7 +102,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Identify where modernization can unlock real business value across CRM, CPQ, billing, and data",
     description:
-      "The B2B technology landscape is in a state of constant flux — outdated tech stacks limit scalability, redundant systems create inefficiency, and many investments lack clear ROI. This engagement audits the current technology landscape, aligns it to business capabilities, and produces a modernization roadmap with a clear consolidation, automation, or innovation case for every system in scope.",
+      "The B2B technology landscape is in a state of constant flux – outdated tech stacks limit scalability, redundant systems create inefficiency, and many investments lack clear ROI. This engagement audits the current technology landscape, aligns it to business capabilities, and produces a modernization roadmap with a clear consolidation, automation, or innovation case for every system in scope.",
     capabilities: ["tech_data_intelligence", "operations_commerce"],
     triggerThreshold: 3.0,
     scope:
@@ -126,7 +126,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Reduce complexity, improve operational efficiency, and reinvest in growth",
     description:
-      "Transformation isn't just about change — it's about results. This engagement is for clients who need to justify further investment or who are struggling to turn past change into measurable performance. It identifies where value is leaking, models reinvestment scenarios, and produces a clear plan to unlock profitable growth from what's already been bought.",
+      "Transformation isn't just about change – it's about results. This engagement is for clients who need to justify further investment or who are struggling to turn past change into measurable performance. It identifies where value is leaking, models reinvestment scenarios, and produces a clear plan to unlock profitable growth from what's already been bought.",
     capabilities: [
       "vision_strategy",
       "operations_commerce",
@@ -157,7 +157,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Audit the current state of ABM and produce the GTM-aligned strategy for what comes next",
     description:
-      "Wedge engagement that audits current account-based execution — list strategy, content, orchestration, measurement — against best practice, and produces a strategic blueprint for an ABM motion that earns alignment from sales and leadership. The deliverable is a GTM-aligned ABM strategy with sequenced priorities and a measurable case for investment.",
+      "Wedge engagement that audits current account-based execution – list strategy, content, orchestration, measurement – against best practice, and produces a strategic blueprint for an ABM motion that earns alignment from sales and leadership. The deliverable is a GTM-aligned ABM strategy with sequenced priorities and a measurable case for investment.",
     capabilities: ["abm", "vision_strategy"],
     triggerThreshold: 3.0,
     scope:
@@ -170,7 +170,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Sequenced quick wins, build-up, and scale phases",
     ],
     valueNarrative:
-      "ABM is no longer optional — but most programs stall at audience targeting and never reach orchestration or measurement maturity. Brands expecting significantly higher profits in 5 years are 2.5× more likely to pursue ABM than those expecting decline. An audit and strategic visioning engagement is how the conversation moves from 'we have a target list' to 'we have a measurable revenue motion.'",
+      "ABM is no longer optional – but most programs stall at audience targeting and never reach orchestration or measurement maturity. Brands expecting significantly higher profits in 5 years are 2.5× more likely to pursue ABM than those expecting decline. An audit and strategic visioning engagement is how the conversation moves from 'we have a target list' to 'we have a measurable revenue motion.'",
     sfType: "ABM Strategy",
     engagementSize: "6–10 weeks · $100K–$300K",
     priority: "high",
@@ -182,7 +182,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Prove the ABM model on a tightly scoped account set with measurable pipeline outcomes",
     description:
-      "A focused pilot that operationalises the ABM motion on a tier-1 account set — buying-group identification, role-based content, paid + owned + sales orchestration, account-level reporting. Designed to land measurable pipeline outcomes inside two quarters and create a repeatable template for scale.",
+      "A focused pilot that operationalises the ABM motion on a tier-1 account set – buying-group identification, role-based content, paid + owned + sales orchestration, account-level reporting. Designed to land measurable pipeline outcomes inside two quarters and create a repeatable template for scale.",
     capabilities: ["abm", "tech_data_intelligence"],
     triggerThreshold: 3.0,
     scope:
@@ -195,7 +195,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Scale playbook and team enablement",
     ],
     valueNarrative:
-      "A 25% increase in MQL→SQL conversion and 27% shorter sales cycles are typical outcomes once an ABM pilot moves from theory to executed plays. The pilot is also where the operating model gets tested — it surfaces the ownership, KPI, and tooling questions a Blueprint can later answer.",
+      "A 25% increase in MQL→SQL conversion and 27% shorter sales cycles are typical outcomes once an ABM pilot moves from theory to executed plays. The pilot is also where the operating model gets tested – it surfaces the ownership, KPI, and tooling questions a Blueprint can later answer.",
     sfType: "ABM Activation",
     engagementSize: "12–16 weeks · $200K–$425K",
     priority: "high",
@@ -205,7 +205,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     id: "abm_blueprint",
     title: "ABM Blueprint",
     tagline:
-      "Design the enterprise ABM operating model — strategy, data, orchestration, measurement, talent",
+      "Design the enterprise ABM operating model – strategy, data, orchestration, measurement, talent",
     description:
       "Following pilot or audit, the Blueprint codifies the enterprise ABM operating model. Defines the segmentation strategy, data architecture, orchestration platform stack, measurement framework, governance, and the team and skill model that will run the program at scale. The deliverable is a 12–24 month ABM transformation roadmap with sequenced investment.",
     capabilities: ["abm", "vision_strategy", "tech_data_intelligence"],
@@ -221,7 +221,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "12–24 month transformation roadmap",
     ],
     valueNarrative:
-      "The Blueprint is what turns a successful pilot into an enterprise revenue engine. Without it, ABM stays trapped in one team, one region, or one product line. Forrester notes 20%+ higher ROI for 'account-based' investments — but only when the operating model and measurement framework are formal.",
+      "The Blueprint is what turns a successful pilot into an enterprise revenue engine. Without it, ABM stays trapped in one team, one region, or one product line. Forrester notes 20%+ higher ROI for 'account-based' investments – but only when the operating model and measurement framework are formal.",
     sfType: "ABM Strategy",
     engagementSize: "12–18 weeks · $300K–$600K",
     priority: "high",
@@ -231,7 +231,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     id: "abm_activation_program_management",
     title: "ABM Activation & Program Management",
     tagline:
-      "Run the ABM program at scale — orchestration, content velocity, measurement, optimization",
+      "Run the ABM program at scale – orchestration, content velocity, measurement, optimization",
     description:
       "Ongoing managed program that operationalises the Blueprint. Merkle teams own (or co-own) ABM strategy, account-level orchestration, content production, sales-marketing alignment, and quarterly optimization. Designed for clients who want a partner running the engine, not just delivering a strategy deck.",
     capabilities: ["abm", "service_advocacy", "tech_data_intelligence"],
@@ -259,7 +259,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     id: "account_based_selling_implementation",
     title: "Account-Based Selling Implementation",
     tagline:
-      "Modernize the seller workflow — AI lead scoring, account intelligence, AI-assisted CPQ and outreach",
+      "Modernize the seller workflow – AI lead scoring, account intelligence, AI-assisted CPQ and outreach",
     description:
       "End-to-end implementation of an AI-augmented sales motion. Combines Sales Cloud / Revenue Cloud configuration with AI lead scoring, account intelligence dashboards, AI-assisted outreach and proposal generation, and modern CPQ. Designed to compress sales cycle time, lift win rates, and free sellers to focus on relationship and complexity.",
     capabilities: ["abs", "tech_data_intelligence"],
@@ -287,7 +287,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Replace legacy CPQ + billing with a unified, AI-ready revenue platform",
     description:
-      "Wedge engagement targeted at the 4,100 legacy CPQ installs reaching renewal in 2026. Migrates clients from legacy CPQ + bolted-on billing to a unified Revenue Cloud deployment — with AI-assisted configuration, native subscription/usage pricing, and connected billing and revenue recognition. Anchored on Merkle's 50+ legacy CPQ deployments and Rocket 2.0 / AI Order Orchestration accelerators.",
+      "Wedge engagement targeted at the 4,100 legacy CPQ installs reaching renewal in 2026. Migrates clients from legacy CPQ + bolted-on billing to a unified Revenue Cloud deployment – with AI-assisted configuration, native subscription/usage pricing, and connected billing and revenue recognition. Anchored on Merkle's 50+ legacy CPQ deployments and Rocket 2.0 / AI Order Orchestration accelerators.",
     capabilities: ["abs", "operations_commerce", "tech_data_intelligence"],
     triggerThreshold: 3.0,
     scope:
@@ -301,7 +301,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Agentforce-native logic for deal review, quoting, and approvals",
     ],
     valueNarrative:
-      "Salesforce attaches 5× ACV when Revenue Cloud lands with 4 clouds — and Merkle built the legacy CPQ environments now up for renewal. This is the single highest-leverage wedge in the 2026 B2B Transformation pipeline.",
+      "Salesforce attaches 5× ACV when Revenue Cloud lands with 4 clouds – and Merkle built the legacy CPQ environments now up for renewal. This is the single highest-leverage wedge in the 2026 B2B Transformation pipeline.",
     sfType: "Revenue Platform",
     engagementSize: "20–32 weeks · $500K–$1.5M",
     priority: "critical",
@@ -316,7 +316,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     tagline:
       "Turn the post-sale motion into a revenue and advocacy engine through AI service and proactive expansion",
     description:
-      "Implementation of an AI-powered service operations program — combining Service Cloud / Agentforce service agents, customer health scoring, structured renewal plays, and a service-to-revenue motion. Designed to lift NRR by 5–10 points, deflect 30%+ of routine cases, and convert service interactions into expansion opportunities.",
+      "Implementation of an AI-powered service operations program – combining Service Cloud / Agentforce service agents, customer health scoring, structured renewal plays, and a service-to-revenue motion. Designed to lift NRR by 5–10 points, deflect 30%+ of routine cases, and convert service interactions into expansion opportunities.",
     capabilities: ["service_advocacy", "tech_data_intelligence"],
     triggerThreshold: 3.0,
     scope:
@@ -330,7 +330,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Service KPI scorecard tied to NRR / GRR / expansion",
     ],
     valueNarrative:
-      "Account-based service organizations are nearly 3× as likely to see increased customer spend in the future and receive much higher NPS (+83 vs +23 for non-ABM peers). AI service agents deflect 30%+ of routine cases — letting human agents become a relationship and revenue motion.",
+      "Account-based service organizations are nearly 3× as likely to see increased customer spend in the future and receive much higher NPS (+83 vs +23 for non-ABM peers). AI service agents deflect 30%+ of routine cases – letting human agents become a relationship and revenue motion.",
     sfType: "Service Modernization",
     engagementSize: "16–24 weeks · $400K–$900K",
     priority: "critical",
@@ -383,22 +383,22 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Seller KPI and incentive alignment with self-service",
     ],
     valueNarrative:
-      "73% of B2B buyers now prefer self-service — and the seller economics flip when 50%+ of revenue moves digital. Cost-to-sell drops 20%+, and reps redirect their time to consultative and strategic deals.",
+      "73% of B2B buyers now prefer self-service – and the seller economics flip when 50%+ of revenue moves digital. Cost-to-sell drops 20%+, and reps redirect their time to consultative and strategic deals.",
     sfType: "Commerce",
     engagementSize: "20–28 weeks · $500K–$1.5M",
     priority: "high",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // FOUNDATION — DATA, IDENTITY, AGENTIC
+  // FOUNDATION – DATA, IDENTITY, AGENTIC
   // ══════════════════════════════════════════════════════════════════
   {
     id: "customer_data_foundation",
     title: "Customer Data Foundation (Data Cloud + Identity)",
     tagline:
-      "Unify account, buying-group, and contact data across the revenue stack — the prerequisite for AI",
+      "Unify account, buying-group, and contact data across the revenue stack – the prerequisite for AI",
     description:
-      "Implementation of a unified customer data foundation — Data Cloud (or equivalent) plus an identity graph (Merkury / equivalent) — as the system of record across marketing, sales, service, and commerce. Cleans, consolidates, and resolves account and buying-group identity; enables every downstream AI use case.",
+      "Implementation of a unified customer data foundation – Data Cloud (or equivalent) plus an identity graph (Merkury / equivalent) – as the system of record across marketing, sales, service, and commerce. Cleans, consolidates, and resolves account and buying-group identity; enables every downstream AI use case.",
     capabilities: ["tech_data_intelligence", "abm", "abs"],
     triggerThreshold: 3.0,
     scope:
@@ -411,7 +411,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Activation feeds to marketing, sales, service, commerce",
     ],
     valueNarrative:
-      "1 in 3 marketing dollars is wasted due to incomplete or duplicated customer data. Without a unified foundation, AI is decorative — copilots can't see the full account, agents can't act on real signals, and personalisation collapses to firmographic targeting. Every Stage 3 / 4 organization Merkle has helped land has built this foundation first.",
+      "1 in 3 marketing dollars is wasted due to incomplete or duplicated customer data. Without a unified foundation, AI is decorative – copilots can't see the full account, agents can't act on real signals, and personalisation collapses to firmographic targeting. Every Stage 3 / 4 organization Merkle has helped land has built this foundation first.",
     sfType: "Data & Identity",
     engagementSize: "16–24 weeks · $400K–$900K",
     priority: "critical",
@@ -421,7 +421,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     id: "agentforce_revenue_operations",
     title: "Agentic Revenue Operations (Agentforce)",
     tagline:
-      "Embed AI agents inside seller, marketer, service, and ops workflows — with measurable role-level KPIs",
+      "Embed AI agents inside seller, marketer, service, and ops workflows – with measurable role-level KPIs",
     description:
       "Strategic Agentforce (or equivalent) program that defines agent roles across the revenue lifecycle, deploys them inside CRM workflows with explicit guardrails, and operates a measurement layer for agent contribution. Replaces ad-hoc 'AI tools' with a structured, governed agentic capability tied to revenue, retention, and cost-to-serve.",
     capabilities: ["tech_data_intelligence", "abs", "service_advocacy"],
@@ -436,7 +436,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Change management and adoption planning",
     ],
     valueNarrative:
-      "Most enterprises buy AI tools without an agentic operating model — adoption stalls and value is lost. A structured Agentforce program ties agent activity to specific revenue, retention, and cost outcomes, with governance the CFO and CISO can sign.",
+      "Most enterprises buy AI tools without an agentic operating model – adoption stalls and value is lost. A structured Agentforce program ties agent activity to specific revenue, retention, and cost outcomes, with governance the CFO and CISO can sign.",
     sfType: "AI / Agentic",
     engagementSize: "12–20 weeks · $300K–$700K",
     priority: "high",
@@ -449,9 +449,9 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
     id: "operating_model_adoption",
     title: "Operating Model Design & Adoption",
     tagline:
-      "Make the new operating model real — roles, KPIs, governance, embedded enablement",
+      "Make the new operating model real – roles, KPIs, governance, embedded enablement",
     description:
-      "Translates the Vision and Blueprint into a working operating model — defines new and evolved roles, decision rights, KPIs, governance cadence, and an embedded enablement plan. Most B2B transformations underperform because the human operating model lags the technology stack — this engagement closes that gap.",
+      "Translates the Vision and Blueprint into a working operating model – defines new and evolved roles, decision rights, KPIs, governance cadence, and an embedded enablement plan. Most B2B transformations underperform because the human operating model lags the technology stack – this engagement closes that gap.",
     capabilities: ["vision_strategy", "abm", "abs", "service_advocacy"],
     triggerThreshold: 3.5,
     scope:
@@ -464,7 +464,7 @@ export const B2B_OPPORTUNITIES: B2bOpportunity[] = [
       "Governance cadence and quarterly value reviews",
     ],
     valueNarrative:
-      "Tools without new roles default to old behavior. The single biggest predictor of transformation ROI is whether the operating model and incentive system change alongside the platform. Embedded enablement — coaches inside the team, not classroom training — is what makes the new model stick.",
+      "Tools without new roles default to old behavior. The single biggest predictor of transformation ROI is whether the operating model and incentive system change alongside the platform. Embedded enablement – coaches inside the team, not classroom training – is what makes the new model stick.",
     sfType: "Operating Model",
     engagementSize: "10–18 weeks · $300K–$700K",
     priority: "high",

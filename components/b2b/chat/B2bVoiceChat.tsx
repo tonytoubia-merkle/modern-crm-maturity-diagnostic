@@ -7,7 +7,7 @@ import { useVoice } from "@/lib/chat/useVoice";
 import type { B2bIndustry } from "@/lib/b2b/types";
 
 /**
- * B2B voice/chat shell — pairs B2bChatView with the shared VoiceOrb +
+ * B2B voice/chat shell – pairs B2bChatView with the shared VoiceOrb +
  * useVoice hook from the CRM surface. The voice plumbing (Web Speech API,
  * TTS, sentence chunking) is brand-neutral, so we reuse it directly.
  */

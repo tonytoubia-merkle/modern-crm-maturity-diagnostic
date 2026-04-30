@@ -76,12 +76,12 @@ export function AientCapabilityHeatmap({ scores }: AientCapabilityHeatmapProps) 
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => {
-                    if (typeof value !== "number") return ["—", name];
+                    if (typeof value !== "number") return ["–", name];
                     const rounded = Math.round(value);
                     const label = AIENT_SCORE_LABELS[rounded] ?? "";
                     return [
                       `${formatAientScore(value)}${
-                        label ? ` — ${label}` : ""
+                        label ? ` – ${label}` : ""
                       }`,
                       name,
                     ];
@@ -165,7 +165,7 @@ export function AientCapabilityHeatmap({ scores }: AientCapabilityHeatmapProps) 
               )}
             >
               <span className="font-bold">{v}</span>
-              <span>—</span>
+              <span>–</span>
               <span>{AIENT_SCORE_LABELS[v]}</span>
             </div>
           ))}

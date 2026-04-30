@@ -5,7 +5,7 @@ import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 import { MERKLE } from "@/lib/brand/tokens";
 
 /**
- * /connections — Merkle's presence at Salesforce Connections.
+ * /connections – Merkle's presence at Salesforce Connections.
  *
  * Brand blend: Salesforce Lightning Design System tokens for the
  * primary surfaces (CTAs, accents) co-branded with Merkle's ARC
@@ -68,7 +68,7 @@ const config: BrandConfig = {
   subheadline:
     "Two ways to size up where you stand. Take an AI-led conversation about your CRM, or run our guided Content Supply Chain survey. Either way, you walk away with a maturity score, an opportunity map, and how you compare to industry benchmarks.",
   steps: [
-    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "01", text: "Pick your diagnostic – CRM or Content Supply Chain" },
     { n: "02", text: "Get scored across the practice's capability areas" },
     { n: "03", text: "See opportunities and benchmarks" },
   ],

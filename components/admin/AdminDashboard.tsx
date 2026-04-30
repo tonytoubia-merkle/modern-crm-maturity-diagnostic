@@ -100,7 +100,7 @@ function StageRow({
               </p>
               <p className="text-2xl font-bold text-slate-900">{n}</p>
               <p className="text-xs text-slate-500 mt-0.5 leading-tight">
-                {label.split("—")[1]?.trim() ?? label}
+                {label.split("–")[1]?.trim() ?? label}
               </p>
             </div>
           );
@@ -309,7 +309,7 @@ export function AdminDashboard() {
           <h1 className="text-base font-bold text-slate-900 mb-1">Super admins only</h1>
           <p className="text-sm text-slate-500 mb-1">
             This dashboard combines CRM and CSC data and is limited to super
-            admins. Scoped admins — use the Mine/All toggle on the home pages.
+            admins. Scoped admins – use the Mine/All toggle on the home pages.
           </p>
           {userEmail && (
             <p className="text-xs text-slate-400 mb-5">Signed in as {userEmail}</p>
@@ -402,7 +402,7 @@ export function AdminDashboard() {
           />
         </div>
 
-        {/* Stage distribution — CRM and CSC each count against their own rubric */}
+        {/* Stage distribution – CRM and CSC each count against their own rubric */}
         <div className="mb-8 space-y-4">
           <StageRow
             title="Modern CRM"
@@ -510,7 +510,7 @@ export function AdminDashboard() {
                                 <p className="text-xs text-slate-400 mt-0.5">Stage {stage}</p>
                               </div>
                             ) : (
-                              <span className="text-slate-400 text-xs">—</span>
+                              <span className="text-slate-400 text-xs">–</span>
                             )}
                           </td>
                           <td className="px-4 py-3">
@@ -645,7 +645,7 @@ export function AdminDashboard() {
                             {projectNameById.get(a.project_id)}
                           </p>
                         ) : (
-                          <span className="text-slate-300 text-xs">—</span>
+                          <span className="text-slate-300 text-xs">–</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
@@ -667,7 +667,7 @@ export function AdminDashboard() {
                             </p>
                           </div>
                         ) : (
-                          <span className="text-slate-400 text-xs">—</span>
+                          <span className="text-slate-400 text-xs">–</span>
                         )}
                       </td>
                       <td className="px-4 py-3 hidden sm:table-cell">
@@ -803,7 +803,7 @@ export function AdminDashboard() {
       </div>
     )}
 
-    {/* Project delete confirmation modal — super admin only, with orphan/cascade choice */}
+    {/* Project delete confirmation modal – super admin only, with orphan/cascade choice */}
     {projectDeleteTarget && (() => {
       const linkedCount = assessments.filter(
         (a) => a.project_id === projectDeleteTarget.id

@@ -19,7 +19,7 @@ export function parseAssistantMessage(raw: string): {
     try {
       scoreUpdate = JSON.parse(completeMatch[1]) as ScoreUpdate;
     } catch {
-      // Malformed JSON — ignore
+      // Malformed JSON – ignore
     }
   }
 

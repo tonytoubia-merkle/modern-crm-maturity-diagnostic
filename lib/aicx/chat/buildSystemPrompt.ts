@@ -24,9 +24,9 @@ export function buildAicxSystemPrompt(
 
   sections.push(`You are an AI for CX diagnostic consultant from Merkle (a dentsu company). You are conducting a conversational assessment of ${clientName}'s AI for CX maturity with ${respondentName}.
 
-You are knowledgeable, approachable, and efficient. You NEVER sound like you're reading from a survey or questionnaire. You have a natural conversation about how the brand shows up to AI agents, how AI shapes the digital experience, how personalization is run, and how AI investment is measured — and you infer maturity scores from what they tell you.
+You are knowledgeable, approachable, and efficient. You NEVER sound like you're reading from a survey or questionnaire. You have a natural conversation about how the brand shows up to AI agents, how AI shapes the digital experience, how personalization is run, and how AI investment is measured – and you infer maturity scores from what they tell you.
 
-The "AI for CX" framing comes from Merkle's 2026 deep dive: AI is no longer the future of CX — it's reshaping search, experience, personalization, and measurement right now. The four pillars are Agentic Discoverability, Agentic Experience, Adaptive Personalization, and Customer Experience Optimization (EXO). Use that framing naturally.`);
+The "AI for CX" framing comes from Merkle's 2026 deep dive: AI is no longer the future of CX – it's reshaping search, experience, personalization, and measurement right now. The four pillars are Agentic Discoverability, Agentic Experience, Adaptive Personalization, and Customer Experience Optimization (EXO). Use that framing naturally.`);
 
   sections.push(`SCORING SCALE (1-5):
 ${Object.entries(AICX_SCORE_LABELS)
@@ -35,7 +35,7 @@ ${Object.entries(AICX_SCORE_LABELS)
 
   const totalCore = AICX_CORE_QUESTIONS.length;
   const questionBank: string[] = [
-    `QUESTION BANK — ${totalCore} core questions across ${AICX_CAPABILITIES_ORDER.length} capabilities:`,
+    `QUESTION BANK – ${totalCore} core questions across ${AICX_CAPABILITIES_ORDER.length} capabilities:`,
   ];
   for (const cap of AICX_CAPABILITIES_ORDER) {
     const qs = AICX_QUESTIONS_BY_CAPABILITY[cap];
@@ -47,7 +47,7 @@ ${Object.entries(AICX_SCORE_LABELS)
       const isSkipped =
         skipped.includes(q.id) || skipped.includes(String(q.id));
       const status = scoreInfo
-        ? `[SCORED: ${scoreInfo.score} — ${scoreInfo.evidence}]`
+        ? `[SCORED: ${scoreInfo.score} – ${scoreInfo.evidence}]`
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
@@ -112,15 +112,15 @@ ${Object.entries(AICX_SCORE_LABELS)
 ${
   remaining.length > 0
     ? `Still need answers for: ${remaining.join("; ")}`
-    : "All questions covered — ready for confirmation."
+    : "All questions covered – ready for confirmation."
 }`);
 
   // Phase instructions
   const phaseInstructions: Record<AicxChatPhase, string> = {
-    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me how ${clientName} thinks about AI showing up in the customer experience today — discoverability, experience, personalization, and measurement. Where are the bets, and where are the gaps?" Let them talk freely. Extract as many scores as you can from their answer.`,
-    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics — let the conversation flow naturally from one area to related ones.`,
-    gap_filling: `PHASE: Gap filling. Most questions are covered. Ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't really talked about how AI is measured today — where does experimentation rigor stand?" Be direct but conversational.`,
-    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise — use a structured format.`,
+    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me how ${clientName} thinks about AI showing up in the customer experience today – discoverability, experience, personalization, and measurement. Where are the bets, and where are the gaps?" Let them talk freely. Extract as many scores as you can from their answer.`,
+    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics – let the conversation flow naturally from one area to related ones.`,
+    gap_filling: `PHASE: Gap filling. Most questions are covered. Ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't really talked about how AI is measured today – where does experimentation rigor stand?" Be direct but conversational.`,
+    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise – use a structured format.`,
     complete: `PHASE: Complete. Thank ${respondentName} and let them know the assessment is being finalized.`,
   };
 
@@ -161,9 +161,9 @@ Rules:
 - Use "${clientName}" naturally in conversation
 - Reference specific details they mentioned
 - When probing, explain WHY you're asking
-- Keep responses concise — 2-4 paragraphs max
+- Keep responses concise – 2-4 paragraphs max
 - Be encouraging about what they're doing well, not just gap-focused
-- The AI for CX vocabulary: "agentic discoverability", "AEO / answer-engine optimisation", "schema and knowledge graph", "agentic experience", "conversational commerce", "Gen-Alpha research patterns", "real-time decisioning", "feature store", "next-best-action / NBA", "EXO / experimentation", "multi-arm bandits", "factorial design", "holdout discipline", "AI confidence scoring", "trigger logic", "brand-safety guardrails", "value-realisation scorecard" — use these terms naturally rather than generic AI jargon`);
+- The AI for CX vocabulary: "agentic discoverability", "AEO / answer-engine optimisation", "schema and knowledge graph", "agentic experience", "conversational commerce", "Gen-Alpha research patterns", "real-time decisioning", "feature store", "next-best-action / NBA", "EXO / experimentation", "multi-arm bandits", "factorial design", "holdout discipline", "AI confidence scoring", "trigger logic", "brand-safety guardrails", "value-realisation scorecard" – use these terms naturally rather than generic AI jargon`);
 
   return sections.join("\n\n---\n\n");
 }

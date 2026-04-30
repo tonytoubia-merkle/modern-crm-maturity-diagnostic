@@ -60,27 +60,27 @@ export const MATURITY_STAGES: Record<
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — Campaign-Centric CRM",
+    label: "Stage 1 – Campaign-Centric CRM",
     description:
-      "Marketing is planned around products and channels — broadcast offers to the largest likely customer set. Channels operate independently with limited customer recognition across interactions. CRM activity is largely calendar-driven with minimal use of behavioral signals or personalization. This is the starting point of CRM's operational efficiency era — focused on removing friction and optimizing transactions, but leaving significant trapped value on the table.",
+      "Marketing is planned around products and channels – broadcast offers to the largest likely customer set. Channels operate independently with limited customer recognition across interactions. CRM activity is largely calendar-driven with minimal use of behavioral signals or personalization. This is the starting point of CRM's operational efficiency era – focused on removing friction and optimizing transactions, but leaving significant trapped value on the table.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — Segmented Engagement",
+    label: "Stage 2 – Segmented Engagement",
     description:
-      "Basic segmentation and lifecycle messaging exist. The organization has begun connecting customer data across some channels and uses behavioral insights to guide segment-based engagement. Signals inform decisions in pockets, but consistent orchestration and real-time responsiveness are limited. 70% of consumers say brands don't understand them — Stage 2 organizations are beginning to close this experience gap but haven't yet connected identity, signals, and decisioning into a unified engine.",
+      "Basic segmentation and lifecycle messaging exist. The organization has begun connecting customer data across some channels and uses behavioral insights to guide segment-based engagement. Signals inform decisions in pockets, but consistent orchestration and real-time responsiveness are limited. 70% of consumers say brands don't understand them – Stage 2 organizations are beginning to close this experience gap but haven't yet connected identity, signals, and decisioning into a unified engine.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — Orchestrated Engagement",
+    label: "Stage 3 – Orchestrated Engagement",
     description:
-      "Customer signals drive engagement across channels. The organization operates an increasingly connected CRM engine with real-time responsiveness, predictive decisioning, loyalty integration, and first-party media activation. This is the Personalized Engagement wave — where identity and AI begin to work together, orchestration replaces siloed channel planning, and measurable business value accelerates. The shift from campaign thinking to conversation thinking is underway.",
+      "Customer signals drive engagement across channels. The organization operates an increasingly connected CRM engine with real-time responsiveness, predictive decisioning, loyalty integration, and first-party media activation. This is the Personalized Engagement wave – where identity and AI begin to work together, orchestration replaces siloed channel planning, and measurable business value accelerates. The shift from campaign thinking to conversation thinking is underway.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — Relationship Growth Engine",
+    label: "Stage 4 – Relationship Growth Engine",
     description:
-      "Signals continuously power engagement, loyalty, and media growth. The organization operates a fully orchestrated, data-driven CRM system — the Adaptive Intelligence stage — where every interaction builds on the last, and identity and AI are fully integrated at the heart of the operation. First-party relationships compound as a growth asset. The organization has made the full shift from campaigns to conversations: from product-centric planning to customer-centric outcomes, from disconnected channels to a unified relationship engine.",
+      "Signals continuously power engagement, loyalty, and media growth. The organization operates a fully orchestrated, data-driven CRM system – the Adaptive Intelligence stage – where every interaction builds on the last, and identity and AI are fully integrated at the heart of the operation. First-party relationships compound as a growth asset. The organization has made the full shift from campaigns to conversations: from product-centric planning to customer-centric outcomes, from disconnected channels to a unified relationship engine.",
     color: "green",
   },
 };

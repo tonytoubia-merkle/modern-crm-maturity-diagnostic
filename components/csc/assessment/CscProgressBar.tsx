@@ -97,7 +97,7 @@ export function CscProgressBar({
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
           {currentStep > 0 && currentStep <= CSC_CAPABILITIES_ORDER.length
-            ? `${CSC_CAPABILITY_LABELS[CSC_CAPABILITIES_ORDER[currentStep - 1]]} — ${CSC_CAPABILITY_SUBTITLES[CSC_CAPABILITIES_ORDER[currentStep - 1]]}`
+            ? `${CSC_CAPABILITY_LABELS[CSC_CAPABILITIES_ORDER[currentStep - 1]]} – ${CSC_CAPABILITY_SUBTITLES[CSC_CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"
             : "Industry context"}

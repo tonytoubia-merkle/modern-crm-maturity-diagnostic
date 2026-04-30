@@ -25,7 +25,7 @@ const STATE_CONFIG: Record<VoiceState, { ring: string; bg: string; label: string
   listening: { ring: "#22c55e", bg: "#f0fdf4", label: "Listening..." },
   countdown: { ring: "#f97316", bg: "#fff7ed", label: "" }, // label set dynamically
   paused: { ring: "#94a3b8", bg: "#f8fafc", label: "Take your time" },
-  speaking: { ring: "#3b82f6", bg: "#eff6ff", label: "Speaking — talk to interrupt" },
+  speaking: { ring: "#3b82f6", bg: "#eff6ff", label: "Speaking – talk to interrupt" },
   processing: { ring: "#1a1a1a", bg: "#f4f4f5", label: "Thinking..." },
 };
 
@@ -55,7 +55,7 @@ export function VoiceOrb({
 
   return (
     <div className="flex flex-col items-center gap-2 py-3">
-      {/* Live transcript — compact single line */}
+      {/* Live transcript – compact single line */}
       {(state === "listening" || state === "countdown" || state === "paused") && (transcript || interimText) && (
         <div className="max-w-sm w-full px-4">
           <p className="text-xs text-slate-500 truncate bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5">

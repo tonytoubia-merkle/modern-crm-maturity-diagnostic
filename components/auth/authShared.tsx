@@ -22,7 +22,7 @@ export function validateAuthEmail(
 /**
  * Renders the Google OAuth button. Both /login and /register show it.
  * Google sign-in still gets re-validated server-side via the auth
- * callback — wrong-domain accounts will be rejected there too.
+ * callback – wrong-domain accounts will be rejected there too.
  */
 export function GoogleAuthButton({
   onClick,

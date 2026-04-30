@@ -154,13 +154,12 @@ export default function HomePage() {
       {/* Hero */}
       <section className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
-          <p className="text-sm font-medium text-m2-sky mb-3">Merkle CRM Practice</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
             Modern CRM Maturity Diagnostic
           </h1>
           <p className="text-base text-white/70 leading-relaxed max-w-2xl mb-8">
             Assess client CRM maturity, generate strategic opportunities, and build
-            structured workshop agendas — from diagnostic to pipeline in one workflow.
+            structured workshop agendas – from diagnostic to pipeline in one workflow.
           </p>
           <div className="flex flex-wrap gap-3">
             <a
@@ -221,7 +220,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Projects + standalone assessments — auto-loaded */}
+        {/* Projects + standalone assessments – auto-loaded */}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
             <h3 className="text-sm font-bold text-slate-900">

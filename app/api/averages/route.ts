@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
  *
  * Response shape:
  * {
- *   // Per-question integer averages (legacy — used by ScoreMapModal review).
+ *   // Per-question integer averages (legacy – used by ScoreMapModal review).
  *   overall: { "1": 3, "2": 2, ... },
  *   industry: { "1": 3, "2": 4, ... } | null,
  *

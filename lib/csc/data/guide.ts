@@ -1,7 +1,7 @@
 /**
  * CSC Facilitator Playbook scaffolding.
  *
- * PLACEHOLDER — mirrors the shape of the CRM guide at lib/data/guide.ts.
+ * PLACEHOLDER – mirrors the shape of the CRM guide at lib/data/guide.ts.
  * Populate with Merkle-specific CSC workshop content once the practice
  * lead has reviewed. The /csc/guide page (not yet built) will consume
  * these exports directly.

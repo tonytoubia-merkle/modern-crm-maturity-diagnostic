@@ -1,9 +1,9 @@
-// ── B2B Transformation Diagnostic — Types ─────────────────────────────
+// ── B2B Transformation Diagnostic – Types ─────────────────────────────
 // Parallel type system to the Modern CRM and CSC diagnostics, kept
 // independent so changes here cannot affect either.
 //
 // The framing comes straight from the Merkle "B2B Transformation"
-// 2025 GTM narrative — Account-Based Everything Transformation
+// 2025 GTM narrative – Account-Based Everything Transformation
 // reshaping strategy, organizational structure, and cultural mindset
 // around high-value account success. The capability set spans the
 // four account-based pillars (Marketing, Selling, Service & Advocacy,
@@ -30,7 +30,7 @@ export type B2bMaturityStage = 1 | 2 | 3 | 4;
 
 export interface B2bQuestion {
   id: number;
-  /** Default question text — used when no industry is selected or when
+  /** Default question text – used when no industry is selected or when
    *  the selected industry has no override in `byIndustry`. */
   text: string;
   capability: B2bCapability;
@@ -159,7 +159,7 @@ export interface B2bWorkshopVignette {
   category: string;
   requiredInputs: string[];
   /** Markdown-flavored facilitation guide. Use **bold** for section
-   * headers (e.g. **Setup (10 min):**) — the library renderer parses
+   * headers (e.g. **Setup (10 min):**) – the library renderer parses
    * `**…**` runs as bold. */
   facilitationGuide: string;
   expectedOutputs: string[];

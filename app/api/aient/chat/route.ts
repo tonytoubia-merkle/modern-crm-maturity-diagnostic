@@ -10,7 +10,7 @@ import type { AientIndustry } from "@/lib/aient/types";
 export const runtime = "nodejs";
 
 /**
- * POST /api/aient/chat — streaming Gemini chat for the AI for Enterprise
+ * POST /api/aient/chat – streaming Gemini chat for the AI for Enterprise
  * conversational diagnostic. Mirrors /api/chat and /api/aient/chat.
  */
 export async function POST(request: NextRequest) {

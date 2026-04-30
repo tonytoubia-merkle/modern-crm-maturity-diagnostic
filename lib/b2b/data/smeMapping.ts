@@ -4,7 +4,7 @@
  * to surface "who to pull in" next to each triggered opportunity.
  *
  * Initial seed grounded in the AMER Summit working session (March 2026)
- * leadership list. This is intentionally compact at v1 — the practice
+ * leadership list. This is intentionally compact at v1 – the practice
  * lead should expand it with named owners per engagement once the
  * diagnostic is in field use.
  */

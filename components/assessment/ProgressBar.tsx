@@ -93,7 +93,7 @@ export function ProgressBar({
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
           {currentStep > 0 && currentStep <= CAPABILITIES_ORDER.length
-            ? `${CAPABILITY_LABELS[CAPABILITIES_ORDER[currentStep - 1]]} — ${CAPABILITY_SUBTITLES[CAPABILITIES_ORDER[currentStep - 1]]}`
+            ? `${CAPABILITY_LABELS[CAPABILITIES_ORDER[currentStep - 1]]} – ${CAPABILITY_SUBTITLES[CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"
             : "Industry context"}

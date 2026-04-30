@@ -97,7 +97,7 @@ export function AicxProgressBar({
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
           {currentStep > 0 && currentStep <= AICX_CAPABILITIES_ORDER.length
-            ? `${AICX_CAPABILITY_LABELS[AICX_CAPABILITIES_ORDER[currentStep - 1]]} — ${AICX_CAPABILITY_SUBTITLES[AICX_CAPABILITIES_ORDER[currentStep - 1]]}`
+            ? `${AICX_CAPABILITY_LABELS[AICX_CAPABILITIES_ORDER[currentStep - 1]]} – ${AICX_CAPABILITY_SUBTITLES[AICX_CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"
             : "Industry context"}

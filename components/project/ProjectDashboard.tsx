@@ -568,7 +568,7 @@ export function ProjectDashboard({ projectShareId }: ProjectDashboardProps) {
                 {project.workshop_agenda.days.map((day) => (
                   <div key={day.dayNumber} className="mb-4">
                     <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
-                      Day {day.dayNumber} — {day.title}
+                      Day {day.dayNumber} – {day.title}
                     </p>
                     <div className="space-y-1.5">
                       {day.blocks.map((block, bi) => {

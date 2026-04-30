@@ -151,15 +151,12 @@ export default function AientHomePage() {
 
       <section className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
-          <p className="text-sm font-medium text-m2-sky mb-3">
-            Merkle AI for Enterprise Practice
-          </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
             AI for Enterprise Maturity Diagnostic
           </h1>
           <p className="text-base text-white/70 leading-relaxed max-w-2xl mb-8">
             Benchmark how the enterprise has wired AI into data foundations,
-            work design, intelligence delivery, AI assurance, and adoption —
+            work design, intelligence delivery, AI assurance, and adoption –
             and identify the gap between today&apos;s portfolio and the
             &quot;AI high performer&quot; cohort capturing meaningful EBIT
             impact.
@@ -201,7 +198,7 @@ export default function AientHomePage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900 mb-1.5">Assess</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              36 questions across six AI-for-Enterprise capabilities — Data
+              36 questions across six AI-for-Enterprise capabilities – Data
               Foundations, Use Case Design, Work Design, Intelligence
               Delivery, AI Assurance, and Adoption &amp; Governance.
             </p>
@@ -222,7 +219,7 @@ export default function AientHomePage() {
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed">
               Salesforce-ready account narrative, pipeline table, and
-              individual opportunity records — plus shareable results for
+              individual opportunity records – plus shareable results for
               client conversations.
             </p>
           </div>

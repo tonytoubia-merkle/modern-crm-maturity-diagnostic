@@ -171,10 +171,10 @@ export function CscResultsView({
                     This report summarizes the findings of a Content Supply
                     Chain Diagnostic conducted for{" "}
                     <strong>{assessment.clientName}</strong>. The assessment
-                    evaluates six capabilities — Strategy &amp; Planning,
+                    evaluates six capabilities – Strategy &amp; Planning,
                     Workflow &amp; Production, Asset Management &amp; Governance,
                     Distribution &amp; Activation, Measurement &amp; Insights,
-                    and Intelligence &amp; Automation — that together determine
+                    and Intelligence &amp; Automation – that together determine
                     how effectively an organization turns creative ideas into
                     personalized content at scale. Each capability is scored on
                     a 1–5 scale and mapped to one of four maturity stages. The
@@ -185,7 +185,7 @@ export function CscResultsView({
                   <>
                     This diagnostic assessed{" "}
                     <strong>{assessment.clientName}</strong> across the six
-                    capabilities of a modern content supply chain — Strategy
+                    capabilities of a modern content supply chain – Strategy
                     &amp; Planning, Workflow &amp; Production, Asset Management
                     &amp; Governance, Distribution &amp; Activation, Measurement
                     &amp; Insights, and Intelligence &amp; Automation. Scores

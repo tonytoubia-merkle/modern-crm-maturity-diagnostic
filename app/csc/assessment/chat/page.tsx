@@ -8,7 +8,7 @@ import { CSC_INDUSTRY_LABELS } from "@/lib/csc/data/questions";
 import type { CscIndustry } from "@/lib/csc/types";
 
 /**
- * /csc/assessment/chat — internal-consultant conversational entry point
+ * /csc/assessment/chat – internal-consultant conversational entry point
  * for the CSC diagnostic. Mirrors /crm/assessment/chat: setup form
  * collects basic context, then renders CscChatView for a text-driven
  * conversation. Voice input is available externally through the branded

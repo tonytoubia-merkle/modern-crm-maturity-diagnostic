@@ -7,7 +7,7 @@ import { useVoice } from "@/lib/chat/useVoice";
 import type { AientIndustry } from "@/lib/aient/types";
 
 /**
- * AI for Enterprise voice/chat shell — pairs AientChatView with the shared VoiceOrb +
+ * AI for Enterprise voice/chat shell – pairs AientChatView with the shared VoiceOrb +
  * useVoice hook from the CRM surface. The voice plumbing (Web Speech API,
  * TTS, sentence chunking) is brand-neutral, so we reuse it directly.
  */

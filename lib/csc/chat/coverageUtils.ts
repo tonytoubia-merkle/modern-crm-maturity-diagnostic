@@ -9,7 +9,7 @@ import type { CscChatPhase, CscInferredScore } from "./types";
 import type { CscIndustry } from "@/lib/csc/types";
 
 /**
- * Phase thresholds — proportionally aligned with the CRM phasing
+ * Phase thresholds – proportionally aligned with the CRM phasing
  * (CRM: 30 questions → opening<5, exploration<20). CSC has 45 core
  * questions, so the bands are scaled to roughly the same coverage
  * percentages (≤17%, ≤67%, then gap-filling, then confirmation).

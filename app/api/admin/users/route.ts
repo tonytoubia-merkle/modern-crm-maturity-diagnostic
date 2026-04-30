@@ -14,7 +14,7 @@ function normalizeScopes(input: unknown): string[] | null {
   return Array.from(new Set(cleaned));
 }
 
-/** GET /api/admin/users — list all app_users rows. Super admins only. */
+/** GET /api/admin/users – list all app_users rows. Super admins only. */
 export async function GET() {
   const access = await getAdminAccess();
   if (!access.isSuperAdmin) {
@@ -33,7 +33,7 @@ export async function GET() {
   return NextResponse.json(data ?? []);
 }
 
-/** POST /api/admin/users — upsert a user's role and/or scopes. Super admins only. */
+/** POST /api/admin/users – upsert a user's role and/or scopes. Super admins only. */
 export async function POST(request: NextRequest) {
   const access = await getAdminAccess();
   if (!access.isSuperAdmin) {

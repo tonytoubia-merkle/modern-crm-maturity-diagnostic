@@ -7,7 +7,7 @@ import type {
 
 /**
  * Resolves a question's display text given the assessment's industry.
- * Mirrors lib/data/questions.ts:resolveQuestionText — see notes there.
+ * Mirrors lib/data/questions.ts:resolveQuestionText – see notes there.
  */
 export function resolveCscQuestionText(
   q: Pick<CscQuestion, "text" | "byIndustry">,
@@ -50,7 +50,7 @@ export const CSC_CAPABILITY_DESCRIPTIONS: Record<CscCapability, string> = {
   strategy_planning:
     "Assess the extent to which content strategy, ideation, portfolio planning, editorial calendars, and content policies are designed to deliver audience-led, outcomes-driven content at scale.",
   workflow_production:
-    "Assess the extent to which content is produced through integrated, scalable, and increasingly AI-augmented workflows — from project management through approvals, costs, resources, and localization.",
+    "Assess the extent to which content is produced through integrated, scalable, and increasingly AI-augmented workflows – from project management through approvals, costs, resources, and localization.",
   asset_governance:
     "Assess the extent to which content assets are stored, accessed, versioned, reused, rights-cleared, archived, compliant, tagged, and secured through a trusted DAM foundation.",
   distribution_activation:
@@ -97,14 +97,14 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   // ── Strategy & Planning (8) ───────────────────────────────────────
   {
     id: 1,
-    text: "To what extent is content strategy developed with clear integration to business objectives, audience insights, and measurable outcomes — rather than planned around product launches or calendar cadence?",
+    text: "To what extent is content strategy developed with clear integration to business objectives, audience insights, and measurable outcomes – rather than planned around product launches or calendar cadence?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: content planning is dynamic and continuously optimized based on audience insights, performance analytics, and real-time data.",
   },
   {
     id: 2,
-    text: "To what extent is the approach to updating existing content structured, data-driven, and increasingly automated — rather than reactive or manual?",
+    text: "To what extent is the approach to updating existing content structured, data-driven, and increasingly automated – rather than reactive or manual?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: AI-powered systems predict refresh needs and auto-prioritize updates based on performance signals.",
@@ -118,14 +118,14 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 4,
-    text: "To what extent are new content ideas generated systematically across channels — including through AI-powered ideation from brand-aligned sources?",
+    text: "To what extent are new content ideas generated systematically across channels – including through AI-powered ideation from brand-aligned sources?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: a unified AI-powered platform generates a vast number of on-brand content ideas from a single prompt.",
   },
   {
     id: 5,
-    text: "To what extent are content ideas assessed for potential performance before production — using predictive analytics and AI content analytics?",
+    text: "To what extent are content ideas assessed for potential performance before production – using predictive analytics and AI content analytics?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: predictive campaign and AI content analytics validate ideas and assess potential effectiveness across audiences.",
@@ -139,7 +139,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 7,
-    text: "To what extent is the content calendar centralized in content management platforms and dynamically optimized — ideally with AI-driven scheduling?",
+    text: "To what extent is the content calendar centralized in content management platforms and dynamically optimized – ideally with AI-driven scheduling?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: enterprise-wide adoption of a sophisticated editorial calendar integrated with AI-driven scheduling tools.",
@@ -155,7 +155,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   // ── Workflow & Production (10) ────────────────────────────────────
   {
     id: 9,
-    text: "To what extent is technology — including AI and integrated creative tools — used to accelerate content creation at scale?",
+    text: "To what extent is technology – including AI and integrated creative tools – used to accelerate content creation at scale?",
     capability: "workflow_production",
     tooltip:
       "Optimized: micro-content orchestration enables atom-level reuse; APIs and AI scale content across channels.",
@@ -183,7 +183,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 13,
-    text: "To what extent are approval workflows predictive and dynamic — adapting to content type, risk level, and region?",
+    text: "To what extent are approval workflows predictive and dynamic – adapting to content type, risk level, and region?",
     capability: "workflow_production",
     tooltip:
       "Optimized: AI-powered workflows predict bottlenecks and dynamically reassign approvals based on workload or expertise.",
@@ -218,7 +218,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 18,
-    text: "To what extent is content localization or market/audience variant production managed dynamically — with AI predicting needs and generating culturally and contextually resonant content (or, for single-market businesses, audience- and segment-specific variants)?",
+    text: "To what extent is content localization or market/audience variant production managed dynamically – with AI predicting needs and generating culturally and contextually resonant content (or, for single-market businesses, audience- and segment-specific variants)?",
     capability: "workflow_production",
     tooltip:
       "Optimized: AI predicts localization or audience-variant needs and auto-generates resonant content across markets, regions, or audience segments. Applies whether the business operates internationally or in a single market with multiple audience or regional variants.",
@@ -248,7 +248,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 22,
-    text: "To what extent are content components reused systematically — with predictive analytics identifying high-value reuse opportunities?",
+    text: "To what extent are content components reused systematically – with predictive analytics identifying high-value reuse opportunities?",
     capability: "asset_governance",
     tooltip:
       "Optimized: predictive analytics identify high-value components for reuse across campaigns and channels.",
@@ -392,7 +392,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 42,
-    text: "To what extent are dashboards used to visualize content performance — ideally with AI-generated, role-based customization?",
+    text: "To what extent are dashboards used to visualize content performance – ideally with AI-generated, role-based customization?",
     capability: "measurement_insights",
     tooltip:
       "Optimized: AI/ML dashboards auto-generate cross-channel customizable views based on user roles and preferences.",
@@ -415,7 +415,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 45,
-    text: "To what extent is automation — including AI-driven component combination — used to produce content at scale?",
+    text: "To what extent is automation – including AI-driven component combination – used to produce content at scale?",
     capability: "intelligence_automation",
     tooltip:
       "Optimized: AI predicts optimal component combinations based on real-time analytics to produce content at scale.",
@@ -448,7 +448,7 @@ export const CSC_INDUSTRY_LABELS: Record<string, string> = {
   automotive: "Automotive / Mobility",
 };
 
-// Optional industry supplement (not in xlsx source — carried forward from
+// Optional industry supplement (not in xlsx source – carried forward from
 // the CRM diagnostic's shape). Capabilities re-mapped to the CSC 6-set.
 export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   // Retail
@@ -550,7 +550,7 @@ export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   // Travel & Hospitality
   {
     id: "th_1",
-    text: "To what extent is content personalized across the trip lifecycle — dream, plan, book, stay, share — rather than treated as a single moment?",
+    text: "To what extent is content personalized across the trip lifecycle – dream, plan, book, stay, share – rather than treated as a single moment?",
     industry: "travel_hospitality",
     capability: "distribution_activation",
   },
@@ -594,7 +594,7 @@ export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   },
   {
     id: "auto_3",
-    text: "To what extent is content aligned to the full vehicle lifecycle — research, purchase, service, loyalty, re-purchase?",
+    text: "To what extent is content aligned to the full vehicle lifecycle – research, purchase, service, loyalty, re-purchase?",
     industry: "automotive",
     capability: "strategy_planning",
   },

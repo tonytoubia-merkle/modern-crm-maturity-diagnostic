@@ -205,7 +205,7 @@ export function AssessmentFlow({
 
   return (
     <div className="min-h-screen font-merkle bg-merkle-grey-60">
-      {/* Branded nav bar — Merkle artifact treatment */}
+      {/* Branded nav bar – Merkle artifact treatment */}
       <div className="sticky top-0 z-20 bg-merkle-secondary-600">
         <div className="max-w-3xl mx-auto px-4 py-2 flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -258,7 +258,7 @@ export function AssessmentFlow({
                       {([1, 2, 3, 4, 5] as const).map((v) => (
                         <div key={v}>
                           <strong className="text-slate-700">{v} {SCORE_LABELS[v]}</strong>
-                          <span className="text-slate-400"> — </span>
+                          <span className="text-slate-400"> – </span>
                           {v === 1 && "Capability does not exist or is highly fragmented."}
                           {v === 2 && "Limited pilots or isolated capabilities exist."}
                           {v === 3 && "In use but not consistently integrated across teams."}

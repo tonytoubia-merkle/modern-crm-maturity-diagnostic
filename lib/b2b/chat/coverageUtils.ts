@@ -9,7 +9,7 @@ import type { B2bChatPhase, B2bInferredScore } from "./types";
 import type { B2bIndustry } from "@/lib/b2b/types";
 
 /**
- * Phase thresholds — proportional to CRM (5 / 20 over 30 questions).
+ * Phase thresholds – proportional to CRM (5 / 20 over 30 questions).
  * B2B has 36 core questions, so the bands are scaled to roughly the
  * same coverage percentages.
  */

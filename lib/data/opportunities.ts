@@ -8,7 +8,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Merkury Consumer 360",
     tagline: "Build the unified data foundation that powers modern CRM",
     description:
-      "Implement a future-ready, composable customer data environment powered by Merkury Identity — Merkle's industry-leading identity resolution and graph. Connect disparate data sources into a unified consumer view that enables AI-ready personalization, advanced analytics, and omni-channel activation. This is the foundational investment that unlocks downstream CRM capability.",
+      "Implement a future-ready, composable customer data environment powered by Merkury Identity – Merkle's industry-leading identity resolution and graph. Connect disparate data sources into a unified consumer view that enables AI-ready personalization, advanced analytics, and omni-channel activation. This is the foundational investment that unlocks downstream CRM capability.",
     capabilities: ["identity", "signals"],
     triggerThreshold: 3.0,
     scope:
@@ -21,7 +21,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Audience publishing to activation channels (media, email, SMS, commerce)",
     ],
     valueNarrative:
-      "To be AI-ready and drive true personalization, brands must have the right data environment. Merkury Consumer 360 connects data, identity, and technology to remove silos — enabling intelligent, always-on engagement. 'Data is siloed. Customers are not.' Merkle has deployed 160 marketing databases and processes 160B CDI records annually. Clients see faster time-to-market on CX outcomes and the foundational capability for all downstream personalization and media activation.",
+      "To be AI-ready and drive true personalization, brands must have the right data environment. Merkury Consumer 360 connects data, identity, and technology to remove silos – enabling intelligent, always-on engagement. 'Data is siloed. Customers are not.' Merkle has deployed 160 marketing databases and processes 160B CDI records annually. Clients see faster time-to-market on CX outcomes and the foundational capability for all downstream personalization and media activation.",
     sfType: "Data & Technology",
     engagementSize: "Large (20–32 weeks)",
     priority: "critical",
@@ -30,9 +30,9 @@ export const OPPORTUNITIES: Opportunity[] = [
   {
     id: "identity_resolution",
     title: "Identity Resolution & Unified Customer Profile",
-    tagline: "Recognize every customer — known and unknown — across every touchpoint",
+    tagline: "Recognize every customer – known and unknown – across every touchpoint",
     description:
-      "Implement a persistent customer identity layer that connects known and anonymous data into a single record that travels with the customer across channels, devices, and business units. Identity is the foundation of Modern CRM — enabling real-time intent recognition, extending CRM beyond owned channels into paid and earned media, and unlocking 1:1 engagement at scale.",
+      "Implement a persistent customer identity layer that connects known and anonymous data into a single record that travels with the customer across channels, devices, and business units. Identity is the foundation of Modern CRM – enabling real-time intent recognition, extending CRM beyond owned channels into paid and earned media, and unlocking 1:1 engagement at scale.",
     capabilities: ["identity"],
     triggerThreshold: 3.0,
     scope:
@@ -45,7 +45,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Profile completeness scorecard and enrichment roadmap",
     ],
     valueNarrative:
-      "Identity connects known and anonymous data into a single, persistent record that travels with the customer across channels, devices, and business units. 1 in 3 marketing dollars is wasted due to incomplete, duplicated, or poorly integrated customer data — identity resolution reclaims that value. Organizations with unified identity see 20–35% improvement in campaign match rates and enable the foundational layer required for all personalization and media activation.",
+      "Identity connects known and anonymous data into a single, persistent record that travels with the customer across channels, devices, and business units. 1 in 3 marketing dollars is wasted due to incomplete, duplicated, or poorly integrated customer data – identity resolution reclaims that value. Organizations with unified identity see 20–35% improvement in campaign match rates and enable the foundational layer required for all personalization and media activation.",
     sfType: "Identity & Data Foundation",
     engagementSize: "Large (16–24 weeks)",
     priority: "critical",
@@ -56,7 +56,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Householding & Relationship Graph",
     tagline: "Connect customers within households to drive smarter engagement",
     description:
-      "Build household and relationship-level intelligence to identify shared accounts, family members, gift buyers, and secondary purchasers. Enable engagement strategies that account for household dynamics and lifecycle stage — unlocking multi-buyer strategies that single-profile approaches miss.",
+      "Build household and relationship-level intelligence to identify shared accounts, family members, gift buyers, and secondary purchasers. Enable engagement strategies that account for household dynamics and lifecycle stage – unlocking multi-buyer strategies that single-profile approaches miss.",
     capabilities: ["identity"],
     triggerThreshold: 2.5,
     scope:
@@ -69,7 +69,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Relationship graph integration into CRM and loyalty platforms",
     ],
     valueNarrative:
-      "Household-aware engagement reduces redundant outreach, improves offer relevance, and unlocks multi-buyer lifecycle strategies that single-profile approaches miss. Gift buyers identified through relationship intelligence drive incremental purchase behavior invisible to individual-level profiles — a significant and under-tapped source of CRM-driven revenue.",
+      "Household-aware engagement reduces redundant outreach, improves offer relevance, and unlocks multi-buyer lifecycle strategies that single-profile approaches miss. Gift buyers identified through relationship intelligence drive incremental purchase behavior invisible to individual-level profiles – a significant and under-tapped source of CRM-driven revenue.",
     sfType: "Identity & Data Foundation",
     engagementSize: "Medium (10–14 weeks)",
     priority: "high",
@@ -82,7 +82,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Real-Time Signal Capture & Activation",
     tagline: "Capture behavioral intent and activate it in the moment it matters",
     description:
-      "Implement the data infrastructure and integration architecture to capture, unify, and activate behavioral signals in real or near-real time. Connect web, app, in-store, and service interactions to the customer profile — moving from batch-based campaign triggers to event-driven, intent-responsive engagement. Real-time signal capability is the engine behind Modern CRM's shift from campaigns to conversations.",
+      "Implement the data infrastructure and integration architecture to capture, unify, and activate behavioral signals in real or near-real time. Connect web, app, in-store, and service interactions to the customer profile – moving from batch-based campaign triggers to event-driven, intent-responsive engagement. Real-time signal capability is the engine behind Modern CRM's shift from campaigns to conversations.",
     capabilities: ["signals"],
     triggerThreshold: 3.0,
     scope:
@@ -95,7 +95,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Lifecycle milestone signal identification and mapping",
     ],
     valueNarrative:
-      "Real-time signal capture enables triggered messaging at moments of intent — reducing time-to-engagement from days to minutes. 70% of consumers say brands don't understand them; real-time signals close the experience gap by making every interaction context-aware and relevant. Lifecycle-triggered programs consistently outperform batch campaigns by 3–5x on engagement and conversion metrics.",
+      "Real-time signal capture enables triggered messaging at moments of intent – reducing time-to-engagement from days to minutes. 70% of consumers say brands don't understand them; real-time signals close the experience gap by making every interaction context-aware and relevant. Lifecycle-triggered programs consistently outperform batch campaigns by 3–5x on engagement and conversion metrics.",
     sfType: "Data & Technology",
     engagementSize: "Large (18–26 weeks)",
     priority: "critical",
@@ -106,7 +106,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Lifecycle & Milestone Trigger Program",
     tagline: "Engage customers at the moments that matter most",
     description:
-      "Design and activate a comprehensive lifecycle trigger program that responds to key customer milestones — onboarding, anniversary, lapse risk, reactivation, and upgrade signals. Move from calendar-based campaigns to event-driven engagement that meets customers at the right moment with the right message.",
+      "Design and activate a comprehensive lifecycle trigger program that responds to key customer milestones – onboarding, anniversary, lapse risk, reactivation, and upgrade signals. Move from calendar-based campaigns to event-driven engagement that meets customers at the right moment with the right message.",
     capabilities: ["signals", "engagement"],
     triggerThreshold: 2.75,
     scope:
@@ -119,7 +119,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Deliverability and frequency management across trigger programs",
     ],
     valueNarrative:
-      "Lifecycle-triggered programs consistently outperform batch campaigns by 3–5x on engagement and conversion metrics, while reducing overall promotional spend. 'Messaging — through email, SMS, chat, and other touchpoints — is one of the most effective growth levers many brands operate.' Getting the right message in front of the right customer at the right moment is the difference between retained revenue and missed opportunity.",
+      "Lifecycle-triggered programs consistently outperform batch campaigns by 3–5x on engagement and conversion metrics, while reducing overall promotional spend. 'Messaging – through email, SMS, chat, and other touchpoints – is one of the most effective growth levers many brands operate.' Getting the right message in front of the right customer at the right moment is the difference between retained revenue and missed opportunity.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (12–16 weeks)",
     priority: "high",
@@ -132,7 +132,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Predictive Segmentation & Audience Modeling",
     tagline: "Replace static segments with dynamic, predictive audience intelligence",
     description:
-      "Build a suite of predictive models that power dynamic segmentation — including propensity to purchase, churn risk, CLV tiers, and product affinity. Deploy models into the engagement stack for always-on audience activation. Predictive AI is at the heart of Modern CRM's shift from product-driven planning to proactive, moment-driven decisions.",
+      "Build a suite of predictive models that power dynamic segmentation – including propensity to purchase, churn risk, CLV tiers, and product affinity. Deploy models into the engagement stack for always-on audience activation. Predictive AI is at the heart of Modern CRM's shift from product-driven planning to proactive, moment-driven decisions.",
     capabilities: ["decisioning"],
     triggerThreshold: 3.0,
     scope:
@@ -145,7 +145,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "ML ops pipeline and model deployment cadence",
     ],
     valueNarrative:
-      "Predictive segmentation improves targeting precision by 30–50%, enabling the right message to reach the right customer and reducing wasteful outreach to low-propensity audiences. NBX models enable brands to act on customer need before they ask — shifting from reactive, product-driven planning to proactive, moment-driven engagement. 72% of consumers expect personalized recognition; predictive models are what make that expectation achievable at scale.",
+      "Predictive segmentation improves targeting precision by 30–50%, enabling the right message to reach the right customer and reducing wasteful outreach to low-propensity audiences. NBX models enable brands to act on customer need before they ask – shifting from reactive, product-driven planning to proactive, moment-driven engagement. 72% of consumers expect personalized recognition; predictive models are what make that expectation achievable at scale.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Large (16–20 weeks)",
     priority: "high",
@@ -156,7 +156,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Next Best Action (NBA) Decisioning Engine",
     tagline: "Determine the most relevant action for every customer, every time",
     description:
-      "Implement a centralized decisioning layer that dynamically determines the next best action for each customer based on real-time context, behavioral signals, and business rules. Enable coordinated offer, message, and experience prioritization across channels — replacing rule-based campaigns with intelligent, context-aware engagement.",
+      "Implement a centralized decisioning layer that dynamically determines the next best action for each customer based on real-time context, behavioral signals, and business rules. Enable coordinated offer, message, and experience prioritization across channels – replacing rule-based campaigns with intelligent, context-aware engagement.",
     capabilities: ["decisioning"],
     triggerThreshold: 2.5,
     scope:
@@ -169,7 +169,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "A/B testing and champion/challenger decisioning framework",
     ],
     valueNarrative:
-      "NBA decisioning moves organizations from rule-based campaigns to intelligent, context-aware engagement — increasing offer acceptance rates by 25–40% and reducing promotional dilution. The Modern CRM model is clear: start with behavioral insights about the audience, then determine the right product, guidance, or experience. NBA makes that operating model real, replacing the legacy approach of starting with the product and broadcasting to the largest likely set.",
+      "NBA decisioning moves organizations from rule-based campaigns to intelligent, context-aware engagement – increasing offer acceptance rates by 25–40% and reducing promotional dilution. The Modern CRM model is clear: start with behavioral insights about the audience, then determine the right product, guidance, or experience. NBA makes that operating model real, replacing the legacy approach of starting with the product and broadcasting to the largest likely set.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Large (20–26 weeks)",
     priority: "critical",
@@ -182,7 +182,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Human Loyalty® Program Design & Activation",
     tagline: "Build a loyalty program that earns emotional connection, not just transactions",
     description:
-      "Design and activate a loyalty program that drives deep, personalized engagement and emotional connections between your brand and customers. Human Loyalty® is Merkle's full-service loyalty offering — from strategy and blueprint through platform implementation and ongoing optimization. Whether rebuilding a legacy program or launching net new, it delivers measurable increases in lifetime value, owned data growth, and program differentiation.",
+      "Design and activate a loyalty program that drives deep, personalized engagement and emotional connections between your brand and customers. Human Loyalty® is Merkle's full-service loyalty offering – from strategy and blueprint through platform implementation and ongoing optimization. Whether rebuilding a legacy program or launching net new, it delivers measurable increases in lifetime value, owned data growth, and program differentiation.",
     capabilities: ["engagement"],
     triggerThreshold: 3.0,
     scope:
@@ -195,7 +195,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Ongoing program management, analytics, and performance optimization",
     ],
     valueNarrative:
-      "Loyalty programs built on emotional connection drive 2–4x increase in customer lifetime value and provide acquisition costs lower than paid media. Merkle's Human Loyalty® clients have achieved 2.5M loyalty enrollments in two months (3x projections), 148% higher visitation rates with loyalty lookalike audiences, and 41% increased media cost efficiency. With 880+ SMEs worldwide and 123M+ active members across client programs, Merkle brings unmatched loyalty depth — from strategy to execution to platform.",
+      "Loyalty programs built on emotional connection drive 2–4x increase in customer lifetime value and provide acquisition costs lower than paid media. Merkle's Human Loyalty® clients have achieved 2.5M loyalty enrollments in two months (3x projections), 148% higher visitation rates with loyalty lookalike audiences, and 41% increased media cost efficiency. With 880+ SMEs worldwide and 123M+ active members across client programs, Merkle brings unmatched loyalty depth – from strategy to execution to platform.",
     sfType: "Loyalty & Engagement",
     engagementSize: "Large (16–26 weeks)",
     priority: "critical",
@@ -206,7 +206,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "CRM & Intelligent Messaging Strategy",
     tagline: "Turn messaging into your most effective and measurable growth lever",
     description:
-      "Take a holistic look at CRM and messaging strategy, technology, and operations to ensure great customer experience and strong business outcomes across email, SMS, chat, and other owned touchpoints. Intelligent Messaging is one of the most effective growth levers brands operate — and consistently one of the most underoptimized. Merkle's offering puts CRM at the heart of commercial operations.",
+      "Take a holistic look at CRM and messaging strategy, technology, and operations to ensure great customer experience and strong business outcomes across email, SMS, chat, and other owned touchpoints. Intelligent Messaging is one of the most effective growth levers brands operate – and consistently one of the most underoptimized. Merkle's offering puts CRM at the heart of commercial operations.",
     capabilities: ["engagement", "signals"],
     triggerThreshold: 3.0,
     scope:
@@ -219,7 +219,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Integration of CRM and paid media through connected, personalized experiences",
     ],
     valueNarrative:
-      "Messaging — through email, SMS, chat, and other touchpoints — is one of the most effective growth levers many brands operate. Getting the right message in front of the right customer at the right time drives increased conversion, faster acquisition, and zero-party data collection. 'dentsu is uniquely positioned to harmonize paid media and CRM strategy' — Intelligent Messaging is how that integration becomes a commercial advantage.",
+      "Messaging – through email, SMS, chat, and other touchpoints – is one of the most effective growth levers many brands operate. Getting the right message in front of the right customer at the right time drives increased conversion, faster acquisition, and zero-party data collection. 'dentsu is uniquely positioned to harmonize paid media and CRM strategy' – Intelligent Messaging is how that integration becomes a commercial advantage.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium to Large (12–24 weeks)",
     priority: "critical",
@@ -230,7 +230,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Cross-Channel Journey Orchestration",
     tagline: "Deliver coordinated, contextual experiences across every customer touchpoint",
     description:
-      "Design and implement a journey orchestration layer that coordinates customer engagement across email, mobile, app, web, in-store, and service. Replace siloed channel execution with a unified journey strategy where every touchpoint builds on the last — creating the seamless, contextual experience that earns trust and drives lifetime value.",
+      "Design and implement a journey orchestration layer that coordinates customer engagement across email, mobile, app, web, in-store, and service. Replace siloed channel execution with a unified journey strategy where every touchpoint builds on the last – creating the seamless, contextual experience that earns trust and drives lifetime value.",
     capabilities: ["engagement"],
     triggerThreshold: 2.75,
     scope:
@@ -243,7 +243,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Journey performance measurement framework and optimization cadence",
     ],
     valueNarrative:
-      "Orchestrated journeys drive 2–4x higher engagement vs. isolated channel programs and create consistent customer experiences that strengthen brand perception and loyalty. 'Campaigns live in channels. Conversations live across them.' Journey orchestration is what makes the shift from campaign thinking to conversation thinking operational — and it's the architectural foundation that enables loyalty, promotions, and messaging to function as a unified growth engine.",
+      "Orchestrated journeys drive 2–4x higher engagement vs. isolated channel programs and create consistent customer experiences that strengthen brand perception and loyalty. 'Campaigns live in channels. Conversations live across them.' Journey orchestration is what makes the shift from campaign thinking to conversation thinking operational – and it's the architectural foundation that enables loyalty, promotions, and messaging to function as a unified growth engine.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Large (18–24 weeks)",
     priority: "high",
@@ -254,7 +254,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Gamification & Branded Games",
     tagline: "Drive behavior change through emotional motivation, not just rewards",
     description:
-      "Apply gamification and game mechanics to drive engagement and business results in the short and long term by tapping into emotional motivations. Merkle is the original player in gamification with 25 years of experience — combining motivational science, behavioral economics, and 50+ proven mechanics to design experiences that create habits and emotional connection that discounts alone cannot sustain.",
+      "Apply gamification and game mechanics to drive engagement and business results in the short and long term by tapping into emotional motivations. Merkle is the original player in gamification with 25 years of experience – combining motivational science, behavioral economics, and 50+ proven mechanics to design experiences that create habits and emotional connection that discounts alone cannot sustain.",
     capabilities: ["engagement"],
     triggerThreshold: 2.75,
     scope:
@@ -267,7 +267,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Analytics, performance benchmarking, and ongoing optimization",
     ],
     valueNarrative:
-      "Gamification drives 500% database growth in under 8 months, 19.5% increases in purchase frequency in one month, and 3x incremental revenue for seasonal programs. Starbucks for Life — a decades-long Merkle partnership — generated billions of game plays. 'Gamification puts customers in the driver's seat by using emotional motivation to make them want to engage with your brand. It's the ultimate form of a customer-driven experience.' Merkle is the only provider offering gamification as a full-service specialty with in-house motivational science expertise.",
+      "Gamification drives 500% database growth in under 8 months, 19.5% increases in purchase frequency in one month, and 3x incremental revenue for seasonal programs. Starbucks for Life – a decades-long Merkle partnership – generated billions of game plays. 'Gamification puts customers in the driver's seat by using emotional motivation to make them want to engage with your brand. It's the ultimate form of a customer-driven experience.' Merkle is the only provider offering gamification as a full-service specialty with in-house motivational science expertise.",
     sfType: "Loyalty & Engagement",
     engagementSize: "Medium (10–18 weeks)",
     priority: "high",
@@ -278,7 +278,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Experiential Promotions & Data Capture",
     tagline: "Incentive-based experiences that acquire customers and enrich your data",
     description:
-      "Design and activate experiential promotions — chance-to-win, instant win, contests, and gamified experiences — that engage customers, capture first and zero-party data, and drive incremental business results. Merkle is the only full-service promotion partner with 25 years of experience, in-house legal compliance, fraud prevention, prize procurement, and customer care across 44 countries.",
+      "Design and activate experiential promotions – chance-to-win, instant win, contests, and gamified experiences – that engage customers, capture first and zero-party data, and drive incremental business results. Merkle is the only full-service promotion partner with 25 years of experience, in-house legal compliance, fraud prevention, prize procurement, and customer care across 44 countries.",
     capabilities: ["engagement", "identity"],
     triggerThreshold: 2.75,
     scope:
@@ -304,7 +304,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "First-Party Data Media Activation",
     tagline: "Turn your customer relationships into a paid media performance advantage",
     description:
-      "Build the infrastructure and strategy to activate first-party CRM, loyalty, and Merkury Identity data in paid media channels. Enable lookalike modeling, customer suppression, and high-value audience targeting using owned data assets — extending CRM beyond traditional owned channels into paid and earned media environments.",
+      "Build the infrastructure and strategy to activate first-party CRM, loyalty, and Merkury Identity data in paid media channels. Enable lookalike modeling, customer suppression, and high-value audience targeting using owned data assets – extending CRM beyond traditional owned channels into paid and earned media environments.",
     capabilities: ["media_activation"],
     triggerThreshold: 3.0,
     scope:
@@ -328,7 +328,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Owned Channel & Loyalty Growth Program",
     tagline: "Use media to build the first-party data asset that compounds over time",
     description:
-      "Design paid media campaigns specifically engineered to grow owned relationship assets — app downloads, loyalty enrollment, email opt-ins, and profile completion. Every owned relationship acquired through media lowers future CPM costs and builds the first-party data foundation for long-term CRM capability and media efficiency.",
+      "Design paid media campaigns specifically engineered to grow owned relationship assets – app downloads, loyalty enrollment, email opt-ins, and profile completion. Every owned relationship acquired through media lowers future CPM costs and builds the first-party data foundation for long-term CRM capability and media efficiency.",
     capabilities: ["media_activation"],
     triggerThreshold: 2.75,
     scope:
@@ -341,7 +341,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Media-to-CRM attribution measurement and feedback loop",
     ],
     valueNarrative:
-      "Acquiring new customers costs 3–5x more than growing existing ones. Owned channel growth programs reduce long-term acquisition costs by building the first-party data foundation that enables CRM and media efficiency to compound over time. Merkle's Cracker Barrel work drove 2.5M loyalty enrollments in two months — 3x projections — through integrated media and loyalty strategy.",
+      "Acquiring new customers costs 3–5x more than growing existing ones. Owned channel growth programs reduce long-term acquisition costs by building the first-party data foundation that enables CRM and media efficiency to compound over time. Merkle's Cracker Barrel work drove 2.5M loyalty enrollments in two months – 3x projections – through integrated media and loyalty strategy.",
     sfType: "Media & Acquisition",
     engagementSize: "Medium (10–14 weeks)",
     priority: "medium",
@@ -354,7 +354,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Test & Learn Framework",
     tagline: "Build an always-on experimentation engine for compounding CRM improvement",
     description:
-      "Design and implement a structured test-and-learn program for CRM, loyalty, messaging, and promotions. Establish a testing roadmap, statistical rigor standards, and a mechanism to scale winning strategies across the engagement portfolio. Modern CRM's 'Adaptive Intelligence' stage is built on continuous experimentation — where every interaction builds on the last.",
+      "Design and implement a structured test-and-learn program for CRM, loyalty, messaging, and promotions. Establish a testing roadmap, statistical rigor standards, and a mechanism to scale winning strategies across the engagement portfolio. Modern CRM's 'Adaptive Intelligence' stage is built on continuous experimentation – where every interaction builds on the last.",
     capabilities: ["learning_optimization"],
     triggerThreshold: 3.0,
     scope:
@@ -367,7 +367,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Insight socialization and action process across CRM, loyalty, and media",
     ],
     valueNarrative:
-      "Organizations with structured test-and-learn programs generate 10–20% annual improvement in CRM KPIs through compounding incremental gains. The Modern CRM transformation model requires Adaptive Intelligence — where insights continuously refine engagement strategy. A rigorous test-and-learn framework is the operating mechanism that makes intelligence adaptive rather than episodic, and that turns Merkle's measurement heritage into ongoing competitive advantage.",
+      "Organizations with structured test-and-learn programs generate 10–20% annual improvement in CRM KPIs through compounding incremental gains. The Modern CRM transformation model requires Adaptive Intelligence – where insights continuously refine engagement strategy. A rigorous test-and-learn framework is the operating mechanism that makes intelligence adaptive rather than episodic, and that turns Merkle's measurement heritage into ongoing competitive advantage.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Medium (10–14 weeks)",
     priority: "high",
@@ -391,7 +391,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Executive reporting and CRM investment case development",
     ],
     valueNarrative:
-      "Incrementality measurement enables confident investment decisions and identifies programs that drive real growth vs. those that simply reward customers who would have purchased anyway. 5–15% lift in key customer journeys is achievable when programs are designed with measurement built in from the start. Merkle's performance heritage and analytic depth — 10K+ analytic models built annually — provide the rigor to turn measurement from a reporting exercise into a strategic growth lever.",
+      "Incrementality measurement enables confident investment decisions and identifies programs that drive real growth vs. those that simply reward customers who would have purchased anyway. 5–15% lift in key customer journeys is achievable when programs are designed with measurement built in from the start. Merkle's performance heritage and analytic depth – 10K+ analytic models built annually – provide the rigor to turn measurement from a reporting exercise into a strategic growth lever.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Medium (10–16 weeks)",
     priority: "high",
@@ -404,7 +404,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Modern CRM Innovation Sprint",
     tagline: "Chart the frontier of what your CRM engine can become",
     description:
-      "A structured bluesky workshop series for mature CRM organizations ready to explore the next horizon. Examine emerging use cases in generative AI personalization, agentic engagement, real-time identity, and autonomous decisioning — and build a prioritized innovation roadmap grounded in your existing capability strengths. This is for organizations that have crossed the operational threshold and are asking 'what's next?'",
+      "A structured bluesky workshop series for mature CRM organizations ready to explore the next horizon. Examine emerging use cases in generative AI personalization, agentic engagement, real-time identity, and autonomous decisioning – and build a prioritized innovation roadmap grounded in your existing capability strengths. This is for organizations that have crossed the operational threshold and are asking 'what's next?'",
     capabilities: ["decisioning", "learning_optimization", "engagement"],
     triggerThreshold: 5,
     minTriggerScore: 3.5,
@@ -418,7 +418,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Executive alignment and internal stakeholder activation session",
     ],
     valueNarrative:
-      "Mature CRM organizations that fail to invest in innovation risk capability plateau as competitors accelerate. Organizations at Stage 3–4 are uniquely positioned to pilot frontier use cases — generative personalization, AI-driven decisioning, autonomous engagement — because they have the data, identity, and orchestration foundations required. This sprint converts existing strengths into a defined innovation agenda with clear next steps and executive sponsorship.",
+      "Mature CRM organizations that fail to invest in innovation risk capability plateau as competitors accelerate. Organizations at Stage 3–4 are uniquely positioned to pilot frontier use cases – generative personalization, AI-driven decisioning, autonomous engagement – because they have the data, identity, and orchestration foundations required. This sprint converts existing strengths into a defined innovation agenda with clear next steps and executive sponsorship.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Small (4–6 weeks)",
     priority: "innovation",
@@ -429,7 +429,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Generative AI Personalization at Scale",
     tagline: "Produce 1:1 content and experiences at a scale humans cannot",
     description:
-      "Deploy generative AI to produce dynamic, personalized content across email, SMS, push, and web — moving beyond segment-level messaging to true 1:1 communication at scale. Combine LLMs with your first-party data, behavioral signals, and decisioning layer to generate contextually relevant subject lines, body copy, product narratives, and offers for each individual. The next frontier of CRM is content that writes itself based on who the customer is and what they're doing right now.",
+      "Deploy generative AI to produce dynamic, personalized content across email, SMS, push, and web – moving beyond segment-level messaging to true 1:1 communication at scale. Combine LLMs with your first-party data, behavioral signals, and decisioning layer to generate contextually relevant subject lines, body copy, product narratives, and offers for each individual. The next frontier of CRM is content that writes itself based on who the customer is and what they're doing right now.",
     capabilities: ["engagement", "decisioning", "signals"],
     triggerThreshold: 5,
     minTriggerScore: 3.5,
@@ -443,7 +443,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "A/B testing framework for GenAI versus human-authored content",
     ],
     valueNarrative:
-      "Generative AI personalization enables brands to produce hundreds of content variations per send — matching each customer's context, preference, and lifecycle stage with messaging that no human content team could produce at scale. Early adopters are seeing 15–25% improvement in engagement metrics from AI-generated subject lines and body copy alone. The organizations that build GenAI personalization now will establish a compounding advantage as their models learn from millions of interactions.",
+      "Generative AI personalization enables brands to produce hundreds of content variations per send – matching each customer's context, preference, and lifecycle stage with messaging that no human content team could produce at scale. Early adopters are seeing 15–25% improvement in engagement metrics from AI-generated subject lines and body copy alone. The organizations that build GenAI personalization now will establish a compounding advantage as their models learn from millions of interactions.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (12–16 weeks)",
     priority: "innovation",
@@ -454,7 +454,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "CRM Center of Excellence",
     tagline: "Institutionalize Modern CRM as a core organizational capability",
     description:
-      "Build the operating model, governance structures, talent frameworks, and technology standards that make Modern CRM a permanent, self-reinforcing organizational capability — not a project. A CRM Center of Excellence (CoE) codifies best practices, accelerates cross-functional alignment, governs data and decisioning standards, and ensures that capability gains compound rather than decay. For organizations at Stage 4, this is the structural investment that protects and extends the competitive advantage already earned.",
+      "Build the operating model, governance structures, talent frameworks, and technology standards that make Modern CRM a permanent, self-reinforcing organizational capability – not a project. A CRM Center of Excellence (CoE) codifies best practices, accelerates cross-functional alignment, governs data and decisioning standards, and ensures that capability gains compound rather than decay. For organizations at Stage 4, this is the structural investment that protects and extends the competitive advantage already earned.",
     capabilities: ["learning_optimization", "decisioning", "identity"],
     triggerThreshold: 5,
     minTriggerScore: 4.0,
@@ -468,7 +468,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Technology standards and vendor evaluation framework",
     ],
     valueNarrative:
-      "Organizations with a dedicated CRM CoE sustain 20–40% higher capability maturity scores over three years compared to those without formal governance — because CoEs prevent regression, accelerate adoption of new capabilities, and create the internal expertise to reduce dependency on external partners over time. Building a CoE is the difference between CRM as a one-time transformation and CRM as a permanent competitive advantage.",
+      "Organizations with a dedicated CRM CoE sustain 20–40% higher capability maturity scores over three years compared to those without formal governance – because CoEs prevent regression, accelerate adoption of new capabilities, and create the internal expertise to reduce dependency on external partners over time. Building a CoE is the difference between CRM as a one-time transformation and CRM as a permanent competitive advantage.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (10–16 weeks)",
     priority: "innovation",
@@ -479,7 +479,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "Agentic CRM & Autonomous Engagement Pilot",
     tagline: "Put AI agents to work in your CRM stack",
     description:
-      "Design and pilot the use of AI agents — autonomous, goal-directed systems capable of taking action across CRM workflows without constant human instruction. Explore use cases in autonomous lifecycle management, AI-driven offer negotiation, predictive service intervention, and real-time journey adaptation. Agentic CRM represents the leading edge of the Adaptive Intelligence stage — where the engagement engine doesn't just respond to signals, it acts on them proactively.",
+      "Design and pilot the use of AI agents – autonomous, goal-directed systems capable of taking action across CRM workflows without constant human instruction. Explore use cases in autonomous lifecycle management, AI-driven offer negotiation, predictive service intervention, and real-time journey adaptation. Agentic CRM represents the leading edge of the Adaptive Intelligence stage – where the engagement engine doesn't just respond to signals, it acts on them proactively.",
     capabilities: ["decisioning", "learning_optimization"],
     triggerThreshold: 5,
     minTriggerScore: 4.0,
@@ -493,7 +493,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "POC delivery with performance measurement and scale-readiness assessment",
     ],
     valueNarrative:
-      "Agentic AI represents the next paradigm shift in CRM — moving from AI-assisted decisions to AI-driven action. Organizations piloting agentic workflows today are building the operational experience and institutional knowledge to scale autonomous engagement before it becomes a market standard. For mature CRM organizations with strong data, identity, and decisioning foundations, an agentic pilot is the highest-leverage next investment on the innovation frontier.",
+      "Agentic AI represents the next paradigm shift in CRM – moving from AI-assisted decisions to AI-driven action. Organizations piloting agentic workflows today are building the operational experience and institutional knowledge to scale autonomous engagement before it becomes a market standard. For mature CRM organizations with strong data, identity, and decisioning foundations, an agentic pilot is the highest-leverage next investment on the innovation frontier.",
     sfType: "Analytics & Decisioning",
     engagementSize: "Small to Medium (6–12 weeks)",
     priority: "innovation",
@@ -504,7 +504,7 @@ export const OPPORTUNITIES: Opportunity[] = [
     title: "CRM Intelligence Loop",
     tagline: "Close the loop between insights, strategy, and activation",
     description:
-      "Build a systematic process for feeding media performance data, engagement analytics, and customer insights back into CRM strategy refinement. Create a closed-loop system where every campaign improves the next — operationalizing the 'Adaptive Intelligence' stage of Modern CRM transformation.",
+      "Build a systematic process for feeding media performance data, engagement analytics, and customer insights back into CRM strategy refinement. Create a closed-loop system where every campaign improves the next – operationalizing the 'Adaptive Intelligence' stage of Modern CRM transformation.",
     capabilities: ["learning_optimization", "media_activation"],
     triggerThreshold: 2.75,
     scope:
@@ -517,7 +517,7 @@ export const OPPORTUNITIES: Opportunity[] = [
       "Real-time signal integration into ongoing strategy refinement",
     ],
     valueNarrative:
-      "Organizations with closed-loop CRM intelligence reduce time from insight to activation from weeks to days, enabling continuous strategy improvement at scale. 'Generative AI: every interaction builds on the last, creating seamless journeys across touchpoints.' The Intelligence Loop is the process architecture that makes this possible — connecting media signals, engagement analytics, and customer data into a continuously improving CRM operating model.",
+      "Organizations with closed-loop CRM intelligence reduce time from insight to activation from weeks to days, enabling continuous strategy improvement at scale. 'Generative AI: every interaction builds on the last, creating seamless journeys across touchpoints.' The Intelligence Loop is the process architecture that makes this possible – connecting media signals, engagement analytics, and customer data into a continuously improving CRM operating model.",
     sfType: "CRM Strategy & Activation",
     engagementSize: "Medium (8–12 weeks)",
     priority: "medium",

@@ -73,13 +73,13 @@ const BILLY: CscSme = {
 
 /** Keyed by opportunity.id. Each entry lists 2–3 SMEs most relevant to that engagement. */
 export const CSC_SME_MAPPING: Record<string, CscSme[]> = {
-  // Named Merkle engagements — Build stream
+  // Named Merkle engagements – Build stream
   csc_strategy_blueprint: [MICHELLE, ED, EVAN],
   innovation_accelerator: [MICHELLE, NATASHA, MEGAN],
   turnaround_recovery: [ED, MICHELLE],
   enterprise_transformation: [ED, MICHELLE, EVAN],
 
-  // Named Merkle engagements — Activate stream
+  // Named Merkle engagements – Activate stream
   platform_value_realization: [MICHELLE, NATASHA, ILONA],
   continuous_value_accelerator: [MICHELLE, SAYANTIKA],
   managed_content_production: [ED, MICHELLE],

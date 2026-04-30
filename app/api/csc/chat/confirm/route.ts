@@ -13,7 +13,7 @@ import type { CscInferredScore } from "@/lib/csc/chat/types";
 import type { CscCapability, CscResponseItem } from "@/lib/csc/types";
 
 /**
- * POST /api/csc/chat/confirm — finalize a conversational CSC assessment.
+ * POST /api/csc/chat/confirm – finalize a conversational CSC assessment.
  *
  * Mirrors /api/chat/confirm (CRM):
  *   - Persist the inferred scores into csc_responses
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert inferred score map to ResponseItem array.
-    // Trust server-side metadata for capability — never the client.
+    // Trust server-side metadata for capability – never the client.
     const responses: CscResponseItem[] = Object.entries(scores)
       .filter(([, s]) => s && typeof s.score === "number")
       .map(([qId, s]) => {

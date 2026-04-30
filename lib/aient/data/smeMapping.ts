@@ -5,7 +5,7 @@
  *
  * Initial seed list grounded in the AI for Enterprise Intro (March
  * 2026), the Agile Operating Model offering (v1.2), and the Analytics
- * Advisory Toolkit (v1.0, 2026). Compact at v1 — the practice lead
+ * Advisory Toolkit (v1.0, 2026). Compact at v1 – the practice lead
  * should expand with named owners per engagement once the diagnostic
  * is in field use.
  */

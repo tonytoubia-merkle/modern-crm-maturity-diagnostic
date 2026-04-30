@@ -187,7 +187,7 @@ export function AientStakeholderManager({
         </Button>
         {added.length > 0 && (
           <Button variant="secondary" onClick={onDone}>
-            Done — Go to Dashboard →
+            Done – Go to Dashboard →
           </Button>
         )}
       </div>

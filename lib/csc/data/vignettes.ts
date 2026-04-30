@@ -4,14 +4,14 @@ import type {
 } from "@/lib/csc/types";
 
 /**
- * CSC workshop content — two parallel datasets:
+ * CSC workshop content – two parallel datasets:
  *
- *   1. CSC_VIGNETTES         — workshop facilitation exercises that
+ *   1. CSC_VIGNETTES         – workshop facilitation exercises that
  *                              consultants run with client teams to
  *                              develop one or more capability areas.
  *                              Mirrors the CRM Vignettes shape.
  *
- *   2. CSC_CLIENT_STORIES    — anonymized (or Merkle-public) client
+ *   2. CSC_CLIENT_STORIES    – anonymized (or Merkle-public) client
  *                              proof points used as anchors during
  *                              pitch and capability conversations.
  *                              Sourced from the 2026 CSC POV Narrative
@@ -22,7 +22,7 @@ import type {
  */
 
 // ══════════════════════════════════════════════════════════════════
-// CSC_VIGNETTES — workshop facilitation exercises
+// CSC_VIGNETTES – workshop facilitation exercises
 // ══════════════════════════════════════════════════════════════════
 
 export const CSC_VIGNETTES: CscWorkshopVignette[] = [
@@ -40,7 +40,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Approximate annual content volume and FTE count",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Walk through the diagnostic capability radar. Highlight the two lowest-scoring capabilities and the highest-leverage one. Frame the session as Build before Buy — we map workflows and design governance before naming platforms.\n\n**Exercise 1 — Pain Point Cluster (20 min):** On a board, capture every pain point voiced in pre-work and during the room. Cluster them under the six CSC capabilities (Strategy, Workflow, Asset Governance, Distribution, Measurement, Intelligence). Vote with dots on the three clusters that hurt the most this quarter.\n\n**Exercise 2 — Current vs. Target State (25 min):** For each of the top three pain clusters, write one sentence that describes the current state and one sentence that describes the desired target state in 12 months. Be specific: cycle times, FTE involvement, manual steps, asset reuse rates. Avoid vague language.\n\n**Exercise 3 — Wedge Identification (25 min):** Based on the gaps, identify the right wedge engagement: Blueprint (foundation missing), Innovation Accelerator (single high-value use case to prove value), Turnaround (stalled platform investment), Enterprise Transformation (cross-portfolio change), or Platform Value Realization (deployed but underused). One wedge per cluster — discuss the case for each.\n\n**Wrap-up (10 min):** Capture the chosen wedge(s), the executive sponsor, and the next two-week plan to formalize the engagement.",
+      "**Setup (10 min):** Walk through the diagnostic capability radar. Highlight the two lowest-scoring capabilities and the highest-leverage one. Frame the session as Build before Buy – we map workflows and design governance before naming platforms.\n\n**Exercise 1 – Pain Point Cluster (20 min):** On a board, capture every pain point voiced in pre-work and during the room. Cluster them under the six CSC capabilities (Strategy, Workflow, Asset Governance, Distribution, Measurement, Intelligence). Vote with dots on the three clusters that hurt the most this quarter.\n\n**Exercise 2 – Current vs. Target State (25 min):** For each of the top three pain clusters, write one sentence that describes the current state and one sentence that describes the desired target state in 12 months. Be specific: cycle times, FTE involvement, manual steps, asset reuse rates. Avoid vague language.\n\n**Exercise 3 – Wedge Identification (25 min):** Based on the gaps, identify the right wedge engagement: Blueprint (foundation missing), Innovation Accelerator (single high-value use case to prove value), Turnaround (stalled platform investment), Enterprise Transformation (cross-portfolio change), or Platform Value Realization (deployed but underused). One wedge per cluster – discuss the case for each.\n\n**Wrap-up (10 min):** Capture the chosen wedge(s), the executive sponsor, and the next two-week plan to formalize the engagement.",
     expectedOutputs: [
       "Pain-point heatmap clustered against the six CSC capabilities",
       "Current-state vs. target-state sentence pairs for top three gaps",
@@ -68,7 +68,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Sample of the briefing document used",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Frame the exercise as 'walk one piece of content through, end to end, and measure where the time actually goes.' Reference the Princess Cruises 25-day average and the Lumen 25→9-day acceleration as benchmarks.\n\n**Exercise 1 — Linear Walkthrough (30 min):** As a group, draw the workflow stages left-to-right on a board: brief → concept → draft → first review → revisions → legal/brand → final review → trafficking → ship. Annotate each stage with calendar time, who touches it, the tool used, and where it queues. Use real numbers — guess if you have to, then verify.\n\n**Exercise 2 — Rework Loop Audit (35 min):** Mark every rework loop in red — moments when content goes back upstream. For each loop, capture: what triggered it, how often it happens, and whether the trigger is structural (no shared brief) or behavioral (one person's preference). Distinguish necessary rework from avoidable rework.\n\n**Exercise 3 — Cycle-Time Hotspots (25 min):** Identify the three stages eating the most calendar time. For each, brainstorm whether the lever is people (skills/role clarity), process (briefing/intake/governance), tooling (Workfront/AEM), or AI (production/automation). Write a one-line hypothesis per hotspot.\n\n**Wrap-up (20 min):** Pick the top hotspot. Sketch a 30-day quick-win experiment with a measurable cycle-time target and a single owner.",
+      "**Setup (10 min):** Frame the exercise as 'walk one piece of content through, end to end, and measure where the time actually goes.' Reference the Princess Cruises 25-day average and the Lumen 25→9-day acceleration as benchmarks.\n\n**Exercise 1 – Linear Walkthrough (30 min):** As a group, draw the workflow stages left-to-right on a board: brief → concept → draft → first review → revisions → legal/brand → final review → trafficking → ship. Annotate each stage with calendar time, who touches it, the tool used, and where it queues. Use real numbers – guess if you have to, then verify.\n\n**Exercise 2 – Rework Loop Audit (35 min):** Mark every rework loop in red – moments when content goes back upstream. For each loop, capture: what triggered it, how often it happens, and whether the trigger is structural (no shared brief) or behavioral (one person's preference). Distinguish necessary rework from avoidable rework.\n\n**Exercise 3 – Cycle-Time Hotspots (25 min):** Identify the three stages eating the most calendar time. For each, brainstorm whether the lever is people (skills/role clarity), process (briefing/intake/governance), tooling (Workfront/AEM), or AI (production/automation). Write a one-line hypothesis per hotspot.\n\n**Wrap-up (20 min):** Pick the top hotspot. Sketch a 30-day quick-win experiment with a measurable cycle-time target and a single owner.",
     expectedOutputs: [
       "End-to-end workflow diagram annotated with calendar time per stage",
       "Rework loop log distinguishing structural vs. behavioral triggers",
@@ -86,19 +86,19 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
     id: "dam_governance_audit",
     title: "DAM & Asset Governance Audit",
     description:
-      "Audit how assets actually live, get found, and get reused in the current DAM (or DAM-substitute). Surfaces the governance and taxonomy gaps that block trustable reuse — the prerequisite for modular content and AI-driven production.",
+      "Audit how assets actually live, get found, and get reused in the current DAM (or DAM-substitute). Surfaces the governance and taxonomy gaps that block trustable reuse – the prerequisite for modular content and AI-driven production.",
     durationMinutes: 90,
     category: "Asset Governance",
     requiredInputs: [
       "Read access to the primary DAM(s) and any shared drives still in use",
       "Current taxonomy / metadata schema (if documented)",
-      "Latest utilization metrics — uploads, downloads, search hits",
+      "Latest utilization metrics – uploads, downloads, search hits",
       "List of teams with admin / publishing rights",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Define the DAM's intended job (single source of truth, governed reuse, downstream activation feed). Reference the CPG client benchmark: 35% utilization is broken; 72% in 60 days is what good adoption looks like.\n\n**Exercise 1 — Adoption Forensics (20 min):** Pull live numbers: how many assets, who uploaded them, who is searching, and what searches return zero results. Look at the actual usage tail — are 80% of downloads coming from 10% of assets? Surface the dead inventory.\n\n**Exercise 2 — Taxonomy Stress Test (25 min):** Pick five common briefs from the last quarter. For each, try to find the right approved asset in the DAM in under five minutes — live, in the room. Score each search: found / found wrong version / not found / found but rebuilt anyway. Capture why each failed.\n\n**Exercise 3 — Governance Map (25 min):** Draw the current rights and roles: who approves an upload, who deprecates, who tags, who decides naming, who owns rights and expiry. Mark the gaps where decisions have no owner. Mark the bottlenecks where one person owns too much.\n\n**Wrap-up (10 min):** Capture three governance fixes that need to happen in the next 60 days before any asset-intelligence or AI-production work goes live.",
+      "**Setup (10 min):** Define the DAM's intended job (single source of truth, governed reuse, downstream activation feed). Reference the CPG client benchmark: 35% utilization is broken; 72% in 60 days is what good adoption looks like.\n\n**Exercise 1 – Adoption Forensics (20 min):** Pull live numbers: how many assets, who uploaded them, who is searching, and what searches return zero results. Look at the actual usage tail – are 80% of downloads coming from 10% of assets? Surface the dead inventory.\n\n**Exercise 2 – Taxonomy Stress Test (25 min):** Pick five common briefs from the last quarter. For each, try to find the right approved asset in the DAM in under five minutes – live, in the room. Score each search: found / found wrong version / not found / found but rebuilt anyway. Capture why each failed.\n\n**Exercise 3 – Governance Map (25 min):** Draw the current rights and roles: who approves an upload, who deprecates, who tags, who decides naming, who owns rights and expiry. Mark the gaps where decisions have no owner. Mark the bottlenecks where one person owns too much.\n\n**Wrap-up (10 min):** Capture three governance fixes that need to happen in the next 60 days before any asset-intelligence or AI-production work goes live.",
     expectedOutputs: [
-      "Adoption forensics — utilization, search-zero-results, dead-inventory rate",
+      "Adoption forensics – utilization, search-zero-results, dead-inventory rate",
       "Five-search stress test scorecard with failure reasons",
       "Current governance roles map with ownership gaps and bottlenecks",
       "60-day governance fix list",
@@ -115,7 +115,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
     id: "modular_content_design_sprint",
     title: "Modular Content Design Sprint",
     description:
-      "Take one campaign that today gets rebuilt per channel and design it as modular components instead. Outputs a working component map and assembly rules — the design pattern that lets one team feed CRM, commerce, and media without a linear cost curve.",
+      "Take one campaign that today gets rebuilt per channel and design it as modular components instead. Outputs a working component map and assembly rules – the design pattern that lets one team feed CRM, commerce, and media without a linear cost curve.",
     durationMinutes: 120,
     category: "Workflow & Production",
     requiredInputs: [
@@ -125,7 +125,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Channel-by-channel performance summary if available",
     ],
     facilitationGuide:
-      "**Setup (15 min):** Frame the modular shift: from channel-shaped content to audience-shaped components. Show the Vanguard structured-fragments example and the Adobe atomic-design pattern. The deliverable is a component map you could rebuild this campaign from tomorrow.\n\n**Exercise 1 — Asset Decomposition (25 min):** On a wall, lay out every shipped asset from the campaign. Decompose each into its components: headline, subhead, body, CTA, hero image, supporting image, proof point, legal disclosure. Where multiple variants existed, line them up so the team can see what actually changed.\n\n**Exercise 2 — Component Library Sketch (35 min):** Cluster repeated components across the campaign. For each cluster, define: a stable name, the structural fields, the variants captured, and the rules for when each variant fires (audience, channel, lifecycle). The output is a 10–15 component list with structural fields named.\n\n**Exercise 3 — Assembly Rules (25 min):** For three audiences × three channels = nine combinations, write the assembly rule that selects which component variants go where. Discover the rules that don't yet exist (e.g. 'we don't actually have a logged-in vs. logged-out hero variant — we just used the same one').\n\n**Wrap-up (20 min):** Capture the component map, the assembly rule template, and the next campaign that will be built modular-first as the proof.",
+      "**Setup (15 min):** Frame the modular shift: from channel-shaped content to audience-shaped components. Show the Vanguard structured-fragments example and the Adobe atomic-design pattern. The deliverable is a component map you could rebuild this campaign from tomorrow.\n\n**Exercise 1 – Asset Decomposition (25 min):** On a wall, lay out every shipped asset from the campaign. Decompose each into its components: headline, subhead, body, CTA, hero image, supporting image, proof point, legal disclosure. Where multiple variants existed, line them up so the team can see what actually changed.\n\n**Exercise 2 – Component Library Sketch (35 min):** Cluster repeated components across the campaign. For each cluster, define: a stable name, the structural fields, the variants captured, and the rules for when each variant fires (audience, channel, lifecycle). The output is a 10–15 component list with structural fields named.\n\n**Exercise 3 – Assembly Rules (25 min):** For three audiences × three channels = nine combinations, write the assembly rule that selects which component variants go where. Discover the rules that don't yet exist (e.g. 'we don't actually have a logged-in vs. logged-out hero variant – we just used the same one').\n\n**Wrap-up (20 min):** Capture the component map, the assembly rule template, and the next campaign that will be built modular-first as the proof.",
     expectedOutputs: [
       "Decomposed component inventory for the source campaign",
       "Modular component library sketch (10–15 components, named, with fields)",
@@ -144,7 +144,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
     id: "distribution_activation_audit",
     title: "Distribution & Activation Audit",
     description:
-      "Trace how an approved asset travels from the DAM into CRM, commerce, paid media, and any other surfaces — and where it gets re-versioned, re-uploaded, or recreated entirely. Surfaces the activation breaks that prevent personalization at scale.",
+      "Trace how an approved asset travels from the DAM into CRM, commerce, paid media, and any other surfaces – and where it gets re-versioned, re-uploaded, or recreated entirely. Surfaces the activation breaks that prevent personalization at scale.",
     durationMinutes: 90,
     category: "Distribution & Activation",
     requiredInputs: [
@@ -154,7 +154,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Personalization or dynamic-content rules currently in production",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Frame the question: 'when an approved asset leaves the DAM, what really happens?' Reference Lumen's 3× faster social time-to-market and the AEM dynamic-content fragment pattern as anchors.\n\n**Exercise 1 — Trace the Asset (25 min):** Pick the sample asset. Walk it from approval → publication → into each surface it landed on. For each hop, capture: who moved it, what tool moved it, what got re-versioned, what got re-uploaded, what changed about the metadata, and how long the hop took. The trace usually exposes 3–5 invisible re-creation points.\n\n**Exercise 2 — Personalization & Localization Reality Check (30 min):** List every dynamic content variant that currently fires in production (audience, journey stage, market, language). For each, mark whether it's a true component-driven variant or a manually-built copy. Calculate the ratio. Discuss which true variants would actually move business outcomes if added.\n\n**Exercise 3 — Activation Break Map (15 min):** On a board, mark every break in the chain — every place where the asset gets disconnected from its source, manually re-uploaded, re-localized by a vendor, or where a downstream system can't subscribe to updates. Mark severity: blocks personalization, creates legal/brand risk, eats FTE time, slows speed-to-market.\n\n**Wrap-up (10 min):** Capture the top three activation breaks worth fixing first. Define what 'fixed' would look like — measurable, time-bound.",
+      "**Setup (10 min):** Frame the question: 'when an approved asset leaves the DAM, what really happens?' Reference Lumen's 3× faster social time-to-market and the AEM dynamic-content fragment pattern as anchors.\n\n**Exercise 1 – Trace the Asset (25 min):** Pick the sample asset. Walk it from approval → publication → into each surface it landed on. For each hop, capture: who moved it, what tool moved it, what got re-versioned, what got re-uploaded, what changed about the metadata, and how long the hop took. The trace usually exposes 3–5 invisible re-creation points.\n\n**Exercise 2 – Personalization & Localization Reality Check (30 min):** List every dynamic content variant that currently fires in production (audience, journey stage, market, language). For each, mark whether it's a true component-driven variant or a manually-built copy. Calculate the ratio. Discuss which true variants would actually move business outcomes if added.\n\n**Exercise 3 – Activation Break Map (15 min):** On a board, mark every break in the chain – every place where the asset gets disconnected from its source, manually re-uploaded, re-localized by a vendor, or where a downstream system can't subscribe to updates. Mark severity: blocks personalization, creates legal/brand risk, eats FTE time, slows speed-to-market.\n\n**Wrap-up (10 min):** Capture the top three activation breaks worth fixing first. Define what 'fixed' would look like – measurable, time-bound.",
     expectedOutputs: [
       "Asset journey trace with re-creation points marked",
       "Production dynamic-variant inventory with component vs. manual ratio",
@@ -183,7 +183,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Access to whatever asset-level performance data exists today",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Frame the measurement loop: brief → asset → activation → measurement → next brief. The Stage 4 maturity test isn't reporting volume — it's whether last quarter's asset performance changed this quarter's briefs.\n\n**Exercise 1 — KPI Audit (20 min):** List every content KPI in active use today. For each, mark whether it measures volume (e.g. assets shipped), quality (review rounds, brand compliance), business outcome (conversion, AOV, retention), or asset-level performance (which specific creative drove what). Most teams over-index on volume; surface the imbalance.\n\n**Exercise 2 — Asset-to-Outcome Trace (30 min):** Pick the last campaign with measurable business impact. Try to trace which specific assets / variants / components contributed how much. Score the team's ability to do this on a 1–5 scale. If it's lower than 3, surface the data and tooling gaps that prevent it.\n\n**Exercise 3 — Closing the Loop (25 min):** Look at the brief template. Does it ask for hypotheses? Does it reference prior asset performance? Redesign the brief template to require: the hypothesis, the prior asset learnings being applied, the success metric and its baseline. Pilot the new template against one upcoming campaign.\n\n**Wrap-up (5 min):** Identify the data and tooling gaps that block consistent asset-to-outcome attribution. Capture as a 90-day measurement-loop fix plan.",
+      "**Setup (10 min):** Frame the measurement loop: brief → asset → activation → measurement → next brief. The Stage 4 maturity test isn't reporting volume – it's whether last quarter's asset performance changed this quarter's briefs.\n\n**Exercise 1 – KPI Audit (20 min):** List every content KPI in active use today. For each, mark whether it measures volume (e.g. assets shipped), quality (review rounds, brand compliance), business outcome (conversion, AOV, retention), or asset-level performance (which specific creative drove what). Most teams over-index on volume; surface the imbalance.\n\n**Exercise 2 – Asset-to-Outcome Trace (30 min):** Pick the last campaign with measurable business impact. Try to trace which specific assets / variants / components contributed how much. Score the team's ability to do this on a 1–5 scale. If it's lower than 3, surface the data and tooling gaps that prevent it.\n\n**Exercise 3 – Closing the Loop (25 min):** Look at the brief template. Does it ask for hypotheses? Does it reference prior asset performance? Redesign the brief template to require: the hypothesis, the prior asset learnings being applied, the success metric and its baseline. Pilot the new template against one upcoming campaign.\n\n**Wrap-up (5 min):** Identify the data and tooling gaps that block consistent asset-to-outcome attribution. Capture as a 90-day measurement-loop fix plan.",
     expectedOutputs: [
       "Audited KPI inventory categorized as volume / quality / outcome / asset-level",
       "Asset-to-outcome traceability self-score and gap list",
@@ -212,7 +212,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Brand and legal guardrails that would apply to any AI output",
     ],
     facilitationGuide:
-      "**Setup (10 min):** Use the Microsoft AI-adoption recovery story as the anti-pattern: license without governance and enablement → stalled adoption → eroded trust. The goal of this session is to pick one pilot that doesn't repeat that pattern.\n\n**Exercise 1 — Tool Adoption Reality (15 min):** For each licensed AI tool, plot it on a 2x2: capability potential (low/high) × current adoption (low/high). The high-potential / low-adoption quadrant is where pilots should come from. Don't pitch tools that aren't yet licensed.\n\n**Exercise 2 — Pilot Use Case Scoring (35 min):** Brainstorm 8–12 candidate pilots — concrete workflow + tool + measurable outcome. For each, score on a 1–5 scale across: business impact, brand/legal risk, time-to-value, adoption-readiness of the team, and proximity to an existing campaign. Eliminate anything with risk ≥ 4 or adoption-readiness ≤ 2.\n\n**Exercise 3 — Guardrails & Enablement Plan (20 min):** For the top-ranked pilot, design the guardrails (brand kit configured, custom-trained model on approved assets, review gate, KPIs). Identify the champion who will run it, the executive sponsor, and the 30/60/90-day adoption metrics that prove it's working.\n\n**Wrap-up (10 min):** Get a verbal commitment from the executive sponsor on funding the pilot. Capture risks and mitigation plan.",
+      "**Setup (10 min):** Use the Microsoft AI-adoption recovery story as the anti-pattern: license without governance and enablement → stalled adoption → eroded trust. The goal of this session is to pick one pilot that doesn't repeat that pattern.\n\n**Exercise 1 – Tool Adoption Reality (15 min):** For each licensed AI tool, plot it on a 2x2: capability potential (low/high) × current adoption (low/high). The high-potential / low-adoption quadrant is where pilots should come from. Don't pitch tools that aren't yet licensed.\n\n**Exercise 2 – Pilot Use Case Scoring (35 min):** Brainstorm 8–12 candidate pilots – concrete workflow + tool + measurable outcome. For each, score on a 1–5 scale across: business impact, brand/legal risk, time-to-value, adoption-readiness of the team, and proximity to an existing campaign. Eliminate anything with risk ≥ 4 or adoption-readiness ≤ 2.\n\n**Exercise 3 – Guardrails & Enablement Plan (20 min):** For the top-ranked pilot, design the guardrails (brand kit configured, custom-trained model on approved assets, review gate, KPIs). Identify the champion who will run it, the executive sponsor, and the 30/60/90-day adoption metrics that prove it's working.\n\n**Wrap-up (10 min):** Get a verbal commitment from the executive sponsor on funding the pilot. Capture risks and mitigation plan.",
     expectedOutputs: [
       "AI tool adoption 2x2 with high-potential/low-adoption quadrant identified",
       "Scored pilot candidate list (8–12) with eliminated and shortlisted use cases",
@@ -232,7 +232,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
     id: "operating_model_design",
     title: "CSC Operating Model & Adoption Design",
     description:
-      "Design the role-based operating model that supports modular, governed, AI-augmented content at scale — and the adoption path that gets the org from today's model to the new one without stalling. This is the human-systems half of every transformation.",
+      "Design the role-based operating model that supports modular, governed, AI-augmented content at scale – and the adoption path that gets the org from today's model to the new one without stalling. This is the human-systems half of every transformation.",
     durationMinutes: 120,
     category: "Strategy & Planning",
     requiredInputs: [
@@ -242,7 +242,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
       "Executive sponsorship structure for transformation",
     ],
     facilitationGuide:
-      "**Setup (15 min):** Frame the operating model as 'who does what, where decisions live, and how teams hand off.' Use the Highmark example: 97+ FTE adoption isn't a tool problem — it's a role clarity, governance, and enablement problem. New tools without new roles default back to old behaviors.\n\n**Exercise 1 — Current Operating Model Diagnosis (30 min):** Map the current model: content strategists, creative producers, studio, brand, legal, channel owners, agencies, vendors. Draw the actual handoffs and decision rights — not the org chart. Mark the friction points: handoffs that always slip, decisions with no clear owner, roles that are doing two jobs poorly.\n\n**Exercise 2 — Target Operating Model Design (40 min):** Design the target model around the modular + AI-augmented future state. Define new or evolved roles: content architect, modular component owner, AI content steward, asset governance lead, performance analyst feeding briefs. For each, define mandate, decision rights, success metric, and reporting line. Be honest about which existing roles consolidate or change.\n\n**Exercise 3 — Adoption Sequencing (25 min):** Map the path from current to target. Sequence by: (a) which roles change first, (b) which capabilities they enable, (c) which legacy processes get retired and when, (d) where embedded enablement (in-team coaches) accelerates adoption. Reference the Microsoft pattern: champions tied to real campaigns drive measurable adoption faster than centralized training.\n\n**Wrap-up (10 min):** Capture the target operating model, the role transition plan (who changes role and when), and the 90-day enablement plan.",
+      "**Setup (15 min):** Frame the operating model as 'who does what, where decisions live, and how teams hand off.' Use the Highmark example: 97+ FTE adoption isn't a tool problem – it's a role clarity, governance, and enablement problem. New tools without new roles default back to old behaviors.\n\n**Exercise 1 – Current Operating Model Diagnosis (30 min):** Map the current model: content strategists, creative producers, studio, brand, legal, channel owners, agencies, vendors. Draw the actual handoffs and decision rights – not the org chart. Mark the friction points: handoffs that always slip, decisions with no clear owner, roles that are doing two jobs poorly.\n\n**Exercise 2 – Target Operating Model Design (40 min):** Design the target model around the modular + AI-augmented future state. Define new or evolved roles: content architect, modular component owner, AI content steward, asset governance lead, performance analyst feeding briefs. For each, define mandate, decision rights, success metric, and reporting line. Be honest about which existing roles consolidate or change.\n\n**Exercise 3 – Adoption Sequencing (25 min):** Map the path from current to target. Sequence by: (a) which roles change first, (b) which capabilities they enable, (c) which legacy processes get retired and when, (d) where embedded enablement (in-team coaches) accelerates adoption. Reference the Microsoft pattern: champions tied to real campaigns drive measurable adoption faster than centralized training.\n\n**Wrap-up (10 min):** Capture the target operating model, the role transition plan (who changes role and when), and the 90-day enablement plan.",
     expectedOutputs: [
       "Current operating model map with friction points",
       "Target operating model with new/evolved roles, decision rights, metrics",
@@ -259,7 +259,7 @@ export const CSC_VIGNETTES: CscWorkshopVignette[] = [
 ];
 
 // ══════════════════════════════════════════════════════════════════
-// CSC_CLIENT_STORIES — anonymized proof points / pitch anchors
+// CSC_CLIENT_STORIES – anonymized proof points / pitch anchors
 // (formerly CSC_VIGNETTES; renamed for semantic clarity now that we
 // have a separate workshop-exercise dataset above.)
 // ══════════════════════════════════════════════════════════════════
@@ -277,7 +277,7 @@ export const CSC_CLIENT_STORIES: CscClientStory[] = [
       "intelligence_automation",
     ],
     narrative:
-      "A regulated healthcare enterprise ran 200,000+ content-influenced hours annually across ~98 monthly contributors, with content moving through 12+ reviewer workflows in cycles averaging 45–60 days. Five DAMs coexisted. Tooling fragmented across Excel, Jira, and Trello. Review cycles were so long that by the time content shipped, the strategy had moved on. Merkle anchored the work in an Enterprise Transformation — unifying the operating system around Workfront + AEM + integrated AI, with a 15-day cycle target, role clarity for 97+ FTE adoption, and an AI enablement model that moved isolated pilots to governed, scalable automation.",
+      "A regulated healthcare enterprise ran 200,000+ content-influenced hours annually across ~98 monthly contributors, with content moving through 12+ reviewer workflows in cycles averaging 45–60 days. Five DAMs coexisted. Tooling fragmented across Excel, Jira, and Trello. Review cycles were so long that by the time content shipped, the strategy had moved on. Merkle anchored the work in an Enterprise Transformation – unifying the operating system around Workfront + AEM + integrated AI, with a 15-day cycle target, role clarity for 97+ FTE adoption, and an AI enablement model that moved isolated pilots to governed, scalable automation.",
     outcomes: [
       "$21.7M net benefit over 5 years",
       "149% ROI with 28-month payback",
@@ -287,7 +287,7 @@ export const CSC_CLIENT_STORIES: CscClientStory[] = [
     ],
     prompts: [
       "Where are your longest review cycles today, and who actually owns each decision?",
-      "Which platforms are live but getting bypassed — and why?",
+      "Which platforms are live but getting bypassed – and why?",
       "If AI automation could eliminate one category of manual work this quarter, which would it be?",
     ],
   },
@@ -301,7 +301,7 @@ export const CSC_CLIENT_STORIES: CscClientStory[] = [
       "workflow_production",
     ],
     narrative:
-      "Princess Cruise Lines had fragmented tools, redundant asset creation, and no clear migration path. The engagement started as a 12-week CSC Strategy Blueprint and expanded into a full transformation vision. Merkle delivered 15 use cases with crawl-walk-run phasing, ran technology evaluations (AEM vs. Widen, Express vs. Canva, Content Hub vs. Frontify), remediated enterprise governance and taxonomy, and designed the end-to-end CSC using Workfront, AEM Assets, Creative Cloud, and Adobe Express — complete with a change management framework and stakeholder alignment approach.",
+      "Princess Cruise Lines had fragmented tools, redundant asset creation, and no clear migration path. The engagement started as a 12-week CSC Strategy Blueprint and expanded into a full transformation vision. Merkle delivered 15 use cases with crawl-walk-run phasing, ran technology evaluations (AEM vs. Widen, Express vs. Canva, Content Hub vs. Frontify), remediated enterprise governance and taxonomy, and designed the end-to-end CSC using Workfront, AEM Assets, Creative Cloud, and Adobe Express – complete with a change management framework and stakeholder alignment approach.",
     outcomes: [
       "$5.7M annual operational value identified in Phase 2",
       "$486K year-one quick wins scaling to $2.2M at full adoption",
@@ -348,7 +348,7 @@ export const CSC_CLIENT_STORIES: CscClientStory[] = [
       "distribution_activation",
     ],
     narrative:
-      "Vanguard wanted to migrate to AEM cloud from on-premise but had no governance model, fragmented ownership across teams, and an unclear migration path. Merkle designed AEM Cloud + Workfront for structured intake, workflow, and content governance. Follow-on work introduced Adobe Experience Platform + AJO for real-time decisioning and AEM for structured content fragments — unlocking 1:1 personalization at scale, improved conversion, and reduced production burden inside the constraints of a regulated financial services environment.",
+      "Vanguard wanted to migrate to AEM cloud from on-premise but had no governance model, fragmented ownership across teams, and an unclear migration path. Merkle designed AEM Cloud + Workfront for structured intake, workflow, and content governance. Follow-on work introduced Adobe Experience Platform + AJO for real-time decisioning and AEM for structured content fragments – unlocking 1:1 personalization at scale, improved conversion, and reduced production burden inside the constraints of a regulated financial services environment.",
     outcomes: [
       "Governance model established for regulated content",
       "Migration path defined with risk mitigation",

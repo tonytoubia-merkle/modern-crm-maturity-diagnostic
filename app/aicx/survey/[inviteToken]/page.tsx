@@ -94,7 +94,7 @@ export default function B2bSurveyPage() {
 
   if (thankYou || data.stakeholder.status === "completed") {
     return (
-      <CenteredCard title="Thanks — you&apos;re done.">
+      <CenteredCard title="Thanks – you&apos;re done.">
         Your responses have been submitted. The workshop team will share
         aggregated findings back with you. You can close this tab.
       </CenteredCard>

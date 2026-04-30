@@ -182,7 +182,7 @@ export function IndustryModule({
                 </div>
               ) : (
                 <div className="ml-9 space-y-2">
-                  {/* Score pips + Not sure — single row (matches CapabilitySection) */}
+                  {/* Score pips + Not sure – single row (matches CapabilitySection) */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {[1, 2, 3, 4, 5].map((v) => (
                       <button

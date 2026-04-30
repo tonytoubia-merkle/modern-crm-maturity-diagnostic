@@ -8,10 +8,10 @@ import { M2Logo } from "@/components/brand/M2Logo";
  * (/crm, /csc, /b2b, /aicx, /aient). Renders:
  *
  *   1. M2 logo
- *   2. Cross-diagnostic links — Modern CRM, Content Supply Chain,
+ *   2. Cross-diagnostic links – Modern CRM, Content Supply Chain,
  *      B2B Transformation, AI for CX, AI for Enterprise. The current
  *      page is bolded / fully-white; the others are dim links.
- *   3. Utility links — Guide, Library, Badges (yellow), Admin, About.
+ *   3. Utility links – Guide, Library, Badges (yellow), Admin, About.
  *   4. Profile bubble with Badges + Sign out menu.
  *
  * Kept as a single component so the diagnostic homes can't drift out
@@ -59,7 +59,7 @@ export function DiagnosticHeader({
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
         <M2Logo tone="dark" height={44} />
         <div className="flex items-center gap-5 flex-wrap justify-end">
-          {/* Diagnostic switcher — current is bolded */}
+          {/* Diagnostic switcher – current is bolded */}
           {DIAGNOSTICS.map((d) =>
             d.key === current ? (
               <span

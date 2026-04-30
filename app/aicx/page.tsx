@@ -151,16 +151,13 @@ export default function AicxHomePage() {
 
       <section className="bg-m2-navy">
         <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
-          <p className="text-sm font-medium text-m2-sky mb-3">
-            Merkle AI for CX Practice
-          </p>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
             AI for CX Maturity Diagnostic
           </h1>
           <p className="text-base text-white/70 leading-relaxed max-w-2xl mb-8">
             Assess how the brand shows up to AI agents, how AI shapes the
             digital experience, how personalization runs in real time, and how
-            AI investment is measured — across the four AI for CX pillars
+            AI investment is measured – across the four AI for CX pillars
             plus the identity, data, and trust foundation that underpin them.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -200,7 +197,7 @@ export default function AicxHomePage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900 mb-1.5">Assess</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              36 questions across six AI-for-CX capabilities — Agentic
+              36 questions across six AI-for-CX capabilities – Agentic
               Discoverability, Agentic Experience, Adaptive Personalization,
               Testing &amp; Experimentation, Identity &amp; Data, and
               Measurement &amp; AI Trust.
@@ -222,7 +219,7 @@ export default function AicxHomePage() {
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed">
               Salesforce-ready account narrative, pipeline table, and
-              individual opportunity records — plus shareable results for
+              individual opportunity records – plus shareable results for
               client conversations.
             </p>
           </div>

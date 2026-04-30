@@ -1,7 +1,7 @@
 import type { Vignette, WorkshopAgenda, AgendaBlock, Capability } from "@/lib/types";
 import { getVignettesForOpportunities, VIGNETTES } from "@/lib/data/vignettes";
 
-// Pairs of vignettes that overlap significantly — never include both
+// Pairs of vignettes that overlap significantly – never include both
 const EXCLUSION_PAIRS: [string, string][] = [
   ["identity_data_value_mapping", "tech_stack_integration_audit"],
   ["consumer_lifecycle_touchpoint", "signal_capture_discovery"],
@@ -34,7 +34,7 @@ export function buildWorkshopAgenda(
 ): WorkshopAgenda {
   const allCandidates = getVignettesForOpportunities(triggeredOpportunityIds, industry);
 
-  // Step 1: Strategic selection — one per capability, no overlaps
+  // Step 1: Strategic selection – one per capability, no overlaps
   const selected = selectStrategicVignettes(allCandidates, triggeredOpportunityIds);
 
   // Step 2: Determine format based on selected count
@@ -94,7 +94,7 @@ function selectStrategicVignettes(
     const allCapsAlreadyCovered = v.triggerCapabilities.every((c) => coveredCapabilities.has(c));
 
     // If ALL of this vignette's capabilities are already covered by other
-    // selected vignettes, skip it — it would be redundant
+    // selected vignettes, skip it – it would be redundant
     if (allCapsAlreadyCovered && selected.length >= 2) continue;
 
     // Select this vignette
@@ -106,7 +106,7 @@ function selectStrategicVignettes(
       coveredCapabilities.add(cap);
     }
 
-    // Apply exclusion rules — block the partner vignette
+    // Apply exclusion rules – block the partner vignette
     for (const [a, b] of EXCLUSION_PAIRS) {
       if (v.id === a) excludedIds.add(b);
       if (v.id === b) excludedIds.add(a);

@@ -76,12 +76,12 @@ export function B2bCapabilityHeatmap({ scores }: B2bCapabilityHeatmapProps) {
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => {
-                    if (typeof value !== "number") return ["—", name];
+                    if (typeof value !== "number") return ["–", name];
                     const rounded = Math.round(value);
                     const label = B2B_SCORE_LABELS[rounded] ?? "";
                     return [
                       `${formatB2bScore(value)}${
-                        label ? ` — ${label}` : ""
+                        label ? ` – ${label}` : ""
                       }`,
                       name,
                     ];
@@ -165,7 +165,7 @@ export function B2bCapabilityHeatmap({ scores }: B2bCapabilityHeatmapProps) {
               )}
             >
               <span className="font-bold">{v}</span>
-              <span>—</span>
+              <span>–</span>
               <span>{B2B_SCORE_LABELS[v]}</span>
             </div>
           ))}

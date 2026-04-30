@@ -34,7 +34,7 @@ export default async function ResumeAientAssessmentPage({
     .eq("assessment_id", assessment.id);
 
   const responses: AientResponseItem[] = (rawResponses ?? []).map((r) => ({
-    // Core question IDs are numbers in the app but stored as TEXT in DB — convert back
+    // Core question IDs are numbers in the app but stored as TEXT in DB – convert back
     questionId: /^\d+$/.test(r.question_id) ? Number(r.question_id) : r.question_id,
     score: r.score,
     capability: r.capability as AientCapability,

@@ -161,7 +161,7 @@ export default function GuidePage() {
         <section className="mb-14">
           <div className="bg-blue-50 border border-blue-100 rounded-xl px-5 py-4">
             <p className="text-sm text-blue-800">
-              <span className="font-semibold">Workshop Checklist</span> — The interactive checklist lives on each project dashboard, so you can track preparation per-project with on-site/virtual toggle and persistent progress.
+              <span className="font-semibold">Workshop Checklist</span> – The interactive checklist lives on each project dashboard, so you can track preparation per-project with on-site/virtual toggle and persistent progress.
             </p>
           </div>
         </section>

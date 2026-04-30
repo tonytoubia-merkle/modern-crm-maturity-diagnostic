@@ -11,7 +11,7 @@ import type {
  * If `byIndustry` is set on the question and contains an entry for the
  * selected industry, that override wins. Otherwise the default `text`
  * is returned. Used by the chat prompt builder, score map, capability
- * section, and any other surface that renders question text — every
+ * section, and any other surface that renders question text – every
  * consumer should route through this helper instead of reading
  * `q.text` directly so the dynamic-text feature works end-to-end.
  */
@@ -107,7 +107,7 @@ export const CORE_QUESTIONS: Question[] = [
     id: 1,
     text: "To what extent does the organization maintain a unified customer profile across channels and touchpoints?",
     capability: "identity",
-    tooltip: "A unified customer profile is a single, persistent record that connects all known data about a customer — purchases, interactions, preferences, and identifiers — across every channel and touchpoint.",
+    tooltip: "A unified customer profile is a single, persistent record that connects all known data about a customer – purchases, interactions, preferences, and identifiers – across every channel and touchpoint.",
   },
   {
     id: 2,
@@ -120,15 +120,15 @@ export const CORE_QUESTIONS: Question[] = [
     capability: "identity",
     byIndustry: {
       retail:
-        "To what extent are households, family members, and gift buyers identified and connected — so a single member's purchase, return, or loyalty activity links cleanly to the rest of the household?",
+        "To what extent are households, family members, and gift buyers identified and connected – so a single member's purchase, return, or loyalty activity links cleanly to the rest of the household?",
       qsr:
-        "To what extent are households and family or group dining patterns identified and connected — so app, loyalty, and order activity rolls up to a household view rather than treating each member as a separate guest?",
+        "To what extent are households and family or group dining patterns identified and connected – so app, loyalty, and order activity rolls up to a household view rather than treating each member as a separate guest?",
       financial_services:
-        "To what extent are joint accounts, household balances, account beneficiaries, and authorised users identified and connected — so the whole financial relationship is visible across products and channels?",
+        "To what extent are joint accounts, household balances, account beneficiaries, and authorised users identified and connected – so the whole financial relationship is visible across products and channels?",
       travel_hospitality:
-        "To what extent are households, travelling parties, and group bookings identified and connected — so loyalty status, preferences, and history span every guest in the relationship rather than the booker alone?",
+        "To what extent are households, travelling parties, and group bookings identified and connected – so loyalty status, preferences, and history span every guest in the relationship rather than the booker alone?",
       automotive:
-        "To what extent are households, multi-vehicle owners, fleet relationships, and authorised drivers identified and connected — so the full vehicle relationship is visible across sales, service, and engagement?",
+        "To what extent are households, multi-vehicle owners, fleet relationships, and authorised drivers identified and connected – so the full vehicle relationship is visible across sales, service, and engagement?",
     },
   },
   {
@@ -141,7 +141,7 @@ export const CORE_QUESTIONS: Question[] = [
     id: 5,
     text: "To what extent are behavioral intent signals such as purchase, browsing, engagement, or usage captured and connected to customer profiles?",
     capability: "signals",
-    tooltip: "Behavioral intent signals are actions a customer takes — page views, cart activity, email opens, app sessions, store visits — that indicate interest or readiness to engage.",
+    tooltip: "Behavioral intent signals are actions a customer takes – page views, cart activity, email opens, app sessions, store visits – that indicate interest or readiness to engage.",
   },
   {
     id: 6,
@@ -160,7 +160,7 @@ export const CORE_QUESTIONS: Question[] = [
     id: 8,
     text: "To what extent are segmentation or predictive models used to guide engagement strategies?",
     capability: "decisioning",
-    tooltip: "Predictive models are statistical or machine learning models that estimate the likelihood of future customer behavior — such as purchase propensity, churn risk, or lifetime value.",
+    tooltip: "Predictive models are statistical or machine learning models that estimate the likelihood of future customer behavior – such as purchase propensity, churn risk, or lifetime value.",
   },
   {
     id: 9,
@@ -178,7 +178,7 @@ export const CORE_QUESTIONS: Question[] = [
     id: 11,
     text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, physical locations (store, branch, property, dealership), and service?",
     capability: "engagement",
-    tooltip: "Orchestration means channels are coordinated so each interaction builds on the last — rather than operating independently in silos with separate strategies. Physical channels include whatever in-person environment the industry uses: stores for retail, branches for financial services, properties for hospitality, dealerships for automotive.",
+    tooltip: "Orchestration means channels are coordinated so each interaction builds on the last – rather than operating independently in silos with separate strategies. Physical channels include whatever in-person environment the industry uses: stores for retail, branches for financial services, properties for hospitality, dealerships for automotive.",
     byIndustry: {
       retail:
         "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, store, and service?",
@@ -187,16 +187,16 @@ export const CORE_QUESTIONS: Question[] = [
       financial_services:
         "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, branch, contact center, and service?",
       travel_hospitality:
-        "To what extent are guest journeys orchestrated across channels such as email, mobile, app, web, on-property, and service — covering pre-trip, on-trip, and post-trip moments?",
+        "To what extent are guest journeys orchestrated across channels such as email, mobile, app, web, on-property, and service – covering pre-trip, on-trip, and post-trip moments?",
       automotive:
-        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, dealership, and service — across sales, ownership, and re-purchase?",
+        "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, dealership, and service – across sales, ownership, and re-purchase?",
     },
   },
   {
     id: 12,
     text: "To what extent are loyalty or recognition programs integrated with CRM engagement strategies?",
     capability: "engagement",
-    tooltip: "This includes traditional loyalty tiers as well as modern recognition models — value exchange, experiential rewards, personalized benefits, and non-transactional engagement mechanics.",
+    tooltip: "This includes traditional loyalty tiers as well as modern recognition models – value exchange, experiential rewards, personalized benefits, and non-transactional engagement mechanics.",
   },
   {
     id: 13,
@@ -244,7 +244,7 @@ export const CORE_QUESTIONS: Question[] = [
     id: 21,
     text: "To what extent does the organization measure incremental lift from loyalty, promotions, offers, incentives, and messaging programs?",
     capability: "learning_optimization",
-    tooltip: "Incremental lift measures the true causal impact of a program — the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway. Programs include traditional loyalty and promotions for retail / QSR / travel, as well as rate offers and fee incentives for financial services, and trade-in / lease incentives for automotive.",
+    tooltip: "Incremental lift measures the true causal impact of a program – the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway. Programs include traditional loyalty and promotions for retail / QSR / travel, as well as rate offers and fee incentives for financial services, and trade-in / lease incentives for automotive.",
     byIndustry: {
       retail:
         "To what extent does the organization measure incremental lift from loyalty, promotions, and messaging programs?",
@@ -441,7 +441,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
     text: "To what extent are recognition and value exchange programs used to personalize guest experiences beyond transactional rewards?",
     industry: "travel_hospitality",
     capability: "engagement",
-    tooltip: "This includes traditional loyalty tiers as well as modern recognition models — experiential rewards, personalized service, status-based perks, and non-transactional engagement.",
+    tooltip: "This includes traditional loyalty tiers as well as modern recognition models – experiential rewards, personalized service, status-based perks, and non-transactional engagement.",
   },
   {
     id: "th_3",
@@ -460,7 +460,7 @@ export const INDUSTRY_QUESTIONS: IndustryQuestion[] = [
     text: "To what extent are ancillary revenue opportunities personalized using customer signals?",
     industry: "travel_hospitality",
     capability: "decisioning",
-    tooltip: "Ancillary revenue refers to revenue from additional products and services beyond the core offering — such as upgrades, add-ons, experiences, and partner offers.",
+    tooltip: "Ancillary revenue refers to revenue from additional products and services beyond the core offering – such as upgrades, add-ons, experiences, and partner offers.",
   },
   // Automotive
   {

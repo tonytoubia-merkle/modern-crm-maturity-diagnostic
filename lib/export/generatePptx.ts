@@ -13,9 +13,9 @@ import { formatDate } from "@/lib/utils";
 // ── Palette ────────────────────────────────────────────────────────────────
 // pptxgenjs expects hex strings WITHOUT a leading "#". Each palette mirrors
 // one of the three brand systems in lib/brand/tokens.ts:
-//   - "merkle"   (default)        — Merkle ARC, deep blue + coral
-//   - "dentsu"   (cannes/dentsu)  — DDS Light, mono ink
-//   - "connections"               — Salesforce Lightning + Merkle blend
+//   - "merkle"   (default)        – Merkle ARC, deep blue + coral
+//   - "dentsu"   (cannes/dentsu)  – DDS Light, mono ink
+//   - "connections"               – Salesforce Lightning + Merkle blend
 type Palette = {
   navy: string;     // hero / cover background
   navyMid: string;  // secondary dark surface
@@ -112,7 +112,7 @@ function paletteFor(source?: string | null): Palette {
   }
 }
 
-// Active palette — set inside generatePptx() based on the source.
+// Active palette – set inside generatePptx() based on the source.
 let C: Palette = MERKLE_PALETTE;
 
 function scoreHex(score: number): string {
@@ -206,7 +206,7 @@ export async function generatePptx(
   pptx.author = C.brandLabel;
   pptx.company = C.brandLabel;
   pptx.subject = C.productLabel;
-  pptx.title = `${C.productLabel} — ${results.assessment.clientName}`;
+  pptx.title = `${C.productLabel} – ${results.assessment.clientName}`;
 
   const { assessment, capabilityScores, overallScore, maturityStage, opportunities } = results;
   const stageInfo = MATURITY_STAGES[maturityStage];
@@ -224,7 +224,7 @@ export async function generatePptx(
     fill: { color: C.blue }, line: { color: C.blue },
   });
 
-  // Brand wordmark — switches based on source
+  // Brand wordmark – switches based on source
   cover.addText(C.brandLabel, {
     x: PAD, y: 0.22, w: 6, h: 0.4,
     fontSize: 13, bold: true, color: C.blue, charSpacing: 4,
@@ -528,7 +528,7 @@ export async function generatePptx(
     fontSize: 40, bold: true, color: C.white,
   });
   nextSlide.addText(
-    "Your diagnostic results provide a clear roadmap for CRM transformation. Merkle's Modern CRM practice combines strategy, data engineering, decisioning, and activation to move clients across the maturity curve — faster than going it alone.",
+    "Your diagnostic results provide a clear roadmap for CRM transformation. Merkle's Modern CRM practice combines strategy, data engineering, decisioning, and activation to move clients across the maturity curve – faster than going it alone.",
     {
       x: PAD, y: 2.15, w: 11, h: 1.2,
       fontSize: 13.5, color: "94A3B8", wrap: true,
@@ -538,7 +538,7 @@ export async function generatePptx(
   const steps: [string, string, string][] = [
     ["01", "Alignment Workshop", "Bring stakeholders together around your current-state findings and align on the top 2–3 capability investments with the highest return."],
     ["02", "90-Day Roadmap", "Translate your maturity gaps into a prioritized action plan mapped to your commercial goals and technical environment."],
-    ["03", "Pilot & Prove", "Scope a fast-track POC on your highest-priority opportunity to prove value before scaling — de-risked and delivery-ready."],
+    ["03", "Pilot & Prove", "Scope a fast-track POC on your highest-priority opportunity to prove value before scaling – de-risked and delivery-ready."],
   ];
 
   steps.forEach(([num, title, body], i) => {

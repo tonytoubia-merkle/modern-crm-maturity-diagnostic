@@ -4,12 +4,12 @@
  * Inline alert card used by /login and /register in place of native
  * browser popups. Three tones cover the auth flow signals:
  *
- *   - "domain"  — amber, wrong-domain warning. No CTA.
- *   - "info"    — blue, account-status nudge with a link to the
+ *   - "domain"  – amber, wrong-domain warning. No CTA.
+ *   - "info"    – blue, account-status nudge with a link to the
  *                 partner page (e.g. "no account? register here").
- *   - "error"   — red, generic auth failure with the raw message.
+ *   - "error"   – red, generic auth failure with the raw message.
  *
- * Visuals deliberately calmer than a browser dialog — these read as
+ * Visuals deliberately calmer than a browser dialog – these read as
  * helpful next steps, not blockers.
  */
 

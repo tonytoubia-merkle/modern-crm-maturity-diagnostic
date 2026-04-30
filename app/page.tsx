@@ -108,7 +108,7 @@ export default function ChooserHome() {
           </h1>
           <p className="text-base text-white/70 leading-relaxed max-w-2xl">
             Five separate diagnostics share this workspace. Pick the one you&apos;re
-            running — each has its own assessments, projects, and scoring model.
+            running – each has its own assessments, projects, and scoring model.
           </p>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default function ChooserHome() {
             href="/csc"
             eyebrow="Content Practice"
             title="Content Supply Chain"
-            description="Assess CSC maturity across six capabilities — strategy, workflow, asset governance, distribution, measurement, and AI. Run single respondents or multi-stakeholder workshops."
+            description="Assess CSC maturity across six capabilities – strategy, workflow, asset governance, distribution, measurement, and AI. Run single respondents or multi-stakeholder workshops."
             ctaLabel="Open Content Supply Chain"
           />
           <ChooserCard

@@ -65,8 +65,8 @@ export default function LibraryPage() {
           </h1>
           <p className="text-sm text-slate-600 max-w-2xl">
             Five libraries, one workspace. Each diagnostic ships workshop
-            vignettes — facilitation exercises with required inputs,
-            timed agendas, and expected outputs — plus anonymized client
+            vignettes – facilitation exercises with required inputs,
+            timed agendas, and expected outputs – plus anonymized client
             stories used as proof points during pitch. Use the toggle
             below to switch.
           </p>
@@ -151,7 +151,7 @@ function SuiteTab({
   );
 }
 
-// ── Modern CRM library — workshop vignettes ───────────────────────
+// ── Modern CRM library – workshop vignettes ───────────────────────
 
 function CrmLibrary() {
   const [view, setView] = useState<"vignettes" | "stories">("vignettes");
@@ -496,7 +496,7 @@ function CrmClientStoriesList() {
   );
 }
 
-// ── CSC library — workshop exercises + anonymized client stories ──
+// ── CSC library – workshop exercises + anonymized client stories ──
 
 function CscLibrary() {
   const [view, setView] = useState<"vignettes" | "stories">("vignettes");
@@ -582,7 +582,7 @@ function SubTab({
   );
 }
 
-// Workshop vignettes — same UI shape as the CRM vignette cards.
+// Workshop vignettes – same UI shape as the CRM vignette cards.
 function CscWorkshopVignettesList() {
   const [filter, setFilter] = useState<string>("all");
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -740,7 +740,7 @@ function CscWorkshopVignettesList() {
   );
 }
 
-// Client stories — kept for proof-point recall during pitch.
+// Client stories – kept for proof-point recall during pitch.
 function CscClientStoriesList() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -826,14 +826,14 @@ function CscClientStoriesList() {
 
       {CSC_CLIENT_STORIES.length === 0 && (
         <p className="text-sm text-slate-500">
-          No CSC stories yet — they&apos;ll appear here as the catalog grows.
+          No CSC stories yet – they&apos;ll appear here as the catalog grows.
         </p>
       )}
     </div>
   );
 }
 
-// ── B2B library — workshop exercises + client stories ────────────
+// ── B2B library – workshop exercises + client stories ────────────
 
 function B2bLibrary() {
   const [view, setView] = useState<"vignettes" | "stories">("vignettes");
@@ -1129,7 +1129,7 @@ function B2bClientStoriesList() {
   );
 }
 
-// ── AICX library — workshop exercises + client stories ────────────
+// ── AICX library – workshop exercises + client stories ────────────
 
 function AicxLibrary() {
   const [view, setView] = useState<"vignettes" | "stories">("vignettes");
@@ -1425,7 +1425,7 @@ function AicxClientStoriesList() {
   );
 }
 
-// ── AIENT library — workshop exercises + client stories ────────────
+// ── AIENT library – workshop exercises + client stories ────────────
 
 function AientLibrary() {
   const [view, setView] = useState<"vignettes" | "stories">("vignettes");

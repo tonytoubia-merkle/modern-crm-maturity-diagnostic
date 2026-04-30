@@ -21,7 +21,7 @@ interface CapabilitySectionProps {
   onRemoveResponse?: (questionId: number | string) => void;
   onReadyChange?: (isReady: boolean) => void;
   averages?: QuestionAverages;
-  /** Optional — passed when an industry has been selected so dynamic
+  /** Optional – passed when an industry has been selected so dynamic
    *  question text can render in industry-natural wording. */
   industry?: Industry | null;
 }
@@ -142,7 +142,7 @@ export function CapabilitySection({
                 </div>
               ) : (
                 <div className="ml-9 space-y-2">
-                  {/* Score pips + Not sure — single row */}
+                  {/* Score pips + Not sure – single row */}
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {[1, 2, 3, 4, 5].map((v) => {
                       // Only show average accents when averages are provided (review mode)
@@ -184,7 +184,7 @@ export function CapabilitySection({
                     >
                       Not sure
                     </button>
-                    {/* Average benchmarks — only shown in review mode */}
+                    {/* Average benchmarks – only shown in review mode */}
                     {averages && (overallAvg || industryAvg) && (
                       <span className="text-xs text-slate-400 ml-1">
                         {overallAvg && (

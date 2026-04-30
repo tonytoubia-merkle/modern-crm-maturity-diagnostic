@@ -8,7 +8,7 @@ import { AICX_INDUSTRY_LABELS } from "@/lib/aicx/data/questions";
 import type { AicxIndustry } from "@/lib/aicx/types";
 
 /**
- * /aicx/assessment/chat — internal-consultant conversational entry point
+ * /aicx/assessment/chat – internal-consultant conversational entry point
  * for the CSC diagnostic. Mirrors /crm/assessment/chat: setup form
  * collects basic context, then renders AicxChatView for a text-driven
  * conversation. Voice input is available externally through the branded

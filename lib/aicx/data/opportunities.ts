@@ -7,11 +7,11 @@ import type { AicxOpportunity } from "@/lib/aicx/types";
  * Customer Experience Optimization (EXO) Offering Toolkit (v2.0, January
  * 2026). Organized in two layers:
  *
- *   1. Four "wedge" engagements — AI for CX Diagnostic, Agentic
+ *   1. Four "wedge" engagements – AI for CX Diagnostic, Agentic
  *      Discoverability Audit, EXO Optimization Strategy, Adaptive
  *      Personalization Workshop. These are the small, fast entry points
  *      that set up the larger AI-for-CX transformation programs.
- *   2. Ten capability- and platform-level engagements — agentic SEO/AEO,
+ *   2. Ten capability- and platform-level engagements – agentic SEO/AEO,
  *      agentic experience design, conversational commerce, real-time
  *      personalization, identity foundations, experimentation
  *      infrastructure, AI trust/guardrails, measurement scorecard,
@@ -20,7 +20,7 @@ import type { AicxOpportunity } from "@/lib/aicx/types";
  */
 export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
   // ══════════════════════════════════════════════════════════════════
-  // WEDGE ENGAGEMENTS — set up the bigger AI-for-CX transformation
+  // WEDGE ENGAGEMENTS – set up the bigger AI-for-CX transformation
   // ══════════════════════════════════════════════════════════════════
   {
     id: "ai_for_cx_diagnostic",
@@ -46,7 +46,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "High-level roadmap with sequenced investment themes",
     ],
     valueNarrative:
-      "AI agents are now the front door to the brand for a growing share of customers — and most brands are invisible. A clear, leadership-aligned North Star is the prerequisite for every AI-for-CX investment that follows.",
+      "AI agents are now the front door to the brand for a growing share of customers – and most brands are invisible. A clear, leadership-aligned North Star is the prerequisite for every AI-for-CX investment that follows.",
     sfType: "Strategy & Vision",
     engagementSize: "6–10 weeks · $150K–$350K",
     priority: "critical",
@@ -55,7 +55,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     id: "agentic_discoverability_audit",
     title: "Agentic Discoverability Audit",
     tagline:
-      "Find out exactly where the brand is included or excluded by AI agents — and what to fix first",
+      "Find out exactly where the brand is included or excluded by AI agents – and what to fix first",
     description:
       "A focused audit that probes how the brand, its products, and its expertise show up across the leading LLMs, AI search experiences, and agent ecosystems. We look at content structure, schema, brand-mention patterns, and competitor coverage, then deliver a prioritised remediation roadmap.",
     capabilities: ["agentic_discoverability"],
@@ -65,7 +65,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     methods: [
       "Cross-LLM and AI-search probe set on brand and category queries",
       "Content, schema, and knowledge-graph audit",
-      "Competitor benchmarking — who AI agents are recommending instead",
+      "Competitor benchmarking – who AI agents are recommending instead",
       "Prioritised remediation roadmap with quick wins and structural fixes",
     ],
     valueNarrative:
@@ -78,7 +78,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     id: "exo_optimization_strategy",
     title: "EXO Optimization Strategy",
     tagline:
-      "Maturity assessment of the experimentation engine — A/B, bandits, holdouts, factorial design",
+      "Maturity assessment of the experimentation engine – A/B, bandits, holdouts, factorial design",
     description:
       "The Customer Experience Optimization (EXO) maturity assessment looks at how the brand validates AI investments today: experimentation cadence, statistical rigor, holdout discipline, and how learnings flow back into personalization and AI models. The output is a 12-month plan to mature the engine.",
     capabilities: ["experimentation", "measurement_trust"],
@@ -103,7 +103,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "One high-value journey, redesigned around real-time AI decisioning",
     description:
-      "A focused, time-boxed workshop that takes a single high-value journey (acquisition, onboarding, cross-sell, retention) and redesigns it around real-time AI decisioning — moving from rules and batch personalization to model-driven, multi-armed adaptive delivery on a unified identity layer.",
+      "A focused, time-boxed workshop that takes a single high-value journey (acquisition, onboarding, cross-sell, retention) and redesigns it around real-time AI decisioning – moving from rules and batch personalization to model-driven, multi-armed adaptive delivery on a unified identity layer.",
     capabilities: ["adaptive_personalization", "identity_data"],
     triggerThreshold: 3.0,
     scope:
@@ -111,7 +111,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     methods: [
       "Journey selection and current-state behavioural mapping",
       "Identity, signal, and feature inventory",
-      "Real-time decisioning architecture — engine, models, trigger logic",
+      "Real-time decisioning architecture – engine, models, trigger logic",
       "MVP build plan with measurable targets",
     ],
     valueNarrative:
@@ -122,7 +122,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — agentic discoverability + experience
+  // CAPABILITY ENGAGEMENTS – agentic discoverability + experience
   // ══════════════════════════════════════════════════════════════════
   {
     id: "agentic_seo_aeo_modernization",
@@ -130,7 +130,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Re-platform the content engine so brand and product show up across LLMs, AI search, and agent answers",
     description:
-      "Modernise the brand's discoverability stack — content structure, schema, knowledge graph, brand-mention strategy, and authority content — so AI agents and answer engines extract, cite, and recommend the brand consistently. Includes content-system tooling and editorial-workflow changes.",
+      "Modernise the brand's discoverability stack – content structure, schema, knowledge graph, brand-mention strategy, and authority content – so AI agents and answer engines extract, cite, and recommend the brand consistently. Includes content-system tooling and editorial-workflow changes.",
     capabilities: ["agentic_discoverability"],
     triggerThreshold: 3.5,
     scope:
@@ -142,7 +142,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "AI-search and LLM monitoring instrumentation",
     ],
     valueNarrative:
-      "Search behaviour is shifting fast — Gartner forecasts 25%+ of search queries will be handled by AI agents and answer engines by 2026. Brands that don't modernise the discoverability stack lose share invisibly.",
+      "Search behaviour is shifting fast – Gartner forecasts 25%+ of search queries will be handled by AI agents and answer engines by 2026. Brands that don't modernise the discoverability stack lose share invisibly.",
     sfType: "Content & SEO",
     engagementSize: "12–20 weeks · $300K–$750K",
     priority: "high",
@@ -151,7 +151,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     id: "agentic_experience_design",
     title: "Agentic Experience Design",
     tagline:
-      "Redesign the digital experience for AI-native users — conversational, video-led, agent-aware",
+      "Redesign the digital experience for AI-native users – conversational, video-led, agent-aware",
     description:
       "Design and build AI-native experience patterns: conversational interfaces, video-led discovery, AI-summarised product pages, agent-friendly navigation, and Gen-Alpha-ready research patterns. Includes design-system updates, content patterns, and AI-experience guidelines.",
     capabilities: ["agentic_experience"],
@@ -165,7 +165,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "AI-experience guidelines, prototype, and measurement plan",
     ],
     valueNarrative:
-      "Gen-Alpha and Gen-Z research the way they research TikTok — visually, conversationally, with AI agents as collaborators. Experiences designed for human-only browsing feel obsolete to them within seconds.",
+      "Gen-Alpha and Gen-Z research the way they research TikTok – visually, conversationally, with AI agents as collaborators. Experiences designed for human-only browsing feel obsolete to them within seconds.",
     sfType: "Experience Design",
     engagementSize: "12–20 weeks · $350K–$800K",
     priority: "high",
@@ -176,7 +176,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Embed conversational AI into discovery, search, and transaction journeys",
     description:
-      "Design, build, and integrate conversational AI surfaces into discovery, search, configuration, and transaction journeys — including the model selection, retrieval architecture, brand-voice tuning, and guardrails needed to operate them in production.",
+      "Design, build, and integrate conversational AI surfaces into discovery, search, configuration, and transaction journeys – including the model selection, retrieval architecture, brand-voice tuning, and guardrails needed to operate them in production.",
     capabilities: ["agentic_experience", "agentic_discoverability"],
     triggerThreshold: 3.5,
     scope:
@@ -188,14 +188,14 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "Integration with commerce, cart, and fulfillment",
     ],
     valueNarrative:
-      "Conversational commerce isn't a chatbot — it's a re-architected discovery experience. Done right, it shifts assisted-conversion economics and creates a defensible position before agent ecosystems mature.",
+      "Conversational commerce isn't a chatbot – it's a re-architected discovery experience. Done right, it shifts assisted-conversion economics and creates a defensible position before agent ecosystems mature.",
     sfType: "Conversational Commerce",
     engagementSize: "16–28 weeks · $500K–$1.5M",
     priority: "high",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — adaptive personalization + identity
+  // CAPABILITY ENGAGEMENTS – adaptive personalization + identity
   // ══════════════════════════════════════════════════════════════════
   {
     id: "real_time_personalization_platform",
@@ -203,7 +203,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Move from batch / rules to AI-driven decisioning across every paid, owned, and assisted touch",
     description:
-      "Architect, build, and operationalise a real-time decisioning platform — feature store, models, decisioning engine, content factory, and orchestration — that delivers AI-driven personalization across web, app, email, ads, and assisted channels.",
+      "Architect, build, and operationalise a real-time decisioning platform – feature store, models, decisioning engine, content factory, and orchestration – that delivers AI-driven personalization across web, app, email, ads, and assisted channels.",
     capabilities: ["adaptive_personalization", "identity_data"],
     triggerThreshold: 3.5,
     scope:
@@ -211,7 +211,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     methods: [
       "Decisioning architecture and platform selection",
       "Feature store and signal pipeline design",
-      "Model build — propensity, NBA, value, churn",
+      "Model build – propensity, NBA, value, churn",
       "Content factory and orchestration across channels",
       "Personalization operating model",
     ],
@@ -227,7 +227,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Unified customer identity, segmentation, and predictive layer that every AI use case can rely on",
     description:
-      "Architect and implement the unified customer identity and data foundation — identity resolution, segmentation, predictive models (propensity, churn, LTV), and consent — that every downstream AI use case depends on.",
+      "Architect and implement the unified customer identity and data foundation – identity resolution, segmentation, predictive models (propensity, churn, LTV), and consent – that every downstream AI use case depends on.",
     capabilities: ["identity_data"],
     triggerThreshold: 3.5,
     scope:
@@ -240,14 +240,14 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "Governance and data-quality operating model",
     ],
     valueNarrative:
-      "AI is only as good as the customer signal it has access to. Without unified identity, every AI use case operates with a partial view — and the personalization, decisioning, and measurement that depend on it never deliver.",
+      "AI is only as good as the customer signal it has access to. Without unified identity, every AI use case operates with a partial view – and the personalization, decisioning, and measurement that depend on it never deliver.",
     sfType: "Data Platform",
     engagementSize: "20–36 weeks · $750K–$2M",
     priority: "high",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — experimentation, trust, measurement
+  // CAPABILITY ENGAGEMENTS – experimentation, trust, measurement
   // ══════════════════════════════════════════════════════════════════
   {
     id: "experimentation_infrastructure",
@@ -255,7 +255,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Stand up A/B, multi-arm bandit, holdout, and factorial design at scale",
     description:
-      "Implement experimentation infrastructure — tooling, statistical methodology, governance, and team capability — that lets the organisation validate every AI investment with rigorous A/B, multi-arm bandit, holdout, and factorial design at scale.",
+      "Implement experimentation infrastructure – tooling, statistical methodology, governance, and team capability – that lets the organisation validate every AI investment with rigorous A/B, multi-arm bandit, holdout, and factorial design at scale.",
     capabilities: ["experimentation"],
     triggerThreshold: 3.5,
     scope:
@@ -279,7 +279,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "Confidence scoring, trigger logic, and brand-safety guardrails that let AI act only where it should",
     description:
-      "Design the AI-confidence and brand-safety framework — confidence scoring, trigger thresholds, content moderation, escalation paths, and human-in-the-loop checkpoints — that lets AI operate at scale without putting the brand at risk.",
+      "Design the AI-confidence and brand-safety framework – confidence scoring, trigger thresholds, content moderation, escalation paths, and human-in-the-loop checkpoints – that lets AI operate at scale without putting the brand at risk.",
     capabilities: ["measurement_trust", "agentic_experience"],
     triggerThreshold: 3.5,
     scope:
@@ -292,7 +292,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "Monitoring, incident response, and audit trails",
     ],
     valueNarrative:
-      "AI failures in customer-facing surfaces erode brand trust faster than they are caught. The trust framework is what makes scaling AI safely possible — not optional.",
+      "AI failures in customer-facing surfaces erode brand trust faster than they are caught. The trust framework is what makes scaling AI safely possible – not optional.",
     sfType: "AI Governance",
     engagementSize: "8–14 weeks · $200K–$500K",
     priority: "high",
@@ -303,7 +303,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     tagline:
       "A measurement framework that ties every AI investment to incremental business outcomes",
     description:
-      "Build the AI measurement scorecard — KPIs, attribution methodology, holdout discipline, model-level performance metrics, and an executive dashboard — that ties every AI investment to incremental business outcomes (revenue, retention, cost-to-serve).",
+      "Build the AI measurement scorecard – KPIs, attribution methodology, holdout discipline, model-level performance metrics, and an executive dashboard – that ties every AI investment to incremental business outcomes (revenue, retention, cost-to-serve).",
     capabilities: ["measurement_trust", "experimentation"],
     triggerThreshold: 3.5,
     scope:
@@ -328,9 +328,9 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     id: "agentic_service_workflow",
     title: "Agentic Service Workflow Activation",
     tagline:
-      "Multi-agent customer service flows — deflection, resolution, escalation",
+      "Multi-agent customer service flows – deflection, resolution, escalation",
     description:
-      "Design and deploy multi-agent customer-service workflows — deflection, summarisation, resolution, escalation — across chat, voice, and asynchronous channels, with the supervisor and trust frameworks needed to run them in production.",
+      "Design and deploy multi-agent customer-service workflows – deflection, summarisation, resolution, escalation – across chat, voice, and asynchronous channels, with the supervisor and trust frameworks needed to run them in production.",
     capabilities: ["agentic_experience", "measurement_trust"],
     triggerThreshold: 4.0,
     scope:
@@ -342,7 +342,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
       "Deflection, resolution, and CSAT measurement",
     ],
     valueNarrative:
-      "Agentic service is the highest-volume, highest-ROI surface for AI in CX — and the one most exposed to brand-safety risk. Done right, deflection and case-time savings pay for the rest of the AI program.",
+      "Agentic service is the highest-volume, highest-ROI surface for AI in CX – and the one most exposed to brand-safety risk. Done right, deflection and case-time savings pay for the rest of the AI program.",
     sfType: "Agentic Service",
     engagementSize: "16–28 weeks · $500K–$1.2M",
     priority: "innovation",
@@ -351,7 +351,7 @@ export const AICX_OPPORTUNITIES: AicxOpportunity[] = [
     id: "agentic_cx_innovation_lab",
     title: "Agentic CX Innovation Lab",
     tagline:
-      "Time-boxed prototype lab for emerging agentic patterns — multi-agent commerce, AI concierge, generative video",
+      "Time-boxed prototype lab for emerging agentic patterns – multi-agent commerce, AI concierge, generative video",
     description:
       "Time-boxed innovation lab that prototypes 2–3 emerging agentic CX patterns (multi-agent commerce, AI concierge, generative video product pages, browse-by-conversation, etc.) with real customer telemetry, then writes the case for which to scale.",
     capabilities: [

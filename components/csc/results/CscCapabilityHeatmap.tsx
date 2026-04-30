@@ -76,12 +76,12 @@ export function CscCapabilityHeatmap({ scores }: CscCapabilityHeatmapProps) {
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => {
-                    if (typeof value !== "number") return ["—", name];
+                    if (typeof value !== "number") return ["–", name];
                     const rounded = Math.round(value);
                     const label = CSC_SCORE_LABELS[rounded] ?? "";
                     return [
                       `${formatCscScore(value)}${
-                        label ? ` — ${label}` : ""
+                        label ? ` – ${label}` : ""
                       }`,
                       name,
                     ];
@@ -165,7 +165,7 @@ export function CscCapabilityHeatmap({ scores }: CscCapabilityHeatmapProps) {
               )}
             >
               <span className="font-bold">{v}</span>
-              <span>—</span>
+              <span>–</span>
               <span>{CSC_SCORE_LABELS[v]}</span>
             </div>
           ))}

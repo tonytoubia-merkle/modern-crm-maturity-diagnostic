@@ -95,7 +95,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
 
   return (
     <div className="min-h-screen font-merkle bg-merkle-grey-60 print:bg-white">
-      {/* Branded header bar — Merkle artifact treatment */}
+      {/* Branded header bar – Merkle artifact treatment */}
       <div className="print:hidden bg-merkle-secondary-600">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -106,7 +106,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
             </span>
           </div>
           <div className="flex items-center gap-3">
-            {/* View mode toggle — compact */}
+            {/* View mode toggle – compact */}
             <div className="inline-flex rounded-md overflow-hidden text-xs font-medium border border-white/20">
               <button
                 type="button"
@@ -188,7 +188,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           </p>
         </div>
 
-        {/* Project banner — individual stakeholder results link back to project */}
+        {/* Project banner – individual stakeholder results link back to project */}
         {isProjectAssessment && (
           <div className="mb-6 bg-blue-50 border border-blue-100 rounded-xl px-5 py-3.5 flex items-center justify-between">
             <p className="text-sm text-blue-800">
@@ -206,8 +206,8 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
                   <>
                     This report summarizes the findings of a Modern CRM Maturity Diagnostic
                     conducted for <strong>{assessment.clientName}</strong>. The assessment
-                    evaluates eight core capabilities — Identity, Signals, Decisioning, Engagement,
-                    Media Activation, Learning &amp; Optimization, Technology, and Organization — that together determine how
+                    evaluates eight core capabilities – Identity, Signals, Decisioning, Engagement,
+                    Media Activation, Learning &amp; Optimization, Technology, and Organization – that together determine how
                     effectively an organization turns customer data into coordinated engagement and
                     growth. Each capability is scored on a 1–5 scale and mapped to one of four
                     maturity stages. The opportunities below highlight the highest-impact areas for
@@ -216,7 +216,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
                 ) : (
                   <>
                     This diagnostic assessed <strong>{assessment.clientName}</strong> across
-                    the eight capabilities of Modern CRM — Identity, Signals, Decisioning,
+                    the eight capabilities of Modern CRM – Identity, Signals, Decisioning,
                     Engagement, Media Activation, Learning &amp; Optimization, Technology, and Organization. Scores reflect
                     the respondent&apos;s assessment on a 1–5 maturity scale (1 = Not in Place,
                     3 = Operational, 5 = Optimized). Strategic opportunities are triggered by
@@ -268,7 +268,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           </Card>
         )}
 
-        {/* Salesforce / Proposal output — internal only */}
+        {/* Salesforce / Proposal output – internal only */}
         {!isClient && (
           <Card className="mb-6 print:hidden">
             <CardHeader>
@@ -291,7 +291,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           </Card>
         )}
 
-        {/* Respondent notes — internal only */}
+        {/* Respondent notes – internal only */}
         {!isClient && responses.some((r) => r.notes) && (
           <Card className="mb-6">
             <CardHeader>
@@ -324,7 +324,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           </Card>
         )}
 
-        {/* Validation flags — internal only */}
+        {/* Validation flags – internal only */}
         {!isClient && responses.some((r) => r.score === undefined || r.score === null) && (
           <Card className="mb-6">
             <CardHeader>

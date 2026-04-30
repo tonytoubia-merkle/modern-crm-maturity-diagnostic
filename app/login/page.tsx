@@ -17,18 +17,18 @@ const supabase = createBrowserClient(
 );
 
 /**
- * /login — sign-in only. /register handles account creation.
+ * /login – sign-in only. /register handles account creation.
  *
  * Custom AuthAlert cards replace browser popups for the two surfaces
  * users see most often:
  *   - wrong domain  → amber "use @merkle.com or @dentsu.com"
- *   - account not   → blue "we couldn't sign you in — register?" with
+ *   - account not   → blue "we couldn't sign you in – register?" with
  *     found / wrong   a link to /register (Supabase reports both as
  *     password        "Invalid login credentials" so we surface the
  *                     register CTA either way)
  *
  * The form has noValidate set and inputs do NOT use `required`/
- * `minLength` — we validate manually so native browser tooltips never
+ * `minLength` – we validate manually so native browser tooltips never
  * appear in place of our cards.
  */
 export default function LoginPage() {
@@ -98,7 +98,7 @@ export default function LoginPage() {
 
   // Map Supabase signin failures to a friendlier alert. Supabase returns
   // "Invalid login credentials" for both wrong-password and unknown-user
-  // (intentionally — security best practice), so we surface a register CTA.
+  // (intentionally – security best practice), so we surface a register CTA.
   const isInvalidCredentials =
     authFailure?.toLowerCase().includes("invalid login credentials") ||
     authFailure?.toLowerCase().includes("invalid_credentials") ||

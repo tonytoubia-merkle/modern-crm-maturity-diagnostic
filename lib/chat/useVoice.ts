@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// Web Speech API types — these aren't in the default TS lib
+// Web Speech API types – these aren't in the default TS lib
 // Using Record<string, unknown> as base for untyped browser APIs
 type SpeechRecognitionInstance = Record<string, unknown> & {
   continuous: boolean;
@@ -139,7 +139,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
       (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
     if (!SR) return;
 
-    // Cancel any TTS and stop barge-in watch — we own the mic now.
+    // Cancel any TTS and stop barge-in watch – we own the mic now.
     speechSynthesis?.cancel();
     stopActivePlayback();
     stopBargeInWatch();
@@ -266,13 +266,13 @@ export function useVoice(options: UseVoiceOptions = {}) {
       return;
     }
 
-    // Empty transcript — the user tapped Send (or the orb) without
+    // Empty transcript – the user tapped Send (or the orb) without
     // anything captured. Don't spin forever; play a brief reprompt
     // and re-open the mic. processQueue auto-restarts listening once
     // playback finishes, so we just drop into that path.
     // Note: startListening, processQueue, and fetchTtsWithRetry are
     // declared later in this hook. We capture them via closure rather
-    // than including them in the deps array — putting them in deps would
+    // than including them in the deps array – putting them in deps would
     // TDZ-fire when useCallback evaluates the array during render. By
     // the time stopAndSend is actually invoked (button click / timer),
     // those identifiers have been bound, so the closure resolves fine.
@@ -285,7 +285,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
     setState("speaking");
     cancelledRef.current = false;
     const promptText =
-      "I didn't quite catch that — could you say that again?";
+      "I didn't quite catch that – could you say that again?";
     audioQueueRef.current = [
       {
         sentence: promptText,
@@ -478,7 +478,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
       if (ok) {
         bargeInArmed = true;
         startBargeInWatch(() => {
-          // User interrupted — cancel queue, stop current playback,
+          // User interrupted – cancel queue, stop current playback,
           // and immediately open the mic.
           cancelledRef.current = true;
           audioQueueRef.current = [];
@@ -506,7 +506,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
     playingRef.current = false;
 
     // Resume listening immediately once the agent is done speaking
-    // (no artificial gap — "AgentAudioDone" is the trigger).
+    // (no artificial gap – "AgentAudioDone" is the trigger).
     if (!cancelledRef.current) {
       setState("inactive");
       startListening();
@@ -550,7 +550,7 @@ export function useVoice(options: UseVoiceOptions = {}) {
 
   // Queue a single sentence for TTS (called during streaming).
   // Kicks off the TTS fetch immediately so the audio is ready by the
-  // time the player gets to it — that's what closes the gap between
+  // time the player gets to it – that's what closes the gap between
   // text appearing and TTS playing.
   const queueSentence = useCallback((sentence: string) => {
     const clean = sentence.replace(/\*\*([^*]+)\*\*/g, "$1").replace(/<[^>]+>/g, "").trim();

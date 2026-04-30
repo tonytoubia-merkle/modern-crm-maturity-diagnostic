@@ -5,7 +5,7 @@ import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 import { DENTSU } from "@/lib/brand/tokens";
 
 /**
- * /dentsu — dentsu Connect 3.0 / DDS Light theme.
+ * /dentsu – dentsu Connect 3.0 / DDS Light theme.
  *
  * The "general dentsu" surface for events and inquiries that aren't
  * tied to a specific festival. Pure DDS Light treatment: Neutral
@@ -31,7 +31,7 @@ const config: BrandConfig = {
   introBg: DENTSU.surfaceGlobalHeader,
   // DDS Blue for the thin accent line above the headline
   accentColor: DENTSU.fillAccent2, // #076cdf
-  ctaBg: DENTSU.fillAccent1, // #0d0d11 — DDS primary brand mono
+  ctaBg: DENTSU.fillAccent1, // #0d0d11 – DDS primary brand mono
   ctaText: DENTSU.textOnDark,
   headline: (
     <>
@@ -51,9 +51,9 @@ const config: BrandConfig = {
     </>
   ),
   subheadline:
-    "Pick a diagnostic to take in the next 10–15 minutes — an AI-led conversation about your CRM, or about your content supply chain. Built by Merkle, the customer experience practice of dentsu, and grounded in real client engagements.",
+    "Pick a diagnostic to take in the next 10–15 minutes – an AI-led conversation about your CRM, or about your content supply chain. Built by Merkle, the customer experience practice of dentsu, and grounded in real client engagements.",
   steps: [
-    { n: "01", text: "Pick your diagnostic — CRM or Content Supply Chain" },
+    { n: "01", text: "Pick your diagnostic – CRM or Content Supply Chain" },
     { n: "02", text: "AI or guided survey maps your capability scores" },
     { n: "03", text: "Receive a benchmark and an opportunity map" },
   ],

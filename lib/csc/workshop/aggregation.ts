@@ -11,7 +11,7 @@ export interface CscAggregationResult {
  * single synthetic response set that can be fed into the standard CSC
  * scoring pipeline (computeCscCapabilityScores, etc).
  *
- * Parallel to lib/workshop/aggregation.ts for CRM — kept as a separate
+ * Parallel to lib/workshop/aggregation.ts for CRM – kept as a separate
  * file so CSC types don't leak into the CRM aggregator.
  */
 export function aggregateCscStakeholderResponses(

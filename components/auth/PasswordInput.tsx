@@ -44,7 +44,7 @@ function EyeIcon({ open }: { open: boolean }) {
 /**
  * Password input with a press-and-hold reveal eye. Used by /login and
  * /register. Browser-validation attributes (`required`, `minLength`)
- * are intentionally NOT applied — we validate manually so we can show
+ * are intentionally NOT applied – we validate manually so we can show
  * custom AuthAlert cards instead of native browser popups.
  */
 export function PasswordInput({

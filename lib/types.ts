@@ -30,7 +30,7 @@ export interface Question {
   /**
    * Optional per-industry overrides. When present and the assessment
    * has an industry selected, the matching string is rendered in place
-   * of `text` everywhere — chat prompt, score map, capability section,
+   * of `text` everywhere – chat prompt, score map, capability section,
    * voice agent. Keys not listed fall back to `text`.
    */
   byIndustry?: Partial<Record<Industry, string>>;

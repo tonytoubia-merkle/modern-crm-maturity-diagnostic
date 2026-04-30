@@ -61,7 +61,7 @@ export function computeAientMaturityStage(overallScore: number): AientMaturitySt
 
 // Stage labels and narratives sourced from the Merkle 2026 "AI for
 // Enterprise: Powering Intelligence" research and the McKinsey Nov 2025
-// "State of AI" findings — the maturity arc tracks the gap between the
+// "State of AI" findings – the maturity arc tracks the gap between the
 // 12% of organisations capturing meaningful EBIT impact ("AI high
 // performers") and the long tail still running disconnected pilots.
 export const AIENT_MATURITY_STAGES: Record<
@@ -69,27 +69,27 @@ export const AIENT_MATURITY_STAGES: Record<
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — Disconnected Pilots",
+    label: "Stage 1 – Disconnected Pilots",
     description:
-      "AI investment is happening — but as scattered pilots that don't share data, governance, or measurement. Data foundations are fragmented, use cases are picked by enthusiasm rather than rigor, and there's no coherent operating model for AI work. Workforce impact is unmanaged and adoption is uneven. This is the cohort the McKinsey 2025 research describes as 'investing without realised EBIT impact.' Stage 1 organizations typically benefit most from a North Star AI Diagnostic + a Data Foundations Audit before any further platform investment.",
+      "AI investment is happening – but as scattered pilots that don't share data, governance, or measurement. Data foundations are fragmented, use cases are picked by enthusiasm rather than rigor, and there's no coherent operating model for AI work. Workforce impact is unmanaged and adoption is uneven. This is the cohort the McKinsey 2025 research describes as 'investing without realised EBIT impact.' Stage 1 organizations typically benefit most from a North Star AI Diagnostic + a Data Foundations Audit before any further platform investment.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — Coordinated AI",
+    label: "Stage 2 – Coordinated AI",
     description:
       "AI use cases are being prioritised through a portfolio view, the data and ML platform is partially modernised, and a governance group exists on paper. Generative pilots have moved beyond experiments in one or two functions. But work hasn't been redesigned around AI, intelligence delivery is still reporting-led rather than embedded in workflows, and assurance frameworks lag behind regulator expectations. Stage 2 organizations are ready to anchor their next investment in an Agile Operating Model engagement or an Analytics Advisory roadmap on a single, high-value value stream.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — Embedded Intelligence",
+    label: "Stage 3 – Embedded Intelligence",
     description:
-      "AI is embedded inside the workflows that matter — the data foundation is governed and trustworthy, work has been redesigned around human + AI teaming, and intelligence (copilots, agentic workflows, embedded ML) is delivered where decisions get made rather than in standalone dashboards. AI assurance, model risk, and explainability are run as a managed practice. Adoption metrics are tracked at the workflow level. Stage 3 organizations are positioned for full Enterprise Intelligence Transformation engagements that scale agentic capabilities across multiple value streams.",
+      "AI is embedded inside the workflows that matter – the data foundation is governed and trustworthy, work has been redesigned around human + AI teaming, and intelligence (copilots, agentic workflows, embedded ML) is delivered where decisions get made rather than in standalone dashboards. AI assurance, model risk, and explainability are run as a managed practice. Adoption metrics are tracked at the workflow level. Stage 3 organizations are positioned for full Enterprise Intelligence Transformation engagements that scale agentic capabilities across multiple value streams.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — AI High Performer",
+    label: "Stage 4 – AI High Performer",
     description:
-      "The enterprise operates as the McKinsey/Merkle research describes the 'AI high performer' cohort — fundamentally redesigned workflows, multi-agent orchestration in production, EBIT impact attributed to AI, and a continuously improving data + assurance platform. AI is woven through strategy, operations, and customer experience; talent, culture, and governance keep pace with technology. Stage 4 organizations engage Merkle for Continuous Value Accelerator programs that keep the intelligence engine ahead of regulatory shifts and emerging model architectures.",
+      "The enterprise operates as the McKinsey/Merkle research describes the 'AI high performer' cohort – fundamentally redesigned workflows, multi-agent orchestration in production, EBIT impact attributed to AI, and a continuously improving data + assurance platform. AI is woven through strategy, operations, and customer experience; talent, culture, and governance keep pace with technology. Stage 4 organizations engage Merkle for Continuous Value Accelerator programs that keep the intelligence engine ahead of regulatory shifts and emerging model architectures.",
     color: "green",
   },
 };

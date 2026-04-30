@@ -97,7 +97,7 @@ export function AientProgressBar({
       <div className="flex justify-between mt-1.5">
         <p className="text-xs text-slate-500">
           {currentStep > 0 && currentStep <= AIENT_CAPABILITIES_ORDER.length
-            ? `${AIENT_CAPABILITY_LABELS[AIENT_CAPABILITIES_ORDER[currentStep - 1]]} — ${AIENT_CAPABILITY_SUBTITLES[AIENT_CAPABILITIES_ORDER[currentStep - 1]]}`
+            ? `${AIENT_CAPABILITY_LABELS[AIENT_CAPABILITIES_ORDER[currentStep - 1]]} – ${AIENT_CAPABILITY_SUBTITLES[AIENT_CAPABILITIES_ORDER[currentStep - 1]]}`
             : currentStep === 0
             ? "Getting started"
             : "Industry context"}

@@ -60,7 +60,7 @@ export function computeAicxMaturityStage(overallScore: number): AicxMaturityStag
 }
 
 // Stage labels and narratives sourced from the Merkle 2026 "AI for CX"
-// deep dive — the maturity arc spans from "AI-invisible" (excluded by
+// deep dive – the maturity arc spans from "AI-invisible" (excluded by
 // agents and LLMs) through to an "Adaptive AI Experience" where agentic
 // discoverability, agentic experience, adaptive personalization, and
 // continuous experimentation operate as a single, measurable engine.
@@ -69,27 +69,27 @@ export const AICX_MATURITY_STAGES: Record<
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — AI-Invisible",
+    label: "Stage 1 – AI-Invisible",
     description:
-      "The brand is not represented in agentic answers — content is unstructured for AI extraction, the digital experience is built for human-only browsing, and AI investments are unmeasured. Personalization is rule-based or batched, identity is fragmented, and there is no experimentation infrastructure to prove what works. Stage 1 organizations typically benefit most from an AI for CX Diagnostic + Discoverability Audit to establish a baseline before any platform investment lands.",
+      "The brand is not represented in agentic answers – content is unstructured for AI extraction, the digital experience is built for human-only browsing, and AI investments are unmeasured. Personalization is rule-based or batched, identity is fragmented, and there is no experimentation infrastructure to prove what works. Stage 1 organizations typically benefit most from an AI for CX Diagnostic + Discoverability Audit to establish a baseline before any platform investment lands.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — AI-Aware",
+    label: "Stage 2 – AI-Aware",
     description:
-      "The brand has begun structuring content for AI agents, has piloted generative or conversational experiences in one or two surfaces, and is running early personalization use cases on a unified identity layer. But these efforts are isolated — discoverability, experience, personalization, and measurement aren't yet stitched together. Experimentation is inconsistent. Stage 2 organizations are ready to anchor their next investment in an AI for CX Workshop on a single high-value journey or an EXO Optimization Strategy engagement.",
+      "The brand has begun structuring content for AI agents, has piloted generative or conversational experiences in one or two surfaces, and is running early personalization use cases on a unified identity layer. But these efforts are isolated – discoverability, experience, personalization, and measurement aren't yet stitched together. Experimentation is inconsistent. Stage 2 organizations are ready to anchor their next investment in an AI for CX Workshop on a single high-value journey or an EXO Optimization Strategy engagement.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — AI-Native",
+    label: "Stage 3 – AI-Native",
     description:
-      "Agentic discoverability, agentic experience, and adaptive personalization run together on a unified identity and data foundation, with measurement scorecards proving incremental value. AI is embedded in customer-facing journeys (chat, search, conversational commerce) and continuously tested through structured experimentation. Trust signals — confidence scoring, trigger logic, brand-safety guardrails — are consistently applied. Stage 3 organizations are positioned for full AI for CX Transformation engagements that scale agentic capabilities across the experience.",
+      "Agentic discoverability, agentic experience, and adaptive personalization run together on a unified identity and data foundation, with measurement scorecards proving incremental value. AI is embedded in customer-facing journeys (chat, search, conversational commerce) and continuously tested through structured experimentation. Trust signals – confidence scoring, trigger logic, brand-safety guardrails – are consistently applied. Stage 3 organizations are positioned for full AI for CX Transformation engagements that scale agentic capabilities across the experience.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — Adaptive AI Experience",
+    label: "Stage 4 – Adaptive AI Experience",
     description:
-      "The brand operates as an adaptive AI experience — discoverability, agentic interfaces, real-time personalization, and continuous experimentation form a single closed-loop engine. AI agents handle high-volume customer interactions while humans focus on relationship and complexity. Every AI investment is validated through factorial experimentation, holdouts, and outcome scorecards. Trust, brand safety, and confidence thresholds are governed continuously. Stage 4 organizations engage Merkle for Continuous Value Accelerator programs that keep their AI-for-CX engine ahead of platform shifts and emerging agent ecosystems.",
+      "The brand operates as an adaptive AI experience – discoverability, agentic interfaces, real-time personalization, and continuous experimentation form a single closed-loop engine. AI agents handle high-volume customer interactions while humans focus on relationship and complexity. Every AI investment is validated through factorial experimentation, holdouts, and outcome scorecards. Trust, brand safety, and confidence thresholds are governed continuously. Stage 4 organizations engage Merkle for Continuous Value Accelerator programs that keep their AI-for-CX engine ahead of platform shifts and emerging agent ecosystems.",
     color: "green",
   },
 };

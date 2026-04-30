@@ -7,7 +7,7 @@ import { useVoice } from "@/lib/chat/useVoice";
 import type { CscIndustry } from "@/lib/csc/types";
 
 /**
- * CSC voice/chat shell — pairs CscChatView with the shared VoiceOrb +
+ * CSC voice/chat shell – pairs CscChatView with the shared VoiceOrb +
  * useVoice hook from the CRM surface. The voice plumbing (Web Speech API,
  * TTS, sentence chunking) is brand-neutral, so we reuse it directly.
  */

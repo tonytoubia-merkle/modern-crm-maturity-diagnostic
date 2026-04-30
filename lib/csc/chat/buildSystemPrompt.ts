@@ -24,7 +24,7 @@ export function buildCscSystemPrompt(
 
   sections.push(`You are a Content Supply Chain (CSC) maturity diagnostic consultant from Merkle (a dentsu company). You are conducting a conversational assessment of ${clientName}'s content supply chain capabilities with ${respondentName}.
 
-You are knowledgeable, approachable, and efficient. You NEVER sound like you're reading from a survey or questionnaire. You have a natural conversation about how the organization plans, produces, governs, distributes, measures, and AI-augments content — and infer maturity scores from what they tell you.
+You are knowledgeable, approachable, and efficient. You NEVER sound like you're reading from a survey or questionnaire. You have a natural conversation about how the organization plans, produces, governs, distributes, measures, and AI-augments content – and infer maturity scores from what they tell you.
 
 The "content supply chain" is the end-to-end system an organization uses to turn creative ideas into personalized content at scale. Think DAMs and asset libraries, briefing and production workflows, modular content and personalization, distribution into CRM/commerce/media, measurement loops back into briefing, and the role of GenAI / agentic workflows across all of it.`);
 
@@ -35,7 +35,7 @@ ${Object.entries(CSC_SCORE_LABELS)
 
   const totalCore = CSC_CORE_QUESTIONS.length;
   const questionBank: string[] = [
-    `QUESTION BANK — ${totalCore} core questions across ${CSC_CAPABILITIES_ORDER.length} capabilities:`,
+    `QUESTION BANK – ${totalCore} core questions across ${CSC_CAPABILITIES_ORDER.length} capabilities:`,
   ];
   for (const cap of CSC_CAPABILITIES_ORDER) {
     const qs = CSC_QUESTIONS_BY_CAPABILITY[cap];
@@ -47,7 +47,7 @@ ${Object.entries(CSC_SCORE_LABELS)
       const isSkipped =
         skipped.includes(q.id) || skipped.includes(String(q.id));
       const status = scoreInfo
-        ? `[SCORED: ${scoreInfo.score} — ${scoreInfo.evidence}]`
+        ? `[SCORED: ${scoreInfo.score} – ${scoreInfo.evidence}]`
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
@@ -116,15 +116,15 @@ ${Object.entries(CSC_SCORE_LABELS)
 ${
   remaining.length > 0
     ? `Still need answers for: ${remaining.join("; ")}`
-    : "All questions covered — ready for confirmation."
+    : "All questions covered – ready for confirmation."
 }`);
 
   // Phase instructions
   const phaseInstructions: Record<CscChatPhase, string> = {
-    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me about how ${clientName} produces and distributes content today — what tools and teams are involved, where the biggest bottlenecks are, and where AI is starting to fit in." Let them talk freely. Extract as many scores as you can from their answer.`,
-    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics — let the conversation flow naturally from one area to related ones.`,
-    gap_filling: `PHASE: Gap filling. Most questions are covered. Ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't talked about how content performance feeds back into briefing — what does measurement look like today?" Be direct but conversational.`,
-    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise — use a structured format.`,
+    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me about how ${clientName} produces and distributes content today – what tools and teams are involved, where the biggest bottlenecks are, and where AI is starting to fit in." Let them talk freely. Extract as many scores as you can from their answer.`,
+    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics – let the conversation flow naturally from one area to related ones.`,
+    gap_filling: `PHASE: Gap filling. Most questions are covered. Ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't talked about how content performance feeds back into briefing – what does measurement look like today?" Be direct but conversational.`,
+    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise – use a structured format.`,
     complete: `PHASE: Complete. Thank ${respondentName} and let them know the assessment is being finalized.`,
   };
 
@@ -149,7 +149,7 @@ Rules:
 - Score 2 if there are isolated efforts or partial tools (e.g. DAM but no governance)
 - Score 3 if operational and connected across some teams
 - Score 4 if works across teams with shared standards, governance, and modular practice
-- Score 5 if fully optimized — modular content, AI-augmented, asset intelligence feeding briefing, measurement loops closed
+- Score 5 if fully optimized – modular content, AI-augmented, asset intelligence feeding briefing, measurement loops closed
 - Only score when you have clear evidence. If uncertain between two, use the lower score with "confidence": "low"
 - If user says "I don't know" about a topic, add those questionIds to "skipped"
 - A single user response can update multiple questions
@@ -165,9 +165,9 @@ Rules:
 - Use "${clientName}" naturally in conversation
 - Reference specific details they mentioned
 - When probing, explain WHY you're asking
-- Keep responses concise — 2-4 paragraphs max
+- Keep responses concise – 2-4 paragraphs max
 - Be encouraging about what they're doing well, not just gap-focused
-- The CSC vocabulary uses "DAM", "modular content", "briefing", "asset intelligence", "GenAI", "agentic workflows", "personalization variants", "content velocity" — use these terms naturally rather than CRM/marketing jargon`);
+- The CSC vocabulary uses "DAM", "modular content", "briefing", "asset intelligence", "GenAI", "agentic workflows", "personalization variants", "content velocity" – use these terms naturally rather than CRM/marketing jargon`);
 
   return sections.join("\n\n---\n\n");
 }

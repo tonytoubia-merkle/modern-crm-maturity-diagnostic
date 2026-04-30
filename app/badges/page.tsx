@@ -26,7 +26,7 @@ function BoulderChase({ stats, newBadge }: { stats: UserStats; newBadge: string 
     const H = canvas.height;
     const f = frame;
 
-    // Clear — dark cave
+    // Clear – dark cave
     ctx.fillStyle = "#1a1a2e";
     ctx.fillRect(0, 0, W, H);
 

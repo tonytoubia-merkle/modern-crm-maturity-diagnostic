@@ -32,7 +32,7 @@ You are knowledgeable, approachable, and efficient. You NEVER sound like you're 
 ${Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}: ${SCORE_DESCRIPTIONS[Number(k)]}`).join("\n")}`);
 
   // ── QUESTION BANK ──
-  const questionBank: string[] = ["QUESTION BANK — 30 core questions across 8 capabilities:"];
+  const questionBank: string[] = ["QUESTION BANK – 30 core questions across 8 capabilities:"];
   for (const cap of CAPABILITIES_ORDER) {
     const qs = QUESTIONS_BY_CAPABILITY[cap];
     const label = CAPABILITY_LABELS[cap];
@@ -42,11 +42,11 @@ ${Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}: ${SCORE_DESCRIPTION
       const scoreInfo = scores[String(q.id)];
       const isSkipped = skipped.includes(q.id) || skipped.includes(String(q.id));
       const status = scoreInfo
-        ? `[SCORED: ${scoreInfo.score} — ${scoreInfo.evidence}]`
+        ? `[SCORED: ${scoreInfo.score} – ${scoreInfo.evidence}]`
         : isSkipped
         ? "[SKIPPED]"
         : "[NEEDS ANSWER]";
-      // Use a shortened version of the question — resolved against
+      // Use a shortened version of the question – resolved against
       // the selected industry so dynamic-text questions present their
       // industry-natural wording to the LLM.
       const fullText = resolveQuestionText(q, industry);
@@ -91,14 +91,14 @@ ${Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}: ${SCORE_DESCRIPTION
   }
 
   sections.push(`COVERAGE: ${answeredCount}/${total} questions answered or skipped.
-${remaining.length > 0 ? `Still need answers for: ${remaining.join("; ")}` : "All questions covered — ready for confirmation."}`);
+${remaining.length > 0 ? `Still need answers for: ${remaining.join("; ")}` : "All questions covered – ready for confirmation."}`);
 
   // ── PHASE INSTRUCTION ──
   const phaseInstructions: Record<ChatPhase, string> = {
-    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me about how ${clientName} manages customer relationships today — what systems you use, how teams are structured, and where you see the biggest strengths and gaps." Let them talk freely. Extract as many scores as you can from their answer.`,
-    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics — let the conversation flow naturally from one area to related ones.`,
-    gap_filling: `PHASE: Gap filling. Most questions are covered. Now ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't touched on your media activation approach — how does CRM data feed into paid media targeting?" Be direct but conversational.`,
-    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise — use a structured format.`,
+    opening: `PHASE: Opening. Start with a warm greeting to ${respondentName}. Ask a broad, open-ended question like: "Tell me about how ${clientName} manages customer relationships today – what systems you use, how teams are structured, and where you see the biggest strengths and gaps." Let them talk freely. Extract as many scores as you can from their answer.`,
+    exploration: `PHASE: Exploration. Continue the conversation naturally. Follow the thread of what ${respondentName} is telling you. After acknowledging what you've learned, steer toward capability areas that still have unanswered questions. Focus on the LEAST covered capability. Don't jump between topics – let the conversation flow naturally from one area to related ones.`,
+    gap_filling: `PHASE: Gap filling. Most questions are covered. Now ask targeted questions about the remaining gaps. Group related gaps together. For example: "We haven't touched on your media activation approach – how does CRM data feed into paid media targeting?" Be direct but conversational.`,
+    confirmation: `PHASE: Confirmation. All questions have inferred scores. Present a summary table organized by capability showing each question's inferred score (1-5) and a one-line evidence note. Ask ${respondentName} if any scores feel wrong and should be adjusted. Keep it concise – use a structured format.`,
     complete: `PHASE: Complete. Thank ${respondentName} and let them know the assessment is being finalized.`,
   };
 
@@ -139,7 +139,7 @@ Rules:
 - Use "${clientName}" naturally in conversation
 - Reference specific details they mentioned
 - When probing, explain WHY you're asking
-- Keep responses concise — 2-4 paragraphs max
+- Keep responses concise – 2-4 paragraphs max
 - Be encouraging about what they're doing well, not just gap-focused`);
 
   return sections.join("\n\n---\n\n");

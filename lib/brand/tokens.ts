@@ -3,14 +3,14 @@
  *
  * Three parallel systems applied in different contexts:
  *
- *   - M2     — tool shell (login, register, root chooser, /crm and /csc
+ *   - M2     – tool shell (login, register, root chooser, /crm and /csc
  *              home pages, /admin, /about). Sourced from Figma file
  *              Gnio37paX1klQL0zrXefj3 (Merkle M2 Brand guide). The M2
  *              file has no variable collections; values below are read
  *              directly off the brand-guide art and the primary mark
  *              SVG (which lives at public/m2-logo.svg).
  *
- *   - MERKLE — artifact surfaces a user reaches once they begin an
+ *   - MERKLE – artifact surfaces a user reaches once they begin an
  *              actual assessment / project / output. Includes
  *              /results/[shareId], /csc/results/[shareId], the print-PDF
  *              view, and the PPTX export. Sourced from Figma file
@@ -18,21 +18,21 @@
  *              Core (color/Brand/* + color/WL/*) and Semantic
  *              (color/surface/*) variable collections.
  *
- *   - DENTSU — applied to /cannes today, and to a future /dentsu shell.
+ *   - DENTSU – applied to /cannes today, and to a future /dentsu shell.
  *              Sourced from Figma files z6a62Ukdt4GdfR9FNbSL6a
  *              (DDS-Tokens) and IqsVsgc1xRJD5EGs2L361n (DDS-Components).
  *              Light theme. Includes Primitive: Color, Border radius,
  *              and a curated subset of Primitive: Spacing.
  *
- * The /connections page intentionally does NOT use any of these — it
+ * The /connections page intentionally does NOT use any of these – it
  * carries a Salesforce + Merkle blend defined inline.
  *
- * Scales below are reproduced verbatim from Figma — when the brand
+ * Scales below are reproduced verbatim from Figma – when the brand
  * teams change a variable, regenerate this file rather than tweaking
  * values by hand.
  */
 
-// ── M2 — Tool shell ────────────────────────────────────────────────
+// ── M2 – Tool shell ────────────────────────────────────────────────
 // No variable collection in the M2 file; these are the documented
 // brand-guide values. The primary mark SVG is pulled into
 // components/brand/M2Logo.tsx and public/m2-logo.svg from node 2003:226.
@@ -42,7 +42,7 @@ export const M2 = {
   blue: "#0328d1",        // brand mark, primary buttons, accents
   blueAlt: "#1e1eb5",     // alternate brand blue (slightly lighter)
 
-  // Secondary palette — accents, charts, callouts
+  // Secondary palette – accents, charts, callouts
   cyan: "#16c6d3",
   sky: "#2f98f7",
   purple: "#6311cb",
@@ -62,19 +62,19 @@ export const M2 = {
   },
 } as const;
 
-// ── MERKLE — Artifact / output surfaces ────────────────────────────
+// ── MERKLE – Artifact / output surfaces ────────────────────────────
 // Pulled directly from Core (color/Brand/* + color/WL/*) and Semantic
 // (color/surface/*) collections in the Merkle E-Commerce ARC Figma.
-// The "WL" prefix in source = "white-label" — these are the paintable
+// The "WL" prefix in source = "white-label" – these are the paintable
 // brand scales. Greys are duplicated under both Brand/ and WL/ in the
 // source; we keep one canonical scale here.
 export const MERKLE = {
-  // Core surface — the dark navy that defines artifact backgrounds
+  // Core surface – the dark navy that defines artifact backgrounds
   // (color/surface/neutral/default → #051027, set as a raw hex in
   // the Semantic collection rather than via an alias)
   surfaceNeutralDefault: "#051027",
 
-  // Brand greys — full 50–900 scale
+  // Brand greys – full 50–900 scale
   grey50: "#fcfcfc",
   grey60: "#f2f1f6",
   grey70: "#ececec",
@@ -90,7 +90,7 @@ export const MERKLE = {
   grey800: "#2e2e2e",
   grey900: "#171717",
 
-  // Brand primary (coral / red) — accent + emphasis
+  // Brand primary (coral / red) – accent + emphasis
   primary100: "#ff958b",
   primary200: "#ff7c6d",
   primary300: "#c84b38",
@@ -101,7 +101,7 @@ export const MERKLE = {
   primary800: "#571309",
   primary900: "#310a04",
 
-  // Brand secondary (deep blue) — backgrounds, gradients, structure
+  // Brand secondary (deep blue) – backgrounds, gradients, structure
   secondary100: "#8e9db9",
   secondary200: "#6e80a3",
   secondary300: "#4f638c",
@@ -112,7 +112,7 @@ export const MERKLE = {
   secondary800: "#09193d",
   secondary900: "#061431",   // surface/secondary/default
 
-  // "Brand" green — Merkle's signature green wordmark color
+  // "Brand" green – Merkle's signature green wordmark color
   brandGreen100: "#37956c",
   brandGreen200: "#2c7757",
   brandGreen300: "#256449",
@@ -123,17 +123,17 @@ export const MERKLE = {
   brandGreen800: "#0e2f23",
   brandGreen900: "#091f17",
 
-  // Notification — blue
+  // Notification – blue
   notificationBlue400: "#cbeaff",
   notificationBlue500: "#0058aa",
   notificationBlue600: "#003a61",
 
-  // Notification — red
+  // Notification – red
   notificationRed400: "#f16f6f",
   notificationRed500: "#db1616",
   notificationRed600: "#910d0d",
 
-  // Notification — green
+  // Notification – green
   notificationGreen400: "#04e200",
   notificationGreen500: "#03aa00",
   notificationGreen600: "#026100",
@@ -147,7 +147,7 @@ export const MERKLE = {
   white: "#ffffff",
   black: "#000000",
 
-  // Typography — Proxima Nova family + responsive scale (large viewport)
+  // Typography – Proxima Nova family + responsive scale (large viewport)
   fontFamily: "Proxima Nova",
   type: {
     display: 72,
@@ -168,7 +168,7 @@ export const MERKLE = {
     bold: 700,
   },
 
-  // Semantic tokens — name → resolved hex, mirrors the Semantic collection.
+  // Semantic tokens – name → resolved hex, mirrors the Semantic collection.
   // Use these in component code; switch the source palette by changing
   // these values rather than every consumer.
   semantic: {
@@ -185,27 +185,27 @@ export const MERKLE = {
   },
 } as const;
 
-// ── DENTSU — DDS Light theme ───────────────────────────────────────
+// ── DENTSU – DDS Light theme ───────────────────────────────────────
 // Pulled from Primitive: Color (mode "DDS"), Semantic: Color (mode
 // "Light | Connect 3.0"), Border radius, and Primitive: Spacing in the
 // DDS-Tokens Figma file. The dark mode equivalents live in the same
-// file under "Dark | Connect 3.0" — we ship Light only for now.
+// file under "Dark | Connect 3.0" – we ship Light only for now.
 export const DENTSU = {
   // ── Backgrounds + structural surfaces ─────────────────────────
-  bgBase: "#f7f7f8",            // Neutral/50 — page background
-  bgInverse: "#040406",         // Neutral/1350 — inverse surface
+  bgBase: "#f7f7f8",            // Neutral/50 – page background
+  bgInverse: "#040406",         // Neutral/1350 – inverse surface
   surface1: "#ffffff",          // Neutral/0
   surface2: "#fafafb",          // Neutral/25
   surface3: "#f7f7f8",          // Neutral/50
   surfaceGlobalHeader: "#040406", // Neutral/1350
   surfaceSideMenu: "#434357",     // Neutral/800
 
-  // ── Primary brand accent — DDS dark mono ──────────────────────
+  // ── Primary brand accent – DDS dark mono ──────────────────────
   fillAccent1: "#0d0d11",       // Neutral/1250
   fillAccent1Hover: "#2c2c3a",  // Neutral/1000
   fillAccent1Pressed: "#373748", // Neutral/900
 
-  // ── Secondary brand accent — DDS Blue ─────────────────────────
+  // ── Secondary brand accent – DDS Blue ─────────────────────────
   fillAccent2: "#076cdf",       // Blue/500
 
   // Full Neutral scale
@@ -258,7 +258,7 @@ export const DENTSU = {
   blue850: "#022042",
   blue900: "#01152c",
 
-  // Status — Red
+  // Status – Red
   red100: "#f9e0de",
   red200: "#f1aba7",
   red400: "#e2574d",
@@ -266,21 +266,21 @@ export const DENTSU = {
   red600: "#b0251c",
   red700: "#841c15",
 
-  // Status — Green
+  // Status – Green
   green100: "#e2f8ec",
   green200: "#9feac1",
   green500: "#3ed483",
   green600: "#31a968",
   green700: "#257f4e",
 
-  // Status — Amber
+  // Status – Amber
   amber100: "#fff0e2",
   amber200: "#ffcd9f",
   amber500: "#ff9b3f",
   amber600: "#cc7c32",
   amber700: "#995d25",
 
-  // AI accent — DDS Purple (signature for AI features)
+  // AI accent – DDS Purple (signature for AI features)
   purple50: "#eee8f9",
   purple100: "#ded1f3",
   purple200: "#bda3e7",
@@ -352,7 +352,7 @@ export const DENTSU = {
     "#005052", // Turquoise/800
   ] as const,
 
-  // ── Border radius (px) — DDS scale ──────────────────────────
+  // ── Border radius (px) – DDS scale ──────────────────────────
   radius: {
     none: 0,
     "2xs": 2,
@@ -372,7 +372,7 @@ export const DENTSU = {
     xl: 4,
   },
 
-  // ── Spacing (px) — Primitive: Spacing scale ─────────────────
+  // ── Spacing (px) – Primitive: Spacing scale ─────────────────
   spacing: {
     "0": 0,
     "25": 1,
@@ -421,7 +421,7 @@ export const DENTSU = {
     bold: 700,
     extrabold: 800,
   },
-  // Type ramp (px) — straight from DDS Primitive: Typography
+  // Type ramp (px) – straight from DDS Primitive: Typography
   type: {
     xs: 10,
     sm: 12,

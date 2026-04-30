@@ -56,13 +56,13 @@ function AssistantMessage({ content }: { content: string }) {
 
   return (
     <div className="space-y-2">
-      {/* Acknowledgement — warm, conversational */}
+      {/* Acknowledgement – warm, conversational */}
       <div className="bg-slate-100 rounded-2xl rounded-bl-md px-4 py-3 text-sm leading-relaxed text-slate-700">
         {ackParagraphs.map((p, i) => (
           <p key={i} className={i > 0 ? "mt-2" : ""}>{p}</p>
         ))}
       </div>
-      {/* Questions — structured, distinct */}
+      {/* Questions – structured, distinct */}
       <div className="rounded-xl px-4 py-3 text-sm leading-relaxed border-l-[3px]" style={{ borderColor: "#040e4b", backgroundColor: "#f0f4ff" }}>
         {questionParagraphs.map((p, i) => {
           // Check if the paragraph contains numbered items or bullet-like content
@@ -136,7 +136,7 @@ export function ChatView({
   // ChatView's mount useEffect fires before VoiceChat's voice.isSupported
   // useEffect, so on the very first call onAssistantSentence is still
   // undefined. Without this ref the first agent message never gets piped
-  // to TTS — the cached sendMessage closure stays stale.
+  // to TTS – the cached sendMessage closure stays stale.
   const onAssistantSentenceRef = useRef(onAssistantSentence);
   const onAssistantCompleteRef = useRef(onAssistantComplete);
   useEffect(() => {
@@ -190,7 +190,7 @@ export function ChatView({
     scores.forEach((v, k) => { scoresObj[k] = v; });
 
     try {
-      // Build API messages — always ensure it starts with a user message
+      // Build API messages – always ensure it starts with a user message
       // and alternates user/model (Gemini requirement)
       let apiMessages: Array<{ role: "user" | "assistant"; content: string }>;
       if (isAutoStart) {
@@ -261,7 +261,7 @@ export function ChatView({
               );
 
               // Pipe complete sentences to TTS during streaming.
-              // Read via ref so the latest handler is always used —
+              // Read via ref so the latest handler is always used –
               // see the comment on onAssistantSentenceRef above.
               const sentenceHandler = onAssistantSentenceRef.current;
               if (sentenceHandler && displayContent) {
@@ -289,7 +289,7 @@ export function ChatView({
         )
       );
 
-      // Send any remaining sentences to TTS (via ref — see comment above)
+      // Send any remaining sentences to TTS (via ref – see comment above)
       const finalSentenceHandler = onAssistantSentenceRef.current;
       if (finalSentenceHandler && displayContent) {
         const sentences = displayContent.split(/(?<=[.!?])\s+/).filter((s: string) => s.trim().length > 5);
@@ -464,7 +464,7 @@ export function ChatView({
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input — hidden when voice mode owns the input. Completion UI still shows regardless. */}
+          {/* Input – hidden when voice mode owns the input. Completion UI still shows regardless. */}
           {(!hideInput || (allCovered && !confirming)) && (
           <div className="border-t border-slate-200 px-4 py-3 bg-white">
             {allCovered && !confirming ? (
@@ -555,7 +555,7 @@ export function ChatView({
           )}
         </div>
 
-        {/* Sidebar — coverage tracker (desktop) */}
+        {/* Sidebar – coverage tracker (desktop) */}
         <div className="hidden lg:block w-64 border-l border-slate-200 bg-white p-4 overflow-y-auto">
           <CoverageTracker
             scores={scores}

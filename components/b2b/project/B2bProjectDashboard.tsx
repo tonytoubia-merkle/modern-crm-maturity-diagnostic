@@ -302,10 +302,10 @@ export function B2bProjectDashboard({
                 className="text-3xl font-bold"
                 style={{ color: "#040e4b" }}
               >
-                {project.aggregated_overall?.toFixed(1) ?? "—"}
+                {project.aggregated_overall?.toFixed(1) ?? "–"}
               </span>
               <span className="text-sm text-slate-500">
-                Overall Score · Stage {project.aggregated_maturity ?? "—"}
+                Overall Score · Stage {project.aggregated_maturity ?? "–"}
               </span>
             </div>
             <p className="text-xs text-slate-500">

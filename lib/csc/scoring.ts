@@ -62,27 +62,27 @@ export const CSC_MATURITY_STAGES: Record<
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — Defined",
+    label: "Stage 1 – Defined",
     description:
-      "Siloed teams, manual work, and a reactive or chaotic approach to content. Organizations at this stage rely on Excel, email, and file-transfer tools to manage content, with no shared portfolio view, modular design, or content intelligence. Teams rebuild assets that already exist and cannot produce personalization variants without linear cost growth. Stage 1 organizations are typically ready for a CSC Strategy Blueprint — aligning current state, target state, and priority efforts before platform investment.",
+      "Siloed teams, manual work, and a reactive or chaotic approach to content. Organizations at this stage rely on Excel, email, and file-transfer tools to manage content, with no shared portfolio view, modular design, or content intelligence. Teams rebuild assets that already exist and cannot produce personalization variants without linear cost growth. Stage 1 organizations are typically ready for a CSC Strategy Blueprint – aligning current state, target state, and priority efforts before platform investment.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — Integrated",
+    label: "Stage 2 – Integrated",
     description:
       "Tools like DAMs and project management systems may be in place, but other workflows are still manual and connections between content, experience, and media teams are limited. AI use is inconsistent, governance is applied after the fact, and content remains largely channel-shaped rather than audience-shaped. Stage 2 organizations have removed the most obvious inefficiency but not yet reorganized the supply chain around modular, data-driven content. Ready to prove value through an Innovation Accelerator on a single high-impact use case.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — Optimized",
+    label: "Stage 3 – Optimized",
     description:
       "Connected teams with integrated technology, working to common objectives and measuring against standardized KPIs. Content is designed as modular components, the DAM is the trusted source of truth, and asset-level performance feeds back into briefing and production. GenAI is in day-to-day use within brand and legal guardrails, and content is assembled dynamically in CRM, commerce, and media activation. This is where the content supply chain stops being a factory and starts being a connected engine for personalized engagement.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — Innovative",
+    label: "Stage 4 – Innovative",
     description:
-      "Fully connected and integrated teams across markets, powered by data, technology, and intelligence — with a growing proportion of work executed by AI agents. Modular content, asset intelligence, and dynamic activation are fully integrated; agentic workflows and generative AI produce personalized content at a scale humans cannot. A Content Center of Excellence institutionalizes governance, measurement, and continuous improvement. Content has become a compounding growth asset, and the focus shifts to Continuous Value Accelerator programs that keep the engine ahead of emerging technologies.",
+      "Fully connected and integrated teams across markets, powered by data, technology, and intelligence – with a growing proportion of work executed by AI agents. Modular content, asset intelligence, and dynamic activation are fully integrated; agentic workflows and generative AI produce personalized content at a scale humans cannot. A Content Center of Excellence institutionalizes governance, measurement, and continuous improvement. Content has become a compounding growth asset, and the focus shifts to Continuous Value Accelerator programs that keep the engine ahead of emerging technologies.",
     color: "green",
   },
 };

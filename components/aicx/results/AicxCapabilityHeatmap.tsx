@@ -76,12 +76,12 @@ export function AicxCapabilityHeatmap({ scores }: AicxCapabilityHeatmapProps) {
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => {
-                    if (typeof value !== "number") return ["—", name];
+                    if (typeof value !== "number") return ["–", name];
                     const rounded = Math.round(value);
                     const label = AICX_SCORE_LABELS[rounded] ?? "";
                     return [
                       `${formatAicxScore(value)}${
-                        label ? ` — ${label}` : ""
+                        label ? ` – ${label}` : ""
                       }`,
                       name,
                     ];
@@ -165,7 +165,7 @@ export function AicxCapabilityHeatmap({ scores }: AicxCapabilityHeatmapProps) {
               )}
             >
               <span className="font-bold">{v}</span>
-              <span>—</span>
+              <span>–</span>
               <span>{AICX_SCORE_LABELS[v]}</span>
             </div>
           ))}

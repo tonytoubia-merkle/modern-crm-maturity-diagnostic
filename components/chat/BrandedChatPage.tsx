@@ -105,7 +105,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         setShareId(data.shareId);
         setStep("chat");
       } else if (diagnostic === "csc") {
-        // CSC voice flow — create the assessment with the source tag,
+        // CSC voice flow – create the assessment with the source tag,
         // then drop into the in-page CscVoiceChat (mirrors the CRM path).
         const resolvedIndustry =
           cscIndustry === "none" || cscIndustry === "" ? null : cscIndustry;
@@ -130,7 +130,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         setShareId(data.shareId);
         setStep("chat");
       } else if (diagnostic === "b2b") {
-        // B2B voice flow — same shape, against the B2B endpoint.
+        // B2B voice flow – same shape, against the B2B endpoint.
         const resolvedIndustry =
           b2bIndustry === "none" || b2bIndustry === "" ? null : b2bIndustry;
         const res = await fetch("/api/b2b/assessments", {
@@ -379,7 +379,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             style={{ color: "#555" }}
           >
             Five diagnostics live behind this surface. Pick the one that matches
-            the conversation you came for — you can always come back for the
+            the conversation you came for – you can always come back for the
             others.
           </p>
 
@@ -389,7 +389,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
                 eyebrow="Modern CRM Practice"
                 title="Modern CRM Maturity"
                 pace="~10 min · voice conversation"
-                description="An AI consultant has a natural conversation with you across eight CRM capabilities — identity, signals, decisioning, engagement, and more. Scores are inferred from what you say."
+                description="An AI consultant has a natural conversation with you across eight CRM capabilities – identity, signals, decisioning, engagement, and more. Scores are inferred from what you say."
                 cta="Start CRM conversation"
                 config={config}
                 onClick={() => goToSetup("crm")}
@@ -413,7 +413,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
                 eyebrow="B2B Transformation Practice"
                 title="B2B Transformation"
                 pace="~15 min · voice conversation"
-                description="An AI consultant has a natural conversation with you about your account-based motion — vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation behind it."
+                description="An AI consultant has a natural conversation with you about your account-based motion – vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation behind it."
                 cta="Start B2B conversation"
                 config={config}
                 onClick={() => goToSetup("b2b")}

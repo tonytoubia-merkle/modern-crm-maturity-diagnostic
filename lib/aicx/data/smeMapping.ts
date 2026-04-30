@@ -5,7 +5,7 @@
  *
  * Initial seed list grounded in the AI for CX deep dive (March 2026)
  * leadership cohort and the EXO Offering Toolkit (v2.0). Compact at v1
- * — the practice lead should expand with named owners per engagement
+ * – the practice lead should expand with named owners per engagement
  * once the diagnostic is in field use.
  */
 export interface AicxSme {

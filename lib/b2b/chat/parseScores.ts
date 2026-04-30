@@ -2,7 +2,7 @@ import type { B2bScoreUpdate } from "./types";
 
 /**
  * Strips the <scores> JSON block (complete or partial) from an
- * assistant message. Same shape as the CRM/CSC parser — kept as a
+ * assistant message. Same shape as the CRM/CSC parser – kept as a
  * separate module so the B2B chat surface can evolve independently.
  */
 export function parseB2bAssistantMessage(raw: string): {
@@ -19,7 +19,7 @@ export function parseB2bAssistantMessage(raw: string): {
     try {
       scoreUpdate = JSON.parse(completeMatch[1]) as B2bScoreUpdate;
     } catch {
-      // malformed JSON — ignore
+      // malformed JSON – ignore
     }
   }
 

@@ -10,11 +10,11 @@ import type { AientOpportunity } from "@/lib/aient/types";
  * "Re-wiring the enterprise" research (December 2025).
  *
  * Organized in two layers:
- *   1. Four "wedge" engagements — AI for Enterprise Diagnostic, AI Use
+ *   1. Four "wedge" engagements – AI for Enterprise Diagnostic, AI Use
  *      Case Portfolio Sprint, Agile Operating Model Assessment, and
  *      Analytics Advisory Roadmap. These set up the larger AI for
  *      Enterprise transformation programs.
- *   2. Ten capability- and platform-level engagements — data
+ *   2. Ten capability- and platform-level engagements – data
  *      foundations, enterprise knowledge graph & vector platform, AI
  *      assurance, workflow redesign, copilot & agentic activation,
  *      embedded intelligence delivery, multi-agent orchestration,
@@ -23,13 +23,13 @@ import type { AientOpportunity } from "@/lib/aient/types";
  */
 export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
   // ══════════════════════════════════════════════════════════════════
-  // WEDGE ENGAGEMENTS — set up the bigger transformation
+  // WEDGE ENGAGEMENTS – set up the bigger transformation
   // ══════════════════════════════════════════════════════════════════
   {
     id: "ai_enterprise_diagnostic",
     title: "AI for Enterprise Diagnostic & North Star",
     tagline:
-      "Benchmark AI maturity across data, work, and intelligence — and align leadership on the next horizon",
+      "Benchmark AI maturity across data, work, and intelligence – and align leadership on the next horizon",
     description:
       "Leadership engagement that benchmarks AI-for-Enterprise maturity across the six capabilities, identifies the disconnect between current investments and EBIT impact, and aligns leadership on a North Star vision plus the investment themes (data, work design, assurance) that will fund it. Modeled on the McKinsey/Merkle 'AI high performer' research findings.",
     capabilities: [
@@ -46,12 +46,12 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     methods: [
       "Maturity assessment across six AI-for-Enterprise capabilities",
       "Leadership visioning workshops",
-      "AI portfolio audit — pilots vs. production vs. EBIT impact",
+      "AI portfolio audit – pilots vs. production vs. EBIT impact",
       "Definition of a North Star vision and investment themes",
       "High-level roadmap with sequenced investment themes",
     ],
     valueNarrative:
-      "Only ~12% of organisations are capturing meaningful EBIT from AI today. The gap isn't models — it's the operating model around them. A clear, leadership-aligned North Star is the prerequisite for joining the high-performer cohort.",
+      "Only ~12% of organisations are capturing meaningful EBIT from AI today. The gap isn't models – it's the operating model around them. A clear, leadership-aligned North Star is the prerequisite for joining the high-performer cohort.",
     sfType: "Strategy & Vision",
     engagementSize: "8–12 weeks · $200K–$450K",
     priority: "critical",
@@ -108,7 +108,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     id: "analytics_advisory_roadmap",
     title: "Analytics Advisory Roadmap",
     tagline:
-      "From reporting-led analytics to decision-led, embedded intelligence — the 12-month plan",
+      "From reporting-led analytics to decision-led, embedded intelligence – the 12-month plan",
     description:
       "Analytics Advisory engagement (v1.0, 2026) that audits the current analytics estate, identifies the high-value decisions that should be intelligence-led, redesigns the analytics operating model around decisions (rather than reports), and builds the 12-month roadmap to embed intelligence in the workflows that matter.",
     capabilities: ["intelligence_delivery", "use_case_design"],
@@ -118,19 +118,19 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     methods: [
       "Analytics-estate audit and tooling rationalisation",
       "Decision inventory across the value streams that matter",
-      "Analytics operating-model redesign — decision-led, embedded",
+      "Analytics operating-model redesign – decision-led, embedded",
       "12-month roadmap with measurable outcomes",
       "Sample embedded-intelligence prototype on one decision",
     ],
     valueNarrative:
-      "Most enterprises have analytics — and almost no decisions running through them. The Analytics Advisory roadmap reframes the function around outcomes, not outputs, and is the precondition for embedded AI to land.",
+      "Most enterprises have analytics – and almost no decisions running through them. The Analytics Advisory roadmap reframes the function around outcomes, not outputs, and is the precondition for embedded AI to land.",
     sfType: "Analytics Advisory",
     engagementSize: "8–12 weeks · $200K–$400K",
     priority: "high",
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — data foundations + intelligence delivery
+  // CAPABILITY ENGAGEMENTS – data foundations + intelligence delivery
   // ══════════════════════════════════════════════════════════════════
   {
     id: "data_foundations_modernization",
@@ -138,7 +138,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "The unified, governed, AI-ready data foundation every enterprise AI use case depends on",
     description:
-      "Architect and deliver the modern enterprise data foundation — lakehouse, semantic layer, governed metadata, data quality, lineage, and access controls — that every downstream AI workload depends on. Includes the operating model and stewardship framework.",
+      "Architect and deliver the modern enterprise data foundation – lakehouse, semantic layer, governed metadata, data quality, lineage, and access controls – that every downstream AI workload depends on. Includes the operating model and stewardship framework.",
     capabilities: ["data_foundations"],
     triggerThreshold: 3.5,
     scope:
@@ -162,7 +162,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "The retrieval layer that makes RAG, agents, and copilots actually answer correctly",
     description:
-      "Design and implement the enterprise knowledge graph and vector platform — content normalisation, chunking strategy, embeddings, hybrid retrieval, evaluation harness, and integration with the LLM stack — so AI agents and copilots can answer with grounded, attributable, current enterprise context.",
+      "Design and implement the enterprise knowledge graph and vector platform – content normalisation, chunking strategy, embeddings, hybrid retrieval, evaluation harness, and integration with the LLM stack – so AI agents and copilots can answer with grounded, attributable, current enterprise context.",
     capabilities: ["data_foundations", "intelligence_delivery"],
     triggerThreshold: 3.5,
     scope:
@@ -175,7 +175,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
       "Evaluation harness and ground-truth set",
     ],
     valueNarrative:
-      "Generic LLMs hallucinate on enterprise context. The knowledge-graph + vector platform is what closes the gap — and is the differentiator between copilots that deflect work and copilots that get unplugged.",
+      "Generic LLMs hallucinate on enterprise context. The knowledge-graph + vector platform is what closes the gap – and is the differentiator between copilots that deflect work and copilots that get unplugged.",
     sfType: "AI Platform",
     engagementSize: "14–24 weeks · $400K–$1M",
     priority: "high",
@@ -186,7 +186,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "Move analytics out of dashboards and into the workflows where decisions are made",
     description:
-      "Design and build the embedded-intelligence delivery layer — feature store, model registry, decisioning engine, integration with workflow tools (Salesforce, ServiceNow, Workday, custom) — so AI insight is delivered at the moment of decision rather than in a separate analytics environment.",
+      "Design and build the embedded-intelligence delivery layer – feature store, model registry, decisioning engine, integration with workflow tools (Salesforce, ServiceNow, Workday, custom) – so AI insight is delivered at the moment of decision rather than in a separate analytics environment.",
     capabilities: ["intelligence_delivery"],
     triggerThreshold: 3.5,
     scope:
@@ -206,15 +206,15 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — work redesign, copilots, multi-agent
+  // CAPABILITY ENGAGEMENTS – work redesign, copilots, multi-agent
   // ══════════════════════════════════════════════════════════════════
   {
     id: "workflow_redesign_human_ai",
-    title: "Workflow Redesign — Human + AI Teaming",
+    title: "Workflow Redesign – Human + AI Teaming",
     tagline:
-      "Redesign the workflow before adding the AI — the success pattern McKinsey calls out as the #1 differentiator",
+      "Redesign the workflow before adding the AI – the success pattern McKinsey calls out as the #1 differentiator",
     description:
-      "Take a high-volume, high-friction enterprise workflow (claims, underwriting, KYC, contracts, support escalation, marketing production) and redesign it from scratch around human + AI teaming — not bolting AI onto the existing process. Includes role redesign, decision rights, and measurement.",
+      "Take a high-volume, high-friction enterprise workflow (claims, underwriting, KYC, contracts, support escalation, marketing production) and redesign it from scratch around human + AI teaming – not bolting AI onto the existing process. Includes role redesign, decision rights, and measurement.",
     capabilities: ["work_design"],
     triggerThreshold: 3.5,
     scope:
@@ -238,7 +238,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "Production-ready copilots and agentic workflows for the highest-leverage roles",
     description:
-      "Design, build, and deploy production-ready copilots and agentic workflows for the highest-leverage roles in the enterprise — sellers, service agents, knowledge workers, analysts. Includes prompt and tool design, evaluation, supervisor framework, integration, and adoption playbook.",
+      "Design, build, and deploy production-ready copilots and agentic workflows for the highest-leverage roles in the enterprise – sellers, service agents, knowledge workers, analysts. Includes prompt and tool design, evaluation, supervisor framework, integration, and adoption playbook.",
     capabilities: ["intelligence_delivery", "work_design"],
     triggerThreshold: 3.5,
     scope:
@@ -263,7 +263,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "Move from single-task copilots to coordinated agent teams that own end-to-end outcomes",
     description:
-      "Design and deploy multi-agent orchestration for end-to-end enterprise workflows — agent decomposition, supervisor patterns, tool/skill registry, observability, and the assurance framework needed to operate them in production.",
+      "Design and deploy multi-agent orchestration for end-to-end enterprise workflows – agent decomposition, supervisor patterns, tool/skill registry, observability, and the assurance framework needed to operate them in production.",
     capabilities: [
       "intelligence_delivery",
       "work_design",
@@ -287,7 +287,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
   },
 
   // ══════════════════════════════════════════════════════════════════
-  // CAPABILITY ENGAGEMENTS — assurance + adoption + governance
+  // CAPABILITY ENGAGEMENTS – assurance + adoption + governance
   // ══════════════════════════════════════════════════════════════════
   {
     id: "ai_assurance_framework",
@@ -295,7 +295,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "Model risk, explainability, audit, and the regulatory posture the board needs",
     description:
-      "Design and operationalise the AI assurance framework — model-risk policy, explainability, evaluation, audit trail, regulatory mapping (EU AI Act, NIST AI RMF, sector regulators), and the governance forum that runs it.",
+      "Design and operationalise the AI assurance framework – model-risk policy, explainability, evaluation, audit trail, regulatory mapping (EU AI Act, NIST AI RMF, sector regulators), and the governance forum that runs it.",
     capabilities: ["ai_assurance"],
     triggerThreshold: 3.5,
     scope:
@@ -308,7 +308,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
       "Governance forum design and operating cadence",
     ],
     valueNarrative:
-      "AI without assurance ships, breaks, and blocks the next deployment. A managed assurance practice keeps the program moving — and is non-negotiable in regulated sectors and for any board-facing AI claim.",
+      "AI without assurance ships, breaks, and blocks the next deployment. A managed assurance practice keeps the program moving – and is non-negotiable in regulated sectors and for any board-facing AI claim.",
     sfType: "AI Governance",
     engagementSize: "12–20 weeks · $300K–$700K",
     priority: "high",
@@ -319,7 +319,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "The change program that gets AI investments past pilot and into the way work is done",
     description:
-      "Design and run the enterprise adoption program — leadership communications, role-level enablement, champion network, behaviour-change measurement, and the operating cadence that keeps adoption climbing rather than collapsing six months in.",
+      "Design and run the enterprise adoption program – leadership communications, role-level enablement, champion network, behaviour-change measurement, and the operating cadence that keeps adoption climbing rather than collapsing six months in.",
     capabilities: ["adoption_governance", "work_design"],
     triggerThreshold: 3.5,
     scope:
@@ -332,7 +332,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
       "Behaviour-change measurement",
     ],
     valueNarrative:
-      "AI investments quietly fail when adoption doesn't climb. The adoption program is what converts shipped technology into changed behaviour — and is what differentiates investments that show up in EBIT from those that don't.",
+      "AI investments quietly fail when adoption doesn't climb. The adoption program is what converts shipped technology into changed behaviour – and is what differentiates investments that show up in EBIT from those that don't.",
     sfType: "Change Management",
     engagementSize: "12–20 weeks · $250K–$600K",
     priority: "high",
@@ -343,7 +343,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     tagline:
       "The talent, structure, and capability shifts that let the enterprise actually run AI work",
     description:
-      "Redesign the talent and capability model for AI — central AI office vs. embedded model, role definitions (ML eng, AI product, prompt eng, AI assurance), career paths, sourcing strategy, and partnerships. Operating-model recommendations grounded in the Merkle 'Re-wiring the enterprise' research.",
+      "Redesign the talent and capability model for AI – central AI office vs. embedded model, role definitions (ML eng, AI product, prompt eng, AI assurance), career paths, sourcing strategy, and partnerships. Operating-model recommendations grounded in the Merkle 'Re-wiring the enterprise' research.",
     capabilities: ["adoption_governance", "work_design"],
     triggerThreshold: 3.5,
     scope:
@@ -356,7 +356,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
       "Partnership and ecosystem strategy",
     ],
     valueNarrative:
-      "AI work doesn't happen in the platforms — it happens in the people. The talent and operating-model decisions made in the first 12 months of the program quietly determine its ceiling.",
+      "AI work doesn't happen in the platforms – it happens in the people. The talent and operating-model decisions made in the first 12 months of the program quietly determine its ceiling.",
     sfType: "Talent & Operating Model",
     engagementSize: "10–16 weeks · $250K–$500K",
     priority: "high",
@@ -365,7 +365,7 @@ export const AIENT_OPPORTUNITIES: AientOpportunity[] = [
     id: "enterprise_ai_innovation_lab",
     title: "Enterprise AI Innovation Lab",
     tagline:
-      "Time-boxed lab for emerging enterprise patterns — multi-agent ops, autonomous workflows, generative knowledge",
+      "Time-boxed lab for emerging enterprise patterns – multi-agent ops, autonomous workflows, generative knowledge",
     description:
       "Time-boxed innovation lab that prototypes 2–3 emerging enterprise AI patterns (multi-agent ops, autonomous KYC/contracts, generative knowledge engines, embedded forecasting) with real enterprise telemetry, then writes the case for which to scale.",
     capabilities: [

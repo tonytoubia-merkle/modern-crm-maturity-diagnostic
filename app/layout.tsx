@@ -28,8 +28,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         {/*
-          Inter — Dentsu DDS body font + Merkle Proxima Nova fallback.
-          Work Sans — Merkle M2 brand font (used on the tool shell).
+          Inter – Dentsu DDS body font + Merkle Proxima Nova fallback.
+          Work Sans – Merkle M2 brand font (used on the tool shell).
           NOTE: Merkle's official artifact font is Proxima Nova (Adobe Fonts).
           Until an Adobe Typekit is configured the .font-merkle stack falls
           back to Inter via Tailwind theme.fontFamily.merkle.

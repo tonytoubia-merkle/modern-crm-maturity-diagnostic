@@ -8,7 +8,7 @@ export type AppRole = "user" | "super_admin";
 export type AdminScope = "crm" | "csc" | "b2b" | "aicx" | "aient";
 
 export interface AdminAccess {
-  /** role = 'super_admin' — grants access to all current and future scopes. */
+  /** role = 'super_admin' – grants access to all current and future scopes. */
   isSuperAdmin: boolean;
   /** Narrow admin scopes granted via app_users.admin_scopes (ignored when isSuperAdmin). */
   scopes: Set<AdminScope>;
@@ -73,7 +73,7 @@ export async function canAdmin(scope: AdminScope): Promise<boolean> {
   return a.isSuperAdmin || a.scopes.has(scope);
 }
 
-/** Back-compat helper — checks for role='super_admin' specifically. */
+/** Back-compat helper – checks for role='super_admin' specifically. */
 export async function isSuperAdmin(): Promise<boolean> {
   return (await getAdminAccess()).isSuperAdmin;
 }

@@ -14,7 +14,7 @@ export function parseAientAssistantMessage(raw: string): {
     try {
       scoreUpdate = JSON.parse(completeMatch[1]) as AientScoreUpdate;
     } catch {
-      // malformed JSON — ignore
+      // malformed JSON – ignore
     }
   }
 

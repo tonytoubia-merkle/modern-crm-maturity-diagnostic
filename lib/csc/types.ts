@@ -1,4 +1,4 @@
-// ── Content Supply Chain Diagnostic — Types ───────────────────────────
+// ── Content Supply Chain Diagnostic – Types ───────────────────────────
 // Parallel type system to the Modern CRM diagnostic, kept independent so
 // changes here cannot affect CRM typing.
 
@@ -23,7 +23,7 @@ export type CscMaturityStage = 1 | 2 | 3 | 4;
 
 export interface CscQuestion {
   id: number;
-  /** Default question text — used when no industry is selected or when
+  /** Default question text – used when no industry is selected or when
    *  the selected industry has no override in `byIndustry`. */
   text: string;
   capability: CscCapability;
@@ -145,7 +145,7 @@ export interface CscStakeholder {
 }
 
 // ── Workshop vignettes (facilitation exercises) ───────────────────────
-// CSC parallel to the CRM Vignette type — a workshop exercise the
+// CSC parallel to the CRM Vignette type – a workshop exercise the
 // consultant runs against the client team to develop one or more
 // capability areas. Distinct from CscClientStory below, which is the
 // anchor narrative used as a credibility/proof point during pitch.
@@ -157,7 +157,7 @@ export interface CscWorkshopVignette {
   category: string;
   requiredInputs: string[];
   /** Markdown-flavored facilitation guide. Use **bold** for section
-   * headers (e.g. **Setup (10 min):**) — the library renderer parses
+   * headers (e.g. **Setup (10 min):**) – the library renderer parses
    * `**…**` runs as bold. */
   facilitationGuide: string;
   expectedOutputs: string[];
@@ -169,13 +169,13 @@ export interface CscWorkshopVignette {
 }
 
 // ── Anonymized client stories (proof points / pitch anchors) ──────────
-// What used to live in CSC_VIGNETTES — kept as a separate dataset so
+// What used to live in CSC_VIGNETTES – kept as a separate dataset so
 // workshop exercises and proof stories don't get conflated.
 export interface CscClientStory {
   id: string;
   title: string;
   tagline: string;
-  /** Capabilities this story illustrates — drives matching to opportunities. */
+  /** Capabilities this story illustrates – drives matching to opportunities. */
   capabilities: CscCapability[];
   /** 1–2 paragraph anonymized (or Merkle-public) client story. */
   narrative: string;

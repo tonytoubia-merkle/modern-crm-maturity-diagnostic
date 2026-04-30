@@ -532,7 +532,7 @@ export function AdminUsersPanel() {
 
           <p className="text-[11px] text-slate-400 mt-4">
             Removing a row returns the user to default access (no admin).
-            Users who haven&apos;t signed up yet can still be pre-provisioned —
+            Users who haven&apos;t signed up yet can still be pre-provisioned –
             their scopes apply the moment they authenticate.
           </p>
         </div>

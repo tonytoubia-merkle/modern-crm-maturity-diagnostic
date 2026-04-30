@@ -1,7 +1,7 @@
 import { M2Logo } from "@/components/brand/M2Logo";
 
 export const metadata = {
-  title: "About — Merkle Maturity Assessment",
+  title: "About – Merkle Maturity Assessment",
   description:
     "Product overview, technical architecture, and security & legal guardrails.",
 };
@@ -47,7 +47,7 @@ export default function AboutPage() {
             A Merkle-internal consulting workspace for diagnosing client CRM,
             Content Supply Chain, B2B Transformation, AI for CX, and AI for
             Enterprise maturity, generating opportunities, and running
-            structured workshop engagements — from first conversation to
+            structured workshop engagements – from first conversation to
             Salesforce pipeline.
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function AboutPage() {
                     Modern CRM Maturity
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Eight capabilities — Identity, Signals, Decisioning,
+                    Eight capabilities – Identity, Signals, Decisioning,
                     Engagement, Media Activation, Measurement, Operating Model,
                     and Learning &amp; Optimization.
                   </p>
@@ -97,7 +97,7 @@ export default function AboutPage() {
                     Content Supply Chain
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Six capabilities — Strategy &amp; Planning, Workflow &amp;
+                    Six capabilities – Strategy &amp; Planning, Workflow &amp;
                     Production, Asset Management &amp; Governance, Distribution
                     &amp; Activation, Measurement &amp; Insights, and
                     Intelligence &amp; Automation.
@@ -111,7 +111,7 @@ export default function AboutPage() {
                     B2B Transformation
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Six capabilities — Vision &amp; Operating Model,
+                    Six capabilities – Vision &amp; Operating Model,
                     Account-Based Marketing, Account-Based Selling,
                     Account-Based Service &amp; Advocacy, Account-Based
                     Operations &amp; Commerce, and Tech, Data &amp; Intelligence.
@@ -125,7 +125,7 @@ export default function AboutPage() {
                     AI for CX
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Six capabilities — Agentic Discoverability, Agentic
+                    Six capabilities – Agentic Discoverability, Agentic
                     Experience, Adaptive Personalization, Testing &amp;
                     Experimentation, Identity &amp; Data, and Measurement
                     &amp; AI Trust.
@@ -139,7 +139,7 @@ export default function AboutPage() {
                     AI for Enterprise
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Six capabilities — Data Foundations, Use Case Design, Work
+                    Six capabilities – Data Foundations, Use Case Design, Work
                     Design, Intelligence Delivery, AI Assurance &amp; Trust,
                     and Adoption &amp; Governance.
                   </p>
@@ -147,7 +147,7 @@ export default function AboutPage() {
               </div>
               <p className="text-xs text-slate-500 mt-2">
                 Each diagnostic owns its own questions, scoring model,
-                opportunity catalog, and admin scope — but inherits the same
+                opportunity catalog, and admin scope – but inherits the same
                 shell, branding (M2 internal / Merkle artifact),
                 survey/aggregation engine, conversational and PPTX/PDF exports.
                 Additional diagnostics will be added to the suite over time.
@@ -188,16 +188,16 @@ export default function AboutPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   Workshop projects with multi-stakeholder surveys, aggregation,
-                  and facilitation guides — available for all five diagnostics
+                  and facilitation guides – available for all five diagnostics
                   (Modern CRM, Content Supply Chain, B2B Transformation, AI
                   for CX, and AI for Enterprise).
                 </li>
                 <li>
-                  Quick assessments — a single consultant or seller completing
+                  Quick assessments – a single consultant or seller completing
                   a diagnostic solo for either practice.
                 </li>
                 <li>
-                  Conversational assessments — voice- or chat-driven interviews
+                  Conversational assessments – voice- or chat-driven interviews
                   where an LLM infers scores from natural dialogue.
                 </li>
               </ul>
@@ -245,7 +245,7 @@ export default function AboutPage() {
                   The shared scoring pipeline
                   (<span className="font-mono text-xs">lib/scoring.ts</span>)
                   computes capability scores, maturity stage, and triggered
-                  opportunities — identical across manual, conversational, and
+                  opportunities – identical across manual, conversational, and
                   aggregated modes.
                 </li>
                 <li>
@@ -297,7 +297,7 @@ export default function AboutPage() {
               <GuardItem title="LLM safety">
                 Conversational flows pass only assessment context (questions,
                 anonymized responses) to providers. Chat transcripts are not
-                used to retrain third-party models — Anthropic and Google
+                used to retrain third-party models – Anthropic and Google
                 enterprise terms apply.
               </GuardItem>
               <GuardItem title="Admin access">
@@ -342,7 +342,7 @@ export default function AboutPage() {
               <GuardItem title="AI-assisted outputs">
                 Narratives, opportunity copy, and scoring inferences generated
                 by LLMs are drafts. A Merkle consultant must review and
-                approve every client-facing output — the tool does not
+                approve every client-facing output – the tool does not
                 replace professional judgment or deliverable QA.
               </GuardItem>
               <GuardItem title="Retention & deletion">
@@ -365,7 +365,7 @@ export default function AboutPage() {
             </ul>
             <p className="text-xs text-slate-400 mt-4">
               Questions about appropriate use, data handling, or client consent
-              — contact the relevant practice lead (Modern CRM or Content)
+              – contact the relevant practice lead (Modern CRM or Content)
               before proceeding.
             </p>
           </div>
@@ -383,7 +383,7 @@ export default function AboutPage() {
               className="h-4 w-auto opacity-40"
             />
             <p className="text-xs text-slate-400">
-              © {new Date().getFullYear()} Merkle — Internal Use Only
+              © {new Date().getFullYear()} Merkle – Internal Use Only
             </p>
           </div>
           <div className="flex gap-4">

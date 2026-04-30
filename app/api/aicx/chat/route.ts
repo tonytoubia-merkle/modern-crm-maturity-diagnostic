@@ -10,7 +10,7 @@ import type { AicxIndustry } from "@/lib/aicx/types";
 export const runtime = "nodejs";
 
 /**
- * POST /api/aicx/chat — streaming Gemini chat for the AI for CX
+ * POST /api/aicx/chat – streaming Gemini chat for the AI for CX
  * conversational diagnostic. Mirrors /api/chat and /api/aicx/chat.
  */
 export async function POST(request: NextRequest) {

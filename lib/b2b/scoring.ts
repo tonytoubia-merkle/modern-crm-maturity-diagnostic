@@ -17,7 +17,7 @@ import { getB2bTriggeredOpportunities } from "@/lib/b2b/data/opportunities";
 /**
  * Computes per-capability average scores. Mirrors CSC scoring logic so
  * the same dashboard / chart components can render either diagnostic
- * with no special-casing — only the capability set differs.
+ * with no special-casing – only the capability set differs.
  */
 export function computeB2bCapabilityScores(
   responses: B2bResponseItem[]
@@ -61,32 +61,32 @@ export function computeB2bMaturityStage(overallScore: number): B2bMaturityStage 
 }
 
 // Stage labels and narratives sourced from the 2025 B2B Transformation
-// GTM narrative — the "Account-Based Everything" maturity arc from
+// GTM narrative – the "Account-Based Everything" maturity arc from
 // functional silos to an AI-orchestrated revenue platform.
 export const B2B_MATURITY_STAGES: Record<
   B2bMaturityStage,
   { label: string; description: string; color: string }
 > = {
   1: {
-    label: "Stage 1 — Functional Silos",
+    label: "Stage 1 – Functional Silos",
     description:
       "Marketing, sales, service, and operations run as siloed functions with disconnected tools, separate KPIs, and limited visibility into account-level performance. Buying groups aren't identified or coordinated. The customer experience is product- or function-led, not account-led, and growth depends on individual heroics. Stage 1 organizations typically benefit most from a North Star Digital Visioning engagement to align leadership before any platform investment lands.",
     color: "red",
   },
   2: {
-    label: "Stage 2 — Coordinated",
+    label: "Stage 2 – Coordinated",
     description:
-      "Some account-based pilots exist (a tiered ABM list, a select set of strategic accounts) but the operating model still defaults to function-specific KPIs and reactive plays. Tech investment has begun — CRM is in place, data is partially unified — but legacy systems persist alongside modern ones. Sellers, marketers, and service teams know each other but aren't yet running shared playbooks. Stage 2 organizations are ready to anchor their next investment in a B2B Customer Experience Assessment or an Innovation Accelerator on one high-value account journey.",
+      "Some account-based pilots exist (a tiered ABM list, a select set of strategic accounts) but the operating model still defaults to function-specific KPIs and reactive plays. Tech investment has begun – CRM is in place, data is partially unified – but legacy systems persist alongside modern ones. Sellers, marketers, and service teams know each other but aren't yet running shared playbooks. Stage 2 organizations are ready to anchor their next investment in a B2B Customer Experience Assessment or an Innovation Accelerator on one high-value account journey.",
     color: "orange",
   },
   3: {
-    label: "Stage 3 — Orchestrated",
+    label: "Stage 3 – Orchestrated",
     description:
-      "Account-based execution is the default — across marketing, sales, service, and operations. Tier-1 accounts have shared plans, shared KPIs, and visible journey orchestration across paid, owned, sales, and service touch. The revenue platform (modern CRM, CPQ, billing) runs on connected technology with a unified customer data foundation. AI has moved from pilot to embedded — copilots inside seller and service workflows, AI lead scoring and account intelligence in production. Stage 3 organizations are positioned for Tech & Data Modernization or full Enterprise Transformation engagements that lock in the operating model and scale agentic capabilities.",
+      "Account-based execution is the default – across marketing, sales, service, and operations. Tier-1 accounts have shared plans, shared KPIs, and visible journey orchestration across paid, owned, sales, and service touch. The revenue platform (modern CRM, CPQ, billing) runs on connected technology with a unified customer data foundation. AI has moved from pilot to embedded – copilots inside seller and service workflows, AI lead scoring and account intelligence in production. Stage 3 organizations are positioned for Tech & Data Modernization or full Enterprise Transformation engagements that lock in the operating model and scale agentic capabilities.",
     color: "blue",
   },
   4: {
-    label: "Stage 4 — Adaptive Engine",
+    label: "Stage 4 – Adaptive Engine",
     description:
       "The business runs as a unified, AI-orchestrated revenue platform. Account-based plays execute autonomously through agentic workflows; sellers, marketers, and service agents focus on relationship and complexity while AI handles repetitive work. Self-service commerce, marketplace, and recurring revenue carry a meaningful share of the top line; cost-to-serve drops as task completion and deflection rise. Tech, data, and AI investments are continuously optimized through value-realization scorecards. Stage 4 organizations engage Merkle for Continuous Value Accelerator programs that keep the engine ahead of emerging technologies.",
     color: "green",

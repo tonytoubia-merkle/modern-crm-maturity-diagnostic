@@ -17,12 +17,12 @@ const supabase = createBrowserClient(
 );
 
 /**
- * /register — account creation. /login handles sign-in.
+ * /register – account creation. /login handles sign-in.
  *
  * Same custom-alert pattern as /login. Specific to register:
  *   - wrong domain      → amber "use @merkle.com or @dentsu.com"
  *   - already registered → blue "looks like you already have an
- *                          account — sign in" with a link to /login
+ *                          account – sign in" with a link to /login
  *   - generic failure   → red error card with the raw message
  *   - success           → green confirmation, "check your email"
  */
