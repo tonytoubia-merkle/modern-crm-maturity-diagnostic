@@ -219,24 +219,30 @@ export default function HomePage() {
             >
               New Project
             </a>
-            <div className="relative group">
-              <a
-                href="/crm/assessment/new"
-                className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
+            <a
+              href="/crm/assessment/new"
+              className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              Quick Assessment
+            </a>
+            <a
+              href="/crm/assessment/chat"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden
               >
-                Quick Assessment
-              </a>
-              <div className="absolute left-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                <a href="/crm/assessment/new" className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-t-lg transition-colors">
-                  <span className="font-medium">Manual Survey</span>
-                  <span className="block text-[10px] text-slate-400 mt-0.5">30 questions, step by step</span>
-                </a>
-                <a href="/crm/assessment/chat" className="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-b-lg border-t border-slate-100 transition-colors">
-                  <span className="font-medium">Conversational AI</span>
-                  <span className="block text-[10px] text-slate-400 mt-0.5">Natural dialogue with voice support</span>
-                </a>
-              </div>
-            </div>
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+              </svg>
+              Conversational
+              <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-m2-sky text-m2-navy ml-1">
+                New
+              </span>
+            </a>
           </div>
         </div>
       </section>
