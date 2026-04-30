@@ -133,7 +133,7 @@ export default function ChooserHome() {
             href="/b2b"
             eyebrow="B2B Transformation Practice"
             title="B2B Transformation"
-            description="Assess account-based maturity across vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation. Grounded in the 2025 Account-Based Everything framework."
+            description="Assess account-based maturity across vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation. Grounded in the Account-Based Everything framework."
             ctaLabel="Open B2B Transformation"
           />
           <ChooserCard
