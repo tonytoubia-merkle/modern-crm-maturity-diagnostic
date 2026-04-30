@@ -107,7 +107,7 @@ export default function ChooserHome() {
             Which diagnostic?
           </h1>
           <p className="text-base text-white/70 leading-relaxed max-w-2xl">
-            Two separate diagnostics share this workspace. Pick the one you&apos;re
+            Five separate diagnostics share this workspace. Pick the one you&apos;re
             running — each has its own assessments, projects, and scoring model.
           </p>
         </div>
@@ -135,6 +135,20 @@ export default function ChooserHome() {
             title="B2B Transformation"
             description="Assess account-based maturity across vision, ABM, ABS, service & advocacy, operations & commerce, and the tech / data / AI foundation. Grounded in the 2025 Account-Based Everything framework."
             ctaLabel="Open B2B Transformation"
+          />
+          <ChooserCard
+            href="/aicx"
+            eyebrow="AI for CX Practice"
+            title="AI for CX"
+            description="Assess AI-for-CX maturity across agentic discoverability, agentic experience, adaptive personalization, experimentation, identity & data, and measurement & trust. Grounded in the 2026 AI for CX deep dive and EXO toolkit."
+            ctaLabel="Open AI for CX"
+          />
+          <ChooserCard
+            href="/aient"
+            eyebrow="AI for Enterprise Practice"
+            title="AI for Enterprise"
+            description="Assess enterprise AI maturity across data foundations, use case design, work redesign, intelligence delivery, AI assurance, and adoption & governance. Grounded in the 2026 AI for Enterprise narrative."
+            ctaLabel="Open AI for Enterprise"
           />
         </div>
       </div>

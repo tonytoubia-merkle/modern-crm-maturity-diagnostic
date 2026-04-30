@@ -45,9 +45,10 @@ export default function AboutPage() {
           </h1>
           <p className="text-sm text-white/70 leading-relaxed max-w-2xl">
             A Merkle-internal consulting workspace for diagnosing client CRM,
-            Content Supply Chain, and B2B Transformation maturity, generating
-            opportunities, and running structured workshop engagements — from
-            first conversation to Salesforce pipeline.
+            Content Supply Chain, B2B Transformation, AI for CX, and AI for
+            Enterprise maturity, generating opportunities, and running
+            structured workshop engagements — from first conversation to
+            Salesforce pipeline.
           </p>
         </div>
       </section>
@@ -74,7 +75,7 @@ export default function AboutPage() {
               <p className="font-semibold text-slate-900 mb-2">
                 Diagnostics in the suite
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 <div className="border border-slate-200 rounded-lg p-4">
                   <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
                     Modern CRM Practice
@@ -114,6 +115,33 @@ export default function AboutPage() {
                     Account-Based Marketing, Account-Based Selling,
                     Account-Based Service &amp; Advocacy, Account-Based
                     Operations &amp; Commerce, and Tech, Data &amp; Intelligence.
+                  </p>
+                </div>
+                <div className="border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
+                    AI for CX Practice
+                  </p>
+                  <p className="font-semibold text-slate-900 mb-1.5">
+                    AI for CX
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Six capabilities — Agentic Discoverability, Agentic
+                    Experience, Adaptive Personalization, Testing &amp;
+                    Experimentation, Identity &amp; Data, and Measurement
+                    &amp; AI Trust.
+                  </p>
+                </div>
+                <div className="border border-slate-200 rounded-lg p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-1">
+                    AI for Enterprise Practice
+                  </p>
+                  <p className="font-semibold text-slate-900 mb-1.5">
+                    AI for Enterprise
+                  </p>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Six capabilities — Data Foundations, Use Case Design, Work
+                    Design, Intelligence Delivery, AI Assurance &amp; Trust,
+                    and Adoption &amp; Governance.
                   </p>
                 </div>
               </div>
@@ -160,8 +188,9 @@ export default function AboutPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   Workshop projects with multi-stakeholder surveys, aggregation,
-                  and facilitation guides — available for Modern CRM, Content
-                  Supply Chain, and B2B Transformation.
+                  and facilitation guides — available for all five diagnostics
+                  (Modern CRM, Content Supply Chain, B2B Transformation, AI
+                  for CX, and AI for Enterprise).
                 </li>
                 <li>
                   Quick assessments — a single consultant or seller completing

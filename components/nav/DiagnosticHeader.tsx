@@ -4,21 +4,21 @@ import { useState } from "react";
 import { M2Logo } from "@/components/brand/M2Logo";
 
 /**
- * Shared M2-branded header for the three diagnostic home pages
- * (/crm, /csc, /b2b). Renders:
+ * Shared M2-branded header for the diagnostic home pages
+ * (/crm, /csc, /b2b, /aicx, /aient). Renders:
  *
  *   1. M2 logo
  *   2. Cross-diagnostic links — Modern CRM, Content Supply Chain,
- *      B2B Transformation. The current page is bolded / fully-white;
- *      the others are dim links.
+ *      B2B Transformation, AI for CX, AI for Enterprise. The current
+ *      page is bolded / fully-white; the others are dim links.
  *   3. Utility links — Guide, Library, Badges (yellow), Admin, About.
  *   4. Profile bubble with Badges + Sign out menu.
  *
- * Kept as a single component so the three diagnostic homes can't
- * drift out of sync as new diagnostics or utility links are added.
+ * Kept as a single component so the diagnostic homes can't drift out
+ * of sync as new diagnostics or utility links are added.
  */
 
-type Diagnostic = "crm" | "csc" | "b2b";
+type Diagnostic = "crm" | "csc" | "b2b" | "aicx" | "aient";
 
 const DIAGNOSTICS: Array<{
   key: Diagnostic;
@@ -28,6 +28,8 @@ const DIAGNOSTICS: Array<{
   { key: "crm", href: "/crm", label: "Modern CRM" },
   { key: "csc", href: "/csc", label: "Content Supply Chain" },
   { key: "b2b", href: "/b2b", label: "B2B Transformation" },
+  { key: "aicx", href: "/aicx", label: "AI for CX" },
+  { key: "aient", href: "/aient", label: "AI for Enterprise" },
 ];
 
 interface DiagnosticHeaderProps {

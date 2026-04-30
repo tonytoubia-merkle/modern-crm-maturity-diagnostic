@@ -4,12 +4,18 @@ import { useState } from "react";
 import { VoiceChat } from "./VoiceChat";
 import { CscVoiceChat } from "@/components/csc/chat/CscVoiceChat";
 import { B2bVoiceChat } from "@/components/b2b/chat/B2bVoiceChat";
+import { AicxVoiceChat } from "@/components/aicx/chat/AicxVoiceChat";
+import { AientVoiceChat } from "@/components/aient/chat/AientVoiceChat";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import { CSC_INDUSTRY_LABELS } from "@/lib/csc/data/questions";
 import { B2B_INDUSTRY_LABELS } from "@/lib/b2b/data/questions";
+import { AICX_INDUSTRY_LABELS } from "@/lib/aicx/data/questions";
+import { AIENT_INDUSTRY_LABELS } from "@/lib/aient/data/questions";
 import type { Industry } from "@/lib/types";
 import type { CscIndustry } from "@/lib/csc/types";
 import type { B2bIndustry } from "@/lib/b2b/types";
+import type { AicxIndustry } from "@/lib/aicx/types";
+import type { AientIndustry } from "@/lib/aient/types";
 
 /**
  * BrandedChatPage powers /connections, /dentsu, /cannes, /marketing.
@@ -21,7 +27,7 @@ import type { B2bIndustry } from "@/lib/b2b/types";
  * screen. If only one is listed, the picker is skipped.
  */
 
-type Diagnostic = "crm" | "csc" | "b2b";
+type Diagnostic = "crm" | "csc" | "b2b" | "aicx" | "aient";
 
 export interface BrandConfig {
   source: string;
@@ -39,12 +45,13 @@ export interface BrandConfig {
   footerText: string;
   bodyBg: string;
   extraHero?: React.ReactNode;
-  /** Which diagnostics this surface offers. Defaults to ["crm", "csc", "b2b"]. */
+  /** Which diagnostics this surface offers. Defaults to all five. */
   diagnostics?: Diagnostic[];
 }
 
 export function BrandedChatPage({ config }: { config: BrandConfig }) {
-  const offered: Diagnostic[] = config.diagnostics ?? ["crm", "csc", "b2b"];
+  const offered: Diagnostic[] =
+    config.diagnostics ?? ["crm", "csc", "b2b", "aicx", "aient"];
 
   const [step, setStep] = useState<"intro" | "choose" | "setup" | "chat">(
     "intro"
@@ -57,6 +64,12 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
   const [crmIndustry, setCrmIndustry] = useState<Industry | "none" | "">("");
   const [cscIndustry, setCscIndustry] = useState<CscIndustry | "none" | "">("");
   const [b2bIndustry, setB2bIndustry] = useState<B2bIndustry | "none" | "">("");
+  const [aicxIndustry, setAicxIndustry] = useState<AicxIndustry | "none" | "">(
+    ""
+  );
+  const [aientIndustry, setAientIndustry] = useState<
+    AientIndustry | "none" | ""
+  >("");
   const [loading, setLoading] = useState(false);
 
   const goToSetup = (d: Diagnostic) => {
@@ -116,7 +129,7 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
         setAssessmentId(data.id);
         setShareId(data.shareId);
         setStep("chat");
-      } else {
+      } else if (diagnostic === "b2b") {
         // B2B voice flow — same shape, against the B2B endpoint.
         const resolvedIndustry =
           b2bIndustry === "none" || b2bIndustry === "" ? null : b2bIndustry;
@@ -127,6 +140,56 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             clientName: orgName.trim(),
             clientCompany: resolvedIndustry
               ? B2B_INDUSTRY_LABELS[resolvedIndustry] || ""
+              : "",
+            respondentName: respondentName.trim() || "Participant",
+            repEmail: "",
+            isRepMode: false,
+            industry: resolvedIndustry,
+            source: config.source,
+          }),
+        });
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        setAssessmentId(data.id);
+        setShareId(data.shareId);
+        setStep("chat");
+      } else if (diagnostic === "aicx") {
+        const resolvedIndustry =
+          aicxIndustry === "none" || aicxIndustry === ""
+            ? null
+            : aicxIndustry;
+        const res = await fetch("/api/aicx/assessments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: orgName.trim(),
+            clientCompany: resolvedIndustry
+              ? AICX_INDUSTRY_LABELS[resolvedIndustry] || ""
+              : "",
+            respondentName: respondentName.trim() || "Participant",
+            repEmail: "",
+            isRepMode: false,
+            industry: resolvedIndustry,
+            source: config.source,
+          }),
+        });
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        setAssessmentId(data.id);
+        setShareId(data.shareId);
+        setStep("chat");
+      } else {
+        const resolvedIndustry =
+          aientIndustry === "none" || aientIndustry === ""
+            ? null
+            : aientIndustry;
+        const res = await fetch("/api/aient/assessments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientName: orgName.trim(),
+            clientCompany: resolvedIndustry
+              ? AIENT_INDUSTRY_LABELS[resolvedIndustry] || ""
               : "",
             respondentName: respondentName.trim() || "Participant",
             repEmail: "",
@@ -198,6 +261,34 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
               b2bIndustry === "none" || b2bIndustry === ""
                 ? null
                 : (b2bIndustry as B2bIndustry)
+            }
+            clientFacing
+          />
+        )}
+        {diagnostic === "aicx" && (
+          <AicxVoiceChat
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={orgName}
+            respondentName={respondentName || "Participant"}
+            industry={
+              aicxIndustry === "none" || aicxIndustry === ""
+                ? null
+                : (aicxIndustry as AicxIndustry)
+            }
+            clientFacing
+          />
+        )}
+        {diagnostic === "aient" && (
+          <AientVoiceChat
+            assessmentId={assessmentId}
+            shareId={shareId}
+            clientName={orgName}
+            respondentName={respondentName || "Participant"}
+            industry={
+              aientIndustry === "none" || aientIndustry === ""
+                ? null
+                : (aientIndustry as AientIndustry)
             }
             clientFacing
           />
@@ -287,12 +378,12 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
             className="text-base font-light leading-relaxed mb-10"
             style={{ color: "#555" }}
           >
-            Two diagnostics live behind this surface. Pick the one that matches
+            Five diagnostics live behind this surface. Pick the one that matches
             the conversation you came for — you can always come back for the
-            other.
+            others.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {offered.includes("crm") && (
               <DiagnosticCard
                 eyebrow="Modern CRM Practice"
@@ -329,6 +420,30 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
                 badge="Voice"
               />
             )}
+            {offered.includes("aicx") && (
+              <DiagnosticCard
+                eyebrow="AI for CX Practice"
+                title="AI for CX"
+                pace="~12 min · voice conversation"
+                description="An AI consultant has a natural conversation with you about agentic discoverability, agentic experience, adaptive personalization, and how AI investment is measured today."
+                cta="Start AI for CX conversation"
+                config={config}
+                onClick={() => goToSetup("aicx")}
+                badge="Voice"
+              />
+            )}
+            {offered.includes("aient") && (
+              <DiagnosticCard
+                eyebrow="AI for Enterprise Practice"
+                title="AI for Enterprise"
+                pace="~15 min · voice conversation"
+                description="An AI consultant has a natural conversation with you about data foundations, work redesign, embedded intelligence, AI assurance, and how the enterprise is wiring AI into operations."
+                cta="Start AI for Enterprise conversation"
+                config={config}
+                onClick={() => goToSetup("aient")}
+                badge="Voice"
+              />
+            )}
           </div>
         </div>
       </PageShell>
@@ -344,13 +459,21 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
       ? (Object.entries(INDUSTRY_LABELS) as [string, string][])
       : diagnostic === "csc"
       ? (Object.entries(CSC_INDUSTRY_LABELS) as [string, string][])
-      : (Object.entries(B2B_INDUSTRY_LABELS) as [string, string][]);
+      : diagnostic === "b2b"
+      ? (Object.entries(B2B_INDUSTRY_LABELS) as [string, string][])
+      : diagnostic === "aicx"
+      ? (Object.entries(AICX_INDUSTRY_LABELS) as [string, string][])
+      : (Object.entries(AIENT_INDUSTRY_LABELS) as [string, string][]);
   const selectedIndustry: string =
     diagnostic === "crm"
       ? crmIndustry
       : diagnostic === "csc"
       ? cscIndustry
-      : b2bIndustry;
+      : diagnostic === "b2b"
+      ? b2bIndustry
+      : diagnostic === "aicx"
+      ? aicxIndustry
+      : aientIndustry;
   const setIndustry = (key: string) => {
     if (diagnostic === "crm") {
       setCrmIndustry(
@@ -360,9 +483,17 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
       setCscIndustry(
         cscIndustry === key ? "" : (key as CscIndustry | "none" | "")
       );
-    } else {
+    } else if (diagnostic === "b2b") {
       setB2bIndustry(
         b2bIndustry === key ? "" : (key as B2bIndustry | "none" | "")
+      );
+    } else if (diagnostic === "aicx") {
+      setAicxIndustry(
+        aicxIndustry === key ? "" : (key as AicxIndustry | "none" | "")
+      );
+    } else {
+      setAientIndustry(
+        aientIndustry === key ? "" : (key as AientIndustry | "none" | "")
       );
     }
   };
@@ -396,7 +527,11 @@ export function BrandedChatPage({ config }: { config: BrandConfig }) {
               ? "Modern CRM"
               : diagnostic === "csc"
               ? "Content Supply Chain"
-              : "B2B Transformation"}
+              : diagnostic === "b2b"
+              ? "B2B Transformation"
+              : diagnostic === "aicx"
+              ? "AI for CX"
+              : "AI for Enterprise"}
           </p>
 
           <div className="space-y-4">

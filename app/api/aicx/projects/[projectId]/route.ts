@@ -1,0 +1,160 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@/lib/supabase/server";
+import { canAdmin } from "@/lib/auth/roles";
+
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: { projectId: string } }
+) {
+  try {
+    const supabase = createServerClient();
+
+    const { data: project, error: pErr } = await supabase
+      .from("aicx_projects")
+      .select("*")
+      .eq("id", params.projectId)
+      .single();
+
+    if (pErr || !project) {
+      const { data: projByShare, error: sErr } = await supabase
+        .from("aicx_projects")
+        .select("*")
+        .eq("share_id", params.projectId)
+        .single();
+
+      if (sErr || !projByShare) {
+        return NextResponse.json(
+          { error: "Project not found" },
+          { status: 404 }
+        );
+      }
+
+      const { data: stakeholders } = await supabase
+        .from("aicx_stakeholders")
+        .select(
+          "*, aicx_assessments!aicx_stakeholders_assessment_id_fkey(share_id, status, overall_score, maturity_stage)"
+        )
+        .eq("project_id", projByShare.id)
+        .order("invited_at", { ascending: true });
+
+      const { data: linkedAssessments } = await supabase
+        .from("aicx_assessments")
+        .select("id, share_id, respondent_name, status, overall_score, maturity_stage")
+        .eq("project_id", projByShare.id);
+
+      return NextResponse.json({
+        project: { ...projByShare, survey_password: undefined },
+        stakeholders: stakeholders || [],
+        linkedAssessments: linkedAssessments || [],
+      });
+    }
+
+    const { data: stakeholders } = await supabase
+      .from("aicx_stakeholders")
+      .select("*, aicx_assessments(share_id, status, overall_score, maturity_stage)")
+      .eq("project_id", project.id)
+      .order("invited_at", { ascending: true });
+
+    const { data: linkedAssessments } = await supabase
+      .from("aicx_assessments")
+      .select("id, share_id, respondent_name, status, overall_score, maturity_stage")
+      .eq("project_id", project.id);
+
+    return NextResponse.json({
+      project: { ...project, survey_password: undefined },
+      stakeholders: stakeholders || [],
+      linkedAssessments: linkedAssessments || [],
+    });
+  } catch (err) {
+    console.error("GET /api/aicx/projects/[id] error:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch CSC project" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { projectId: string } }
+) {
+  try {
+    const body = await request.json();
+    const supabase = createServerClient();
+
+    const allowedFields: Record<string, string> = {
+      status: "status",
+      aggregatedScores: "aggregated_scores",
+      aggregatedOverall: "aggregated_overall",
+      aggregatedMaturity: "aggregated_maturity",
+      triggeredOpportunityIds: "triggered_opportunity_ids",
+      workshopAgenda: "workshop_agenda",
+    };
+
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    for (const [key, dbCol] of Object.entries(allowedFields)) {
+      if (body[key] !== undefined) updates[dbCol] = body[key];
+    }
+
+    const { error } = await supabase
+      .from("aicx_projects")
+      .update(updates)
+      .eq("id", params.projectId);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("PATCH /api/aicx/projects/[id] error:", err);
+    return NextResponse.json(
+      { error: "Failed to update CSC project" },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/aicx/projects/:id?mode=orphan|cascade
+ *
+ * orphan (default): delete the project; aicx_assessments.project_id sets
+ *   null via FK, assessments are retained and un-linked.
+ * cascade: delete every linked CSC assessment first (responses cascade
+ *   via their own FK), then the project.
+ *
+ * CSC admins only.
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { projectId: string } }
+) {
+  try {
+    if (!(await canAdmin("aicx"))) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const mode = searchParams.get("mode") === "cascade" ? "cascade" : "orphan";
+    const supabase = createServerClient();
+
+    if (mode === "cascade") {
+      const { error: aErr } = await supabase
+        .from("aicx_assessments")
+        .delete()
+        .eq("project_id", params.projectId);
+      if (aErr) throw aErr;
+    }
+
+    const { error } = await supabase
+      .from("aicx_projects")
+      .delete()
+      .eq("id", params.projectId);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true, mode });
+  } catch (err) {
+    console.error("DELETE /api/aicx/projects/[id] error:", err);
+    return NextResponse.json(
+      { error: "Failed to delete CSC project" },
+      { status: 500 }
+    );
+  }
+}
