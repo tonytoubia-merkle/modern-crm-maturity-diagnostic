@@ -81,7 +81,7 @@ export function B2bResultsView({
               className="h-5 w-auto brightness-0 invert"
             />
             <span className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-              Content Supply Chain Assessment
+              B2B Transformation Assessment
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -141,7 +141,7 @@ export function B2bResultsView({
             <span
               className="text-xs font-semibold uppercase tracking-wider text-merkle-secondary-600"
             >
-              Content Supply Chain Assessment
+              B2B Transformation Assessment
             </span>
           </div>
         </div>
@@ -214,7 +214,7 @@ export function B2bResultsView({
               Capability Heatmap
             </h2>
             <p className="text-sm text-slate-500 mt-0.5">
-              Scores across the six Content Supply Chain capability
+              Scores across the six B2B Transformation capability
               dimensions
             </p>
           </CardHeader>
@@ -302,7 +302,7 @@ export function B2bResultsView({
 
         <div className="flex items-center justify-between flex-wrap gap-4 py-4 border-t border-slate-200 print:hidden">
           <a
-            href="/csc"
+            href="/b2b"
             className="text-sm text-slate-500 hover:text-slate-700"
           >
             Start a new CSC assessment
@@ -319,7 +319,7 @@ export function B2bResultsView({
 
         <div className="hidden print:block mt-8 pt-4 border-t border-slate-200 text-xs text-slate-400">
           <p>
-            Content Supply Chain Diagnostic · Merkle ·{" "}
+            B2B Transformation Diagnostic · Merkle ·{" "}
             {new Date().getFullYear()} · {shareUrl}
           </p>
         </div>

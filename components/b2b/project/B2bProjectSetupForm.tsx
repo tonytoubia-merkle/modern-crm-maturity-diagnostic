@@ -67,7 +67,7 @@ export function B2bProjectSetupForm({ onSubmit }: B2bProjectSetupFormProps) {
           Create a CSC Workshop Project
         </h2>
         <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-          Set up a Content Supply Chain diagnostic project. Distribute pre-work
+          Set up a B2B Transformation diagnostic project. Distribute pre-work
           surveys to stakeholders, aggregate the results, and generate a
           workshop agenda with facilitation guides.
         </p>

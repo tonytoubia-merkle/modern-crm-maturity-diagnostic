@@ -23,7 +23,7 @@ export type B2bIndustry =
   | "manufacturing"
   | "financial_services"
   | "healthcare_lifesciences"
-  | "industrial_b2b"
+  | "industrial_energy"
   | "professional_services";
 
 export type B2bMaturityStage = 1 | 2 | 3 | 4;

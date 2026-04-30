@@ -227,10 +227,10 @@ export function B2bAssessmentFlow({
             className="h-4 w-auto brightness-0 invert"
           />
           <a
-            href="/csc"
+            href="/b2b"
             className="text-xs text-white/70 hover:text-white flex items-center gap-1 transition-colors"
           >
-            ← Content Supply Chain Assessment
+            ← B2B Transformation Assessment
           </a>
         </div>
       </div>

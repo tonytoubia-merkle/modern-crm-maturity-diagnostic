@@ -148,7 +148,7 @@ export function B2bProjectDashboard({
           className="text-xs font-semibold uppercase tracking-wider mb-1"
           style={{ color: "#040e4b" }}
         >
-          Content Supply Chain Workshop
+          B2B Transformation Workshop
         </p>
         <h1 className="text-2xl font-bold text-slate-900">
           {project.client_name}

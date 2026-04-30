@@ -211,7 +211,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, subscription billing, and contracting — rather than manual quoting and legacy CPQ?",
       manufacturing:
         "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, configurable product pricing, and contracting — rather than manual quoting, ERP-tethered pricing, or legacy CPQ?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent is the quote-to-cash motion modernised with AI-powered CPQ, configurable bundles, and service-contract management — rather than manual quoting and legacy CPQ?",
       financial_services:
         "To what extent are pricing, fee schedules, and client agreements modernised with AI-powered configuration and CLM — rather than spreadsheets, freehand drafting, and disconnected approval flows?",
@@ -276,7 +276,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent are subscription renewals managed proactively with structured plays, multi-quarter coverage, and renewal-risk scoring — rather than scrambled as the contract date approaches?",
       manufacturing:
         "To what extent are service contracts, parts agreements, and equipment re-purchase cycles managed proactively with structured plays, multi-quarter coverage, and risk scoring — rather than reactive at expiration?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent are service contracts, consumables agreements, and equipment re-purchase cycles managed proactively with structured plays, multi-quarter coverage, and risk scoring?",
       financial_services:
         "To what extent are mandate renewals, fee-schedule reviews, and contract extensions managed proactively with structured plays, multi-quarter coverage, and risk scoring — rather than reactive at the relationship review?",
@@ -304,7 +304,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent are customer success engagements (QBRs, deployments, training, support touchpoints) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
       manufacturing:
         "To what extent are field service operations (work orders, on-site visits, parts usage, customer feedback) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent are field service and on-site service operations (work orders, parts usage, equipment health, customer feedback) connected back to the account record and feeding signals into expansion, retention, and product roadmaps?",
       financial_services:
         "To what extent are advisor / relationship-manager touchpoints, branch interactions, and on-site client engagements connected back to the account record and feeding signals into expansion, retention, and service roadmaps?",
@@ -327,7 +327,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent is the order-to-cash and provisioning process — subscription order management, entitlements, provisioning, and billing — orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
       manufacturing:
         "To what extent is the order-to-fulfillment process (OMS, inventory, shipping, billing) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent is the order-to-fulfillment process (OMS, inventory, parts, shipping, billing) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
       financial_services:
         "To what extent is the client onboarding and servicing process (KYC, account opening, agreement execution, fee setup, statements) orchestrated end-to-end rather than handled by disconnected systems and manual handoffs?",
@@ -348,7 +348,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent do customers have a true self-service experience — license management, seat provisioning, plan changes, usage visibility — rather than every routine transaction needing a rep?",
       manufacturing:
         "To what extent does B2B commerce offer customers a true self-service experience — account-pricing, configurations, repeat ordering, marketplace, dealer portals — rather than rep-mediated transactions?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent does B2B commerce offer customers a true self-service experience — account-pricing, parts catalog, repeat ordering, configurations, channel-partner portal — rather than rep-mediated transactions?",
       financial_services:
         "To what extent do clients have a true self-service experience — account access, document execution, statement and reporting access, status visibility — rather than every request needing a relationship manager?",
@@ -376,7 +376,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent is real-time status visibility shared with customers — provisioning state, deployment progress, system health, support-case status, usage and entitlement reporting — through a connected portal and APIs?",
       manufacturing:
         "To what extent is supply chain visibility shared with customers — proactive shipment and exception alerts, real-time inventory, lead-time accuracy?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent is supply chain visibility shared with customers — proactive shipment and exception alerts, real-time inventory, parts availability, lead-time accuracy — through a connected portal and APIs?",
       financial_services:
         "To what extent is real-time status visibility shared with clients — onboarding stage, document execution, fund status, statement availability, request progress — through a connected portal?",
@@ -427,7 +427,7 @@ export const B2B_CORE_QUESTIONS: B2bQuestion[] = [
         "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, entitlements — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
       manufacturing:
         "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, configurator rules — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
-      industrial_b2b:
+      industrial_energy:
         "To what extent is product, pricing, and contract data — PIM, CPQ, CLM, parts catalog, service-contract definitions — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
       financial_services:
         "To what extent are pricing schedules, fee structures, and client agreements — CPQ, CLM, pricing repositories — clean, structured, and AI-ready, rather than scattered across spreadsheets, PDFs, and tribal knowledge?",
@@ -483,7 +483,7 @@ export const B2B_INDUSTRY_LABELS: Record<B2bIndustry, string> = {
   manufacturing: "Manufacturing / Distribution",
   financial_services: "Financial Services",
   healthcare_lifesciences: "Healthcare / Life Sciences",
-  industrial_b2b: "Industrial / B2B",
+  industrial_energy: "Industrial / Energy",
   professional_services: "Professional Services",
 };
 
@@ -571,23 +571,23 @@ export const B2B_INDUSTRY_QUESTIONS: B2bIndustryQuestion[] = [
     capability: "service_advocacy",
   },
 
-  // Industrial / B2B
+  // Industrial / Energy
   {
     id: "ind_1",
     text: "To what extent are long, multi-stakeholder procurement cycles supported with structured account plans, MEDDIC discipline, and AI-assisted seller enablement?",
-    industry: "industrial_b2b",
+    industry: "industrial_energy",
     capability: "abs",
   },
   {
     id: "ind_2",
     text: "To what extent are quote-to-cash, contract management, and billing connected into a single revenue platform — rather than ERP-tethered point systems?",
-    industry: "industrial_b2b",
+    industry: "industrial_energy",
     capability: "tech_data_intelligence",
   },
   {
     id: "ind_3",
     text: "To what extent is recurring revenue (service contracts, parts, consumables) treated as a strategic motion alongside large equipment sales?",
-    industry: "industrial_b2b",
+    industry: "industrial_energy",
     capability: "operations_commerce",
   },
 

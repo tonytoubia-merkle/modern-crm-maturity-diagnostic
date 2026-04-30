@@ -29,7 +29,7 @@ function generateNarrative(results: AicxDiagnosticResults): string {
 
   const stageInfo = AICX_MATURITY_STAGES[maturityStage];
 
-  return `${assessment.clientName} (${assessment.clientCompany}) completed a Content Supply Chain Diagnostic on ${formatDate(
+  return `${assessment.clientName} (${assessment.clientCompany}) completed a AI for CX Diagnostic on ${formatDate(
     assessment.createdAt
   )}, scoring ${overallScore.toFixed(
     1

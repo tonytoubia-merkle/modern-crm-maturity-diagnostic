@@ -66,7 +66,7 @@ export function B2bSetupForm({ onSubmit }: B2bSetupFormProps) {
         </h2>
         <p className="mt-2 text-slate-600 text-sm leading-relaxed">
           Tell us about the organization being assessed. This information helps
-          personalize your Content Supply Chain diagnostic and makes the report
+          personalize your B2B Transformation diagnostic and makes the report
           easy to share.
         </p>
       </div>

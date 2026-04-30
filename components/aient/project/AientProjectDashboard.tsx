@@ -148,7 +148,7 @@ export function AientProjectDashboard({
           className="text-xs font-semibold uppercase tracking-wider mb-1"
           style={{ color: "#040e4b" }}
         >
-          Content Supply Chain Workshop
+          AI for Enterprise Workshop
         </p>
         <h1 className="text-2xl font-bold text-slate-900">
           {project.client_name}

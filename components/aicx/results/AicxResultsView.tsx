@@ -214,7 +214,7 @@ export function AicxResultsView({
               Capability Heatmap
             </h2>
             <p className="text-sm text-slate-500 mt-0.5">
-              Scores across the six Content Supply Chain capability
+              Scores across the six AI for CX capability
               dimensions
             </p>
           </CardHeader>
@@ -319,7 +319,7 @@ export function AicxResultsView({
 
         <div className="hidden print:block mt-8 pt-4 border-t border-slate-200 text-xs text-slate-400">
           <p>
-            Content Supply Chain Diagnostic · Merkle ·{" "}
+            AI for CX Diagnostic · Merkle ·{" "}
             {new Date().getFullYear()} · {shareUrl}
           </p>
         </div>

@@ -105,7 +105,7 @@ export default function B2bChatAssessmentPage() {
             className="h-4 w-auto brightness-0 invert"
           />
           <a
-            href="/csc"
+            href="/b2b"
             className="text-xs text-white/70 hover:text-white transition-colors"
           >
             ← B2B Transformation Assessment

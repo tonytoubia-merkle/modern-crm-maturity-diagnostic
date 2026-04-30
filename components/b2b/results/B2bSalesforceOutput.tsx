@@ -29,7 +29,7 @@ function generateNarrative(results: B2bDiagnosticResults): string {
 
   const stageInfo = B2B_MATURITY_STAGES[maturityStage];
 
-  return `${assessment.clientName} (${assessment.clientCompany}) completed a Content Supply Chain Diagnostic on ${formatDate(
+  return `${assessment.clientName} (${assessment.clientCompany}) completed a B2B Transformation Diagnostic on ${formatDate(
     assessment.createdAt
   )}, scoring ${overallScore.toFixed(
     1

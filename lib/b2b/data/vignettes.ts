@@ -293,7 +293,7 @@ export const B2B_CLIENT_STORIES: B2bClientStory[] = [
     ],
     industries: [
       "manufacturing",
-      "industrial_b2b",
+      "industrial_energy",
       "technology_saas",
       "financial_services",
     ],
@@ -359,7 +359,7 @@ export const B2B_CLIENT_STORIES: B2bClientStory[] = [
       "Three downstream AI use cases shipped within 90 days of foundation go-live",
       "Quarterly value-realization scorecard now governs all AI investment decisions",
     ],
-    industries: ["manufacturing", "industrial_b2b"],
+    industries: ["manufacturing", "industrial_energy"],
     prompts: [
       "How many systems hold a 'customer record' today, and which one is canonical?",
       "Which AI use case has been stuck in pilot longest — and what data gap is the real blocker?",
@@ -380,7 +380,7 @@ export const B2B_CLIENT_STORIES: B2bClientStory[] = [
       "Seller capacity freed for consultative and strategic deals",
       "Channel partner satisfaction (NPS) lifted 18 points with live inventory visibility",
     ],
-    industries: ["manufacturing", "industrial_b2b"],
+    industries: ["manufacturing", "industrial_energy"],
     prompts: [
       "What share of your B2B revenue runs through digital channels today, and what's the trajectory?",
       "Which products would customers cheerfully buy without a rep involved?",
@@ -401,7 +401,7 @@ export const B2B_CLIENT_STORIES: B2bClientStory[] = [
       "AI agents handling order-routing and approval workflows with full auditability",
       "Per-agent KPI scorecard governing AI investment and expansion decisions",
     ],
-    industries: ["manufacturing", "industrial_b2b", "professional_services"],
+    industries: ["manufacturing", "industrial_energy", "professional_services"],
     prompts: [
       "What share of your ops team's time is spent on exception handling rather than process improvement?",
       "Which workflows still run on email, tickets, or spreadsheets that could be orchestrated?",
