@@ -189,9 +189,6 @@ export default function B2bHomePage() {
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
               </svg>
               Conversational
-              <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-m2-sky text-m2-navy ml-1">
-                New
-              </span>
             </a>
           </div>
         </div>
