@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { getAdminAccess } from "@/lib/auth/roles";
 
-const VALID_SCOPES = new Set(["crm", "csc"]);
+const VALID_SCOPES = new Set(["crm", "csc", "b2b", "aicx", "aient"]);
 const VALID_ROLES = new Set(["user", "super_admin"]);
 
 function normalizeScopes(input: unknown): string[] | null {

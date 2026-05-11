@@ -305,10 +305,14 @@ export default function AboutPage() {
                 <span className="font-mono text-xs">app_users</span>.{" "}
                 <span className="font-mono text-xs">role = &apos;super_admin&apos;</span>{" "}
                 grants every admin surface;{" "}
-                <span className="font-mono text-xs">admin_scopes</span> (e.g.{" "}
-                <span className="font-mono text-xs">{"{'csc'}"}</span>) grants
-                narrow access to just that diagnostic. CSC-only admins cannot
-                see or mutate CRM data and vice versa.
+                <span className="font-mono text-xs">admin_scopes</span> (any
+                subset of{" "}
+                <span className="font-mono text-xs">
+                  {"{'crm', 'csc', 'b2b', 'aicx', 'aient'}"}
+                </span>
+                ) grants narrow access to just those diagnostics. A scoped
+                admin cannot see or mutate data from diagnostics outside their
+                scope set.
               </GuardItem>
             </ul>
           </div>

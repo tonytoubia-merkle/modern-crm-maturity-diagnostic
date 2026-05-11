@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils";
 import { MATURITY_STAGES } from "@/lib/scoring";
 import { CSC_MATURITY_STAGES } from "@/lib/csc/scoring";
+import { B2B_MATURITY_STAGES } from "@/lib/b2b/scoring";
+import { AICX_MATURITY_STAGES } from "@/lib/aicx/scoring";
+import { AIENT_MATURITY_STAGES } from "@/lib/aient/scoring";
 import { INDUSTRY_LABELS } from "@/lib/data/questions";
 import type { MaturityStage } from "@/lib/types";
 
@@ -15,7 +18,84 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-type AssessmentKind = "crm" | "csc";
+type AssessmentKind = "crm" | "csc" | "b2b" | "aicx" | "aient";
+
+const KIND_LABELS: Record<AssessmentKind, string> = {
+  crm: "Modern CRM",
+  csc: "Content Supply Chain",
+  b2b: "B2B Transformation",
+  aicx: "AI for CX",
+  aient: "AI for Enterprise",
+};
+
+const KIND_SHORT: Record<AssessmentKind, string> = {
+  crm: "CRM",
+  csc: "CSC",
+  b2b: "B2B",
+  aicx: "AICX",
+  aient: "AIENT",
+};
+
+const KIND_CHIP: Record<AssessmentKind, string> = {
+  crm: "bg-blue-50 text-blue-700 border-blue-200",
+  csc: "bg-purple-50 text-purple-700 border-purple-200",
+  b2b: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  aicx: "bg-amber-50 text-amber-700 border-amber-200",
+  aient: "bg-rose-50 text-rose-700 border-rose-200",
+};
+
+const STAGE_LOOKUP: Record<
+  AssessmentKind,
+  (stage: MaturityStage) => string
+> = {
+  crm: (s) => MATURITY_STAGES[s].label,
+  csc: (s) => CSC_MATURITY_STAGES[s].label,
+  b2b: (s) => B2B_MATURITY_STAGES[s].label,
+  aicx: (s) => AICX_MATURITY_STAGES[s].label,
+  aient: (s) => AIENT_MATURITY_STAGES[s].label,
+};
+
+const PROJECT_HREF: Record<AssessmentKind, (shareId: string) => string> = {
+  crm: (id) => `/crm/project/${id}`,
+  csc: (id) => `/csc/project/${id}`,
+  b2b: (id) => `/b2b/project/${id}`,
+  aicx: (id) => `/aicx/project/${id}`,
+  aient: (id) => `/aient/project/${id}`,
+};
+
+const RESULTS_HREF: Record<AssessmentKind, (shareId: string) => string> = {
+  crm: (id) => `/results/${id}`,
+  csc: (id) => `/csc/results/${id}`,
+  b2b: (id) => `/b2b/results/${id}`,
+  aicx: (id) => `/aicx/results/${id}`,
+  aient: (id) => `/aient/results/${id}`,
+};
+
+const RESUME_HREF: Record<AssessmentKind, (shareId: string) => string> = {
+  crm: (id) => `/crm/assessment/resume/${id}`,
+  csc: (id) => `/csc/assessment/resume/${id}`,
+  b2b: (id) => `/b2b/assessment/resume/${id}`,
+  aicx: (id) => `/aicx/assessment/resume/${id}`,
+  aient: (id) => `/aient/assessment/resume/${id}`,
+};
+
+const ASSESSMENT_API: Record<AssessmentKind, string> = {
+  crm: "/api/assessments",
+  csc: "/api/csc/assessments",
+  b2b: "/api/b2b/assessments",
+  aicx: "/api/aicx/assessments",
+  aient: "/api/aient/assessments",
+};
+
+const PROJECTS_API: Record<AssessmentKind, string> = {
+  crm: "/api/projects",
+  csc: "/api/csc/projects",
+  b2b: "/api/b2b/projects",
+  aicx: "/api/aicx/projects",
+  aient: "/api/aient/projects",
+};
+
+const ALL_KINDS: AssessmentKind[] = ["crm", "csc", "b2b", "aicx", "aient"];
 
 interface AssessmentRow {
   id: string;
@@ -59,6 +139,8 @@ interface ProjectRow {
   aggregated_overall: number | null;
   aggregated_maturity: number | null;
   created_at: string;
+  /** Added client-side when we merge projects from every diagnostic. */
+  kind: AssessmentKind;
 }
 
 type AuthState = "loading" | "authorized" | "forbidden" | "error";
@@ -129,33 +211,54 @@ export function AdminDashboard() {
       // The unified /admin dashboard is super_admin only. We use the
       // /api/admin/users endpoint as the gate: it returns 200 only for
       // super admins (not scoped admins). If that 403s, stop here.
-      const [usersRes, assRes, projRes, cscRes] = await Promise.all([
-        fetch("/api/admin/users"),
-        fetch("/api/assessments?admin=1"),
-        fetch("/api/projects?admin=1"),
-        fetch("/api/csc/assessments?admin=1"),
-      ]);
+      const usersRes = await fetch("/api/admin/users");
       if (usersRes.status === 403) {
         setAuthState("forbidden");
         return;
       }
-      if (!usersRes.ok || !assRes.ok || !projRes.ok || !cscRes.ok) {
+      if (!usersRes.ok) {
         setAuthState("error");
         return;
       }
 
-      const crmRaw = (await assRes.json()) as Omit<AssessmentRow, "kind">[];
-      const cscRaw = (await cscRes.json()) as Omit<AssessmentRow, "kind">[];
-      const merged: AssessmentRow[] = [
-        ...crmRaw.map((a) => ({ ...a, kind: "crm" as const })),
-        ...cscRaw.map((a) => ({ ...a, kind: "csc" as const })),
-      ].sort(
+      // Fetch all five diagnostics in parallel — assessments + projects each.
+      const fetches = ALL_KINDS.flatMap((kind) => [
+        fetch(`${ASSESSMENT_API[kind]}?admin=1`),
+        fetch(`${PROJECTS_API[kind]}?admin=1`),
+      ]);
+      const results = await Promise.all(fetches);
+      if (results.some((r) => !r.ok)) {
+        setAuthState("error");
+        return;
+      }
+
+      const mergedAssessments: AssessmentRow[] = [];
+      const mergedProjects: ProjectRow[] = [];
+      for (let i = 0; i < ALL_KINDS.length; i++) {
+        const kind = ALL_KINDS[i];
+        const assRaw = (await results[i * 2].json()) as Omit<
+          AssessmentRow,
+          "kind"
+        >[];
+        const projRaw = (await results[i * 2 + 1].json()) as Omit<
+          ProjectRow,
+          "kind"
+        >[];
+        mergedAssessments.push(...assRaw.map((a) => ({ ...a, kind })));
+        mergedProjects.push(...projRaw.map((p) => ({ ...p, kind })));
+      }
+
+      mergedAssessments.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      mergedProjects.sort(
         (a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
 
-      setAssessments(merged);
-      setProjects(await projRes.json());
+      setAssessments(mergedAssessments);
+      setProjects(mergedProjects);
       setCanManageAdmins(true); // super admins by construction of this gate
       setAuthState("authorized");
     } catch {
@@ -192,7 +295,7 @@ export function AdminDashboard() {
     ];
     const projectLookup = new Map(projects.map((p) => [p.id, p.client_name]));
     const rows = assessments.map((a) => [
-      a.kind === "csc" ? "CSC" : "CRM",
+      KIND_SHORT[a.kind],
       a.client_name,
       a.client_company,
       a.project_id ? projectLookup.get(a.project_id) ?? "" : "",
@@ -202,7 +305,7 @@ export function AdminDashboard() {
       a.industry ? (INDUSTRY_LABELS[a.industry] ?? a.industry) : "",
       a.overall_score?.toFixed(1) ?? "",
       a.maturity_stage
-        ? MATURITY_STAGES[a.maturity_stage as MaturityStage]?.label ?? ""
+        ? STAGE_LOOKUP[a.kind](a.maturity_stage as MaturityStage)
         : "",
       `${formatDateTime(a.created_at).date} ${formatDateTime(a.created_at).time}`,
       a.share_id,
@@ -214,7 +317,7 @@ export function AdminDashboard() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `crm-diagnostic-assessments-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `merkle-maturity-assessments-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -223,10 +326,7 @@ export function AdminDashboard() {
     if (!deleteTarget) return;
     setDeleting(true);
     try {
-      const endpoint =
-        deleteTarget.kind === "csc"
-          ? `/api/csc/assessments/${deleteTarget.id}`
-          : `/api/assessments/${deleteTarget.id}`;
+      const endpoint = `${ASSESSMENT_API[deleteTarget.kind]}/${deleteTarget.id}`;
       const res = await fetch(endpoint, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete");
       setAssessments((prev) => prev.filter((a) => a.id !== deleteTarget.id));
@@ -243,7 +343,7 @@ export function AdminDashboard() {
     setProjectDeleting(true);
     try {
       const res = await fetch(
-        `/api/projects/${projectDeleteTarget.id}?mode=${projectDeleteMode}`,
+        `${PROJECTS_API[projectDeleteTarget.kind]}/${projectDeleteTarget.id}?mode=${projectDeleteMode}`,
         { method: "DELETE" }
       );
       if (!res.ok) throw new Error("Failed to delete project");
@@ -308,8 +408,9 @@ export function AdminDashboard() {
           </div>
           <h1 className="text-base font-bold text-slate-900 mb-1">Super admins only</h1>
           <p className="text-sm text-slate-500 mb-1">
-            This dashboard combines CRM and CSC data and is limited to super
-            admins. Scoped admins – use the Mine/All toggle on the home pages.
+            This dashboard combines data from every diagnostic and is limited
+            to super admins. Scoped admins – use the Mine/All toggle on each
+            diagnostic home page.
           </p>
           {userEmail && (
             <p className="text-xs text-slate-400 mb-5">Signed in as {userEmail}</p>
@@ -365,8 +466,11 @@ export function AdminDashboard() {
               Diagnostic Dashboard
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
-              {assessments.filter((a) => a.kind === "crm").length} CRM ·{" "}
-              {assessments.filter((a) => a.kind === "csc").length} CSC ·{" "}
+              {ALL_KINDS.map(
+                (k) =>
+                  `${assessments.filter((a) => a.kind === k).length} ${KIND_SHORT[k]}`
+              ).join(" · ")}{" "}
+              ·{" "}
               {assessments.filter((a) => a.status === "completed").length}{" "}
               completed
             </p>
@@ -402,24 +506,21 @@ export function AdminDashboard() {
           />
         </div>
 
-        {/* Stage distribution – CRM and CSC each count against their own rubric */}
+        {/* Stage distribution – every diagnostic counts against its own rubric */}
         <div className="mb-8 space-y-4">
-          <StageRow
-            title="Modern CRM"
-            count={assessments.filter((a) => a.kind === "crm").length}
-            stageLookup={(s) => MATURITY_STAGES[s].label}
-            tally={(s) =>
-              assessments.filter((a) => a.kind === "crm" && a.maturity_stage === s).length
-            }
-          />
-          <StageRow
-            title="Content Supply Chain"
-            count={assessments.filter((a) => a.kind === "csc").length}
-            stageLookup={(s) => CSC_MATURITY_STAGES[s].label}
-            tally={(s) =>
-              assessments.filter((a) => a.kind === "csc" && a.maturity_stage === s).length
-            }
-          />
+          {ALL_KINDS.map((k) => (
+            <StageRow
+              key={k}
+              title={KIND_LABELS[k]}
+              count={assessments.filter((a) => a.kind === k).length}
+              stageLookup={STAGE_LOOKUP[k]}
+              tally={(s) =>
+                assessments.filter(
+                  (a) => a.kind === k && a.maturity_stage === s
+                ).length
+              }
+            />
+          ))}
         </div>
 
         {/* Tabs */}
@@ -483,7 +584,14 @@ export function AdminDashboard() {
                           }`}
                         >
                           <td className="px-4 py-3">
-                            <p className="font-semibold text-slate-900">{p.client_name}</p>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span
+                                className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${KIND_CHIP[p.kind]}`}
+                              >
+                                {KIND_SHORT[p.kind]}
+                              </span>
+                              <p className="font-semibold text-slate-900">{p.client_name}</p>
+                            </div>
                             <p className="text-xs text-slate-500">
                               {p.industry ? (INDUSTRY_LABELS[p.industry] ?? p.industry) : "No industry"}
                             </p>
@@ -530,7 +638,7 @@ export function AdminDashboard() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <a
-                                href={`/crm/project/${p.share_id}`}
+                                href={PROJECT_HREF[p.kind](p.share_id)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-xs font-medium text-blue-600 hover:text-blue-800"
@@ -604,13 +712,8 @@ export function AdminDashboard() {
                 {filtered.map((a, i) => {
                   const stage = a.maturity_stage as MaturityStage | null;
                   const badge = stage ? STAGE_BADGES[stage] : null;
-                  const isCsc = a.kind === "csc";
-                  const resultsHref = isCsc
-                    ? `/csc/results/${a.share_id}`
-                    : `/results/${a.share_id}`;
-                  const resumeHref = isCsc
-                    ? `/csc/assessment/resume/${a.share_id}`
-                    : `/crm/assessment/resume/${a.share_id}`;
+                  const resultsHref = RESULTS_HREF[a.kind](a.share_id);
+                  const resumeHref = RESUME_HREF[a.kind](a.share_id);
                   return (
                     <tr
                       key={`${a.kind}-${a.id}`}
@@ -620,13 +723,9 @@ export function AdminDashboard() {
                     >
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${
-                            isCsc
-                              ? "bg-purple-50 text-purple-700 border-purple-200"
-                              : "bg-blue-50 text-blue-700 border-blue-200"
-                          }`}
+                          className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${KIND_CHIP[a.kind]}`}
                         >
-                          {isCsc ? "CSC" : "CRM"}
+                          {KIND_SHORT[a.kind]}
                         </span>
                       </td>
                       <td className="px-4 py-3">

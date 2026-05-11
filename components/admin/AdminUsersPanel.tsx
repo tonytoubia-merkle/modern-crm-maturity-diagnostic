@@ -10,12 +10,15 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const SCOPE_VALUES = ["crm", "csc"] as const;
+const SCOPE_VALUES = ["crm", "csc", "b2b", "aicx", "aient"] as const;
 type Scope = (typeof SCOPE_VALUES)[number];
 
 const SCOPE_LABELS: Record<Scope, string> = {
-  crm: "CRM",
-  csc: "CSC",
+  crm: "Modern CRM",
+  csc: "Content Supply Chain",
+  b2b: "B2B Transformation",
+  aicx: "AI for CX",
+  aient: "AI for Enterprise",
 };
 
 type Role = "user" | "super_admin";
@@ -42,7 +45,7 @@ export function AdminUsersPanel() {
   const [addEmail, setAddEmail] = useState("");
   const [addRole, setAddRole] = useState<Role>("user");
   const [addScopes, setAddScopes] = useState<Set<Scope>>(
-    () => new Set<Scope>(["csc"])
+    () => new Set<Scope>()
   );
   const [addBusy, setAddBusy] = useState(false);
 
@@ -126,7 +129,7 @@ export function AdminUsersPanel() {
       flash("success", `Saved ${email}.`);
       setAddEmail("");
       setAddRole("user");
-      setAddScopes(new Set<Scope>(["csc"]));
+      setAddScopes(new Set<Scope>());
       setAddOpen(false);
       await load();
     } finally {
