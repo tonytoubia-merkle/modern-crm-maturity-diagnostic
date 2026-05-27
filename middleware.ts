@@ -6,6 +6,7 @@ const PUBLIC_ROUTES = [
   "/login",
   "/register",
   "/auth/callback",
+  "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
 ];
 
 // Routes that start with these prefixes are public
