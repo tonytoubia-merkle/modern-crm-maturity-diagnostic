@@ -150,7 +150,6 @@ Rules:
 - Score 3 if operational and used by core teams but not embedded across value streams
 - Score 4 if the capability runs across data, work, intelligence delivery, assurance and adoption with shared governance and KPIs
 - Score 5 if AI-augmented, agent-orchestrated, continuously optimised – workflows fundamentally redesigned and EBIT impact attributable
-- Each core question has a detailed 1-5 maturity ladder behind it; map the user's evidence to the closest level rather than guessing
 - Only score when you have clear evidence. If uncertain between two, use the lower score with "confidence": "low"
 - If the user says "I don't know" about a topic, add those questionIds to "skipped"
 - A single user response can update multiple questions

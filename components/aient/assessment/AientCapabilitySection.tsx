@@ -43,15 +43,6 @@ export function AientCapabilitySection({
   const questions = AIENT_QUESTIONS_BY_CAPABILITY[capability];
   const [skipped, setSkipped] = useState<Set<number>>(new Set());
   const [showNotesFor, setShowNotesFor] = useState<Set<number>>(new Set());
-  const [showLadderFor, setShowLadderFor] = useState<Set<number>>(new Set());
-
-  const toggleLadder = (questionId: number) =>
-    setShowLadderFor((prev) => {
-      const next = new Set(prev);
-      if (next.has(questionId)) next.delete(questionId);
-      else next.add(questionId);
-      return next;
-    });
 
   const getScore = (questionId: number) =>
     responses.find((r) => r.questionId === questionId)?.score ?? null;
@@ -104,8 +95,6 @@ export function AientCapabilitySection({
           const isSkipped = skipped.has(question.id);
           const noteVisible = showNotesFor.has(question.id);
           const noteVal = getNotes(question.id);
-          const ladderVisible = showLadderFor.has(question.id);
-          const levels = question.maturityLevels;
 
           return (
             <div
@@ -130,11 +119,6 @@ export function AientCapabilitySection({
                   >
                     {resolveAientQuestionText(question, industry)}
                   </p>
-                  {question.tooltip && !isSkipped && selected === null && (
-                    <p className="mt-1 text-xs text-slate-500 leading-relaxed italic">
-                      {question.tooltip}
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -154,16 +138,12 @@ export function AientCapabilitySection({
               ) : (
                 <div className="ml-9 space-y-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    {([1, 2, 3, 4, 5] as const).map((v) => (
+                    {[1, 2, 3, 4, 5].map((v) => (
                       <button
                         key={v}
                         type="button"
                         onClick={() => onScore(question.id, v, capability)}
-                        title={
-                          levels
-                            ? `${AIENT_SCORE_LABELS[v]} – ${levels[v]}`
-                            : AIENT_SCORE_LABELS[v]
-                        }
+                        title={AIENT_SCORE_LABELS[v]}
                         className={`w-9 h-9 rounded-full text-sm font-bold border-2 transition-all flex-shrink-0 ${
                           selected === v
                             ? "border-blue-600 bg-blue-600 text-white shadow-sm"
@@ -178,21 +158,6 @@ export function AientCapabilitySection({
                         {AIENT_SCORE_LABELS[selected]}
                       </span>
                     )}
-                    {levels && (
-                      <>
-                        <span className="text-slate-200">|</span>
-                        <button
-                          type="button"
-                          onClick={() => toggleLadder(question.id)}
-                          aria-expanded={ladderVisible}
-                          className="text-xs font-medium text-blue-600 hover:underline"
-                        >
-                          {ladderVisible
-                            ? "Hide maturity ladder"
-                            : "Maturity ladder"}
-                        </button>
-                      </>
-                    )}
                     <span className="text-slate-200">|</span>
                     <button
                       type="button"
@@ -202,48 +167,6 @@ export function AientCapabilitySection({
                       Not sure
                     </button>
                   </div>
-
-                  {levels && ladderVisible && (
-                    <div className="space-y-1.5">
-                      {([1, 2, 3, 4, 5] as const).map((v) => (
-                        <button
-                          key={v}
-                          type="button"
-                          onClick={() => onScore(question.id, v, capability)}
-                          className={`w-full text-left flex gap-2.5 rounded-lg border px-3 py-2 transition-colors ${
-                            selected === v
-                              ? "border-blue-300 bg-blue-50"
-                              : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"
-                          }`}
-                        >
-                          <span
-                            className={`flex-shrink-0 w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center ${
-                              selected === v
-                                ? "bg-blue-600 text-white"
-                                : "bg-slate-100 text-slate-500"
-                            }`}
-                          >
-                            {v}
-                          </span>
-                          <span className="text-xs leading-relaxed">
-                            <span className="font-semibold text-slate-700">
-                              {AIENT_SCORE_LABELS[v]}.
-                            </span>{" "}
-                            <span className="text-slate-600">{levels[v]}</span>
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {levels && !ladderVisible && selected !== null && (
-                    <p className="text-xs text-slate-600 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 leading-relaxed">
-                      <span className="font-semibold text-slate-700">
-                        {selected} · {AIENT_SCORE_LABELS[selected]}:
-                      </span>{" "}
-                      {levels[selected as 1 | 2 | 3 | 4 | 5]}
-                    </p>
-                  )}
 
                   {selected !== null &&
                     (noteVisible ? (

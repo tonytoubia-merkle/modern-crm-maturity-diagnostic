@@ -30,20 +30,11 @@ export type AientIndustry =
 
 export type AientMaturityStage = 1 | 2 | 3 | 4;
 
-/**
- * Per-question maturity rubric – the 1-5 ladder describing what each
- * score level looks like for a single question. Sourced from the
- * "Inventory of Questions for Workshops" sheet (one rubric per
- * question) rather than the generic, capability-wide score scale.
- */
-export type AientMaturityLevels = Record<1 | 2 | 3 | 4 | 5, string>;
-
 export interface AientQuestion {
   id: number;
   text: string;
   capability: AientCapability;
   tooltip?: string;
-  maturityLevels?: AientMaturityLevels;
   byIndustry?: Partial<Record<AientIndustry, string>>;
 }
 
@@ -53,7 +44,6 @@ export interface AientIndustryQuestion {
   industry: AientIndustry;
   capability: AientCapability;
   tooltip?: string;
-  maturityLevels?: AientMaturityLevels;
 }
 
 export type AientViewMode = "internal" | "client";
