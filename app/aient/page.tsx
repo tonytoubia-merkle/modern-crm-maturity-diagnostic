@@ -198,9 +198,10 @@ export default function AientHomePage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900 mb-1.5">Assess</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              36 questions across six AI-for-Enterprise capabilities – Data
-              Foundations, Use Case Design, Work Design, Intelligence
-              Delivery, AI Assurance, and Adoption &amp; Governance.
+              50 questions across six AI-for-Enterprise capabilities – Data
+              Readiness, Decisions and Use Cases, Organizational Alignment,
+              Intelligence and Insights, AI Systems and Trust, and Adoption
+              &amp; Governance.
             </p>
           </div>
           <div>
