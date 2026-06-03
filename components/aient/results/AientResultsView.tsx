@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { AientMaturityStageCard } from "./AientMaturityStageCard";
 import { AientCapabilityHeatmap } from "./AientCapabilityHeatmap";
+import { AientResponseDetail } from "./AientResponseDetail";
 import { AientOpportunityCards } from "./AientOpportunityCards";
 import { AientSalesforceOutput } from "./AientSalesforceOutput";
 import { Button } from "@/components/ui/Button";
@@ -220,6 +221,14 @@ export function AientResultsView({
           </CardHeader>
           <CardContent>
             <AientCapabilityHeatmap scores={capabilityScores} />
+            {!isClient && responses.length > 0 && (
+              <div className="mt-6 border-t border-slate-100 pt-4">
+                <AientResponseDetail
+                  responses={responses}
+                  industry={assessment.industry}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
 
