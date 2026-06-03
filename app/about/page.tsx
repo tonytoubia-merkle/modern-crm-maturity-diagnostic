@@ -139,9 +139,9 @@ export default function AboutPage() {
                     AI for Enterprise
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Six capabilities – Data Foundations, Use Case Design, Work
-                    Design, Intelligence Delivery, AI Assurance &amp; Trust,
-                    and Adoption &amp; Governance.
+                    Six capabilities – Data Readiness, Decisions and Use
+                    Cases, Organizational Alignment, Intelligence and Insights,
+                    AI Systems and Trust, and Adoption &amp; Governance.
                   </p>
                 </div>
               </div>
