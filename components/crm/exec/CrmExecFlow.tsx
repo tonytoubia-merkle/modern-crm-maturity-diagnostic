@@ -288,17 +288,6 @@ function IntroPanel({ onStart }: { onStart: () => void }) {
       >
         Allons-y!
       </button>
-
-      <div className="mt-10 pt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-5 gap-3 text-xs text-slate-500">
-        {EXEC_DIMENSIONS.map((d, i) => (
-          <div key={d.key}>
-            <p className="font-semibold text-slate-700 mb-0.5">
-              {i + 1}. {d.label}
-            </p>
-            <p className="text-slate-500 leading-snug">{d.blurb}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
@@ -330,21 +319,14 @@ function DimensionPanel({
       <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-2">
         {dimension.label}
       </h2>
-      <p className="text-sm text-slate-500 mb-5 leading-relaxed">
+      <p className="text-sm text-slate-500 mb-6 leading-relaxed">
         {dimension.blurb}
-      </p>
-      <p className="text-sm font-medium text-slate-700 mb-1">
-        How effective is your organization at…
-      </p>
-      <p className="text-xs text-slate-400 mb-6">
-        Tap a score from 1 (Not yet) to 5 (Best in class).
       </p>
 
       <div className="space-y-6">
         {questions.map((q) => (
           <QuestionRow
             key={q.id}
-            number={q.number}
             text={q.text}
             value={answers[q.id]}
             onSelect={(v) => onScore(q.id, v)}
@@ -377,12 +359,10 @@ function DimensionPanel({
 }
 
 function QuestionRow({
-  number,
   text,
   value,
   onSelect,
 }: {
-  number: number;
   text: string;
   value: number | undefined;
   onSelect: (v: number) => void;
@@ -390,7 +370,6 @@ function QuestionRow({
   return (
     <div>
       <p className="text-sm sm:text-base text-slate-800 mb-3 leading-snug">
-        <span className="text-slate-400 mr-2">{number}.</span>
         {text}
       </p>
       <div className="flex gap-2 flex-wrap">

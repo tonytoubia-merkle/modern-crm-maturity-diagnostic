@@ -99,7 +99,7 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_1",
     number: 1,
-    text: "Recognizing the same customer across channels, devices, and teams?",
+    text: "How well does your organization recognize the same customer across channels, devices, and teams?",
     dimension: "customer_recognition",
     capability: "identity",
   },
@@ -108,14 +108,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_2",
     number: 2,
-    text: "Capturing and acting on behavioral and intent signals in real time?",
+    text: "To what extent does your organization capture and act on behavioral and intent signals in real time?",
     dimension: "signal_activation",
     capability: "signals",
   },
   {
     id: "exec_3",
     number: 3,
-    text: "Using customer lifecycle moments to guide when and how you engage?",
+    text: "How effectively does your organization use customer lifecycle moments to guide when and how it engages?",
     dimension: "signal_activation",
     capability: "signals",
   },
@@ -124,14 +124,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_4",
     number: 4,
-    text: "Personalizing experiences based on customer behavior and context?",
+    text: "How well does your organization personalize experiences based on customer behavior and context?",
     dimension: "decisioning_personalization",
     capability: "decisioning",
   },
   {
     id: "exec_5",
     number: 5,
-    text: "Scaling AI-driven decisioning across your data and governance infrastructure?",
+    text: "To what extent does your organization scale AI-driven decisioning across its data and governance infrastructure?",
     dimension: "decisioning_personalization",
     capability: "technology",
   },
@@ -140,7 +140,7 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_6",
     number: 6,
-    text: "Coordinating journeys across messaging, loyalty, promotions, media, and digital channels?",
+    text: "How effectively does your organization coordinate journeys across messaging, loyalty, promotions, media, and digital channels?",
     dimension: "orchestration_experience",
     capability: "engagement",
   },
@@ -149,14 +149,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_7",
     number: 7,
-    text: "Using first-party signals to sharpen media targeting and deepen customer relationships?",
+    text: "To what extent does your organization use first-party signals to sharpen media targeting and deepen customer relationships?",
     dimension: "growth_optimization",
     capability: "media_activation",
   },
   {
     id: "exec_8",
     number: 8,
-    text: "Aligning teams and technology around shared, measurable outcomes?",
+    text: "How well does your organization align teams and technology around shared, measurable outcomes?",
     dimension: "growth_optimization",
     capability: "organization",
   },
