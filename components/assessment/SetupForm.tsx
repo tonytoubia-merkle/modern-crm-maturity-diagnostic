@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
-import { INDUSTRY_LABELS } from "@/lib/data/questions";
-import type { Industry } from "@/lib/types";
+import { INDUSTRY_LABELS, BUSINESS_MODEL_LABELS } from "@/lib/data/questions";
+import type { BusinessModel, Industry } from "@/lib/types";
 
 interface SetupData {
   clientName: string;
@@ -14,7 +14,10 @@ interface SetupData {
   repEmail: string;
   isRepMode: boolean;
   industry: Industry | "none" | "";
+  businessModel: BusinessModel;
 }
+
+const BUSINESS_MODEL_ORDER: BusinessModel[] = ["b2c", "b2b", "b2b2c", "hybrid"];
 
 interface SetupFormProps {
   onSubmit: (data: SetupData) => Promise<void>;
@@ -28,6 +31,7 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
     repEmail: "",
     isRepMode: false,
     industry: "",
+    businessModel: "b2c",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<SetupData>>({});
@@ -77,6 +81,32 @@ export function SetupForm({ onSubmit }: SetupFormProps) {
           error={errors.clientName}
           required
         />
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Business Model
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {BUSINESS_MODEL_ORDER.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setData({ ...data, businessModel: key })}
+                className={`px-4 py-2 rounded-full border-2 text-sm font-medium transition-all whitespace-nowrap ${
+                  data.businessModel === key
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
+                }`}
+              >
+                {BUSINESS_MODEL_LABELS[key]}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-slate-400">
+            B2B reframes the questions, maturity stages, and opportunities
+            around accounts and buying groups (ABM). B2B2C and Hybrid apply the
+            account framing to the most relevant questions.
+          </p>
+        </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-slate-700">
             Industry / Sector

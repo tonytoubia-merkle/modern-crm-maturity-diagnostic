@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
 import { AssessmentFlow } from "@/components/assessment/AssessmentFlow";
 import { CAPABILITIES_ORDER, QUESTIONS_BY_CAPABILITY } from "@/lib/data/questions";
-import type { Industry, ResponseItem, Capability } from "@/lib/types";
+import type {
+  BusinessModel,
+  Industry,
+  ResponseItem,
+  Capability,
+} from "@/lib/types";
 
 export default async function ResumeAssessmentPage({
   params,
@@ -51,6 +56,8 @@ export default async function ResumeAssessmentPage({
   }
 
   const industry = assessment.industry as Industry | null;
+  const businessModel =
+    (assessment.business_model as BusinessModel | null) ?? null;
 
   return (
     <AssessmentFlow
@@ -58,6 +65,7 @@ export default async function ResumeAssessmentPage({
       initialShareId={assessment.share_id}
       initialResponses={responses}
       initialIndustry={industry}
+      initialBusinessModel={businessModel}
       initialStep={initialStep}
     />
   );

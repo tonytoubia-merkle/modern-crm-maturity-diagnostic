@@ -3,22 +3,57 @@ import type {
   IndustryQuestion,
   Capability,
   Industry,
+  BusinessModel,
 } from "@/lib/types";
 
+export const BUSINESS_MODEL_LABELS: Record<BusinessModel, string> = {
+  b2c: "B2C / Consumer",
+  b2b: "B2B / Account-Based",
+  b2b2c: "B2B2C",
+  hybrid: "Hybrid (B2B + B2C)",
+};
+
 /**
- * Resolves a question's display text given the assessment's industry.
+ * Core question ids that also receive the B2B / account framing when the
+ * business model is b2b2c or hybrid – the identity, decisioning,
+ * technology, and organization questions, where account thinking applies
+ * to any org with B2B motions. Pure b2b applies the framing to all 30.
+ */
+export const HYBRID_B2B_QUESTION_IDS: ReadonlySet<number> = new Set([
+  1, 2, 3, 4, 8, 9, 10, 23, 24, 25, 26, 27, 28, 29, 30,
+]);
+
+/**
+ * Resolves a question's display text for the assessment's business model
+ * and industry. Resolution order: B2B/ABM model override → industry
+ * override → default `text`. Every surface that renders question text –
+ * chat prompt builder, score map, capability section, voice agent –
+ * should route through this helper so the dynamic-text feature works
+ * end-to-end.
  *
- * If `byIndustry` is set on the question and contains an entry for the
- * selected industry, that override wins. Otherwise the default `text`
- * is returned. Used by the chat prompt builder, score map, capability
- * section, and any other surface that renders question text – every
- * consumer should route through this helper instead of reading
- * `q.text` directly so the dynamic-text feature works end-to-end.
+ * - b2b: uses byModel.b2b wherever present.
+ * - b2b2c / hybrid: uses byModel.b2b only for the curated account-relevant
+ *   subset (HYBRID_B2B_QUESTION_IDS); other questions keep consumer wording.
+ * - b2c / unset: never uses the model override.
  */
 export function resolveQuestionText(
-  q: Pick<Question, "text" | "byIndustry">,
-  industry: Industry | null | undefined
+  q: {
+    id?: number | string;
+    text: string;
+    byIndustry?: Partial<Record<Industry, string>>;
+    byModel?: Partial<Record<BusinessModel, string>>;
+  },
+  industry: Industry | null | undefined,
+  businessModel?: BusinessModel | null
 ): string {
+  const wantsB2b =
+    businessModel === "b2b" ||
+    ((businessModel === "b2b2c" || businessModel === "hybrid") &&
+      typeof q.id === "number" &&
+      HYBRID_B2B_QUESTION_IDS.has(q.id));
+  if (wantsB2b && q.byModel?.b2b) {
+    return q.byModel.b2b;
+  }
   if (industry && q.byIndustry?.[industry]) {
     return q.byIndustry[industry] as string;
   }
@@ -107,17 +142,26 @@ export const CORE_QUESTIONS: Question[] = [
     id: 1,
     text: "To what extent does the organization maintain a unified customer profile across channels and touchpoints?",
     capability: "identity",
+    byModel: {
+      b2b: "To what extent does the organization maintain a unified account record – combining firmographic, technographic, relationship, and engagement data with individual buyer data – accessible across marketing, sales, and customer success?",
+    },
     tooltip: "A unified customer profile is a single, persistent record that connects all known data about a customer – purchases, interactions, preferences, and identifiers – across every channel and touchpoint.",
   },
   {
     id: 2,
     text: "To what extent can the organization recognize the same customer across digital, mobile, in-store, and service interactions?",
     capability: "identity",
+    byModel: {
+      b2b: "To what extent can the organization identify and connect contacts across digital, event, sales outreach, partner, and service interactions to build a complete account-level view?",
+    },
   },
   {
     id: 3,
     text: "To what extent are households, joint accounts, related parties, or other customer relationships (family members, gift buyers, account beneficiaries, fleet relationships) identified and connected?",
     capability: "identity",
+    byModel: {
+      b2b: "To what extent are buying groups (economic buyers, champions, technical evaluators, and end-user influencers) identified and tracked at the account level?",
+    },
     byIndustry: {
       retail:
         "To what extent are households, family members, and gift buyers identified and connected – so a single member's purchase, return, or loyalty activity links cleanly to the rest of the household?",
@@ -135,24 +179,36 @@ export const CORE_QUESTIONS: Question[] = [
     id: 4,
     text: "To what extent is customer identity and data shared consistently across organizational divisions and business units?",
     capability: "identity",
+    byModel: {
+      b2b: "To what extent is a common view of account readiness, risk, and opportunity shared across the organization, including different divisions or business units?",
+    },
   },
   // Signals
   {
     id: 5,
     text: "To what extent are behavioral intent signals such as purchase, browsing, engagement, or usage captured and connected to customer profiles?",
     capability: "signals",
+    byModel: {
+      b2b: "To what extent are behavioral intent signals (web engagement, content consumption, product usage, event attendance, and sales activity) captured and connected to account records?",
+    },
     tooltip: "Behavioral intent signals are actions a customer takes – page views, cart activity, email opens, app sessions, store visits – that indicate interest or readiness to engage.",
   },
   {
     id: 6,
     text: "To what extent are real-time or near-real-time signals used to trigger engagement or messaging?",
     capability: "signals",
+    byModel: {
+      b2b: "To what extent are real-time or near-real-time signals used to trigger marketing engagement or coordinated sales outreach?",
+    },
     tooltip: "Real-time signals are captured and available for activation within minutes, rather than in batch processes that run daily or weekly.",
   },
   {
     id: 7,
     text: "To what extent are customer lifecycle or milestone signals identified and used to guide engagement strategies?",
     capability: "signals",
+    byModel: {
+      b2b: "To what extent are pipeline-stage progression, contract milestones, and renewal or expansion signals identified and used to trigger engagement strategies?",
+    },
     tooltip: "Lifecycle signals include events like onboarding completion, anniversary dates, lapse risk indicators, tier changes, or renewal windows.",
   },
   // Decisioning
@@ -160,24 +216,36 @@ export const CORE_QUESTIONS: Question[] = [
     id: 8,
     text: "To what extent are segmentation or predictive models used to guide engagement strategies?",
     capability: "decisioning",
+    byModel: {
+      b2b: "To what extent are segmentation and account-scoring models (combining ICP fit, intent signals, and engagement depth) used to prioritize accounts and guide resource allocation across marketing and sales?",
+    },
     tooltip: "Predictive models are statistical or machine learning models that estimate the likelihood of future customer behavior – such as purchase propensity, churn risk, or lifetime value.",
   },
   {
     id: 9,
     text: "To what extent are next-best-actions determined dynamically based on customer behavior or context?",
     capability: "decisioning",
+    byModel: {
+      b2b: "To what extent are next-best-actions determined based on account stage, buyer behaviors, buying-group coverage, and intent signals – and coordinated across marketing, SDR, and sales?",
+    },
     tooltip: "Next-best-action (NBA) is a decisioning approach where the system determines the most relevant message, offer, or experience for each customer based on their current context, history, and behavior.",
   },
   {
     id: 10,
     text: "To what extent are decisioning rules or prioritization logic used to coordinate offers, messages, and experiences?",
     capability: "decisioning",
+    byModel: {
+      b2b: "To what extent are decisioning rules used to assign ABM tiers (1:1, 1:few, 1:many) and coordinate the right play, content, and coverage model across functions?",
+    },
   },
   // Engagement / Orchestration
   {
     id: 11,
     text: "To what extent are customer journeys orchestrated across channels such as email, mobile, app, web, physical locations (store, branch, property, dealership), and service?",
     capability: "engagement",
+    byModel: {
+      b2b: "To what extent are buyer and account journeys orchestrated across email, web personalization, events, direct mail, SDR outreach, and partner channels?",
+    },
     tooltip: "Orchestration means channels are coordinated so each interaction builds on the last – rather than operating independently in silos with separate strategies. Physical channels include whatever in-person environment the industry uses: stores for retail, branches for financial services, properties for hospitality, dealerships for automotive.",
     byIndustry: {
       retail:
@@ -196,54 +264,84 @@ export const CORE_QUESTIONS: Question[] = [
     id: 12,
     text: "To what extent are loyalty or recognition programs integrated with CRM engagement strategies?",
     capability: "engagement",
+    byModel: {
+      b2b: "To what extent are retention and expansion programs integrated with CRM engagement strategies to drive renewal, upsell, and cross-sell motions?",
+    },
     tooltip: "This includes traditional loyalty tiers as well as modern recognition models – value exchange, experiential rewards, personalized benefits, and non-transactional engagement mechanics.",
   },
   {
     id: 13,
     text: "To what extent are promotions or offers personalized using behavioral signals rather than broadly distributed?",
     capability: "engagement",
+    byModel: {
+      b2b: "To what extent are content, proposals, and outreach personalized by buying stage, persona, and account context – rather than generic messaging across the book of business?",
+    },
   },
   {
     id: 14,
     text: "To what extent are customer service interactions connected to loyalty or CRM engagement strategies?",
     capability: "engagement",
+    byModel: {
+      b2b: "To what extent are customer success interactions connected to account engagement strategies – surfacing expansion signals and informing renewal plays?",
+    },
   },
   {
     id: 15,
     text: "To what extent are dynamic content or personalized experiences assembled in real time based on customer signals and context?",
     capability: "engagement",
+    byModel: {
+      b2b: "To what extent are dynamic content or personalized experiences assembled based on account fit, intent stage, and buyer persona – across web, email, and sales-facing materials?",
+    },
   },
   // Media Activation
   {
     id: 16,
     text: "To what extent is first-party customer data used to inform paid media targeting?",
     capability: "media_activation",
+    byModel: {
+      b2b: "To what extent is first-party account and contact data used to inform ABM media targeting – prioritizing accounts by ICP fit and intent stage across programmatic, LinkedIn, and display?",
+    },
   },
   {
     id: 17,
     text: "To what extent do CRM or loyalty signals create high-value audiences for media activation?",
     capability: "media_activation",
+    byModel: {
+      b2b: "To what extent are target-account lists and buying-group personas activated as audiences across paid media (display, social, CTV) and personalized site experiences?",
+    },
   },
   {
     id: 18,
     text: "To what extent are paid media campaigns designed to drive owned relationship growth such as app adoption, loyalty enrollment, or profile completion?",
     capability: "media_activation",
+    byModel: {
+      b2b: "To what extent are paid media campaigns designed to accelerate pipeline – driving event registrations, content engagement, and meeting bookings with target accounts?",
+    },
   },
   // Learning & Optimization
   {
     id: 19,
     text: "To what extent are experiments or test-and-learn programs used to improve engagement strategies?",
     capability: "learning_optimization",
+    byModel: {
+      b2b: "To what extent are experiments or test-and-learn programs used to improve account engagement strategies?",
+    },
   },
   {
     id: 20,
     text: "To what extent are media performance insights fed back into CRM engagement strategies?",
     capability: "learning_optimization",
+    byModel: {
+      b2b: "To what extent are media performance insights fed back into CRM and account engagement strategies?",
+    },
   },
   {
     id: 21,
     text: "To what extent does the organization measure incremental lift from loyalty, promotions, offers, incentives, and messaging programs?",
     capability: "learning_optimization",
+    byModel: {
+      b2b: "To what extent does the organization measure pipeline influence, revenue attribution, and incremental lift from ABM programs – including multi-touch attribution across marketing and sales?",
+    },
     tooltip: "Incremental lift measures the true causal impact of a program – the additional revenue or engagement that would not have occurred without the intervention, beyond what customers would have done anyway. Programs include traditional loyalty and promotions for retail / QSR / travel, as well as rate offers and fee incentives for financial services, and trade-in / lease incentives for automotive.",
     byIndustry: {
       retail:
@@ -262,48 +360,75 @@ export const CORE_QUESTIONS: Question[] = [
     id: 22,
     text: "To what extent are customer insights used to refine segmentation, journeys, and targeting strategies?",
     capability: "learning_optimization",
+    byModel: {
+      b2b: "To what extent are account and buyer insights used to refine ICP definitions, account-tier models, and targeting strategies – incorporating win/loss patterns and sales feedback?",
+    },
   },
   // Technology Value Realization
   {
     id: 23,
     text: "To what extent is the organization's technology stack architected to enable seamless data flow across CRM, loyalty, media, service, and commerce systems?",
     capability: "technology",
+    byModel: {
+      b2b: "To what extent is the technology stack architected to enable seamless data flow across CRM, marketing automation, ABM platform, intent data, sales intelligence, and customer success systems?",
+    },
   },
   {
     id: 24,
     text: "To what extent can the organization deploy new use cases (e.g., journeys, loyalty experiences, triggers, integrations) without significant engineering effort or delays?",
     capability: "technology",
+    byModel: {
+      b2b: "To what extent can the organization deploy new use cases (account journeys, sales-play triggers, intent-based campaigns, ABM tier logic) without significant engineering effort or delays?",
+    },
   },
   {
     id: 25,
     text: "To what extent does the current technology stack support modular integration with external platforms, including loyalty, decisioning, and media ecosystems?",
     capability: "technology",
+    byModel: {
+      b2b: "To what extent does the technology stack support modular integration with ABM platforms (6sense, Demandbase), intent data providers (Bombora), sales intelligence tools (ZoomInfo, LinkedIn Sales Navigator), decisioning, and media ecosystems?",
+    },
   },
   {
     id: 26,
     text: "To what extent does the organization maintain data quality, governance, and consistency across customer, loyalty, and engagement systems?",
     capability: "technology",
+    byModel: {
+      b2b: "To what extent does the organization maintain data quality and governance across account records – including deduplication, account-hierarchy management, contact-to-account association, and firmographic enrichment?",
+    },
   },
   // Organization & Process
   {
     id: 27,
     text: "To what extent are teams aligned around shared customer and business outcomes (e.g., lifetime value, loyalty engagement, retention) rather than channel-specific goals?",
     capability: "organization",
+    byModel: {
+      b2b: "To what extent are teams aligned around shared account and revenue outcomes (pipeline contribution, win rate, net revenue retention, expansion ARR) rather than channel- or function-specific goals?",
+    },
   },
   {
     id: 28,
     text: "To what extent are ownership and accountability clearly defined for end-to-end customer experience, including loyalty, across marketing, media, and service functions?",
     capability: "organization",
+    byModel: {
+      b2b: "To what extent are ownership and accountability clearly defined for the end-to-end account experience – including who owns ABM strategy, account planning, and the cross-sell and expansion motion across marketing, sales, and customer success?",
+    },
   },
   {
     id: 29,
     text: "To what extent does the organization operate with cross-functional collaboration models (e.g., pods or squads) that integrate CRM, loyalty, media, and service teams?",
     capability: "organization",
+    byModel: {
+      b2b: "To what extent does the organization operate with ABM pods or revenue squads that integrate marketing, SDR/BDR, sales, and customer success around named accounts and shared account plans?",
+    },
   },
   {
     id: 30,
     text: "To what extent are data, analytics, and marketing teams integrated to support decisioning, loyalty strategy, and ongoing optimization?",
     capability: "organization",
+    byModel: {
+      b2b: "To what extent are revenue operations, data/analytics, and marketing teams integrated to support account intelligence, pipeline management, and ongoing ICP and segmentation optimization?",
+    },
   },
 ];
 

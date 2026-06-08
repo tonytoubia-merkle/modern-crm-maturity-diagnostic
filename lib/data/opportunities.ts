@@ -1,4 +1,4 @@
-import type { Opportunity, Capability } from "@/lib/types";
+import type { Opportunity, Capability, BusinessModel } from "@/lib/types";
 
 export const OPPORTUNITIES: Opportunity[] = [
   // ── IDENTITY ────────────────────────────────────────────────────────────────
@@ -524,11 +524,196 @@ export const OPPORTUNITIES: Opportunity[] = [
   },
 ];
 
+// ── B2B / ABM opportunity areas ──────────────────────────────────────────────
+// Surfaced instead of the consumer opportunities when the assessment's business
+// model is "b2b". One anchored per capability, drawn from the ABM Maturity
+// Diagnostic brief's strategic opportunity areas.
+export const B2B_OPPORTUNITIES: Opportunity[] = [
+  {
+    id: "abm_account_identity",
+    title: "Account Identity Resolution & Buying-Group Coverage",
+    tagline: "Build the unified account view that powers ABM",
+    description:
+      "Resolve account identity across systems, map account hierarchies (parent/subsidiary, multi-entity, regional), and model buying-group coverage so marketing, sales, and customer success operate from one complete account view.",
+    capabilities: ["identity"],
+    triggerThreshold: 3.0,
+    scope:
+      "Account identity resolution, hierarchy mapping, contact-to-account association, and buying-group coverage modeling across CRM, MAP, and ABM platforms.",
+    methods: [
+      "Account data audit and match-rate assessment",
+      "Account hierarchy mapping and firmographic enrichment",
+      "Buying-group / persona model (economic buyer, champion, evaluator, influencer)",
+      "Coverage-gap scoring to guide outreach prioritization",
+    ],
+    valueNarrative:
+      "Fragmented account data hides buying groups and wastes coverage. A unified account record with hierarchy and buying-group coverage is the foundation every downstream ABM motion depends on.",
+    sfType: "Identity & Data Foundation",
+    engagementSize: "Large (16–24 weeks)",
+    priority: "critical",
+  },
+  {
+    id: "abm_intent_signals",
+    title: "Account Intelligence & Intent Signal Activation",
+    tagline: "Turn intent and lifecycle signals into timely engagement",
+    description:
+      "Capture behavioral and third-party intent signals and connect pipeline-stage, renewal, and expansion milestones to account records so marketing and sales trigger coordinated, timely engagement.",
+    capabilities: ["signals"],
+    triggerThreshold: 3.0,
+    scope:
+      "Behavioral and third-party intent integration (Bombora, 6sense, Demandbase), signal-to-account mapping, and milestone / renewal / expansion trigger design.",
+    methods: [
+      "Signal inventory and third-party intent-data integration",
+      "Real-time signal-to-account mapping",
+      "Pipeline / renewal / expansion trigger framework",
+      "Competitive-displacement and churn-risk indicators",
+    ],
+    valueNarrative:
+      "In-market accounts signal intent before they raise a hand. Surfacing and acting on those signals is how ABM converts attention into pipeline rather than chasing cold volume.",
+    sfType: "Data & Decisioning",
+    engagementSize: "Medium (8–14 weeks)",
+    priority: "high",
+  },
+  {
+    id: "abm_decisioning_nba",
+    title: "Account Decisioning & Next-Best-Action",
+    tagline: "Score accounts and orchestrate the next best play",
+    description:
+      "Stand up account scoring (ICP fit + intent + engagement depth) and next-best-action logic with buying-group context and ABM tiering (1:1, 1:few, 1:many), coordinated across marketing, SDR, and sales.",
+    capabilities: ["decisioning"],
+    triggerThreshold: 3.0,
+    scope:
+      "ICP and account-scoring models, next-best-action logic with buying-group coverage inputs, and ABM tier assignment with play, content, and coverage coordination.",
+    methods: [
+      "ICP and account-scoring model build",
+      "Next-best-action design with buying-group context",
+      "ABM tier assignment logic (1:1 / 1:few / 1:many)",
+      "Coverage-gap decisioning triggers",
+    ],
+    valueNarrative:
+      "Prioritizing the right accounts and the right next move – with buying-group context – focuses finite sales and marketing capacity where it compounds pipeline.",
+    sfType: "Analytics & Decisioning",
+    engagementSize: "Medium (10–16 weeks)",
+    priority: "high",
+  },
+  {
+    id: "abm_orchestration",
+    title: "Account Journey Orchestration & Personalization",
+    tagline: "Coordinate buying-group journeys across marketing, sales, and CS",
+    description:
+      "Orchestrate account and buyer journeys across email, web, events, direct mail, SDR, and partner channels, with content and proposals personalized by buying stage, persona, and account – and instrumented sales–marketing handoffs.",
+    capabilities: ["engagement"],
+    triggerThreshold: 3.0,
+    scope:
+      "Account-level journey orchestration, persona- and stage-based content and proposal personalization, and MQA → SQL → opportunity handoff instrumentation across marketing, sales, and customer success.",
+    methods: [
+      "Account / buyer journey design across channels",
+      "Persona- and stage-based content and proposal personalization",
+      "Sales plays triggered and coordinated with marketing engagement",
+      "Handoff logic and SLAs (MQA / SQL / opportunity)",
+    ],
+    valueNarrative:
+      "Buying groups experience one account relationship, not disconnected channel campaigns. Orchestration keeps engagement coordinated rather than restarting at each stage.",
+    sfType: "CRM Strategy & Activation",
+    engagementSize: "Large (16–24 weeks)",
+    priority: "critical",
+  },
+  {
+    id: "abm_media_tiering",
+    title: "ABM Media Tiering & Account-Targeted Demand",
+    tagline: "Activate target accounts across paid media, tiered to sales priority",
+    description:
+      "Activate target-account lists and buying-group personas as audiences across programmatic, LinkedIn, display, social, and CTV – tiered by account priority (1:1, 1:few, 1:many) and aligned to sales coverage and account plans.",
+    capabilities: ["media_activation"],
+    triggerThreshold: 3.0,
+    scope:
+      "First-party account audience activation, ABM media tiering aligned to sales coverage, and pipeline-oriented campaign design across programmatic, LinkedIn, display, social, and CTV.",
+    methods: [
+      "Target-account and buying-group persona audience build",
+      "ABM media tiering (1:1 / 1:few / 1:many) aligned to sales coverage",
+      "Programmatic / LinkedIn / display / CTV activation",
+      "Pipeline-accelerating campaign design (events, content, meetings)",
+    ],
+    valueNarrative:
+      "Account-targeted media concentrates spend on in-market, high-fit accounts and the buying groups within them – replacing volume-based demand gen with precision tied to sales priorities and measured against pipeline.",
+    sfType: "Media Activation",
+    engagementSize: "Medium (8–14 weeks)",
+    priority: "high",
+  },
+  {
+    id: "abm_pipeline_attribution",
+    title: "Pipeline Influence Attribution & Win/Loss Optimization",
+    tagline: "Measure ABM in pipeline and revenue, not clicks",
+    description:
+      "Implement pipeline-influence and multi-touch attribution across marketing and sales activity, measure incremental lift from ABM, and feed win/loss patterns back into ICP, tiering, messaging, and content.",
+    capabilities: ["learning_optimization"],
+    triggerThreshold: 3.0,
+    scope:
+      "Multi-touch pipeline and revenue attribution, incremental-lift measurement, and a win/loss-informed optimization loop for ICP, account tiers, and messaging.",
+    methods: [
+      "Pipeline-influence and multi-touch attribution model",
+      "Incremental-lift measurement for ABM programs",
+      "Win/loss capture and pattern analysis",
+      "ICP, tier, and messaging refinement loop",
+    ],
+    valueNarrative:
+      "Measuring ABM against pipeline and revenue – not form-fills – earns budget, focuses investment on what compounds, and turns win/loss into a continuous targeting advantage.",
+    sfType: "Measurement & Optimization",
+    engagementSize: "Medium (8–14 weeks)",
+    priority: "high",
+  },
+  {
+    id: "abm_revtech_integration",
+    title: "RevTech Integration & ABM Platform Enablement",
+    tagline: "Connect CRM, MAP, ABM, intent, and sales intelligence into one stack",
+    description:
+      "Architect data flow across CRM, marketing automation, ABM platform, intent data, sales intelligence, and CS systems, with modular integration and account data governance (deduplication, hierarchy, contact-to-account, enrichment).",
+    capabilities: ["technology"],
+    triggerThreshold: 3.0,
+    scope:
+      "MarTech / SalesTech / RevOps integration, modular ABM / intent / sales-intelligence connectivity, and account data quality and governance.",
+    methods: [
+      "Stack architecture and integration design",
+      "ABM / intent / sales-intelligence enablement (6sense, Demandbase, Bombora, ZoomInfo)",
+      "Account data governance (dedup, hierarchy, contact-to-account, enrichment)",
+      "Rapid use-case deployment without heavy engineering",
+    ],
+    valueNarrative:
+      "A connected revenue stack is what lets account journeys, sales-play triggers, and intent campaigns ship without engineering bottlenecks – and keeps account data trustworthy across the funnel.",
+    sfType: "Data & Technology",
+    engagementSize: "Large (16–28 weeks)",
+    priority: "high",
+  },
+  {
+    id: "abm_revenue_alignment",
+    title: "Marketing–Sales Alignment & Revenue Operating Model",
+    tagline: "Align marketing, SDR, sales, and CS around named accounts and shared goals",
+    description:
+      "Define shared ICP, MQA/SQL/opportunity definitions, SLAs, and revenue goals, with clear ownership of ABM strategy and the expansion motion – operated through ABM pods or revenue squads around named accounts.",
+    capabilities: ["organization"],
+    triggerThreshold: 3.0,
+    scope:
+      "Shared definitions and SLAs, account ownership and accountability model, and ABM pod / revenue-squad operating model across marketing, SDR/BDR, sales, and customer success.",
+    methods: [
+      "Shared ICP, MQA/SQL, and SLA definitions",
+      "RACI for ABM strategy, account planning, and expansion",
+      "ABM pod / revenue-squad design around named accounts",
+      "Shared revenue scorecard (pipeline, win rate, NRR, expansion ARR)",
+    ],
+    valueNarrative:
+      "ABM is a team sport. Aligning marketing, sales, SDR, and CS around shared accounts, definitions, and revenue goals is what turns coordinated tactics into a durable growth engine.",
+    sfType: "Operating Model",
+    engagementSize: "Medium (8–12 weeks)",
+    priority: "critical",
+  },
+];
+
 export function getTriggeredOpportunities(
   capabilityScores: Record<string, number>,
+  businessModel?: BusinessModel | null,
   limit: number = 6
 ): Opportunity[] {
-  const triggered = OPPORTUNITIES.filter((opp) => {
+  const source = businessModel === "b2b" ? B2B_OPPORTUNITIES : OPPORTUNITIES;
+  const triggered = source.filter((opp) => {
     return opp.capabilities.some((cap) => {
       const score = capabilityScores[cap];
       if (score === undefined) return false;

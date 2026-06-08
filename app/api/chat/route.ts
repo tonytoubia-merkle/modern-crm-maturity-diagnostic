@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { buildSystemPrompt } from "@/lib/chat/buildSystemPrompt";
 import type { InferredScore, ChatPhase } from "@/lib/chat/types";
-import type { Industry } from "@/lib/types";
+import type { BusinessModel, Industry } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       skipped,
       phase,
       industry,
+      businessModel,
       clientName,
       respondentName,
     } = body as {
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
       skipped: (string | number)[];
       phase: ChatPhase;
       industry: Industry | null;
+      businessModel?: BusinessModel | null;
       clientName: string;
       respondentName: string;
     };
@@ -41,7 +43,8 @@ export async function POST(request: NextRequest) {
       industry,
       currentScores,
       skipped,
-      phase
+      phase,
+      businessModel
     );
 
     const genAI = new GoogleGenerativeAI(apiKey);

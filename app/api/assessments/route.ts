@@ -6,7 +6,7 @@ import { generateShareId } from "@/lib/utils";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clientName, clientCompany, respondentName, repEmail, isRepMode, industry, projectId, stakeholderId, source } =
+    const { clientName, clientCompany, respondentName, repEmail, isRepMode, industry, businessModel, projectId, stakeholderId, source } =
       body;
 
     if (!clientName || !respondentName) {
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const supabase = createServerClient();
     const shareId = generateShareId();
 
-    const baseRecord = {
+    const record: Record<string, unknown> = {
       share_id: shareId,
       client_name: clientName,
       client_company: clientCompany || "",
@@ -27,40 +27,35 @@ export async function POST(request: NextRequest) {
       rep_email: repEmail || null,
       is_rep_mode: isRepMode || false,
       industry: industry || null,
+      business_model: businessModel || null,
       status: "in_progress",
       project_id: projectId || null,
       stakeholder_id: stakeholderId || null,
     };
+    if (source) record.source = source;
 
-    // Try with source column first, fall back without if column doesn't exist
+    // Insert, gracefully dropping optional columns that may not exist yet in
+    // environments where a migration hasn't run (business_model, source).
     let data, error;
-    if (source) {
+    for (let attempt = 0; attempt < 3; attempt++) {
       const result = await supabase
         .from("assessments")
-        .insert({ ...baseRecord, source })
+        .insert(record)
         .select()
         .single();
       data = result.data;
       error = result.error;
-
-      // If source column doesn't exist, retry without it
-      if (error && error.message?.includes("source")) {
-        const retry = await supabase
-          .from("assessments")
-          .insert(baseRecord)
-          .select()
-          .single();
-        data = retry.data;
-        error = retry.error;
+      if (!error) break;
+      const msg = error.message || "";
+      if ("business_model" in record && msg.includes("business_model")) {
+        delete record.business_model;
+        continue;
       }
-    } else {
-      const result = await supabase
-        .from("assessments")
-        .insert(baseRecord)
-        .select()
-        .single();
-      data = result.data;
-      error = result.error;
+      if ("source" in record && msg.includes("source")) {
+        delete record.source;
+        continue;
+      }
+      break;
     }
 
     if (error) throw error;

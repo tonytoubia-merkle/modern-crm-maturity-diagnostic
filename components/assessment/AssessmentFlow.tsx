@@ -15,7 +15,12 @@ import {
   SCORE_LABELS,
 } from "@/lib/data/questions";
 import { computeCapabilityScores, computeOverallScore, computeMaturityStage } from "@/lib/scoring";
-import type { Capability, Industry, ResponseItem } from "@/lib/types";
+import type {
+  BusinessModel,
+  Capability,
+  Industry,
+  ResponseItem,
+} from "@/lib/types";
 
 // Steps: 0 = setup, 1-8 = capabilities, 9 = industry
 const TOTAL_CORE_STEPS = 8;
@@ -30,6 +35,7 @@ interface AssessmentFlowProps {
   initialShareId?: string | null;
   initialResponses?: ResponseItem[];
   initialIndustry?: Industry | null;
+  initialBusinessModel?: BusinessModel | null;
   initialStep?: number;
 }
 
@@ -38,6 +44,7 @@ export function AssessmentFlow({
   initialShareId = null,
   initialResponses = [],
   initialIndustry = null,
+  initialBusinessModel = null,
   initialStep = 0,
 }: AssessmentFlowProps = {}) {
   const router = useRouter();
@@ -48,6 +55,9 @@ export function AssessmentFlow({
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [preSelectedIndustry, setPreSelectedIndustry] = useState<Industry | null>(initialIndustry);
+  const [businessModel, setBusinessModel] = useState<BusinessModel | null>(
+    initialBusinessModel
+  );
   const [sectionReady, setSectionReady] = useState(false);
   const [scaleExpanded, setScaleExpanded] = useState(false);
 
@@ -66,6 +76,7 @@ export function AssessmentFlow({
     repEmail: string;
     isRepMode: boolean;
     industry: Industry | "none" | "";
+    businessModel: BusinessModel;
   }) => {
     const resolvedIndustry = data.industry === "none" || data.industry === "" ? null : data.industry as Industry;
     const res = await fetch("/api/assessments", {
@@ -78,6 +89,7 @@ export function AssessmentFlow({
     setAssessmentId(id);
     setShareId(sid);
     if (resolvedIndustry) setPreSelectedIndustry(resolvedIndustry);
+    setBusinessModel(data.businessModel);
     setStep(1);
     setTimeout(() => window.scrollTo(0, 0), 0);
   };
@@ -289,6 +301,7 @@ export function AssessmentFlow({
                 onRemoveResponse={handleRemoveResponse}
                 onReadyChange={setSectionReady}
                 industry={preSelectedIndustry}
+                businessModel={businessModel}
               />
               <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                 <Button variant="ghost" onClick={handlePrev} disabled={step === 1}>

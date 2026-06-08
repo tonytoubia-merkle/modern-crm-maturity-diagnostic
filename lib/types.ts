@@ -15,6 +15,16 @@ export type Industry =
   | "travel_hospitality"
   | "automotive";
 
+/**
+ * Business model the organization operates. Drives the B2B / ABM reframing
+ * of the questionnaire, maturity stages, and opportunities. `b2c` (the
+ * default when unset) keeps the standard consumer-CRM wording; `b2b` swaps
+ * in the account-based / ABM framing; `b2b2c` and `hybrid` apply the B2B
+ * framing to the subset of questions where account thinking is relevant
+ * (see HYBRID_B2B_QUESTION_IDS in lib/data/questions.ts).
+ */
+export type BusinessModel = "b2c" | "b2b" | "b2b2c" | "hybrid";
+
 export type MaturityStage = 1 | 2 | 3 | 4;
 
 export interface Question {
@@ -34,6 +44,13 @@ export interface Question {
    * voice agent. Keys not listed fall back to `text`.
    */
   byIndustry?: Partial<Record<Industry, string>>;
+  /**
+   * Optional per-business-model overrides (ABM / account-based framing).
+   * `b2b` is the full reword; `b2b2c` / `hybrid` reuse the `b2b` string
+   * for the curated account-relevant subset. Resolution order in
+   * resolveQuestionText: business model → industry → default `text`.
+   */
+  byModel?: Partial<Record<BusinessModel, string>>;
 }
 
 export interface IndustryQuestion {
@@ -63,6 +80,7 @@ export interface Assessment {
   repEmail?: string;
   isRepMode: boolean;
   industry?: Industry;
+  businessModel?: BusinessModel;
   status: "in_progress" | "completed";
   responses?: ResponseItem[];
   capabilityScores?: Record<Capability, number>;

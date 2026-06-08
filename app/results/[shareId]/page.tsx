@@ -52,6 +52,7 @@ export default async function ResultsPage({ params }: PageProps) {
     repEmail: assessment.rep_email,
     isRepMode: assessment.is_rep_mode,
     industry: assessment.industry,
+    businessModel: assessment.business_model ?? undefined,
     status: assessment.status,
     createdAt: assessment.created_at,
     updatedAt: assessment.updated_at,

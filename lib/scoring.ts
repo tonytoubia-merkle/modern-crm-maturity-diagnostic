@@ -5,6 +5,7 @@ import type {
   ResponseItem,
   DiagnosticResults,
   Assessment,
+  BusinessModel,
 } from "@/lib/types";
 import {
   CAPABILITIES_ORDER,
@@ -85,6 +86,50 @@ export const MATURITY_STAGES: Record<
   },
 };
 
+// B2B / ABM maturity stages — used when the assessment's business model is
+// "b2b". Sourced from the ABM Maturity Diagnostic brief. Mirrors the 1–4
+// MaturityStage thresholds; only the names and narratives change.
+export const B2B_MATURITY_STAGES: Record<
+  MaturityStage,
+  { label: string; description: string; color: string }
+> = {
+  1: {
+    label: "Stage 1 – Batch & Blast Marketing",
+    description:
+      "Batch campaigns with no account targeting, no ICP filtering, and no coordination between marketing and sales outreach. Account intelligence is unavailable, buying groups are invisible, and pipeline is pursued through volume rather than precision.",
+    color: "red",
+  },
+  2: {
+    label: "Stage 2 – Segment-Based ABM",
+    description:
+      "ICP-filtered targeting and basic ABM tactics exist, but account scoring is manual and sales–marketing alignment is inconsistent. Target-account lists are defined, yet intent signals, buying-group coverage, and coordinated plays are still emerging.",
+    color: "orange",
+  },
+  3: {
+    label: "Stage 3 – Orchestrated Engagement",
+    description:
+      "Account signals, including intent and engagement data, drive coordinated marketing and sales plays across buying-group stakeholders. ABM tiers, next-best-actions, and sales–marketing handoffs are operational, and pipeline influence is measured.",
+    color: "blue",
+  },
+  4: {
+    label: "Stage 4 – Relationship Growth Engine",
+    description:
+      "Account intelligence continuously powers sales, marketing, and customer success activation – with ABM media, expansion plays, and pipeline attribution operating as a unified system. ICP, account tiers, and messaging are continuously refined through win/loss and experimentation.",
+    color: "green",
+  },
+};
+
+/**
+ * Returns the maturity-stage set appropriate to the business model. Pure
+ * "b2b" gets the ABM stages; everything else (b2c / b2b2c / hybrid / unset)
+ * uses the standard Modern CRM stages.
+ */
+export function getMaturityStages(
+  businessModel?: BusinessModel | null
+): Record<MaturityStage, { label: string; description: string; color: string }> {
+  return businessModel === "b2b" ? B2B_MATURITY_STAGES : MATURITY_STAGES;
+}
+
 export function buildCapabilityScoresList(
   scores: Record<Capability, number>
 ): CapabilityScore[] {
@@ -104,9 +149,12 @@ export function buildDiagnosticResults(
   const capScoresRaw = computeCapabilityScores(responses);
   const overallScore = computeOverallScore(capScoresRaw);
   const maturityStage = computeMaturityStage(overallScore);
-  const stageInfo = MATURITY_STAGES[maturityStage];
+  const stageInfo = getMaturityStages(assessment.businessModel)[maturityStage];
   const capabilityScores = buildCapabilityScoresList(capScoresRaw);
-  const opportunities = getTriggeredOpportunities(capScoresRaw);
+  const opportunities = getTriggeredOpportunities(
+    capScoresRaw,
+    assessment.businessModel
+  );
 
   return {
     assessment: {
