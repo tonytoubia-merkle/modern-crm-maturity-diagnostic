@@ -46,21 +46,21 @@ export const EXEC_DIMENSIONS: ExecDimension[] = [
     key: "customer_recognition",
     label: "Customer Recognition",
     blurb:
-      "How well your organization sees the same customer across channels, devices, and teams.",
+      "How well your organization sees the same customer throughout your brand ecosystem.",
     standout:
-      "You know who your customer is across channels, devices, and teams. That single source of truth is rarer than it sounds, and it gives everything else you do a stronger foundation.",
+      "You know who your customer is across channels, devices, and teams. Keep pressure on closing any remaining gaps to stay on top of ever-changing consumer behavior.",
     opportunity:
-      "Right now, you're likely seeing the same customer differently depending on where you look. Connecting those views is the first move. It unlocks every dimension that follows.",
+      "Right now, you're likely seeing the same customer differently depending on where you look. Connecting those views is the first move.",
   },
   {
     key: "signal_activation",
     label: "Signal Activation",
     blurb:
-      "How fast you capture and act on the behavioral signals customers are sending.",
+      "How quickly you identify customer signals and turn them into meaningful action.",
     standout:
-      "You're capturing intent and acting on it faster than most. That's a genuine competitive edge and a strong foundation to build on.",
+      "You're picking up on intent and acting fast. Look for ways to tighten the loop even more so fewer signals go unused.",
     opportunity:
-      "Your customers are sending signals (browse behavior, lifecycle moments, purchase intent) but they're not being fully captured or acted on fast enough. The gap between signal and response is where revenue slips.",
+      "Your customers are sending signals but they're not fully captured or acted on fast enough. The gap between signal and response is where revenue slips.",
   },
   {
     key: "decisioning_personalization",
@@ -68,17 +68,17 @@ export const EXEC_DIMENSIONS: ExecDimension[] = [
     blurb:
       "How intelligently you decide who gets what, when, and on what channel.",
     standout:
-      "You're making smart, context-aware decisions about who gets what and when. Personalization at your level isn't just a feature; it's a growth driver.",
+      "You're making smart calls about who gets what and when. Keep refining so those decisions get sharper and more consistent at scale.",
     opportunity:
-      "Personalization is happening, but it's not yet systematic. You're making good decisions in some channels but guessing in others. Your customers can feel the difference.",
+      "Personalization is happening, but it's not yet systematic. You're making good choices in some channels but guessing in others. Your customers feel the difference.",
   },
   {
     key: "orchestration_experience",
     label: "Orchestration & Experience",
     blurb:
-      "How seamlessly you orchestrate journeys across CRM, loyalty, media, and digital.",
+      "How smoothly you connect experiences across channels.",
     standout:
-      "Your channels are telling one story. Customers move across touchpoints, and the experience holds. That kind of coherence is hard to build and harder to replicate.",
+      "Your channels work together to tell one cohesive story. Keep smoothing the edges so every brand touchpoint feels personal.",
     opportunity:
       "Your channels are working; they're just not working together. Customers who cross from email to media to loyalty feel the friction.",
   },
@@ -86,11 +86,11 @@ export const EXEC_DIMENSIONS: ExecDimension[] = [
     key: "growth_optimization",
     label: "Growth & Optimization",
     blurb:
-      "How rigorously you compound learnings into revenue and align teams to outcomes.",
+      "How effectively you turn insights into results and align teams around them.",
     standout:
-      "You are compounding your programs brilliantly. First-party signals are feeding smarter targeting, and your teams are aligned around outcomes that really matter.",
+      "Your organization is acting on insights well. What other data and dimensions can you connect to optimize the consumer experience?",
     opportunity:
-      "There's real signal in your first-party data that isn't making it back to your media or measurement. The learnings are there but aren't flowing into the right places yet.",
+      "There's signal in your owned data that isn't making it back to your media or measurement teams. Your job is to aggregate those signals and act on them.",
   },
 ];
 
@@ -99,7 +99,7 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_1",
     number: 1,
-    text: "How well does your organization recognize the same customer across channels, devices, and teams?",
+    text: "How well do you recognize the same customer across channels, devices, and teams?",
     dimension: "customer_recognition",
     capability: "identity",
   },
@@ -108,14 +108,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_2",
     number: 2,
-    text: "To what extent does your organization capture and act on behavioral and intent signals in real time?",
+    text: "How well do you spot and respond to signals in the moment?",
     dimension: "signal_activation",
     capability: "signals",
   },
   {
     id: "exec_3",
     number: 3,
-    text: "How effectively does your organization use customer lifecycle moments to guide when and how it engages?",
+    text: "How well do you time and tailor outreach based on where customers are in their journey?",
     dimension: "signal_activation",
     capability: "signals",
   },
@@ -124,14 +124,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_4",
     number: 4,
-    text: "How well does your organization personalize experiences based on customer behavior and context?",
+    text: "How well do you personalize experiences based on customer behavior and context?",
     dimension: "decisioning_personalization",
     capability: "decisioning",
   },
   {
     id: "exec_5",
     number: 5,
-    text: "To what extent does your organization scale AI-driven decisioning across its data and governance infrastructure?",
+    text: "How well do you use AI to make decisions at scale across your data and systems?",
     dimension: "decisioning_personalization",
     capability: "technology",
   },
@@ -140,7 +140,7 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_6",
     number: 6,
-    text: "How effectively does your organization coordinate journeys across messaging, loyalty, promotions, media, and digital channels?",
+    text: "How well do you coordinate journeys across messaging, loyalty, promotions, media, and digital channels?",
     dimension: "orchestration_experience",
     capability: "engagement",
   },
@@ -149,14 +149,14 @@ export const EXEC_QUESTIONS: ExecQuestion[] = [
   {
     id: "exec_7",
     number: 7,
-    text: "To what extent does your organization use first-party signals to sharpen media targeting and deepen customer relationships?",
+    text: "How well do you use your own data to improve targeting and build stronger relationships?",
     dimension: "growth_optimization",
     capability: "media_activation",
   },
   {
     id: "exec_8",
     number: 8,
-    text: "How well does your organization align teams and technology around shared, measurable outcomes?",
+    text: "How well do your teams and tools stay aligned around shared, measurable outcomes?",
     dimension: "growth_optimization",
     capability: "organization",
   },
@@ -190,21 +190,21 @@ export const EXEC_STAGES: Record<
   4: {
     label: "Leading",
     description:
-      "You're operating at the front of the field. The work now is about compounding what's working and staying ahead of what's next.",
+      "You're leading the field. Now it's about sharpening efficiency and maximizing ROI. Keep pushing forward by testing new ideas and refining what works.",
   },
   3: {
     label: "Advanced",
     description:
-      "You're ahead of most. Your foundation is strong, your signals are flowing, and your teams are largely aligned. The gap between where you are and the leading edge isn't wide, but it's meaningful.",
+      "You're ahead of most, with a strong foundation and aligned teams. Focus on closing data gaps and speeding up how quickly you act on signals.",
   },
   2: {
     label: "Developing",
     description:
-      "You're making real progress. The infrastructure is taking shape, and your teams are starting to move in the same direction. The next stage is closer than you think.",
+      "You're making real progress and building momentum. Keep connecting your data, signals, and teams so everything works together better.",
   },
   1: {
     label: "Emerging",
     description:
-      "The building blocks are in place, but they're not yet connected. There's a significant upside ahead, and the roadmap is clearer than it may seem.",
+      "The building blocks are in place, but they're not yet connected. Focus on linking them so data, signals, and teams start working together more effectively.",
   },
 };

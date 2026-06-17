@@ -298,18 +298,20 @@ function CobaltButton({
   onClick,
   disabled,
   type = "button",
+  className = "",
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit";
+  className?: string;
 }) {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-bold text-white transition-all disabled:cursor-not-allowed"
+      className={`inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-bold text-white transition-all disabled:cursor-not-allowed ${className}`}
       style={
         disabled
           ? { backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
@@ -408,7 +410,9 @@ function DimensionPanel({
         {dimension.blurb}
       </p>
 
-      <div className="mt-10 sm:mt-12 space-y-12">
+      {/* Reserve a consistent height so 1- and 2-question dimensions don't
+          resize the page between screens. */}
+      <div className="mt-8 sm:mt-10 min-h-[20rem] flex flex-col justify-center space-y-10">
         {questions.map((q) => (
           <div key={q.id}>
             <p className="text-base sm:text-lg font-semibold text-white mb-7 leading-snug">
@@ -538,59 +542,69 @@ function ResultsPanel({
   );
 
   return (
-    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 space-y-5">
+    <div className="max-w-6xl w-full mx-auto px-6 sm:px-10 py-8 space-y-4">
       <MerkleLockup />
 
-      {/* Headline result */}
-      <div className="rounded-2xl p-8 sm:p-10 border border-white/10 bg-white/[0.03]">
-        <p className="text-sm font-semibold mb-2" style={{ color: COBALT_HOVER }}>
+      {/* Stage banner — full width, compact */}
+      <div className="rounded-2xl px-6 py-5 sm:px-8 sm:py-6 border border-white/10 bg-white/[0.03]">
+        <p className="text-sm font-semibold mb-1.5" style={{ color: COBALT_HOVER }}>
           Et voilà! Here&apos;s where you stand:
         </p>
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3">
-          {stage.label}
-        </h2>
-        <p className="text-base sm:text-lg leading-relaxed max-w-2xl" style={{ color: SUB_GREY }}>
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            {stage.label}
+          </h2>
+          <span className="text-sm text-white/45">
+            Overall {results.overallScore.toFixed(1)} / 5
+          </span>
+        </div>
+        <p className="mt-2 text-sm sm:text-base leading-relaxed" style={{ color: SUB_GREY }}>
           {stage.description}
-        </p>
-        <p className="mt-4 text-xs text-white/45">
-          Overall score: {results.overallScore.toFixed(1)} / 5
         </p>
       </div>
 
-      {/* Standout + biggest opportunity */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-2xl p-6 sm:p-8 border border-emerald-400/25 bg-emerald-400/[0.06]">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-1">
-            Your Standout
-          </p>
-          <h3 className="text-xl font-bold text-white mb-2">{results.high.dimension.label}</h3>
+      {/* Standout · Opportunity · CTA — three across on desktop (landscape) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+        <div className="rounded-2xl p-5 sm:p-6 border border-emerald-400/25 bg-emerald-400/[0.06] flex flex-col">
+          <div className="flex items-center justify-between gap-2 mb-1.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+              Your Standout
+            </p>
+            <span className="text-lg font-extrabold text-emerald-300">
+              {results.high.average.toFixed(1)}
+              <span className="text-xs font-medium text-emerald-300/60">/5</span>
+            </span>
+          </div>
+          <h3 className="text-lg font-bold text-white mb-1.5">
+            {results.high.dimension.label}
+          </h3>
           <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
             {results.high.dimension.standout}
           </p>
-          <p className="mt-4 text-3xl font-extrabold text-emerald-300">
-            {results.high.average.toFixed(1)}
-            <span className="text-base font-medium text-emerald-300/60 ml-1">/ 5</span>
-          </p>
         </div>
 
-        <div className="rounded-2xl p-6 sm:p-8 border border-amber-400/25 bg-amber-400/[0.06]">
-          <p className="text-xs font-bold uppercase tracking-wider text-amber-300 mb-1">
-            Your Biggest Opportunity
-          </p>
-          <h3 className="text-xl font-bold text-white mb-2">{results.low.dimension.label}</h3>
+        <div className="rounded-2xl p-5 sm:p-6 border border-amber-400/25 bg-amber-400/[0.06] flex flex-col">
+          <div className="flex items-center justify-between gap-2 mb-1.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-amber-300">
+              Your Biggest Opportunity
+            </p>
+            <span className="text-lg font-extrabold text-amber-300">
+              {results.low.average.toFixed(1)}
+              <span className="text-xs font-medium text-amber-300/60">/5</span>
+            </span>
+          </div>
+          <h3 className="text-lg font-bold text-white mb-1.5">
+            {results.low.dimension.label}
+          </h3>
           <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
             {results.low.dimension.opportunity}
           </p>
-          <p className="mt-4 text-3xl font-extrabold text-amber-300">
-            {results.low.average.toFixed(1)}
-            <span className="text-base font-medium text-amber-300/60 ml-1">/ 5</span>
-          </p>
         </div>
+
+        <FullPictureCta qrSrc={qrSrc} onSubmitEmail={onSubmitEmail} />
       </div>
 
-      <FullPictureCta qrSrc={qrSrc} onSubmitEmail={onSubmitEmail} />
-
-      <div className="text-center pt-2">
+      <div className="text-center pt-1">
         <button
           onClick={onRestart}
           className="text-sm font-medium text-white/50 hover:text-white transition-colors"
@@ -629,62 +643,52 @@ function FullPictureCta({
   };
 
   return (
-    <div className="rounded-2xl p-6 sm:p-8 border border-white/10 bg-white/[0.03]">
-      <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: COBALT_HOVER }}>
-        Ready to see the full picture?
-      </p>
-      <h3 className="text-lg font-bold text-white mb-1">
-        Go deeper with the complete 30-question assessment
-      </h3>
-      <p className="text-sm leading-relaxed mb-6" style={{ color: SUB_GREY }}>
-        It goes deeper on every dimension and leaves you with a roadmap, not just a score.
+    <div className="rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex flex-col">
+      <h3 className="text-lg font-bold text-white mb-1">Ready to see the full picture?</h3>
+      <p className="text-sm leading-relaxed mb-4" style={{ color: SUB_GREY }}>
+        Our complete 30-question assessment goes deeper on every dimension and leaves you
+        with a roadmap, not just a score.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-6 items-start">
-        <div className="flex-1 min-w-0 w-full">
-          {state === "done" ? (
-            <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-4 py-3">
-              <p className="text-sm font-semibold text-emerald-300">Merci!</p>
-              <p className="text-sm text-emerald-200/80">
-                We&apos;ll send your results and the full assessment link to {email.trim()}.
-              </p>
-            </div>
-          ) : (
-            <>
-              <label className="block text-sm font-medium text-white/80 mb-1">
-                We&apos;ll send your results and the full assessment link
-              </label>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="email"
-                  inputMode="email"
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (state === "error") setState("idle");
-                  }}
-                  className="flex-1 text-base px-4 py-3 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/35 focus:outline-none focus:border-white/40 transition-colors"
-                />
-                <CobaltButton onClick={submit} disabled={state === "submitting"}>
-                  {state === "submitting" ? "Sending…" : "Send my results"}
-                </CobaltButton>
-              </div>
-              {state === "error" && (
-                <p className="mt-1.5 text-xs text-red-300">Enter a valid email and try again.</p>
-              )}
-            </>
+      {state === "done" ? (
+        <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-4 py-3">
+          <p className="text-sm font-semibold text-emerald-300">Merci!</p>
+          <p className="text-sm text-emerald-200/80">
+            We&apos;ll send these initial results and the full assessment link to {email.trim()}.
+          </p>
+        </div>
+      ) : (
+        <div>
+          <label className="block text-sm font-medium text-white/80 mb-1.5">
+            We&apos;ll send these initial results and the full assessment link
+          </label>
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="you@company.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (state === "error") setState("idle");
+            }}
+            className="w-full text-base px-4 py-3 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/35 focus:outline-none focus:border-white/40 transition-colors"
+          />
+          <CobaltButton onClick={submit} disabled={state === "submitting"} className="mt-2 w-full">
+            {state === "submitting" ? "Sending…" : "Send my results"}
+          </CobaltButton>
+          {state === "error" && (
+            <p className="mt-1.5 text-xs text-red-300">Enter a valid email and try again.</p>
           )}
         </div>
+      )}
 
-        <div className="flex-shrink-0 text-center">
-          <div className="rounded-xl border border-white/15 p-3" style={{ backgroundColor: NEAR_BLACK }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={qrSrc} alt="Scan to take the full Modern CRM diagnostic" width={140} height={140} />
-          </div>
-          <p className="mt-2 text-xs text-white/45">Or scan to take it now</p>
+      <div className="mt-auto pt-4 flex items-center gap-3">
+        <div className="rounded-lg border border-white/15 p-2 shrink-0" style={{ backgroundColor: NEAR_BLACK }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={qrSrc} alt="Scan to take the full Modern CRM diagnostic" width={84} height={84} />
         </div>
+        <p className="text-xs text-white/45">Or scan to take it now</p>
       </div>
     </div>
   );
