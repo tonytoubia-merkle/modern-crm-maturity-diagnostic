@@ -165,7 +165,7 @@ export function ResultsView({ results, shareId, responses = [], isProjectAssessm
           <div className="flex items-center gap-2 mb-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/merkle-logo.webp" alt="Merkle" className="h-5 w-auto" />
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#040e4b" }}>
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#141419" }}>
               Modern CRM Maturity Diagnostic
             </span>
           </div>

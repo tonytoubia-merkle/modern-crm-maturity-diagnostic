@@ -47,7 +47,7 @@ interface CapabilityHeatmapProps {
 
 type BenchmarkMode = "both" | "overall" | "industry" | "off";
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "#0328d1";
 const OVERALL_BM = "#64748b";
 const INDUSTRY_BM = "#f59e0b";
 

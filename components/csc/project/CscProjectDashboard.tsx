@@ -146,7 +146,7 @@ export function CscProjectDashboard({
       <div>
         <p
           className="text-xs font-semibold uppercase tracking-wider mb-1"
-          style={{ color: "#040e4b" }}
+          style={{ color: "#141419" }}
         >
           Content Supply Chain Workshop
         </p>
@@ -174,7 +174,7 @@ export function CscProjectDashboard({
               color:
                 completedCount === totalCount && totalCount > 0
                   ? "#16a34a"
-                  : "#040e4b",
+                  : "#141419",
             }}
           >
             {completedCount}/{totalCount}
@@ -300,7 +300,7 @@ export function CscProjectDashboard({
             <div className="flex items-center gap-3 mb-1">
               <span
                 className="text-3xl font-bold"
-                style={{ color: "#040e4b" }}
+                style={{ color: "#141419" }}
               >
                 {project.aggregated_overall?.toFixed(1) ?? "–"}
               </span>
@@ -333,7 +333,7 @@ export function CscProjectDashboard({
                   className="border border-slate-200 rounded-lg p-3 bg-white"
                   style={{
                     borderLeftWidth: "3px",
-                    borderLeftColor: "#040e4b",
+                    borderLeftColor: "#141419",
                   }}
                 >
                   <p className="text-sm font-semibold text-slate-900">

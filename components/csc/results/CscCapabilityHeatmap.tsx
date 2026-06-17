@@ -31,7 +31,7 @@ interface CscCapabilityHeatmapProps {
   scores: CscCapabilityScore[];
 }
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "#0328d1";
 
 export function CscCapabilityHeatmap({ scores }: CscCapabilityHeatmapProps) {
   const radarData = scores.map((s) => ({

@@ -19,7 +19,7 @@ import { MERKLE } from "@/lib/brand/tokens";
  *     #00A1E0  legacy "blue cloud" (decorative accent line)
  *
  *   Merkle ARC
- *     #040e4b  secondary-600       (Merkle co-brand mark color)
+ *     #141419  secondary-600       (Merkle co-brand mark color)
  *     #154734  brandGreen          (Merkle wordmark green, footer)
  */
 

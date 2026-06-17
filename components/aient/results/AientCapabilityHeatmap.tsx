@@ -31,7 +31,7 @@ interface AientCapabilityHeatmapProps {
   scores: AientCapabilityScore[];
 }
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "#0328d1";
 
 export function AientCapabilityHeatmap({ scores }: AientCapabilityHeatmapProps) {
   const radarData = scores.map((s) => ({

@@ -172,7 +172,7 @@ export function SurveyFlow({
         </div>
 
         <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 space-y-3">
-          <h3 className="font-bold text-sm" style={{ color: "#040e4b" }}>Before You Start</h3>
+          <h3 className="font-bold text-sm" style={{ color: "#141419" }}>Before You Start</h3>
           <ol className="text-sm text-slate-700 space-y-2 list-decimal list-inside">
             <li>
               Rate each question on a <strong>1–5 scale</strong>: {Object.entries(SCORE_LABELS).map(([k, v]) => `${k} = ${v}`).join(", ")}.

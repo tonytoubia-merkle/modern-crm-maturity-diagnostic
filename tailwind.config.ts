@@ -15,42 +15,86 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        m2: ['"Work Sans"', "Inter", "system-ui", "sans-serif"],
-        merkle: ['"Proxima Nova"', "Inter", "system-ui", "sans-serif"],
+        // Merkle Create default typeface across all Merkle surfaces.
+        sans: ['"Work Sans"', "system-ui", "sans-serif"],
+        m2: ['"Work Sans"', "system-ui", "sans-serif"],
+        merkle: ['"Work Sans"', "system-ui", "sans-serif"],
+        mono: ['"Geist Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
+        // Dentsu DDS surface keeps Inter.
         dentsu: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
-        // Legacy app brand color (kept for backwards-compatibility while
-        // surfaces are migrated to the M2/Merkle/Dentsu token systems).
-        brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e3a8a",
-          900: "#1e3a8a",
+        // ── MERKLE CREATE — semantic design tokens ────────────────
+        // https://create.merkle.design. Cobalt primary (#0328D1) already
+        // matches the app's accent; these expose the full Create palette.
+        create: {
+          primary: "#0328d1",
+          "primary-hover": "#1e56fa",
+          secondary: "#2f98f7",
+          tertiary: "#6311cb",
+          surface: "#fcfcfc",
+          ink: "#1f1f1f",
+          "ink-subtle": "#505050",
+          border: "#e1e1e1",
+          "border-strong": "#cfcfcf",
+          "near-black": "#141419",
+          success: "#1f9d57",
+          warning: "#f0b429",
+          error: "#dc4a3d",
+          info: "#2f98f7",
         },
 
-        // ── M2 — tool shell ────────────────────────────────────────
+        // App brand accent — Merkle Create cobalt ramp. `blue` is
+        // overridden to the same ramp so generic blue accents read as the
+        // Create primary across every surface.
+        brand: {
+          50: "#eef2ff",
+          100: "#dbe3ff",
+          200: "#b8c7ff",
+          300: "#8aa3ff",
+          400: "#4d6dff",
+          500: "#1e56fa",
+          600: "#0328d1",
+          700: "#0220a6",
+          800: "#001a85",
+          900: "#00155f",
+          950: "#000d3d",
+        },
+        blue: {
+          50: "#eef2ff",
+          100: "#dbe3ff",
+          200: "#b8c7ff",
+          300: "#8aa3ff",
+          400: "#4d6dff",
+          500: "#1e56fa",
+          600: "#0328d1",
+          700: "#0220a6",
+          800: "#001a85",
+          900: "#00155f",
+          950: "#000d3d",
+        },
+
+        // ── M2 — tool shell (aligned to Merkle Create) ─────────────
+        // blue / sky / purple already equal Create primary / secondary /
+        // tertiary; dark + neutral surfaces retargeted to Create.
         m2: {
-          navy: "#05051e",
+          navy: "#141419",
           blue: "#0328d1",
-          "blue-alt": "#1e1eb5",
+          "blue-hover": "#1e56fa",
+          "blue-alt": "#0220a6",
           cyan: "#16c6d3",
           sky: "#2f98f7",
           purple: "#6311cb",
-          text: "#1e1e1e",
-          "surface-light": "#edecf3",
-          "surface-mid": "#c1cae0",
+          text: "#1f1f1f",
+          "surface-light": "#f5f5f7",
+          "surface-mid": "#e3e3e8",
           white: "#ffffff",
         },
 
         // ── MERKLE — artifact / output surfaces ────────────────────
         // Pulled from Merkle E-Commerce ARC Core variable collection.
         merkle: {
-          surface: "#051027",
+          surface: "#141419",
 
           // Greys (full 50–900 scale)
           "grey-50": "#fcfcfc",
@@ -68,27 +112,28 @@ const config: Config = {
           "grey-800": "#2e2e2e",
           "grey-900": "#171717",
 
-          // Primary (coral) — full scale
-          "primary-100": "#ff958b",
-          "primary-200": "#ff7c6d",
-          "primary-300": "#c84b38",
-          "primary-400": "#d5402b",
-          "primary-500": "#8f1d0e",
-          "primary-600": "#9c2414",
-          "primary-700": "#74180b",
-          "primary-800": "#571309",
-          "primary-900": "#310a04",
+          // Primary — retargeted to Merkle Create cobalt (was coral).
+          "primary-100": "#b8c7ff",
+          "primary-200": "#8aa3ff",
+          "primary-300": "#4d6dff",
+          "primary-400": "#1e56fa",
+          "primary-500": "#0328d1",
+          "primary-600": "#0220a6",
+          "primary-700": "#001a85",
+          "primary-800": "#00155f",
+          "primary-900": "#000d3d",
 
-          // Secondary (deep blue) — full scale
-          "secondary-100": "#8e9db9",
-          "secondary-200": "#6e80a3",
-          "secondary-300": "#4f638c",
-          "secondary-400": "#304675",
-          "secondary-500": "#12295d",
-          "secondary-600": "#040e4b",
-          "secondary-700": "#0c1e48",
-          "secondary-800": "#09193d",
-          "secondary-900": "#061431",
+          // Secondary — retargeted to Create near-black neutrals (was deep
+          // navy). Drives the dark nav / header surfaces.
+          "secondary-100": "#c9cad2",
+          "secondary-200": "#9c9ea9",
+          "secondary-300": "#6f7280",
+          "secondary-400": "#474a57",
+          "secondary-500": "#2b2d37",
+          "secondary-600": "#141419",
+          "secondary-700": "#101015",
+          "secondary-800": "#0c0c10",
+          "secondary-900": "#08080b",
 
           // Brand mark green — full scale
           "brand-green-100": "#37956c",

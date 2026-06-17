@@ -25,8 +25,8 @@ const STATE_CONFIG: Record<VoiceState, { ring: string; bg: string; label: string
   listening: { ring: "#22c55e", bg: "#f0fdf4", label: "Listening..." },
   countdown: { ring: "#f97316", bg: "#fff7ed", label: "" }, // label set dynamically
   paused: { ring: "#94a3b8", bg: "#f8fafc", label: "Take your time" },
-  speaking: { ring: "#3b82f6", bg: "#eff6ff", label: "Speaking – talk to interrupt" },
-  processing: { ring: "#1a1a1a", bg: "#f4f4f5", label: "Thinking..." },
+  speaking: { ring: "#0328d1", bg: "#eff6ff", label: "Speaking – talk to interrupt" },
+  processing: { ring: "#141419", bg: "#f4f4f5", label: "Thinking..." },
 };
 
 export function VoiceOrb({
@@ -182,7 +182,7 @@ export function VoiceOrb({
           <button
             onClick={(e) => { e.stopPropagation(); onResume(); }}
             className="text-xs font-medium px-3 py-1.5 rounded-full text-white transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#1a1a1a" }}
+            style={{ backgroundColor: "#141419" }}
           >
             Ready →
           </button>
@@ -199,7 +199,7 @@ export function VoiceOrb({
           <button
             onClick={(e) => { e.stopPropagation(); onSend(); }}
             className="text-xs font-medium px-3 py-1.5 rounded-full text-white transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#1a1a1a" }}
+            style={{ backgroundColor: "#141419" }}
           >
             Send →
           </button>

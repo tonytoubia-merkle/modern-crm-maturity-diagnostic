@@ -72,7 +72,7 @@ function AssistantMessage({ content }: { content: string }) {
       </div>
       <div
         className="rounded-xl px-4 py-3 text-sm leading-relaxed border-l-[3px]"
-        style={{ borderColor: "#040e4b", backgroundColor: "#f0f4ff" }}
+        style={{ borderColor: "#141419", backgroundColor: "#f0f4ff" }}
       >
         {questionParagraphs.map((p, i) => {
           const lines = p.split(/\n/).filter((l) => l.trim());
@@ -90,7 +90,7 @@ function AssistantMessage({ content }: { content: string }) {
                   <li key={li} className="flex gap-2 text-slate-700">
                     <span
                       className="flex-shrink-0"
-                      style={{ color: "#040e4b" }}
+                      style={{ color: "#141419" }}
                     >
                       {l.match(/^\d+/)?.[0]
                         ? `${l.match(/^\d+/)?.[0]}.`
@@ -521,7 +521,7 @@ export function AientChatView({
                         }}
                         disabled={!gateEmail.includes("@")}
                         className="px-5 py-2.5 text-sm font-semibold text-white rounded-lg hover:opacity-90 disabled:opacity-40"
-                        style={{ backgroundColor: "#040e4b" }}
+                        style={{ backgroundColor: "#141419" }}
                       >
                         View Results
                       </button>
@@ -541,7 +541,7 @@ export function AientChatView({
                     <button
                       onClick={handleConfirm}
                       className="text-xs font-semibold px-4 py-2 rounded-lg text-white hover:opacity-90"
-                      style={{ backgroundColor: "#040e4b" }}
+                      style={{ backgroundColor: "#141419" }}
                     >
                       Generate Results →
                     </button>
@@ -568,7 +568,7 @@ export function AientChatView({
                     type="submit"
                     disabled={streaming || !input.trim()}
                     className="px-4 py-2.5 rounded-xl text-white text-sm font-semibold disabled:opacity-30 hover:opacity-90 transition-colors"
-                    style={{ backgroundColor: "#040e4b" }}
+                    style={{ backgroundColor: "#141419" }}
                   >
                     →
                   </button>
@@ -591,7 +591,7 @@ export function AientChatView({
         <button
           onClick={() => setMobileSidebar(!mobileSidebar)}
           className="lg:hidden fixed bottom-20 right-4 z-30 w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xs font-bold text-white"
-          style={{ backgroundColor: "#040e4b" }}
+          style={{ backgroundColor: "#141419" }}
         >
           {scores.size + skipped.size}/{totalQuestions}
         </button>

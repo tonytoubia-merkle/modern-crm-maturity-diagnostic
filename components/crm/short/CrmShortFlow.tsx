@@ -355,7 +355,7 @@ function Intro({ onStart }: { onStart: () => void }) {
         className="px-8 sm:px-12 py-12"
         style={{
           background:
-            "linear-gradient(135deg, #05051E 0%, #0328d1 100%)",
+            "linear-gradient(135deg, #141419 0%, #0328d1 100%)",
         }}
       >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-m2-sky mb-4">
@@ -664,7 +664,7 @@ function ResultsPanel({
         className="rounded-2xl p-8 sm:p-10 text-white shadow-md"
         style={{
           background:
-            "linear-gradient(135deg, #05051E 0%, #0328d1 100%)",
+            "linear-gradient(135deg, #141419 0%, #0328d1 100%)",
         }}
       >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-m2-sky mb-3">
@@ -805,7 +805,7 @@ function ResultsPanel({
       {/* Workshop transition */}
       <div
         className="rounded-2xl p-6 sm:p-8 text-white shadow-md"
-        style={{ backgroundColor: "#05051E" }}
+        style={{ backgroundColor: "#141419" }}
       >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-m2-sky mb-3">
           The next conversation

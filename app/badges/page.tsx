@@ -27,7 +27,7 @@ function BoulderChase({ stats, newBadge }: { stats: UserStats; newBadge: string 
     const f = frame;
 
     // Clear – dark cave
-    ctx.fillStyle = "#1a1a2e";
+    ctx.fillStyle = "#141419";
     ctx.fillRect(0, 0, W, H);
 
     // Ground
@@ -254,7 +254,7 @@ export default function BadgesPage() {
   const earnedIds = new Set(earned.map((b) => b.id));
 
   return (
-    <div className="min-h-screen font-m2" style={{ backgroundColor: "#1a1a2e" }}>
+    <div className="min-h-screen font-m2" style={{ backgroundColor: "#141419" }}>
       {/* Header */}
       <header className="bg-m2-navy">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">

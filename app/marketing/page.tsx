@@ -5,15 +5,15 @@ import type { BrandConfig } from "@/components/chat/BrandedChatPage";
 
 const config: BrandConfig = {
   source: "marketing",
-  navBg: "#1a1a1a",
+  navBg: "#141419",
   navLogo: (
     // eslint-disable-next-line @next/next/no-img-element
     <img src="/dentsu-logo-white.png" alt="dentsu" className="h-7 w-auto" />
   ),
   navLabel: "Maturity Assessments",
-  introBg: "#1a1a1a",
+  introBg: "#141419",
   accentColor: "#8e24c6",
-  ctaBg: "#1a1a1a",
+  ctaBg: "#141419",
   ctaText: "#ffffff",
   headline: (
     <>

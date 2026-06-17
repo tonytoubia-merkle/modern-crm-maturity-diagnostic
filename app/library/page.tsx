@@ -362,7 +362,7 @@ function CrmWorkshopVignettesList() {
                         className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors"
                         style={{
                           backgroundColor: "#FFD02F",
-                          color: "#050038",
+                          color: "#141419",
                         }}
                       >
                         Open Miro Board →

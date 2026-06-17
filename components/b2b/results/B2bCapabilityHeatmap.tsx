@@ -31,7 +31,7 @@ interface B2bCapabilityHeatmapProps {
   scores: B2bCapabilityScore[];
 }
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "#0328d1";
 
 export function B2bCapabilityHeatmap({ scores }: B2bCapabilityHeatmapProps) {
   const radarData = scores.map((s) => ({

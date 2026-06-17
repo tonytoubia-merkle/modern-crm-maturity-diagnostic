@@ -50,14 +50,14 @@ export function AicxCoverageTracker({
           <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
             Coverage
           </p>
-          <p className="text-xs font-bold" style={{ color: "#040e4b" }}>
+          <p className="text-xs font-bold" style={{ color: "#141419" }}>
             {covered}/{totalQuestions}
           </p>
         </div>
         <div className="w-full bg-slate-100 rounded-full h-2">
           <div
             className="h-2 rounded-full transition-all duration-500"
-            style={{ width: `${pct}%`, backgroundColor: "#040e4b" }}
+            style={{ width: `${pct}%`, backgroundColor: "#141419" }}
           />
         </div>
       </div>
@@ -85,7 +85,7 @@ export function AicxCoverageTracker({
                   className="h-1 rounded-full transition-all duration-500"
                   style={{
                     width: `${capPct}%`,
-                    backgroundColor: capPct === 100 ? "#16a34a" : "#040e4b",
+                    backgroundColor: capPct === 100 ? "#16a34a" : "#141419",
                   }}
                 />
               </div>

@@ -37,20 +37,20 @@
 // brand-guide values. The primary mark SVG is pulled into
 // components/brand/M2Logo.tsx and public/m2-logo.svg from node 2003:226.
 export const M2 = {
-  // Primary brand
-  navy: "#05051e",        // page background, dark surfaces, footer
-  blue: "#0328d1",        // brand mark, primary buttons, accents
-  blueAlt: "#1e1eb5",     // alternate brand blue (slightly lighter)
+  // Primary brand — aligned to Merkle Create (cobalt primary already matched).
+  navy: "#141419",        // dark surfaces / hero / footer → Create near-black
+  blue: "#0328d1",        // Create primary — brand mark, primary buttons
+  blueAlt: "#0220a6",     // cobalt-dark (gradients)
 
-  // Secondary palette – accents, charts, callouts
+  // Secondary palette – accents, charts, callouts (Create secondary/tertiary)
   cyan: "#16c6d3",
   sky: "#2f98f7",
   purple: "#6311cb",
 
-  // Neutrals
-  text: "#1e1e1e",
-  surfaceLight: "#edecf3",   // light tinted surface
-  surfaceMid: "#c1cae0",     // cool gray accent (dividers, wireframe lines)
+  // Neutrals — Create surface / ink
+  text: "#1f1f1f",
+  surfaceLight: "#f5f5f7",   // light tinted page surface
+  surfaceMid: "#e3e3e8",     // cool gray accent (dividers, wireframe lines)
   white: "#ffffff",
 
   // Typography
@@ -72,7 +72,7 @@ export const MERKLE = {
   // Core surface – the dark navy that defines artifact backgrounds
   // (color/surface/neutral/default → #051027, set as a raw hex in
   // the Semantic collection rather than via an alias)
-  surfaceNeutralDefault: "#051027",
+  surfaceNeutralDefault: "#141419",
 
   // Brand greys – full 50–900 scale
   grey50: "#fcfcfc",
@@ -90,27 +90,28 @@ export const MERKLE = {
   grey800: "#2e2e2e",
   grey900: "#171717",
 
-  // Brand primary (coral / red) – accent + emphasis
-  primary100: "#ff958b",
-  primary200: "#ff7c6d",
-  primary300: "#c84b38",
-  primary400: "#d5402b",
-  primary500: "#8f1d0e",   // surface/primary/default
-  primary600: "#9c2414",
-  primary700: "#74180b",
-  primary800: "#571309",
-  primary900: "#310a04",
+  // Brand primary – retargeted to Merkle Create cobalt (was coral).
+  primary100: "#b8c7ff",
+  primary200: "#8aa3ff",
+  primary300: "#4d6dff",
+  primary400: "#1e56fa",
+  primary500: "#0328d1",   // Create primary / surface-primary default
+  primary600: "#0220a6",
+  primary700: "#001a85",
+  primary800: "#00155f",
+  primary900: "#000d3d",
 
-  // Brand secondary (deep blue) – backgrounds, gradients, structure
-  secondary100: "#8e9db9",
-  secondary200: "#6e80a3",
-  secondary300: "#4f638c",
-  secondary400: "#304675",
-  secondary500: "#12295d",
-  secondary600: "#040e4b",   // surface/secondary subtle alias
-  secondary700: "#0c1e48",
-  secondary800: "#09193d",
-  secondary900: "#061431",   // surface/secondary/default
+  // Brand secondary – retargeted to Create near-black neutrals (was deep
+  // navy). Backgrounds, gradients, dark structure.
+  secondary100: "#c9cad2",
+  secondary200: "#9c9ea9",
+  secondary300: "#6f7280",
+  secondary400: "#474a57",
+  secondary500: "#2b2d37",
+  secondary600: "#141419",   // canonical near-black surface
+  secondary700: "#101015",
+  secondary800: "#0c0c10",
+  secondary900: "#08080b",
 
   // "Brand" green – Merkle's signature green wordmark color
   brandGreen100: "#37956c",
@@ -147,8 +148,8 @@ export const MERKLE = {
   white: "#ffffff",
   black: "#000000",
 
-  // Typography – Proxima Nova family + responsive scale (large viewport)
-  fontFamily: "Proxima Nova",
+  // Typography – Merkle Create default (Work Sans) + responsive scale
+  fontFamily: "Work Sans",
   type: {
     display: 72,
     h1: 64,
@@ -172,16 +173,16 @@ export const MERKLE = {
   // Use these in component code; switch the source palette by changing
   // these values rather than every consumer.
   semantic: {
-    surfacePrimaryDefault:    "#8f1d0e", // → primary500
-    surfacePrimarySubtle:     "#c84b38", // → primary300
-    surfacePrimaryMinimal:    "#ff7c6d", // → primary200
-    surfaceSecondaryDefault:  "#061431", // → secondary900
-    surfaceSecondarySubtle:   "#4f638c", // → secondary300
-    surfaceNeutralDefault:    "#051027",
+    surfacePrimaryDefault:    "#0328d1", // Create primary
+    surfacePrimarySubtle:     "#4d6dff", // → primary300
+    surfacePrimaryMinimal:    "#8aa3ff", // → primary200
+    surfaceSecondaryDefault:  "#141419", // Create near-black
+    surfaceSecondarySubtle:   "#474a57", // → secondary400
+    surfaceNeutralDefault:    "#141419",
     surfaceContrastDefault:   "#ffffff",
     onNeutralEmphasis:        "#ffffff",
     onNeutralDefault:         "#ececec", // → grey70
-    onNeutralAccent:          "#c84b38", // → primary300 on dark navy
+    onNeutralAccent:          "#8aa3ff", // light cobalt on dark
   },
 } as const;
 

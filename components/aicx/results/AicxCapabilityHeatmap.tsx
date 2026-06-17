@@ -31,7 +31,7 @@ interface AicxCapabilityHeatmapProps {
   scores: AicxCapabilityScore[];
 }
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "#0328d1";
 
 export function AicxCapabilityHeatmap({ scores }: AicxCapabilityHeatmapProps) {
   const radarData = scores.map((s) => ({
