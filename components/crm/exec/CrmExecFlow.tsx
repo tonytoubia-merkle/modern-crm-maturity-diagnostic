@@ -1,6 +1,13 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import {
   EXEC_DIMENSIONS,
   EXEC_QUESTIONS,
@@ -18,7 +25,6 @@ const SOURCE_TAG = "exec_kiosk";
 // ── Merkle Create / Cannes "Rebuilt" palette (from Figma) ──────────────
 const COBALT = "#0328d1";
 const COBALT_HOVER = "#1e56fa";
-const TRACK_GREY = "#d6d6df";
 const LABEL_GREY = "#aeaebc";
 const SUB_GREY = "#d6d6df";
 const NEAR_BLACK = "#05060a";
@@ -464,7 +470,12 @@ function DimensionPanel({
   );
 }
 
-// ── Score slider (5 labeled stops) ───────────────────────────────────────
+// ── Score slider — drag the hollow-ring handle to set a level ─────────────
+// Per the Figma "Rebuilt" design: a hollow ring handle parks at the far left
+// (unset) and the user drags it onto one of five stops. Tap-to-set on a stop
+// is intentionally disabled to force the drag gesture — flip
+// ALLOW_CLICK_TO_SET back to true to restore tap-to-pick.
+const ALLOW_CLICK_TO_SET = false;
 
 function ScoreSlider({
   value,
@@ -474,49 +485,124 @@ function ScoreSlider({
   onSelect: (v: number) => void;
 }) {
   const stops = [1, 2, 3, 4, 5] as const;
-  const fillPct = value ? ((value - 1) / 4) * 100 : 0;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState(false);
+  const isSet = value != null;
+  const pct = value != null ? ((value - 1) / 4) * 100 : 0;
+
+  const setFromClientX = (clientX: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    const stop = Math.round(ratio * 4) + 1; // → 1..5
+    if (stop !== value) onSelect(stop);
+  };
+
+  const beginDrag = (e: ReactPointerEvent) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    setDragging(true);
+    setFromClientX(e.clientX); // grabbing the handle commits the nearest stop
+  };
+  const moveDrag = (e: ReactPointerEvent) => {
+    if (dragging) setFromClientX(e.clientX);
+  };
+  const endDrag = (e: ReactPointerEvent) => {
+    if (!dragging) return;
+    setDragging(false);
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      /* capture may already be released */
+    }
+  };
+
+  const onKeyDown = (e: ReactKeyboardEvent) => {
+    let next: number;
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") next = Math.min(5, (value ?? 0) + 1);
+    else if (e.key === "ArrowLeft" || e.key === "ArrowDown") next = Math.max(1, (value ?? 2) - 1);
+    else if (e.key === "Home") next = 1;
+    else if (e.key === "End") next = 5;
+    else return;
+    e.preventDefault();
+    onSelect(next);
+  };
 
   return (
-    <div className="px-3">
-      {/* Track */}
-      <div className="relative h-8 flex items-center">
-        <div className="absolute left-0 right-0 h-[3px] rounded-full" style={{ backgroundColor: TRACK_GREY }} />
-        {value ? (
+    <div className="px-3 select-none">
+      {/* Track + handle */}
+      <div
+        ref={trackRef}
+        className="relative h-11 flex items-center"
+        style={{ touchAction: "none" }}
+        onPointerDown={ALLOW_CLICK_TO_SET ? beginDrag : undefined}
+      >
+        {/* Base track */}
+        <div
+          className="absolute left-0 right-0 h-[3px] rounded-full"
+          style={{ backgroundColor: "rgba(255,255,255,0.14)" }}
+        />
+        {/* Cobalt fill — only after the user engages */}
+        {isSet ? (
           <div
             className="absolute left-0 h-[3px] rounded-full"
-            style={{ width: `${fillPct}%`, background: `linear-gradient(90deg, ${COBALT_HOVER}, ${COBALT})` }}
+            style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${COBALT_HOVER}, ${COBALT})` }}
           />
         ) : null}
 
-        {stops.map((v, i) => {
-          const left = `${(i / 4) * 100}%`;
-          const selected = value === v;
-          return (
-            <button
-              key={v}
-              type="button"
-              onClick={() => onSelect(v)}
-              aria-label={`${v} — ${EXEC_SCORE_LABELS[v]}`}
-              aria-pressed={selected}
-              className="absolute -translate-x-1/2 grid place-items-center rounded-full focus:outline-none"
-              style={{ left, width: 36, height: 36 }}
-            >
-              {selected ? (
-                <span
-                  className="grid place-items-center rounded-full bg-white"
-                  style={{ width: 26, height: 26, boxShadow: "0 0 0 6px rgba(255,255,255,0.18)" }}
-                >
-                  <span className="rounded-full" style={{ width: 12, height: 12, backgroundColor: COBALT }} />
-                </span>
-              ) : (
-                <span
-                  className="rounded-full bg-white"
-                  style={{ width: 13, height: 13, boxShadow: "0 1px 3px rgba(0,0,0,0.35)" }}
-                />
-              )}
-            </button>
-          );
-        })}
+        {/* Faint stop dots */}
+        {stops.map((v, i) => (
+          <span
+            key={v}
+            className="absolute -translate-x-1/2 rounded-full"
+            style={{
+              left: `${(i / 4) * 100}%`,
+              width: 10,
+              height: 10,
+              backgroundColor: "rgba(255,255,255,0.4)",
+            }}
+          />
+        ))}
+
+        {/* Draggable hollow-ring handle */}
+        <button
+          type="button"
+          role="slider"
+          aria-valuemin={1}
+          aria-valuemax={5}
+          aria-valuenow={value ?? undefined}
+          aria-label="Drag to rate from 1 (not yet) to 5 (best in class)"
+          tabIndex={0}
+          onPointerDown={beginDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onKeyDown={onKeyDown}
+          className="absolute -translate-x-1/2 grid place-items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          style={{
+            left: `${pct}%`,
+            width: 44,
+            height: 44,
+            cursor: dragging ? "grabbing" : "grab",
+            touchAction: "none",
+          }}
+        >
+          <span
+            className="rounded-full transition-shadow"
+            style={{
+              width: 22,
+              height: 22,
+              border: "2px solid #ffffff",
+              backgroundColor: "transparent",
+              opacity: isSet ? 1 : 0.7,
+              boxShadow:
+                isSet || dragging
+                  ? "0 0 0 6px rgba(255,255,255,0.12), 0 1px 4px rgba(0,0,0,0.4)"
+                  : "0 1px 4px rgba(0,0,0,0.4)",
+            }}
+          />
+        </button>
       </div>
 
       {/* Labels */}
@@ -526,18 +612,21 @@ function ScoreSlider({
           const transform = i === 0 ? "translateX(0)" : i === 4 ? "translateX(-100%)" : "translateX(-50%)";
           const selected = value === v;
           return (
-            <button
+            <span
               key={v}
-              type="button"
-              onClick={() => onSelect(v)}
               className="absolute text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
               style={{ left, transform, color: selected ? "#ffffff" : LABEL_GREY }}
             >
               {EXEC_SCORE_LABELS[v]}
-            </button>
+            </span>
           );
         })}
       </div>
+
+      {/* Drag hint — keeps its height once set so the page doesn't shift */}
+      <p className="mt-2 h-4 text-[11px] font-medium tracking-wide text-white/45">
+        {isSet ? "" : "Drag the dial to rate →"}
+      </p>
     </div>
   );
 }
