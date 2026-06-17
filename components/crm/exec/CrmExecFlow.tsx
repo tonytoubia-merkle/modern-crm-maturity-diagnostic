@@ -522,6 +522,42 @@ function ScoreSlider({
 
 // ── Results ──────────────────────────────────────────────────────────────
 
+/** Horizontal result bar — content left, score right; color only as accent. */
+function ResultBar({
+  kicker,
+  dotClass,
+  accentClass,
+  label,
+  body,
+  score,
+}: {
+  kicker: string;
+  dotClass: string;
+  accentClass: string;
+  label: string;
+  body: string;
+  score: number;
+}) {
+  return (
+    <div className="rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex items-start gap-5">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <span className={`h-2 w-2 rounded-full ${dotClass}`} />
+          <p className={`text-xs font-bold uppercase tracking-wider ${accentClass}`}>{kicker}</p>
+        </div>
+        <h3 className="text-lg font-bold text-white">{label}</h3>
+        <p className="mt-1 text-sm leading-relaxed" style={{ color: SUB_GREY }}>
+          {body}
+        </p>
+      </div>
+      <span className={`shrink-0 text-2xl font-extrabold ${accentClass}`}>
+        {score.toFixed(1)}
+        <span className="text-xs font-medium text-white/40">/5</span>
+      </span>
+    </div>
+  );
+}
+
 function ResultsPanel({
   results,
   onSubmitEmail,
@@ -563,42 +599,25 @@ function ResultsPanel({
         </p>
       </div>
 
-      {/* Standout · Opportunity · CTA — three across on desktop (landscape) */}
+      {/* Standout + Opportunity stacked (left) · CTA (right) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
-        <div className="rounded-2xl p-5 sm:p-6 border border-emerald-400/25 bg-emerald-400/[0.06] flex flex-col">
-          <div className="flex items-center justify-between gap-2 mb-1.5">
-            <p className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-              Your Standout
-            </p>
-            <span className="text-lg font-extrabold text-emerald-300">
-              {results.high.average.toFixed(1)}
-              <span className="text-xs font-medium text-emerald-300/60">/5</span>
-            </span>
-          </div>
-          <h3 className="text-lg font-bold text-white mb-1.5">
-            {results.high.dimension.label}
-          </h3>
-          <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
-            {results.high.dimension.standout}
-          </p>
-        </div>
-
-        <div className="rounded-2xl p-5 sm:p-6 border border-amber-400/25 bg-amber-400/[0.06] flex flex-col">
-          <div className="flex items-center justify-between gap-2 mb-1.5">
-            <p className="text-xs font-bold uppercase tracking-wider text-amber-300">
-              Your Biggest Opportunity
-            </p>
-            <span className="text-lg font-extrabold text-amber-300">
-              {results.low.average.toFixed(1)}
-              <span className="text-xs font-medium text-amber-300/60">/5</span>
-            </span>
-          </div>
-          <h3 className="text-lg font-bold text-white mb-1.5">
-            {results.low.dimension.label}
-          </h3>
-          <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
-            {results.low.dimension.opportunity}
-          </p>
+        <div className="lg:col-span-2 flex flex-col justify-center gap-4">
+          <ResultBar
+            kicker="Your Standout"
+            dotClass="bg-emerald-400"
+            accentClass="text-emerald-300"
+            label={results.high.dimension.label}
+            body={results.high.dimension.standout}
+            score={results.high.average}
+          />
+          <ResultBar
+            kicker="Your Biggest Opportunity"
+            dotClass="bg-amber-400"
+            accentClass="text-amber-300"
+            label={results.low.dimension.label}
+            body={results.low.dimension.opportunity}
+            score={results.low.average}
+          />
         </div>
 
         <FullPictureCta qrSrc={qrSrc} onSubmitEmail={onSubmitEmail} />
