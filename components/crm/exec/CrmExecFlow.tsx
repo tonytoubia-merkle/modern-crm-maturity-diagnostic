@@ -178,6 +178,28 @@ export function CrmExecFlow() {
         maturityStage: results.maturityStage,
       }),
     });
+
+    // Best-effort: trigger the results + full-assessment-link email. The lead
+    // is already saved above, so a send failure must never surface to the user.
+    try {
+      await fetch("/api/exec/send-results", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: normalized,
+          maturityStage: results.maturityStage,
+          overallScore: results.overallScore,
+          high: { key: results.high.dimension.key, score: results.high.average },
+          low: { key: results.low.dimension.key, score: results.low.average },
+          fullUrl:
+            typeof window !== "undefined"
+              ? `${window.location.origin}/crm/assessment/new`
+              : "/crm/assessment/new",
+        }),
+      });
+    } catch {
+      // ignore — email is a bonus; the lead is already captured.
+    }
   };
 
   const handleRestart = () => {
