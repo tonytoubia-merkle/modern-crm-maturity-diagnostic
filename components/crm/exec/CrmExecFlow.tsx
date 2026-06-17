@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   EXEC_DIMENSIONS,
   EXEC_QUESTIONS,
@@ -190,13 +190,13 @@ export function CrmExecFlow() {
 
   return (
     <div
-      className="min-h-screen font-m2 text-white relative overflow-x-hidden flex flex-col"
+      className="h-[100dvh] font-m2 text-white relative overflow-hidden"
       style={{ background: NEAR_BLACK }}
     >
       {/* Cobalt glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: GLOW_BG }} />
 
-      <main className="relative flex-1 flex flex-col">
+      <FitToViewport>
         {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
 
         {step === "dimension" && currentDimension && (
@@ -221,7 +221,56 @@ export function CrmExecFlow() {
             onRestart={handleRestart}
           />
         )}
-      </main>
+      </FitToViewport>
+    </div>
+  );
+}
+
+/**
+ * Kiosk fit: locks content to the viewport and scales the active page down
+ * (never up) when it would overflow, so the user never scrolls on any screen.
+ */
+function FitToViewport({ children }: { children: React.ReactNode }) {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const recalc = () => {
+      const outer = outerRef.current;
+      const inner = innerRef.current;
+      if (!outer || !inner) return;
+      const avail = outer.clientHeight;
+      const natural = inner.offsetHeight; // layout height, unaffected by transform
+      if (!avail || !natural) return;
+      const next = natural > avail ? Math.max(0.4, avail / natural) : 1;
+      setScale((prev) => (Math.abs(prev - next) > 0.004 ? next : prev));
+    };
+    recalc();
+    const ro = new ResizeObserver(recalc);
+    if (innerRef.current) ro.observe(innerRef.current);
+    window.addEventListener("resize", recalc);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", recalc);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={outerRef}
+      className="relative h-full w-full overflow-hidden flex items-center justify-center"
+    >
+      <div
+        ref={innerRef}
+        className="w-full"
+        style={{
+          transform: scale < 1 ? `scale(${scale})` : undefined,
+          transformOrigin: "center center",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -230,10 +279,14 @@ export function CrmExecFlow() {
 
 function MerkleLockup() {
   return (
-    <div className="flex flex-col items-start gap-2">
+    <div className="flex flex-col items-start gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto shrink-0 brightness-0 invert" />
-      <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+      <img
+        src="/merkle-cannes-logo.svg"
+        alt="Merkle"
+        className="h-9 sm:h-10 w-auto shrink-0"
+      />
+      <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
         Modern CRM Self-Assessment
       </span>
     </div>
@@ -278,8 +331,8 @@ function CobaltButton({
 
 function IntroPanel({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-16">
-      <div className="mb-16 sm:mb-24">
+    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-12">
+      <div className="mb-12 sm:mb-20">
         <MerkleLockup />
       </div>
       <h1 className="font-extrabold leading-[0.95] tracking-tight text-white text-5xl sm:text-7xl xl:text-8xl mb-8">
@@ -342,7 +395,7 @@ function DimensionPanel({
   ctaLabel: string;
 }) {
   return (
-    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 sm:py-12">
+    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-10">
       <ProgressDots count={totalDimensions} current={dimensionIndex} />
 
       <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-white/70">
@@ -485,7 +538,7 @@ function ResultsPanel({
   );
 
   return (
-    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 sm:py-12 space-y-6">
+    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 space-y-5">
       <MerkleLockup />
 
       {/* Headline result */}
