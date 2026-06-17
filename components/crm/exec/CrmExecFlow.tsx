@@ -15,6 +15,21 @@ import type { Capability, MaturityStage } from "@/lib/types";
 
 const SOURCE_TAG = "exec_kiosk";
 
+// ── Merkle Create / Cannes "Rebuilt" palette (from Figma) ──────────────
+const COBALT = "#0328d1";
+const COBALT_HOVER = "#1e56fa";
+const TRACK_GREY = "#d6d6df";
+const LABEL_GREY = "#aeaebc";
+const SUB_GREY = "#d6d6df";
+const NEAR_BLACK = "#05060a";
+
+/** Dark hero glow — cobalt bleed from the bottom-right + a softer top-left. */
+const GLOW_BG =
+  "radial-gradient(115% 90% at 100% 100%, rgba(3,40,209,0.55) 0%, rgba(3,40,209,0.18) 28%, rgba(5,6,10,0) 58%), " +
+  "radial-gradient(80% 70% at 0% 0%, rgba(30,86,250,0.28) 0%, rgba(5,6,10,0) 52%)";
+
+const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+
 type Step = "intro" | "dimension" | "results";
 
 interface DimensionResult {
@@ -31,16 +46,10 @@ interface ExecResults {
 }
 
 /**
- * Modern CRM Self-Assessment — the Cannes kiosk activation. Frictionless
- * welcome → one page per dimension → an "Et voilà" snapshot with the
- * respondent's standout strength and biggest opportunity. Email is captured
- * at the end (on the results CTA), not as a gate, so the 90-second snapshot
- * stays frictionless.
- *
- * Scoring is computed client-side and only persisted when the respondent
- * leaves an email on the results page — that submission tags responses with
- * the underlying CRM capability so the back-end stays consistent with the
- * long-form diagnostic.
+ * Modern CRM Self-Assessment — the Cannes kiosk activation, styled to the
+ * "Rebuilt" Figma (dark cobalt-glow theme, Work Sans, slider scoring).
+ * Frictionless welcome → one page per dimension → an "Et voilà" snapshot.
+ * Email is captured at the end (results CTA), not as a gate.
  */
 export function CrmExecFlow() {
   const [step, setStep] = useState<Step>("intro");
@@ -55,9 +64,6 @@ export function CrmExecFlow() {
     : [];
   const allCurrentAnswered = currentQuestions.every((q) => answers[q.id]);
   const isLastDimension = dimensionIndex === EXEC_DIMENSIONS.length - 1;
-
-  const totalAnswered = Object.keys(answers).length;
-  const totalQuestions = EXEC_QUESTIONS.length;
 
   const handleScore = (questionId: string, score: number) => {
     setAnswers((prev) => ({ ...prev, [questionId]: score }));
@@ -183,117 +189,139 @@ export function CrmExecFlow() {
   };
 
   return (
-    <div className="min-h-screen font-m2 bg-m2-surface-light flex flex-col">
-      {/* Top brand bar — kiosk-friendly */}
-      <div className="bg-m2-navy">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/merkle-logo.webp"
-            alt="Merkle"
-            className="h-5 w-auto brightness-0 invert"
+    <div
+      className="min-h-screen font-m2 text-white relative overflow-x-hidden flex flex-col"
+      style={{ background: NEAR_BLACK }}
+    >
+      {/* Cobalt glow */}
+      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: GLOW_BG }} />
+
+      <main className="relative flex-1 flex flex-col">
+        {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
+
+        {step === "dimension" && currentDimension && (
+          <DimensionPanel
+            dimension={currentDimension}
+            dimensionIndex={dimensionIndex}
+            totalDimensions={EXEC_DIMENSIONS.length}
+            questions={currentQuestions}
+            answers={answers}
+            onScore={handleScore}
+            onNext={handleNext}
+            onBack={dimensionIndex > 0 ? handleBack : undefined}
+            canAdvance={allCurrentAnswered}
+            ctaLabel={isLastDimension ? "See my results" : "Next"}
           />
-          <span className="text-xs text-white/60 uppercase tracking-wider">
-            Modern CRM Self-Assessment
-          </span>
-        </div>
-      </div>
+        )}
 
-      {/* Progress strip */}
-      {step === "dimension" && (
-        <div className="bg-white border-b border-slate-100">
-          <div className="max-w-4xl mx-auto px-6 py-3">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue">
-                {dimensionIndex + 1} of {EXEC_DIMENSIONS.length} ·{" "}
-                {currentDimension.label}
-              </p>
-              <p className="text-xs text-slate-400">
-                {totalAnswered}/{totalQuestions} answered
-              </p>
-            </div>
-            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-              <div
-                className="h-full transition-all duration-300"
-                style={{
-                  width: `${(totalAnswered / totalQuestions) * 100}%`,
-                  backgroundColor: "#0328d1",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      <main className="flex-1">
-        <div className="max-w-3xl mx-auto px-6 py-10">
-          {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
-
-          {step === "dimension" && currentDimension && (
-            <DimensionPanel
-              dimension={currentDimension}
-              questions={currentQuestions}
-              answers={answers}
-              onScore={handleScore}
-              onNext={handleNext}
-              onBack={dimensionIndex > 0 ? handleBack : undefined}
-              canAdvance={allCurrentAnswered}
-              ctaLabel={isLastDimension ? "See my results →" : "Next →"}
-            />
-          )}
-
-          {step === "results" && results && (
-            <ResultsPanel
-              results={results}
-              onSubmitEmail={submitLead}
-              onRestart={handleRestart}
-            />
-          )}
-        </div>
+        {step === "results" && results && (
+          <ResultsPanel
+            results={results}
+            onSubmitEmail={submitLead}
+            onRestart={handleRestart}
+          />
+        )}
       </main>
-
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between text-xs text-slate-400">
-          <span>© {new Date().getFullYear()} Merkle</span>
-          <span>90 seconds · 8 questions · 5 dimensions</span>
-        </div>
-      </footer>
     </div>
   );
 }
 
-// ── Sub-panels ─────────────────────────────────────────────────────
+// ── Shared bits ────────────────────────────────────────────────────────
+
+function MerkleLockup() {
+  return (
+    <div className="flex flex-col items-start gap-2">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/merkle-logo.webp" alt="Merkle" className="h-7 w-auto shrink-0 brightness-0 invert" />
+      <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+        Modern CRM Self-Assessment
+      </span>
+    </div>
+  );
+}
+
+function CobaltButton({
+  children,
+  onClick,
+  disabled,
+  type = "button",
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit";
+}) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-bold text-white transition-all disabled:cursor-not-allowed"
+      style={
+        disabled
+          ? { backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
+          : { backgroundColor: COBALT }
+      }
+      onMouseEnter={(e) => {
+        if (!disabled) e.currentTarget.style.backgroundColor = COBALT_HOVER;
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) e.currentTarget.style.backgroundColor = COBALT;
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ── Cover ──────────────────────────────────────────────────────────────
 
 function IntroPanel({ onStart }: { onStart: () => void }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 sm:p-12">
-      <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-3">
-        Modern CRM Self-Assessment
-      </p>
-      <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-3">
-        Bienvenue.
+    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-16">
+      <div className="mb-16 sm:mb-24">
+        <MerkleLockup />
+      </div>
+      <h1 className="font-extrabold leading-[0.95] tracking-tight text-white text-5xl sm:text-7xl xl:text-8xl mb-8">
+        Results before
+        <br />
+        your rosé warms.
       </h1>
-      <p className="text-lg text-slate-700 font-medium mb-4">
-        The rosé can wait. Your business can&apos;t.
+      <p className="text-xl sm:text-2xl leading-snug max-w-2xl mb-12" style={{ color: SUB_GREY }}>
+        <span className="font-bold text-white">8 questions. 90 seconds.</span>{" "}
+        A Modern CRM snapshot of where you stand and where the real opportunity lies.
       </p>
-      <p className="text-base text-slate-600 leading-relaxed mb-8 max-w-xl">
-        8 questions. 90 seconds. A Modern CRM snapshot of where you stand and
-        where the real opportunity lies.
-      </p>
+      <div>
+        <CobaltButton onClick={onStart}>Allons-y!</CobaltButton>
+      </div>
+    </div>
+  );
+}
 
-      <button
-        onClick={onStart}
-        className="w-full sm:w-auto px-10 py-4 text-base font-semibold rounded-lg text-white hover:opacity-90 transition-opacity"
-        style={{ backgroundColor: "#0328d1" }}
-      >
-        Allons-y!
-      </button>
+// ── Question page ────────────────────────────────────────────────────────
+
+function ProgressDots({ count, current }: { count: number; current: number }) {
+  return (
+    <div className="flex items-center gap-2.5" aria-label={`Dimension ${current + 1} of ${count}`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <span
+          key={i}
+          className="rounded-full transition-all"
+          style={{
+            width: i === current ? 10 : 8,
+            height: i === current ? 10 : 8,
+            backgroundColor: i <= current ? "#ffffff" : "rgba(255,255,255,0.28)",
+          }}
+        />
+      ))}
     </div>
   );
 }
 
 function DimensionPanel({
   dimension,
+  dimensionIndex,
+  totalDimensions,
   questions,
   answers,
   onScore,
@@ -303,6 +331,8 @@ function DimensionPanel({
   ctaLabel,
 }: {
   dimension: ExecDimension;
+  dimensionIndex: number;
+  totalDimensions: number;
   questions: ExecQuestion[];
   answers: Record<string, number>;
   onScore: (id: string, score: number) => void;
@@ -312,91 +342,119 @@ function DimensionPanel({
   ctaLabel: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-10">
-      <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-2">
-        Dimension
+    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 sm:py-12">
+      <ProgressDots count={totalDimensions} current={dimensionIndex} />
+
+      <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-white/70">
+        Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
       </p>
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-2">
+      <h2 className="mt-1 font-extrabold tracking-tight text-white text-4xl sm:text-5xl xl:text-6xl">
         {dimension.label}
       </h2>
-      <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+      <p className="mt-3 text-base sm:text-lg leading-relaxed max-w-3xl" style={{ color: SUB_GREY }}>
         {dimension.blurb}
       </p>
 
-      <div className="space-y-6">
+      <div className="mt-10 sm:mt-12 space-y-12">
         {questions.map((q) => (
-          <QuestionRow
-            key={q.id}
-            text={q.text}
-            value={answers[q.id]}
-            onSelect={(v) => onScore(q.id, v)}
-          />
+          <div key={q.id}>
+            <p className="text-base sm:text-lg font-semibold text-white mb-7 leading-snug">
+              {q.text}
+            </p>
+            <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
+          </div>
         ))}
       </div>
 
-      <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-4">
+      <div className="pt-12 flex items-center justify-between gap-4">
         {onBack ? (
           <button
             onClick={onBack}
-            className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+            className="text-sm font-medium text-white/50 hover:text-white transition-colors"
           >
             ← Back
           </button>
         ) : (
           <span />
         )}
-        <button
-          onClick={onNext}
-          disabled={!canAdvance}
-          className="px-6 py-3 text-sm font-semibold rounded-lg text-white disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
-          style={{ backgroundColor: "#0328d1" }}
-        >
-          {ctaLabel}
-        </button>
+        <CobaltButton onClick={onNext} disabled={!canAdvance}>
+          {ctaLabel} <span aria-hidden>→</span>
+        </CobaltButton>
       </div>
     </div>
   );
 }
 
-function QuestionRow({
-  text,
+// ── Score slider (5 labeled stops) ───────────────────────────────────────
+
+function ScoreSlider({
   value,
   onSelect,
 }: {
-  text: string;
   value: number | undefined;
   onSelect: (v: number) => void;
 }) {
+  const stops = [1, 2, 3, 4, 5] as const;
+  const fillPct = value ? ((value - 1) / 4) * 100 : 0;
+
   return (
-    <div>
-      <p className="text-sm sm:text-base text-slate-800 mb-3 leading-snug">
-        {text}
-      </p>
-      <div className="flex gap-2 flex-wrap">
-        {[1, 2, 3, 4, 5].map((v) => {
-          const active = value === v;
+    <div className="px-3">
+      {/* Track */}
+      <div className="relative h-8 flex items-center">
+        <div className="absolute left-0 right-0 h-[3px] rounded-full" style={{ backgroundColor: TRACK_GREY }} />
+        {value ? (
+          <div
+            className="absolute left-0 h-[3px] rounded-full"
+            style={{ width: `${fillPct}%`, background: `linear-gradient(90deg, ${COBALT_HOVER}, ${COBALT})` }}
+          />
+        ) : null}
+
+        {stops.map((v, i) => {
+          const left = `${(i / 4) * 100}%`;
+          const selected = value === v;
           return (
             <button
               key={v}
               type="button"
               onClick={() => onSelect(v)}
-              className={`flex-1 min-w-[60px] py-3 rounded-lg border text-sm font-semibold transition-all ${
-                active
-                  ? "text-white border-transparent"
-                  : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
-              }`}
-              style={active ? { backgroundColor: "#0328d1" } : undefined}
-              aria-pressed={active}
-              aria-label={`Score ${v} — ${EXEC_SCORE_LABELS[v]}`}
+              aria-label={`${v} — ${EXEC_SCORE_LABELS[v]}`}
+              aria-pressed={selected}
+              className="absolute -translate-x-1/2 grid place-items-center rounded-full focus:outline-none"
+              style={{ left, width: 36, height: 36 }}
             >
-              <span className="block text-base">{v}</span>
-              <span
-                className={`block text-[10px] mt-0.5 ${
-                  active ? "text-white/80" : "text-slate-400"
-                }`}
-              >
-                {EXEC_SCORE_LABELS[v]}
-              </span>
+              {selected ? (
+                <span
+                  className="grid place-items-center rounded-full bg-white"
+                  style={{ width: 26, height: 26, boxShadow: "0 0 0 6px rgba(255,255,255,0.18)" }}
+                >
+                  <span className="rounded-full" style={{ width: 12, height: 12, backgroundColor: COBALT }} />
+                </span>
+              ) : (
+                <span
+                  className="rounded-full bg-white"
+                  style={{ width: 13, height: 13, boxShadow: "0 1px 3px rgba(0,0,0,0.35)" }}
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Labels */}
+      <div className="relative mt-3 h-4">
+        {stops.map((v, i) => {
+          const left = `${(i / 4) * 100}%`;
+          const transform = i === 0 ? "translateX(0)" : i === 4 ? "translateX(-100%)" : "translateX(-50%)";
+          const selected = value === v;
+          return (
+            <button
+              key={v}
+              type="button"
+              onClick={() => onSelect(v)}
+              className="absolute text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
+              style={{ left, transform, color: selected ? "#ffffff" : LABEL_GREY }}
+            >
+              {EXEC_SCORE_LABELS[v]}
             </button>
           );
         })}
@@ -404,6 +462,8 @@ function QuestionRow({
     </div>
   );
 }
+
+// ── Results ──────────────────────────────────────────────────────────────
 
 function ResultsPanel({
   results,
@@ -418,86 +478,69 @@ function ResultsPanel({
   const fullAssessmentUrl = useFullAssessmentUrl();
   const qrSrc = useMemo(
     () =>
-      `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=12&data=${encodeURIComponent(
+      `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=12&bgcolor=05060a&color=ffffff&data=${encodeURIComponent(
         fullAssessmentUrl
       )}`,
     [fullAssessmentUrl]
   );
 
   return (
-    <div className="space-y-6">
+    <div className="flex-1 flex flex-col justify-center max-w-5xl w-full mx-auto px-8 sm:px-12 py-10 sm:py-12 space-y-6">
+      <MerkleLockup />
+
       {/* Headline result */}
-      <div className="bg-m2-navy rounded-2xl p-8 sm:p-10 text-white">
-        <p className="text-sm font-medium text-m2-sky mb-2">
+      <div className="rounded-2xl p-8 sm:p-10 border border-white/10 bg-white/[0.03]">
+        <p className="text-sm font-semibold mb-2" style={{ color: COBALT_HOVER }}>
           Et voilà! Here&apos;s where you stand:
         </p>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3">
           {stage.label}
         </h2>
-        <p className="text-base text-white/80 leading-relaxed max-w-2xl">
+        <p className="text-base sm:text-lg leading-relaxed max-w-2xl" style={{ color: SUB_GREY }}>
           {stage.description}
         </p>
-        <p className="mt-4 text-xs text-white/50">
+        <p className="mt-4 text-xs text-white/45">
           Overall score: {results.overallScore.toFixed(1)} / 5
         </p>
       </div>
 
       {/* Standout + biggest opportunity */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div
-          className="rounded-2xl p-6 sm:p-8 border-2 border-green-200"
-          style={{ backgroundColor: "#ECFDF5" }}
-        >
-          <p className="text-xs font-bold uppercase tracking-wider text-green-700 mb-1">
+        <div className="rounded-2xl p-6 sm:p-8 border border-emerald-400/25 bg-emerald-400/[0.06]">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300 mb-1">
             Your Standout
           </p>
-          <h3 className="text-xl font-bold text-green-900 mb-2">
-            {results.high.dimension.label}
-          </h3>
-          <p className="text-sm text-green-800 leading-relaxed">
+          <h3 className="text-xl font-bold text-white mb-2">{results.high.dimension.label}</h3>
+          <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
             {results.high.dimension.standout}
           </p>
-          <p className="mt-4 text-3xl font-extrabold text-green-700">
+          <p className="mt-4 text-3xl font-extrabold text-emerald-300">
             {results.high.average.toFixed(1)}
-            <span className="text-base font-medium text-green-500 ml-1">
-              / 5
-            </span>
+            <span className="text-base font-medium text-emerald-300/60 ml-1">/ 5</span>
           </p>
         </div>
 
-        <div
-          className="rounded-2xl p-6 sm:p-8 border-2 border-amber-200"
-          style={{ backgroundColor: "#FFFBEB" }}
-        >
-          <p className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">
+        <div className="rounded-2xl p-6 sm:p-8 border border-amber-400/25 bg-amber-400/[0.06]">
+          <p className="text-xs font-bold uppercase tracking-wider text-amber-300 mb-1">
             Your Biggest Opportunity
           </p>
-          <h3 className="text-xl font-bold text-amber-900 mb-2">
-            {results.low.dimension.label}
-          </h3>
-          <p className="text-sm text-amber-800 leading-relaxed">
+          <h3 className="text-xl font-bold text-white mb-2">{results.low.dimension.label}</h3>
+          <p className="text-sm leading-relaxed" style={{ color: SUB_GREY }}>
             {results.low.dimension.opportunity}
           </p>
-          <p className="mt-4 text-3xl font-extrabold text-amber-700">
+          <p className="mt-4 text-3xl font-extrabold text-amber-300">
             {results.low.average.toFixed(1)}
-            <span className="text-base font-medium text-amber-500 ml-1">
-              / 5
-            </span>
+            <span className="text-base font-medium text-amber-300/60 ml-1">/ 5</span>
           </p>
         </div>
       </div>
 
-      {/* CTA — full assessment, email capture + QR */}
-      <FullPictureCta
-        qrSrc={qrSrc}
-        fullAssessmentUrl={fullAssessmentUrl}
-        onSubmitEmail={onSubmitEmail}
-      />
+      <FullPictureCta qrSrc={qrSrc} onSubmitEmail={onSubmitEmail} />
 
-      <div className="text-center">
+      <div className="text-center pt-2">
         <button
           onClick={onRestart}
-          className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+          className="text-sm font-medium text-white/50 hover:text-white transition-colors"
         >
           Start a new assessment
         </button>
@@ -508,17 +551,13 @@ function ResultsPanel({
 
 function FullPictureCta({
   qrSrc,
-  fullAssessmentUrl,
   onSubmitEmail,
 }: {
   qrSrc: string;
-  fullAssessmentUrl: string;
   onSubmitEmail: (email: string) => Promise<void>;
 }) {
   const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "submitting" | "done" | "error">(
-    "idle"
-  );
+  const [state, setState] = useState<"idle" | "submitting" | "done" | "error">("idle");
 
   const submit = async () => {
     const trimmed = email.trim();
@@ -537,31 +576,29 @@ function FullPictureCta({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-wider text-m2-blue mb-2">
+    <div className="rounded-2xl p-6 sm:p-8 border border-white/10 bg-white/[0.03]">
+      <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: COBALT_HOVER }}>
         Ready to see the full picture?
       </p>
-      <h3 className="text-lg font-bold text-slate-900 mb-1">
+      <h3 className="text-lg font-bold text-white mb-1">
         Go deeper with the complete 30-question assessment
       </h3>
-      <p className="text-sm text-slate-600 leading-relaxed mb-6">
-        It goes deeper on every dimension and leaves you with a roadmap, not
-        just a score.
+      <p className="text-sm leading-relaxed mb-6" style={{ color: SUB_GREY }}>
+        It goes deeper on every dimension and leaves you with a roadmap, not just a score.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-6 items-start">
         <div className="flex-1 min-w-0 w-full">
           {state === "done" ? (
-            <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3">
-              <p className="text-sm font-semibold text-green-800">Merci!</p>
-              <p className="text-sm text-green-700">
-                We&apos;ll send your results and the full assessment link to{" "}
-                {email.trim()}.
+            <div className="rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-4 py-3">
+              <p className="text-sm font-semibold text-emerald-300">Merci!</p>
+              <p className="text-sm text-emerald-200/80">
+                We&apos;ll send your results and the full assessment link to {email.trim()}.
               </p>
             </div>
           ) : (
             <>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 We&apos;ll send your results and the full assessment link
               </label>
               <div className="flex flex-col sm:flex-row gap-2">
@@ -575,44 +612,27 @@ function FullPictureCta({
                     setEmail(e.target.value);
                     if (state === "error") setState("idle");
                   }}
-                  className="flex-1 text-base px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:border-m2-blue transition-colors"
+                  className="flex-1 text-base px-4 py-3 rounded-lg bg-white/5 border border-white/15 text-white placeholder-white/35 focus:outline-none focus:border-white/40 transition-colors"
                 />
-                <button
-                  onClick={submit}
-                  disabled={state === "submitting"}
-                  className="px-6 py-3 text-sm font-semibold rounded-lg text-white disabled:opacity-50 transition-opacity"
-                  style={{ backgroundColor: "#0328d1" }}
-                >
+                <CobaltButton onClick={submit} disabled={state === "submitting"}>
                   {state === "submitting" ? "Sending…" : "Send my results"}
-                </button>
+                </CobaltButton>
               </div>
               {state === "error" && (
-                <p className="mt-1.5 text-xs text-red-600">
-                  Enter a valid email and try again.
-                </p>
+                <p className="mt-1.5 text-xs text-red-300">Enter a valid email and try again.</p>
               )}
             </>
           )}
         </div>
 
         <div className="flex-shrink-0 text-center">
-          <div className="bg-white rounded-xl border border-slate-200 p-3">
+          <div className="rounded-xl border border-white/15 p-3" style={{ backgroundColor: NEAR_BLACK }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={qrSrc}
-              alt="Scan to take the full Modern CRM diagnostic"
-              width={140}
-              height={140}
-            />
+            <img src={qrSrc} alt="Scan to take the full Modern CRM diagnostic" width={140} height={140} />
           </div>
-          <p className="mt-2 text-xs text-slate-400">Or scan to take it now</p>
+          <p className="mt-2 text-xs text-white/45">Or scan to take it now</p>
         </div>
       </div>
-
-      <p className="mt-4 text-xs text-slate-400">
-        Full assessment:{" "}
-        <span className="font-mono text-xs">{fullAssessmentUrl}</span>
-      </p>
     </div>
   );
 }
