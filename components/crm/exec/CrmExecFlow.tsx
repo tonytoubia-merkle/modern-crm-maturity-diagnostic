@@ -470,12 +470,21 @@ function DimensionPanel({
   );
 }
 
-// ── Score slider — drag the hollow-ring handle to set a level ─────────────
-// Per the Figma "Rebuilt" design: a hollow ring handle parks at the far left
-// (unset) and the user drags it onto one of five stops. Tap-to-set on a stop
-// is intentionally disabled to force the drag gesture — flip
-// ALLOW_CLICK_TO_SET back to true to restore tap-to-pick.
+// ── Score slider — drag the handle to set a level ────────────────────────
+// Per the Figma "Rebuilt" design: the handle parks all the way at the far
+// left in an UNSET state (just left of the first stop, no label), and the
+// user drags it onto one of five pill-dash stops. The stops are inset from
+// the left so "Not yet" sits a little right of the unset park. Tap-to-set on
+// a stop is disabled to force the drag gesture — flip ALLOW_CLICK_TO_SET back
+// to true to restore tap-to-pick.
 const ALLOW_CLICK_TO_SET = false;
+
+// Stop positions as a % of the track. Stops start inset from the left (so the
+// unset handle has room to park to their left) and run to the right edge.
+const STOP_START_PCT = 10;
+const STOP_END_PCT = 100;
+const STOP_STEP_PCT = (STOP_END_PCT - STOP_START_PCT) / 4;
+const stopPos = (i: number) => STOP_START_PCT + i * STOP_STEP_PCT;
 
 function ScoreSlider({
   value,
@@ -488,14 +497,16 @@ function ScoreSlider({
   const trackRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
   const isSet = value != null;
-  const pct = value != null ? ((value - 1) / 4) * 100 : 0;
+  // Set → sit on the stop; unset → park at the far left, left of stop 1.
+  const pct = value != null ? stopPos(value - 1) : 0;
 
   const setFromClientX = (clientX: number) => {
     const el = trackRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    const stop = Math.round(ratio * 4) + 1; // → 1..5
+    const posPct = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100));
+    const i = Math.max(0, Math.min(4, Math.round((posPct - STOP_START_PCT) / STOP_STEP_PCT)));
+    const stop = i + 1; // → 1..5
     if (stop !== value) onSelect(stop);
   };
 
@@ -540,32 +551,32 @@ function ScoreSlider({
       >
         {/* Base track */}
         <div
-          className="absolute left-0 right-0 h-[3px] rounded-full"
-          style={{ backgroundColor: "rgba(255,255,255,0.14)" }}
+          className="absolute left-0 right-0 h-[6px] rounded-full"
+          style={{ backgroundColor: "rgba(255,255,255,0.42)" }}
         />
         {/* Cobalt fill — only after the user engages */}
         {isSet ? (
           <div
-            className="absolute left-0 h-[3px] rounded-full"
+            className="absolute left-0 h-[6px] rounded-full"
             style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${COBALT_HOVER}, ${COBALT})` }}
           />
         ) : null}
 
-        {/* Faint stop dots */}
+        {/* Pill-dash stop marks */}
         {stops.map((v, i) => (
           <span
             key={v}
             className="absolute -translate-x-1/2 rounded-full"
             style={{
-              left: `${(i / 4) * 100}%`,
-              width: 10,
-              height: 10,
-              backgroundColor: "rgba(255,255,255,0.4)",
+              left: `${stopPos(i)}%`,
+              width: 4,
+              height: 16,
+              backgroundColor: "rgba(255,255,255,0.9)",
             }}
           />
         ))}
 
-        {/* Draggable hollow-ring handle */}
+        {/* Draggable handle — always the cobalt-fill / white-ring style */}
         <button
           type="button"
           role="slider"
@@ -591,42 +602,34 @@ function ScoreSlider({
           <span
             className="rounded-full transition-shadow"
             style={{
-              width: 22,
-              height: 22,
-              border: "2px solid #ffffff",
-              backgroundColor: "transparent",
-              opacity: isSet ? 1 : 0.7,
-              boxShadow:
-                isSet || dragging
-                  ? "0 0 0 6px rgba(255,255,255,0.12), 0 1px 4px rgba(0,0,0,0.4)"
-                  : "0 1px 4px rgba(0,0,0,0.4)",
+              width: 26,
+              height: 26,
+              border: "4px solid #ffffff",
+              backgroundColor: COBALT,
+              boxShadow: dragging
+                ? "0 0 0 6px rgba(3,40,209,0.25), 0 2px 6px rgba(0,0,0,0.45)"
+                : "0 2px 6px rgba(0,0,0,0.45)",
             }}
           />
         </button>
       </div>
 
-      {/* Labels */}
+      {/* Labels — one per stop; the unset park (far left) has none */}
       <div className="relative mt-3 h-4">
         {stops.map((v, i) => {
-          const left = `${(i / 4) * 100}%`;
-          const transform = i === 0 ? "translateX(0)" : i === 4 ? "translateX(-100%)" : "translateX(-50%)";
+          const transform = i === 4 ? "translateX(-100%)" : "translateX(-50%)";
           const selected = value === v;
           return (
             <span
               key={v}
               className="absolute text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
-              style={{ left, transform, color: selected ? "#ffffff" : LABEL_GREY }}
+              style={{ left: `${stopPos(i)}%`, transform, color: selected ? "#ffffff" : LABEL_GREY }}
             >
               {EXEC_SCORE_LABELS[v]}
             </span>
           );
         })}
       </div>
-
-      {/* Drag hint — keeps its height once set so the page doesn't shift */}
-      <p className="mt-2 h-4 text-[11px] font-medium tracking-wide text-white/45">
-        {isSet ? "" : "Drag the dial to rate →"}
-      </p>
     </div>
   );
 }
