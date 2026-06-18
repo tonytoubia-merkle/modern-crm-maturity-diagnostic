@@ -42,11 +42,14 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
-    pathname.startsWith("/merkle-logo") ||
-    pathname.startsWith("/dentsu-logo") ||
     pathname.endsWith(".ico") ||
     pathname.endsWith(".png") ||
-    pathname.endsWith(".webp")
+    pathname.endsWith(".webp") ||
+    pathname.endsWith(".svg") ||
+    pathname.endsWith(".jpg") ||
+    pathname.endsWith(".jpeg") ||
+    pathname.endsWith(".gif") ||
+    pathname.endsWith(".avif")
   ) {
     return NextResponse.next();
   }
