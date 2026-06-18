@@ -71,8 +71,16 @@ export function CrmExecFlow() {
   const allCurrentAnswered = currentQuestions.every((q) => answers[q.id]);
   const isLastDimension = dimensionIndex === EXEC_DIMENSIONS.length - 1;
 
-  const handleScore = (questionId: string, score: number) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: score }));
+  const handleScore = (questionId: string, score: number | null) => {
+    setAnswers((prev) => {
+      if (score == null) {
+        // Dragged back to the far-left "unset" zone — clear the answer.
+        const next = { ...prev };
+        delete next[questionId];
+        return next;
+      }
+      return { ...prev, [questionId]: score };
+    });
   };
 
   const handleNext = () => {
@@ -418,7 +426,7 @@ function DimensionPanel({
   totalDimensions: number;
   questions: ExecQuestion[];
   answers: Record<string, number>;
-  onScore: (id: string, score: number) => void;
+  onScore: (id: string, score: number | null) => void;
   onNext: () => void;
   onBack?: () => void;
   canAdvance: boolean;
@@ -479,19 +487,24 @@ function DimensionPanel({
 // to true to restore tap-to-pick.
 const ALLOW_CLICK_TO_SET = false;
 
-// Stop positions as a % of the track. Stops start inset from the left (so the
-// unset handle has room to park to their left) and run to the right edge.
+// Stop positions as a % of the track. Stops are inset from both ends so the
+// unset handle has room to park to the left of stop 1 and the end labels can
+// center under their dash without clipping.
 const STOP_START_PCT = 10;
-const STOP_END_PCT = 100;
+const STOP_END_PCT = 90;
 const STOP_STEP_PCT = (STOP_END_PCT - STOP_START_PCT) / 4;
 const stopPos = (i: number) => STOP_START_PCT + i * STOP_STEP_PCT;
+// Anywhere left of the midpoint between the park (0%) and stop 1 reads as unset.
+const UNSET_MAX_PCT = STOP_START_PCT / 2;
+// The filled portion is a soft blue-grey, not the bright cobalt of the handle.
+const SLIDER_FILL = "linear-gradient(90deg, #b3bcd8, #93a0c4)";
 
 function ScoreSlider({
   value,
   onSelect,
 }: {
   value: number | undefined;
-  onSelect: (v: number) => void;
+  onSelect: (v: number | null) => void;
 }) {
   const stops = [1, 2, 3, 4, 5] as const;
   const trackRef = useRef<HTMLDivElement>(null);
@@ -505,6 +518,11 @@ function ScoreSlider({
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const posPct = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100));
+    if (posPct < UNSET_MAX_PCT) {
+      // Far-left zone → back to unset.
+      if (value != null) onSelect(null);
+      return;
+    }
     const i = Math.max(0, Math.min(4, Math.round((posPct - STOP_START_PCT) / STOP_STEP_PCT)));
     const stop = i + 1; // → 1..5
     if (stop !== value) onSelect(stop);
@@ -530,14 +548,20 @@ function ScoreSlider({
   };
 
   const onKeyDown = (e: ReactKeyboardEvent) => {
-    let next: number;
-    if (e.key === "ArrowRight" || e.key === "ArrowUp") next = Math.min(5, (value ?? 0) + 1);
-    else if (e.key === "ArrowLeft" || e.key === "ArrowDown") next = Math.max(1, (value ?? 2) - 1);
-    else if (e.key === "Home") next = 1;
-    else if (e.key === "End") next = 5;
-    else return;
-    e.preventDefault();
-    onSelect(next);
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      onSelect(Math.min(5, (value ?? 0) + 1));
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      if (value == null) return;
+      onSelect(value <= 1 ? null : value - 1); // step below 1 → unset
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      onSelect(1);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      onSelect(5);
+    }
   };
 
   return (
@@ -551,14 +575,14 @@ function ScoreSlider({
       >
         {/* Base track */}
         <div
-          className="absolute left-0 right-0 h-[6px] rounded-full"
+          className="absolute left-0 right-0 h-[8px] rounded-full"
           style={{ backgroundColor: "rgba(255,255,255,0.42)" }}
         />
-        {/* Cobalt fill — only after the user engages */}
+        {/* Filled portion — soft blue-grey, only after the user engages */}
         {isSet ? (
           <div
-            className="absolute left-0 h-[6px] rounded-full"
-            style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${COBALT_HOVER}, ${COBALT})` }}
+            className="absolute left-0 h-[8px] rounded-full"
+            style={{ width: `${pct}%`, background: SLIDER_FILL }}
           />
         ) : null}
 
@@ -569,8 +593,8 @@ function ScoreSlider({
             className="absolute -translate-x-1/2 rounded-full"
             style={{
               left: `${stopPos(i)}%`,
-              width: 4,
-              height: 16,
+              width: 7,
+              height: 18,
               backgroundColor: "rgba(255,255,255,0.9)",
             }}
           />
@@ -593,8 +617,8 @@ function ScoreSlider({
           className="absolute -translate-x-1/2 grid place-items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           style={{
             left: `${pct}%`,
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             cursor: dragging ? "grabbing" : "grab",
             touchAction: "none",
           }}
@@ -602,8 +626,8 @@ function ScoreSlider({
           <span
             className="rounded-full transition-shadow"
             style={{
-              width: 26,
-              height: 26,
+              width: 30,
+              height: 30,
               border: "4px solid #ffffff",
               backgroundColor: COBALT,
               boxShadow: dragging
@@ -614,16 +638,15 @@ function ScoreSlider({
         </button>
       </div>
 
-      {/* Labels — one per stop; the unset park (far left) has none */}
+      {/* Labels — centered under each stop dash; the unset park has none */}
       <div className="relative mt-3 h-4">
         {stops.map((v, i) => {
-          const transform = i === 4 ? "translateX(-100%)" : "translateX(-50%)";
           const selected = value === v;
           return (
             <span
               key={v}
-              className="absolute text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
-              style={{ left: `${stopPos(i)}%`, transform, color: selected ? "#ffffff" : LABEL_GREY }}
+              className="absolute -translate-x-1/2 text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
+              style={{ left: `${stopPos(i)}%`, color: selected ? "#ffffff" : LABEL_GREY }}
             >
               {EXEC_SCORE_LABELS[v]}
             </span>
