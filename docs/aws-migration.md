@@ -85,7 +85,8 @@ Then create the **App Runner service** (console is easiest):
 - Source: the ECR image above. Deployment: manual or auto-on-push.
 - **Port: 3000**.
 - **Auto scaling → min size = 1** (avoids cold-start lag at the kiosk).
-- **Health check**: HTTP `/` (or add a `/api/health` route).
+- **Health check**: HTTP `GET /api/health` (returns `{"status":"ok"}` without
+  hitting the DB; included in this PR).
 - **Runtime environment variables**: `SUPABASE_SERVICE_ROLE_KEY`,
   `EMAIL_PROVIDER`, `EXEC_FROM_EMAIL`, `AWS_REGION`, plus `RESEND_API_KEY` if
   still on Resend. Prefer wiring secrets from **Secrets Manager** (Phase 5).
