@@ -8,6 +8,7 @@ const PUBLIC_ROUTES = [
   "/auth/callback",
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
   "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
+  "/crm/exec/email-preview", // Static preview of the results email
   "/crm/short",         // Modern CRM Executive Snapshot (events, QR, web)
 ];
 
