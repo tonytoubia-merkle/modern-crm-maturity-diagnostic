@@ -29,11 +29,6 @@ const LABEL_GREY = "#aeaebc";
 const SUB_GREY = "#d6d6df";
 const NEAR_BLACK = "#05060a";
 
-/** Dark hero glow — cobalt bleed from the bottom-right + a softer top-left. */
-const GLOW_BG =
-  "radial-gradient(115% 90% at 100% 100%, rgba(3,40,209,0.55) 0%, rgba(3,40,209,0.18) 28%, rgba(5,6,10,0) 58%), " +
-  "radial-gradient(80% 70% at 0% 0%, rgba(30,86,250,0.28) 0%, rgba(5,6,10,0) 52%)";
-
 const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
 type Step = "intro" | "dimension" | "results";
@@ -229,8 +224,18 @@ export function CrmExecFlow() {
       className="h-[100dvh] font-m2 text-white relative overflow-hidden"
       style={{ background: NEAR_BLACK }}
     >
-      {/* Cobalt glow */}
-      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: GLOW_BG }} />
+      {/* Cobalt glow — the real "Ellipse 6" asset exported from Figma */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute left-1/2 top-0 w-[170%] -translate-x-1/2 -translate-y-[30%]"
+          style={{
+            aspectRatio: "3512.8 / 2176.8",
+            backgroundImage: "url(/exec-glow.svg)",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+      </div>
 
       <FitToViewport>
         {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
