@@ -1,5 +1,5 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getRequestUserEmail } from "@/lib/auth/session";
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -56,41 +56,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Create Supabase client with cookie handling
-  let response = NextResponse.next({
-    request: { headers: request.headers },
-  });
+  // Read the session through the auth seam (refreshes cookies on `response`).
+  const { email, response } = await getRequestUserEmail(request);
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value)
-          );
-          response = NextResponse.next({
-            request: { headers: request.headers },
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options)
-          );
-        },
-      },
-    }
-  );
-
-  // Refresh session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // If no user, redirect to login
-  if (!user) {
+  // If not signed in, redirect to login.
+  if (!email) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
