@@ -228,8 +228,8 @@ export function CrmExecFlow() {
           backgroundSize: "cover",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
-          // Question pages use the same art mirrored (flipped, not rotated).
-          transform: step === "dimension" ? "scaleX(-1)" : undefined,
+          // Question pages use the same art flipped top-to-bottom (Y axis).
+          transform: step === "dimension" ? "scaleY(-1)" : undefined,
         }}
       />
 
@@ -496,42 +496,46 @@ function DimensionPanel({
   ctaLabel: string;
 }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center">
       <div
         className="flex flex-col items-start justify-between w-full"
-        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 100, paddingBottom: 100 }}
+        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 52, paddingBottom: 52 }}
       >
-        {/* Top — dots, eyebrow, title, blurb */}
-        <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
-          <ProgressDots count={totalDimensions} current={dimensionIndex} />
-          <div className="flex flex-col items-start w-full" style={{ gap: 8 }}>
-            <p className="font-bold uppercase text-white" style={{ fontSize: 19, letterSpacing: "1.5px" }}>
-              Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
-            </p>
-            <div className="flex flex-col items-start w-full" style={{ gap: 4 }}>
-              <h2 className="font-extrabold text-white" style={{ fontSize: 73, lineHeight: 1.05 }}>
-                {dimension.label}
-              </h2>
-              <p className="whitespace-nowrap" style={{ fontSize: 26, lineHeight: 1.5, color: SUB_GREY }}>
-                {dimension.blurb}
+        {/* Top + questions — top-aligned, fixed 56px gap (Figma 257:943) */}
+        <div className="flex flex-col items-start w-full" style={{ gap: 56 }}>
+          {/* Top — dots, eyebrow, title, blurb */}
+          <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
+            <ProgressDots count={totalDimensions} current={dimensionIndex} />
+            <div className="flex flex-col items-start w-full" style={{ gap: 8 }}>
+              <p className="font-bold uppercase text-white" style={{ fontSize: 19, letterSpacing: "1.5px" }}>
+                Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
               </p>
+              <div className="flex flex-col items-start w-full" style={{ gap: 4 }}>
+                <h2 className="font-extrabold text-white" style={{ fontSize: 73, lineHeight: 1.05 }}>
+                  {dimension.label}
+                </h2>
+                <p className="whitespace-nowrap" style={{ fontSize: 26, lineHeight: 1.5, color: SUB_GREY }}>
+                  {dimension.blurb}
+                </p>
+              </div>
             </div>
+          </div>
+
+          {/* Questions — fixed 174px slots so 1- vs 2-line questions don't
+              shift the layout; 120px between them (Figma 257:956). */}
+          <div className="flex flex-col items-start w-full" style={{ gap: 120 }}>
+            {questions.map((q) => (
+              <div key={q.id} className="flex flex-col items-start w-full" style={{ minHeight: 174 }}>
+                <p className="font-bold text-white w-full" style={{ fontSize: 26, lineHeight: 1.4, marginBottom: 8 }}>
+                  {q.text}
+                </p>
+                <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Questions — 120px apart */}
-        <div className="flex flex-col items-stretch w-full" style={{ gap: 120 }}>
-          {questions.map((q) => (
-            <div key={q.id}>
-              <p className="font-bold text-white" style={{ fontSize: 26, lineHeight: 1.4, marginBottom: 48 }}>
-                {q.text}
-              </p>
-              <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
-            </div>
-          ))}
-        </div>
-
-        {/* Footer — Next only, right-aligned (Figma); 30% opacity when disabled */}
+        {/* Footer — Next only, right-aligned; 30% opacity when disabled */}
         <div className="flex items-center justify-end w-full">
           <button
             type="button"
