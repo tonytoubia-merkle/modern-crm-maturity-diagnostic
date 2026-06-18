@@ -29,11 +29,6 @@ const LABEL_GREY = "#aeaebc";
 const SUB_GREY = "#d6d6df";
 const NEAR_BLACK = "#05060a";
 
-/** Dark hero glow — cobalt bleed from the bottom-right + a softer top-left. */
-const GLOW_BG =
-  "radial-gradient(115% 90% at 100% 100%, rgba(3,40,209,0.55) 0%, rgba(3,40,209,0.18) 28%, rgba(5,6,10,0) 58%), " +
-  "radial-gradient(80% 70% at 0% 0%, rgba(30,86,250,0.28) 0%, rgba(5,6,10,0) 52%)";
-
 const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
 type Step = "intro" | "dimension" | "results";
@@ -229,8 +224,19 @@ export function CrmExecFlow() {
       className="h-[100dvh] font-m2 text-white relative overflow-hidden"
       style={{ background: NEAR_BLACK }}
     >
-      {/* Cobalt glow */}
-      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: GLOW_BG }} />
+      {/* Background image — cover art on intro/results; mirrored (flipped,
+          not rotated) on the question pages. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: "url(/exec-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          transform: step === "dimension" ? "scaleX(-1)" : undefined,
+        }}
+      />
 
       <FitToViewport>
         {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
@@ -438,7 +444,7 @@ function DimensionPanel({
     <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-10">
       <ProgressDots count={totalDimensions} current={dimensionIndex} />
 
-      <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-white/70">
+      <p className="mt-10 text-xs font-bold uppercase tracking-[0.2em] text-white/70">
         Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
       </p>
       <h2 className="mt-1 font-extrabold tracking-tight text-white text-4xl sm:text-5xl xl:text-6xl">
@@ -589,16 +595,17 @@ function ScoreSlider({
           />
         ) : null}
 
-        {/* Pill-dash stop marks */}
+        {/* Pill-dash stop marks (Figma: 14x26 r8 #FFF, scaled ~10% down) */}
         {stops.map((v, i) => (
           <span
             key={v}
-            className="absolute -translate-x-1/2 rounded-full"
+            className="absolute -translate-x-1/2"
             style={{
               left: `${stopPos(i)}%`,
               width: 13,
-              height: 21,
-              backgroundColor: "rgba(255,255,255,0.9)",
+              height: 23,
+              borderRadius: 7,
+              backgroundColor: "#FFFFFF",
             }}
           />
         ))}
@@ -682,21 +689,21 @@ function ResultBar({
 }) {
   return (
     <div
-      className={`rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex items-center gap-5 ${className}`}
+      className={`rounded-2xl p-6 sm:p-8 border border-white/10 bg-white/[0.03] flex items-center gap-6 ${className}`}
     >
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className={`h-2 w-2 rounded-full ${dotClass}`} />
-          <p className={`text-xs font-bold uppercase tracking-wider ${accentClass}`}>{kicker}</p>
+        <div className="flex items-center gap-2 mb-2">
+          <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} />
+          <p className={`text-[13px] font-bold uppercase tracking-wider ${accentClass}`}>{kicker}</p>
         </div>
-        <h3 className="text-lg font-bold text-white">{label}</h3>
-        <p className="mt-1 text-sm leading-relaxed" style={{ color: SUB_GREY }}>
+        <h3 className="text-xl sm:text-2xl font-bold text-white">{label}</h3>
+        <p className="mt-2 text-base leading-relaxed" style={{ color: SUB_GREY }}>
           {body}
         </p>
       </div>
-      <span className={`shrink-0 text-2xl font-extrabold ${accentClass}`}>
+      <span className={`shrink-0 text-4xl font-extrabold ${accentClass}`}>
         {score.toFixed(1)}
-        <span className="text-xs font-medium text-white/40">/5</span>
+        <span className="text-sm font-medium text-white/40">/5</span>
       </span>
     </div>
   );
@@ -727,7 +734,7 @@ function ResultsPanel({
 
       {/* Stage banner — full width, compact */}
       <div className="rounded-2xl px-6 py-5 sm:px-8 sm:py-6 border border-white/10 bg-white/[0.03]">
-        <p className="text-sm font-semibold mb-1.5" style={{ color: COBALT_HOVER }}>
+        <p className="text-sm font-semibold mb-1.5" style={{ color: "#1D43F1" }}>
           Et voilà! Here&apos;s where you stand:
         </p>
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
