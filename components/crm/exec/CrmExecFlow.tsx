@@ -87,13 +87,6 @@ export function CrmExecFlow() {
     computeAndShow();
   };
 
-  const handleBack = () => {
-    if (dimensionIndex > 0) {
-      setDimensionIndex((i) => i - 1);
-      setTimeout(() => window.scrollTo(0, 0), 0);
-    }
-  };
-
   /** Compute the snapshot entirely client-side and show it immediately. */
   const computeAndShow = () => {
     const dimensionResults: DimensionResult[] = EXEC_DIMENSIONS.map((d) => {
@@ -240,32 +233,33 @@ export function CrmExecFlow() {
         }}
       />
 
-      <FitToViewport>
-        {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
-
-        {step === "dimension" && currentDimension && (
-          <DimensionPanel
-            dimension={currentDimension}
-            dimensionIndex={dimensionIndex}
-            totalDimensions={EXEC_DIMENSIONS.length}
-            questions={currentQuestions}
-            answers={answers}
-            onScore={handleScore}
-            onNext={handleNext}
-            onBack={dimensionIndex > 0 ? handleBack : undefined}
-            canAdvance={allCurrentAnswered}
-            ctaLabel={isLastDimension ? "See my results" : "Next"}
-          />
-        )}
-
-        {step === "results" && results && (
+      {step === "results" && results ? (
+        <FitToViewport>
           <ResultsPanel
             results={results}
             onSubmitEmail={submitLead}
             onRestart={handleRestart}
           />
-        )}
-      </FitToViewport>
+        </FitToViewport>
+      ) : (
+        <FixedStage>
+          {step === "intro" && <IntroPanel onStart={() => setStep("dimension")} />}
+
+          {step === "dimension" && currentDimension && (
+            <DimensionPanel
+              dimension={currentDimension}
+              dimensionIndex={dimensionIndex}
+              totalDimensions={EXEC_DIMENSIONS.length}
+              questions={currentQuestions}
+              answers={answers}
+              onScore={handleScore}
+              onNext={handleNext}
+              canAdvance={allCurrentAnswered}
+              ctaLabel={isLastDimension ? "See my results" : "Next"}
+            />
+          )}
+        </FixedStage>
+      )}
     </div>
   );
 }
@@ -319,6 +313,54 @@ function FitToViewport({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Figma frame size — the kiosk is designed on a fixed 1440×1024 canvas.
+const STAGE_W = 1440;
+const STAGE_H = 1024;
+
+/**
+ * Renders children on a fixed 1440×1024 canvas scaled uniformly to fit the
+ * viewport. Because the canvas size matches the Figma frame, every element
+ * placed at its exact Figma pixel value renders pixel-for-pixel correct, and
+ * every page scales identically regardless of content (no per-page drift).
+ */
+function FixedStage({ children }: { children: React.ReactNode }) {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const fit = () => {
+      const el = outerRef.current;
+      if (!el) return;
+      const s = Math.min(el.clientWidth / STAGE_W, el.clientHeight / STAGE_H);
+      if (s > 0) setScale(s);
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    if (outerRef.current) ro.observe(outerRef.current);
+    window.addEventListener("resize", fit);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, []);
+
+  return (
+    <div ref={outerRef} className="absolute inset-0 flex items-center justify-center overflow-hidden">
+      <div
+        className="shrink-0"
+        style={{
+          width: STAGE_W,
+          height: STAGE_H,
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // ── Shared bits ────────────────────────────────────────────────────────
 
 function MerkleLockup() {
@@ -330,9 +372,9 @@ function MerkleLockup() {
       <img
         src="/merkle-cannes-logo.svg"
         alt="Merkle"
-        className="h-7 sm:h-8 w-auto shrink-0 -ml-[21px] sm:-ml-[24px]"
+        className="h-9 w-auto shrink-0 -ml-[28px]"
       />
-      <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
+      <span className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
         Modern CRM Self-Assessment
       </span>
     </div>
@@ -379,26 +421,34 @@ function CobaltButton({
 
 function IntroPanel({ onStart }: { onStart: () => void }) {
   return (
-    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-12">
-      <div className="mb-16 lg:mb-[120px]">
+    // Hero block: 1000px wide, centered in the 1440 stage, exact Figma gaps.
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="flex flex-col items-start w-full" style={{ maxWidth: 1000, gap: 120 }}>
         <MerkleLockup />
-      </div>
-      <h1 className="font-extrabold leading-none text-white text-6xl sm:text-7xl lg:text-[112px] mb-6 lg:mb-9">
-        Results before
-        <br />
-        your rosé warms.
-      </h1>
-      <p className="text-2xl lg:text-[34px] leading-[1.15] mb-10 lg:mb-[87px]" style={{ color: SUB_GREY }}>
-        <span className="font-bold text-white">8 questions. 90 seconds.</span>{" "}
-        A Modern CRM snapshot of where you stand and where the real opportunity lies.
-      </p>
-      <div>
-        <CobaltButton
-          onClick={onStart}
-          className="lg:px-[51px] lg:py-[23px] lg:text-[23px] lg:rounded-[15px]"
-        >
-          Allons-y!
-        </CobaltButton>
+
+        <div className="flex flex-col items-start w-full" style={{ gap: 87 }}>
+          <div className="flex flex-col items-start w-full" style={{ gap: 36 }}>
+            <h1 className="font-extrabold text-white" style={{ fontSize: 112, lineHeight: 1 }}>
+              Results before
+              <br />
+              your rosé warms.
+            </h1>
+            <p className="w-full" style={{ fontSize: 34, lineHeight: "40px", color: SUB_GREY }}>
+              <span className="font-bold text-white">8 questions. 90 seconds.</span>{" "}
+              A Modern CRM snapshot of where you stand and where the real opportunity lies.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onStart}
+            className="inline-flex items-center justify-center font-bold text-white transition-colors"
+            style={{ backgroundColor: COBALT, padding: "23px 51px", borderRadius: 15, fontSize: 23 }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COBALT_HOVER)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COBALT)}
+          >
+            Allons-y!
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -432,7 +482,6 @@ function DimensionPanel({
   answers,
   onScore,
   onNext,
-  onBack,
   canAdvance,
   ctaLabel,
 }: {
@@ -443,59 +492,63 @@ function DimensionPanel({
   answers: Record<string, number>;
   onScore: (id: string, score: number | null) => void;
   onNext: () => void;
-  onBack?: () => void;
   canAdvance: boolean;
   ctaLabel: string;
 }) {
   return (
-    <div className="max-w-[1100px] w-full mx-auto px-8 sm:px-12 py-10">
-      <ProgressDots count={totalDimensions} current={dimensionIndex} />
-
-      {/* 40px between the dots and the dimension eyebrow (Figma) */}
-      <p className="mt-10 text-sm lg:text-[19px] font-bold uppercase tracking-[0.08em] text-white">
-        Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
-      </p>
-      <h2 className="mt-4 font-extrabold leading-none text-white text-4xl sm:text-5xl lg:text-[73px]">
-        {dimension.label}
-      </h2>
-      <p className="mt-1 text-lg lg:text-[26px] leading-[1.5] whitespace-nowrap" style={{ color: SUB_GREY }}>
-        {dimension.blurb}
-      </p>
-
-      {/* Reserve a consistent height so 1- and 2-question dimensions don't
-          resize the page between screens. */}
-      <div className="mt-12 lg:mt-16 min-h-[30rem] flex flex-col justify-center gap-16 lg:gap-[120px]">
-        {questions.map((q) => (
-          <div key={q.id}>
-            <p className="text-lg lg:text-[26px] font-bold leading-[1.4] text-white mb-10 lg:mb-12">
-              {q.text}
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div
+        className="flex flex-col items-start justify-between w-full"
+        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 100, paddingBottom: 100 }}
+      >
+        {/* Top — dots, eyebrow, title, blurb */}
+        <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
+          <ProgressDots count={totalDimensions} current={dimensionIndex} />
+          <div className="flex flex-col items-start w-full" style={{ gap: 8 }}>
+            <p className="font-bold uppercase text-white" style={{ fontSize: 19, letterSpacing: "1.5px" }}>
+              Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
             </p>
-            <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
+            <div className="flex flex-col items-start w-full" style={{ gap: 4 }}>
+              <h2 className="font-extrabold text-white" style={{ fontSize: 73, lineHeight: 1.05 }}>
+                {dimension.label}
+              </h2>
+              <p className="whitespace-nowrap" style={{ fontSize: 26, lineHeight: 1.5, color: SUB_GREY }}>
+                {dimension.blurb}
+              </p>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="pt-10 flex items-center justify-between gap-4">
-        {onBack ? (
+        {/* Questions — 120px apart */}
+        <div className="flex flex-col items-stretch w-full" style={{ gap: 120 }}>
+          {questions.map((q) => (
+            <div key={q.id}>
+              <p className="font-bold text-white" style={{ fontSize: 26, lineHeight: 1.4, marginBottom: 48 }}>
+                {q.text}
+              </p>
+              <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
+            </div>
+          ))}
+        </div>
+
+        {/* Footer — Next only, right-aligned (Figma); 30% opacity when disabled */}
+        <div className="flex items-center justify-end w-full">
           <button
-            onClick={onBack}
-            className="text-sm font-medium text-white/50 hover:text-white transition-colors"
+            type="button"
+            onClick={onNext}
+            disabled={!canAdvance}
+            className="inline-flex items-center justify-center gap-3 font-bold text-white transition-opacity disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: COBALT,
+              opacity: canAdvance ? 1 : 0.3,
+              padding: "23px 40px",
+              borderRadius: 17,
+              fontSize: 25,
+            }}
           >
-            ← Back
+            {ctaLabel} <span aria-hidden>→</span>
           </button>
-        ) : (
-          <span />
-        )}
-        {/* Next button — cobalt; 30% opacity when disabled (Figma) */}
-        <button
-          type="button"
-          onClick={onNext}
-          disabled={!canAdvance}
-          className="inline-flex items-center justify-center gap-3 rounded-[17px] font-bold text-white transition-opacity disabled:cursor-not-allowed px-8 py-4 text-lg lg:px-[40px] lg:py-[23px] lg:text-[25px]"
-          style={{ backgroundColor: COBALT, opacity: canAdvance ? 1 : 0.3 }}
-        >
-          {ctaLabel} <span aria-hidden>→</span>
-        </button>
+        </div>
       </div>
     </div>
   );
@@ -506,9 +559,9 @@ function DimensionPanel({
 // left in an UNSET state (just left of the first stop, no label), and the
 // user drags it onto one of five pill-dash stops. The stops are inset from
 // the left so "Not yet" sits a little right of the unset park. Tap-to-set on
-// a stop is disabled to force the drag gesture — flip ALLOW_CLICK_TO_SET back
-// to true to restore tap-to-pick.
-const ALLOW_CLICK_TO_SET = false;
+// a stop. Both interactions work: drag the handle, or tap anywhere on the
+// track / a stop to jump there.
+const ALLOW_CLICK_TO_SET = true;
 
 // Stop positions as a % of the track. Stop 1 is inset from the left so the
 // unset handle has room to park to its left; the last stop runs to the right
@@ -554,9 +607,11 @@ function ScoreSlider({
 
   const beginDrag = (e: ReactPointerEvent) => {
     e.preventDefault();
+    // Stop the handle's press from also bubbling to the track's onPointerDown.
+    e.stopPropagation();
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     setDragging(true);
-    setFromClientX(e.clientX); // grabbing the handle commits the nearest stop
+    setFromClientX(e.clientX); // grab/tap commits the nearest stop
   };
   const moveDrag = (e: ReactPointerEvent) => {
     if (dragging) setFromClientX(e.clientX);
