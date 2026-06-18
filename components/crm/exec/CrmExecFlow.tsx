@@ -316,11 +316,13 @@ function FitToViewport({ children }: { children: React.ReactNode }) {
 function MerkleLockup() {
   return (
     <div className="flex flex-col items-start gap-3">
+      {/* Nudge left so the MERKLE wordmark aligns with the content edge and
+          the triangle overhangs to its left (wordmark starts at x=27.6/288). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/merkle-cannes-logo.svg"
         alt="Merkle"
-        className="h-7 sm:h-8 w-auto shrink-0"
+        className="h-7 sm:h-8 w-auto shrink-0 -ml-[21px] sm:-ml-[24px]"
       />
       <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
         Modern CRM Self-Assessment
