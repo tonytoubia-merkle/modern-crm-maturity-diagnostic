@@ -442,7 +442,7 @@ function DimensionPanel({
       <h2 className="mt-1 font-extrabold tracking-tight text-white text-4xl sm:text-5xl xl:text-6xl">
         {dimension.label}
       </h2>
-      <p className="mt-3 text-base sm:text-lg leading-relaxed max-w-3xl" style={{ color: SUB_GREY }}>
+      <p className="mt-3 text-base sm:text-lg leading-relaxed whitespace-nowrap" style={{ color: SUB_GREY }}>
         {dimension.blurb}
       </p>
 
@@ -594,8 +594,8 @@ function ScoreSlider({
             className="absolute -translate-x-1/2 rounded-full"
             style={{
               left: `${stopPos(i)}%`,
-              width: 14,
-              height: 18,
+              width: 13,
+              height: 21,
               backgroundColor: "rgba(255,255,255,0.9)",
             }}
           />
