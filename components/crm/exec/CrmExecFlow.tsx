@@ -223,12 +223,12 @@ export function CrmExecFlow() {
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: "url(/exec-bg.png)",
+          // cover.png is the exact 1440x1024 Figma cover background.
+          backgroundImage: "url(/cover.png)",
           backgroundSize: "cover",
-          // Anchor the bottom so the cobalt glow (bottom ~40% of the image)
-          // stays visible instead of being cropped out on wide viewports.
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
+          // Question pages use the same art mirrored (flipped, not rotated).
           transform: step === "dimension" ? "scaleX(-1)" : undefined,
         }}
       />
