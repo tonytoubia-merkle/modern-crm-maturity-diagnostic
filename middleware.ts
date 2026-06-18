@@ -7,6 +7,7 @@ const PUBLIC_ROUTES = [
   "/register",
   "/auth/callback",
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
+  "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
   "/crm/short",         // Modern CRM Executive Snapshot (events, QR, web)
 ];
 
