@@ -487,17 +487,18 @@ function DimensionPanel({
 // to true to restore tap-to-pick.
 const ALLOW_CLICK_TO_SET = false;
 
-// Stop positions as a % of the track. Stops are inset from both ends so the
-// unset handle has room to park to the left of stop 1 and the end labels can
-// center under their dash without clipping.
+// Stop positions as a % of the track. Stop 1 is inset from the left so the
+// unset handle has room to park to its left; the last stop runs to the right
+// edge. End labels are centered under their dash (room comes from the panel's
+// horizontal padding).
 const STOP_START_PCT = 10;
-const STOP_END_PCT = 90;
+const STOP_END_PCT = 100;
 const STOP_STEP_PCT = (STOP_END_PCT - STOP_START_PCT) / 4;
 const stopPos = (i: number) => STOP_START_PCT + i * STOP_STEP_PCT;
 // Anywhere left of the midpoint between the park (0%) and stop 1 reads as unset.
 const UNSET_MAX_PCT = STOP_START_PCT / 2;
-// The filled portion is a soft blue-grey, not the bright cobalt of the handle.
-const SLIDER_FILL = "linear-gradient(90deg, #b3bcd8, #93a0c4)";
+// The filled portion is cobalt at 50% opacity — softer than the solid-cobalt handle.
+const SLIDER_FILL = "rgba(3, 40, 209, 0.5)";
 
 function ScoreSlider({
   value,
@@ -593,7 +594,7 @@ function ScoreSlider({
             className="absolute -translate-x-1/2 rounded-full"
             style={{
               left: `${stopPos(i)}%`,
-              width: 7,
+              width: 14,
               height: 18,
               backgroundColor: "rgba(255,255,255,0.9)",
             }}
