@@ -668,6 +668,7 @@ function ResultBar({
   label,
   body,
   score,
+  className = "",
 }: {
   kicker: string;
   dotClass: string;
@@ -675,9 +676,12 @@ function ResultBar({
   label: string;
   body: string;
   score: number;
+  className?: string;
 }) {
   return (
-    <div className="rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex items-start gap-5">
+    <div
+      className={`rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex items-center gap-5 ${className}`}
+    >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <span className={`h-2 w-2 rounded-full ${dotClass}`} />
@@ -738,8 +742,8 @@ function ResultsPanel({
       </div>
 
       {/* Standout + Opportunity stacked (left) · CTA (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
-        <div className="lg:col-span-2 flex flex-col justify-center gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-stretch">
+        <div className="lg:col-span-3 flex flex-col gap-4">
           <ResultBar
             kicker="Your Standout"
             dotClass="bg-emerald-400"
@@ -747,6 +751,7 @@ function ResultsPanel({
             label={results.high.dimension.label}
             body={results.high.dimension.standout}
             score={results.high.average}
+            className="flex-1"
           />
           <ResultBar
             kicker="Your Biggest Opportunity"
@@ -755,6 +760,7 @@ function ResultsPanel({
             label={results.low.dimension.label}
             body={results.low.dimension.opportunity}
             score={results.low.average}
+            className="flex-1"
           />
         </div>
 
@@ -800,7 +806,7 @@ function FullPictureCta({
   };
 
   return (
-    <div className="rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex flex-col">
+    <div className="lg:col-span-2 rounded-2xl p-5 sm:p-6 border border-white/10 bg-white/[0.03] flex flex-col">
       <h3 className="text-lg font-bold text-white mb-1">Ready to see the full picture?</h3>
       <p className="text-sm leading-relaxed mb-4" style={{ color: SUB_GREY }}>
         Our complete 30-question assessment goes deeper on every dimension and leaves you
