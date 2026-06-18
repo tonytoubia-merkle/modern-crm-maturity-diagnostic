@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { renderExecResultsEmail } from "@/lib/email/execResultsEmail";
+import { sendTransactionalEmail } from "@/lib/email/send";
 import type { ExecDimensionKey } from "@/lib/data/execQuestions";
 import type { MaturityStage } from "@/lib/types";
 
 export const runtime = "nodejs";
-
-const RESEND_ENDPOINT = "https://api.resend.com/emails";
 
 interface Body {
   email: string;
@@ -30,14 +29,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.EXEC_FROM_EMAIL;
-    // Graceful no-op until the provider is configured. The lead is already
-    // captured by the caller; email simply switches on once env vars exist.
-    if (!apiKey || !from) {
-      return NextResponse.json({ ok: true, sent: false, reason: "email_not_configured" });
-    }
-
     const { subject, html } = renderExecResultsEmail({
       maturityStage,
       overallScore,
@@ -46,16 +37,19 @@ export async function POST(req: NextRequest) {
       fullUrl: safeAssessmentUrl(fullUrl),
     });
 
-    const res = await fetch(RESEND_ENDPOINT, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to: [email], subject, html }),
-    });
+    // Delegate to the provider-agnostic transport (Resend today, SES on AWS).
+    // A graceful no-op until the provider is configured — the lead is already
+    // captured by the caller, so email simply switches on once env vars exist.
+    const result = await sendTransactionalEmail({ to: email, subject, html });
 
-    if (!res.ok) {
-      const detail = await res.text().catch(() => "");
-      console.error("[exec/send-results] Resend error", res.status, detail.slice(0, 300));
-      return NextResponse.json({ ok: false, sent: false, error: "send_failed" }, { status: 502 });
+    if (!result.sent) {
+      if (result.reason === "email_not_configured") {
+        return NextResponse.json({ ok: true, sent: false, reason: result.reason });
+      }
+      return NextResponse.json(
+        { ok: false, sent: false, error: result.error ?? "send_failed" },
+        { status: 502 }
+      );
     }
     return NextResponse.json({ ok: true, sent: true });
   } catch (err) {
