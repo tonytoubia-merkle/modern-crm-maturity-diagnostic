@@ -805,7 +805,7 @@ function ResultsPanel({
   );
 
   return (
-    <div className="max-w-6xl w-full mx-auto px-6 sm:px-10 py-8 space-y-4">
+    <div className="max-w-6xl w-full mx-auto px-6 sm:px-10 pt-20 pb-10 space-y-4">
       <MerkleLockup />
 
       {/* Stage banner — full width, compact */}
