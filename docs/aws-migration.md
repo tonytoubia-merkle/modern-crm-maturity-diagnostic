@@ -92,7 +92,29 @@ Then create the **App Runner service** (console is easiest):
   still on Resend. Prefer wiring secrets from **Secrets Manager** (Phase 5).
 - **Instance role**: attach an IAM role (needed for SES — Phase 2).
 
-CI later: build + push in GitHub Actions, then `aws apprunner start-deployment`.
+### CI/CD — GitHub Actions (included, inert until configured)
+
+`.github/workflows/deploy-apprunner.yml` builds the image, pushes to ECR, and
+triggers an App Runner deployment. It's **manual-dispatch only** (won't run or
+fail on pushes) until you set its config, and uses **OIDC** so no AWS keys are
+stored in GitHub.
+
+To enable:
+
+1. Create an IAM role that trusts GitHub's OIDC provider
+   (`token.actions.githubusercontent.com`), scoped to this repo, with
+   permissions for ECR push + `apprunner:StartDeployment`.
+2. Repo → Settings → Secrets and variables → Actions:
+   - **Secret**: `AWS_DEPLOY_ROLE_ARN`
+   - **Variables**: `AWS_REGION`, `ECR_REPOSITORY`, `APP_RUNNER_SERVICE_ARN`,
+     `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+     `NEXT_PUBLIC_APP_URL`
+3. Run it from the **Actions** tab. To auto-deploy on merge, add a
+   `push: branches: [main]` trigger to the workflow.
+
+> Infra-as-code (Terraform/CDK) intentionally omitted until your org's
+> provisioning standard / landing zone is known — the CLI steps above and this
+> workflow are platform-agnostic. Ask and I'll add IaC matching your standard.
 
 ---
 
