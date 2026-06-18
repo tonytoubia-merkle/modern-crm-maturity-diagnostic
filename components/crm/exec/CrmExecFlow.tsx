@@ -378,20 +378,25 @@ function CobaltButton({
 function IntroPanel({ onStart }: { onStart: () => void }) {
   return (
     <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-12">
-      <div className="mb-12 sm:mb-20">
+      <div className="mb-16 lg:mb-[120px]">
         <MerkleLockup />
       </div>
-      <h1 className="font-extrabold leading-[0.95] tracking-tight text-white text-5xl sm:text-7xl xl:text-8xl mb-8">
+      <h1 className="font-extrabold leading-none text-white text-6xl sm:text-7xl lg:text-[112px] mb-6 lg:mb-9">
         Results before
         <br />
         your rosé warms.
       </h1>
-      <p className="text-xl sm:text-2xl leading-snug max-w-2xl mb-12" style={{ color: SUB_GREY }}>
+      <p className="text-2xl lg:text-[34px] leading-[1.15] mb-10 lg:mb-[87px]" style={{ color: SUB_GREY }}>
         <span className="font-bold text-white">8 questions. 90 seconds.</span>{" "}
         A Modern CRM snapshot of where you stand and where the real opportunity lies.
       </p>
       <div>
-        <CobaltButton onClick={onStart}>Allons-y!</CobaltButton>
+        <CobaltButton
+          onClick={onStart}
+          className="lg:px-[51px] lg:py-[23px] lg:text-[23px] lg:rounded-[15px]"
+        >
+          Allons-y!
+        </CobaltButton>
       </div>
     </div>
   );
@@ -441,25 +446,26 @@ function DimensionPanel({
   ctaLabel: string;
 }) {
   return (
-    <div className="max-w-5xl w-full mx-auto px-8 sm:px-12 py-10">
+    <div className="max-w-[1100px] w-full mx-auto px-8 sm:px-12 py-10">
       <ProgressDots count={totalDimensions} current={dimensionIndex} />
 
-      <p className="mt-10 text-xs font-bold uppercase tracking-[0.2em] text-white/70">
+      {/* 40px between the dots and the dimension eyebrow (Figma) */}
+      <p className="mt-10 text-sm lg:text-[19px] font-bold uppercase tracking-[0.08em] text-white">
         Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
       </p>
-      <h2 className="mt-1 font-extrabold tracking-tight text-white text-4xl sm:text-5xl xl:text-6xl">
+      <h2 className="mt-2 font-extrabold leading-none text-white text-4xl sm:text-5xl lg:text-[73px]">
         {dimension.label}
       </h2>
-      <p className="mt-3 text-base sm:text-lg leading-relaxed whitespace-nowrap" style={{ color: SUB_GREY }}>
+      <p className="mt-1 text-lg lg:text-[26px] leading-[1.5] whitespace-nowrap" style={{ color: SUB_GREY }}>
         {dimension.blurb}
       </p>
 
       {/* Reserve a consistent height so 1- and 2-question dimensions don't
           resize the page between screens. */}
-      <div className="mt-8 sm:mt-10 min-h-[20rem] flex flex-col justify-center space-y-10">
+      <div className="mt-12 lg:mt-16 min-h-[30rem] flex flex-col justify-center gap-16 lg:gap-[120px]">
         {questions.map((q) => (
           <div key={q.id}>
-            <p className="text-base sm:text-lg font-semibold text-white mb-7 leading-snug">
+            <p className="text-lg lg:text-[26px] font-bold leading-[1.4] text-white mb-10 lg:mb-12">
               {q.text}
             </p>
             <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
@@ -467,7 +473,7 @@ function DimensionPanel({
         ))}
       </div>
 
-      <div className="pt-12 flex items-center justify-between gap-4">
+      <div className="pt-10 flex items-center justify-between gap-4">
         {onBack ? (
           <button
             onClick={onBack}
@@ -478,9 +484,16 @@ function DimensionPanel({
         ) : (
           <span />
         )}
-        <CobaltButton onClick={onNext} disabled={!canAdvance}>
+        {/* Next button — cobalt; 30% opacity when disabled (Figma) */}
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={!canAdvance}
+          className="inline-flex items-center justify-center gap-3 rounded-[17px] font-bold text-white transition-opacity disabled:cursor-not-allowed px-8 py-4 text-lg lg:px-[40px] lg:py-[23px] lg:text-[25px]"
+          style={{ backgroundColor: COBALT, opacity: canAdvance ? 1 : 0.3 }}
+        >
           {ctaLabel} <span aria-hidden>→</span>
-        </CobaltButton>
+        </button>
       </div>
     </div>
   );
@@ -574,43 +587,52 @@ function ScoreSlider({
   };
 
   return (
-    <div className="px-3 select-none">
-      {/* Track + handle */}
+    <div className="select-none" style={{ paddingLeft: 32, paddingRight: 32 }}>
+      {/* Track + handle (row tall enough for the 56px handle) */}
       <div
         ref={trackRef}
-        className="relative h-11 flex items-center"
-        style={{ touchAction: "none" }}
+        className="relative flex items-center"
+        style={{ height: 56, touchAction: "none" }}
         onPointerDown={ALLOW_CLICK_TO_SET ? beginDrag : undefined}
       >
-        {/* Base track */}
+        {/* Base track — 12px, #d6d6df, inset shadow */}
         <div
-          className="absolute left-0 right-0 h-[8px] rounded-full"
-          style={{ backgroundColor: "rgba(255,255,255,0.42)" }}
+          className="absolute left-0 right-0 rounded-full"
+          style={{
+            height: 12,
+            backgroundColor: "#d6d6df",
+            boxShadow: "inset 0 0 8px 1.5px rgba(0,0,0,0.25)",
+          }}
         />
-        {/* Filled portion — soft blue-grey, only after the user engages */}
+        {/* Filled portion — cobalt @ 50% */}
         {isSet ? (
           <div
-            className="absolute left-0 h-[8px] rounded-full"
-            style={{ width: `${pct}%`, background: SLIDER_FILL }}
+            className="absolute left-0 rounded-full"
+            style={{
+              height: 12,
+              width: `${pct}%`,
+              backgroundColor: SLIDER_FILL,
+              boxShadow: "inset 0 4px 8px 1.5px rgba(0,0,0,0.25)",
+            }}
           />
         ) : null}
 
-        {/* Pill-dash stop marks (Figma: 14x26 r8 #FFF, scaled ~10% down) */}
+        {/* Stop pills — 14x26, radius 8, solid #FFF (Figma) */}
         {stops.map((v, i) => (
           <span
             key={v}
             className="absolute -translate-x-1/2"
             style={{
               left: `${stopPos(i)}%`,
-              width: 13,
-              height: 23,
-              borderRadius: 7,
+              width: 14,
+              height: 26,
+              borderRadius: 8,
               backgroundColor: "#FFFFFF",
             }}
           />
         ))}
 
-        {/* Draggable handle — always the cobalt-fill / white-ring style */}
+        {/* Draggable handle — 56px, cobalt + 8px white ring + drop shadow */}
         <button
           type="button"
           role="slider"
@@ -624,39 +646,36 @@ function ScoreSlider({
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           onKeyDown={onKeyDown}
-          className="absolute -translate-x-1/2 grid place-items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          className="absolute -translate-x-1/2 rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
           style={{
             left: `${pct}%`,
-            width: 48,
-            height: 48,
+            width: 56,
+            height: 56,
+            backgroundColor: COBALT,
+            border: "8px solid #ffffff",
+            boxShadow: dragging
+              ? "0 0 0 6px rgba(3,40,209,0.25), 0 7px 20px rgba(0,0,0,0.6)"
+              : "0 7px 20px rgba(0,0,0,0.6)",
             cursor: dragging ? "grabbing" : "grab",
             touchAction: "none",
           }}
-        >
-          <span
-            className="rounded-full transition-shadow"
-            style={{
-              width: 30,
-              height: 30,
-              border: "4px solid #ffffff",
-              backgroundColor: COBALT,
-              boxShadow: dragging
-                ? "0 0 0 6px rgba(3,40,209,0.25), 0 2px 6px rgba(0,0,0,0.45)"
-                : "0 2px 6px rgba(0,0,0,0.45)",
-            }}
-          />
-        </button>
+        />
       </div>
 
-      {/* Labels — centered under each stop dash; the unset park has none */}
-      <div className="relative mt-3 h-4">
+      {/* Labels — 17px, centered under each pill, 32px below (Figma) */}
+      <div className="relative" style={{ marginTop: 18, height: 22 }}>
         {stops.map((v, i) => {
           const selected = value === v;
           return (
             <span
               key={v}
-              className="absolute -translate-x-1/2 text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors"
-              style={{ left: `${stopPos(i)}%`, color: selected ? "#ffffff" : LABEL_GREY }}
+              className="absolute -translate-x-1/2 text-center font-medium uppercase whitespace-nowrap transition-colors"
+              style={{
+                left: `${stopPos(i)}%`,
+                fontSize: 17,
+                letterSpacing: "0.67px",
+                color: selected ? "#ffffff" : LABEL_GREY,
+              }}
             >
               {EXEC_SCORE_LABELS[v]}
             </span>
