@@ -320,9 +320,9 @@ function MerkleLockup() {
       <img
         src="/merkle-cannes-logo.svg"
         alt="Merkle"
-        className="h-9 sm:h-10 w-auto shrink-0"
+        className="h-7 sm:h-8 w-auto shrink-0"
       />
-      <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+      <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
         Modern CRM Self-Assessment
       </span>
     </div>
