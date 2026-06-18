@@ -232,7 +232,9 @@ export function CrmExecFlow() {
         style={{
           backgroundImage: "url(/exec-bg.png)",
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          // Anchor the bottom so the cobalt glow (bottom ~40% of the image)
+          // stays visible instead of being cropped out on wide viewports.
+          backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
           transform: step === "dimension" ? "scaleX(-1)" : undefined,
         }}
@@ -453,7 +455,7 @@ function DimensionPanel({
       <p className="mt-10 text-sm lg:text-[19px] font-bold uppercase tracking-[0.08em] text-white">
         Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
       </p>
-      <h2 className="mt-2 font-extrabold leading-none text-white text-4xl sm:text-5xl lg:text-[73px]">
+      <h2 className="mt-4 font-extrabold leading-none text-white text-4xl sm:text-5xl lg:text-[73px]">
         {dimension.label}
       </h2>
       <p className="mt-1 text-lg lg:text-[26px] leading-[1.5] whitespace-nowrap" style={{ color: SUB_GREY }}>
