@@ -648,7 +648,7 @@ function ScoreSlider({
   };
 
   return (
-    <div className="select-none" style={{ paddingLeft: 32, paddingRight: 32 }}>
+    <div className="select-none w-full" style={{ paddingLeft: 32, paddingRight: 32 }}>
       {/* Track + handle (row tall enough for the 56px handle) */}
       <div
         ref={trackRef}
