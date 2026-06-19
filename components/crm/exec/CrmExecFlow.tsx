@@ -202,6 +202,32 @@ export function CrmExecFlow() {
     } catch {
       // ignore — email is a bonus; the lead is already captured.
     }
+
+    // Best-effort: forward the lead to a Power Automate flow (SharePoint List +
+    // Outlook email). No-ops until POWER_AUTOMATE_URL is configured server-side.
+    try {
+      await fetch("/api/exec/capture", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: normalized,
+          maturityStage: results.maturityStage,
+          overallScore: results.overallScore,
+          high: { key: results.high.dimension.key, score: results.high.average },
+          low: { key: results.low.dimension.key, score: results.low.average },
+          fullUrl:
+            typeof window !== "undefined"
+              ? `${window.location.origin}/crm/assessment/new`
+              : "/crm/assessment/new",
+          responses: EXEC_QUESTIONS.filter((q) => answers[q.id]).map((q) => ({
+            question: q.text,
+            score: answers[q.id],
+          })),
+        }),
+      });
+    } catch {
+      // ignore — capture is best-effort; the lead is already saved.
+    }
   };
 
   const handleRestart = () => {
