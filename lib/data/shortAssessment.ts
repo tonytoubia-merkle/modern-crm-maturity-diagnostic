@@ -1,13 +1,13 @@
 import type { Capability, MaturityStage } from "@/lib/types";
 
 /**
- * Modern CRM Short Assessment — the "executive snapshot" variation of the
+ * Modern CRM Short Assessment – the "executive snapshot" variation of the
  * full Modern CRM Diagnostic. Designed for high-friction-free distribution
  * across Cannes activations, Salesforce Connections, executive dinners,
  * QR-driven landing pages, partner co-sell, and outbound marketing.
  *
  * Goal: create curiosity, executive alignment, urgency, and a recognized
- * gap that demands a deeper workshop conversation — without delivering a
+ * gap that demands a deeper workshop conversation – without delivering a
  * full roadmap, sequencing, or platform architecture. The sophistication
  * lives in the scoring logic and outputs, not in questionnaire complexity.
  *
@@ -191,7 +191,7 @@ export const SHORT_SCORE_DESCRIPTIONS: Record<number, string> = {
   2: "Pilots and pockets exist. Some segments and lifecycle touches in play.",
   3: "In use across core teams but not orchestrated end-to-end.",
   4: "Connected across functions with shared KPIs and continuous signal flow.",
-  5: "Adaptive — AI-augmented, continuously optimised, and operationalised at scale.",
+  5: "Adaptive – AI-augmented, continuously optimised, and operationalised at scale.",
 };
 
 // ── Organizational archetypes ────────────────────────────────────────
@@ -221,41 +221,41 @@ export const ARCHETYPES: Record<ArchetypeKey, Archetype> = {
     key: "campaign_operator",
     label: "Campaign Operator",
     oneLiner:
-      "Channels are running — but they're running independently of each other.",
+      "Channels are running – but they're running independently of each other.",
     narrative:
-      "Marketing and CRM are organised around campaigns and channel calendars, not customers. Signals exist in pockets, segmentation is broad, and personalisation is rule-based when it shows up at all. There's clear opportunity to move from broadcast execution to a coordinated, customer-centric operating model — and most of the trapped value sits in the gaps between channels.",
+      "Marketing and CRM are organised around campaigns and channel calendars, not customers. Signals exist in pockets, segmentation is broad, and personalisation is rule-based when it shows up at all. There's clear opportunity to move from broadcast execution to a coordinated, customer-centric operating model – and most of the trapped value sits in the gaps between channels.",
   },
   loyalty_led_marketer: {
     key: "loyalty_led_marketer",
     label: "Loyalty-Led Marketer",
     oneLiner:
-      "Loyalty and engagement are strong — they just need an engine behind them.",
+      "Loyalty and engagement are strong – they just need an engine behind them.",
     narrative:
-      "The loyalty programme and core engagement channels are mature and recognisable to customers, but the underlying identity, signal, and decisioning layer hasn't caught up. The next gain comes from connecting loyalty data, behavioural signal, and decisioning so the same customer view drives every owned moment — not just the loyalty surface.",
+      "The loyalty programme and core engagement channels are mature and recognisable to customers, but the underlying identity, signal, and decisioning layer hasn't caught up. The next gain comes from connecting loyalty data, behavioural signal, and decisioning so the same customer view drives every owned moment – not just the loyalty surface.",
   },
   media_optimizer: {
     key: "media_optimizer",
     label: "Media Optimizer",
     oneLiner:
-      "Paid media is doing the heavy lifting — owned relationship growth is the next unlock.",
+      "Paid media is doing the heavy lifting – owned relationship growth is the next unlock.",
     narrative:
-      "Paid acquisition, audience targeting, and performance optimisation are strong, with first-party signals showing up in media. What's still emerging is the connected orchestration that turns those acquired customers into long-term, owned-channel value — closing the gap between media performance and relationship economics.",
+      "Paid acquisition, audience targeting, and performance optimisation are strong, with first-party signals showing up in media. What's still emerging is the connected orchestration that turns those acquired customers into long-term, owned-channel value – closing the gap between media performance and relationship economics.",
   },
   connected_relationship_engine: {
     key: "connected_relationship_engine",
     label: "Connected Relationship Engine",
     oneLiner:
-      "Identity, signals, and orchestration are wired together — adaptation is the next horizon.",
+      "Identity, signals, and orchestration are wired together – adaptation is the next horizon.",
     narrative:
-      "The CRM engine runs as a connected system: identity is unified, signals flow in near real time, decisioning informs engagement, and journeys cross CRM, loyalty, media, and service. The next move is adaptive — embedding continuous experimentation, AI-driven decisioning, and shared outcome accountability so the engine compounds learnings into revenue.",
+      "The CRM engine runs as a connected system: identity is unified, signals flow in near real time, decisioning informs engagement, and journeys cross CRM, loyalty, media, and service. The next move is adaptive – embedding continuous experimentation, AI-driven decisioning, and shared outcome accountability so the engine compounds learnings into revenue.",
   },
   adaptive_growth_organization: {
     key: "adaptive_growth_organization",
     label: "Adaptive Growth Organization",
     oneLiner:
-      "The engine is adaptive — the work now is staying ahead of the next horizon.",
+      "The engine is adaptive – the work now is staying ahead of the next horizon.",
     narrative:
-      "CRM, loyalty, media, service, and data operate as one adaptive growth engine. Decisioning is AI-augmented, experimentation is continuous, and teams, processes, and tech are aligned around shared outcomes. The competitive edge is no longer the platform — it's the speed at which the organisation can absorb the next wave of agentic and AI-native capabilities.",
+      "CRM, loyalty, media, service, and data operate as one adaptive growth engine. Decisioning is AI-augmented, experimentation is continuous, and teams, processes, and tech are aligned around shared outcomes. The competitive edge is no longer the platform – it's the speed at which the organisation can absorb the next wave of agentic and AI-native capabilities.",
   },
 };
 
@@ -302,7 +302,7 @@ export function resolveArchetype(
 
 // ── Opportunity narratives (per dimension) ───────────────────────────
 // Used to generate the 2–3 "key opportunity areas" callouts on the
-// results page. Intentionally directional, not prescriptive — the brief
+// results page. Intentionally directional, not prescriptive – the brief
 // is "valuable but incomplete" so the workshop is the next step.
 
 export const DIMENSION_OPPORTUNITY: Record<
@@ -312,7 +312,7 @@ export const DIMENSION_OPPORTUNITY: Record<
   customer_recognition: {
     headline: "Unify the customer view across channels and teams",
     narrative:
-      "Organisations at your stage often struggle to operationalise identity across CRM, loyalty, media, and service. A connected customer view is the precondition for everything downstream — and most of the trapped value sits in the seams between systems.",
+      "Organisations at your stage often struggle to operationalise identity across CRM, loyalty, media, and service. A connected customer view is the precondition for everything downstream – and most of the trapped value sits in the seams between systems.",
   },
   signal_activation: {
     headline: "Turn behavioral signals into real-time engagement",
@@ -327,24 +327,24 @@ export const DIMENSION_OPPORTUNITY: Record<
   orchestration_experience: {
     headline: "Coordinate journeys across CRM, loyalty, media, and service",
     narrative:
-      "The next phase typically requires alignment across CRM, loyalty, media, service, and data strategy — moving from channel-led plans to orchestrated journeys that flex with the customer.",
+      "The next phase typically requires alignment across CRM, loyalty, media, service, and data strategy – moving from channel-led plans to orchestrated journeys that flex with the customer.",
   },
   growth_optimization: {
     headline: "Align teams and tech around shared outcomes, not channels",
     narrative:
-      "Most organisations discover significant trapped value during deeper journey and use-case mapping exercises — particularly where measurement, experimentation, and operating-model alignment have not yet caught up with the underlying engine.",
+      "Most organisations discover significant trapped value during deeper journey and use-case mapping exercises – particularly where measurement, experimentation, and operating-model alignment have not yet caught up with the underlying engine.",
   },
 };
 
 // ── Executive summary narratives by maturity stage ───────────────────
 // Used for the "Executive summary" block on the results page. Directional
-// per stage — credible, but reserves prescriptive work for the workshop.
+// per stage – credible, but reserves prescriptive work for the workshop.
 
 export const STAGE_NARRATIVE: Record<MaturityStage, string> = {
   1: "Your results indicate a campaign-led operating model with strong opportunities to build the identity, signal, and decisioning layer that turns marketing from broadcast execution into connected, customer-centric engagement.",
-  2: "Your results indicate strong foundational capabilities in places, with the biggest opportunities sitting in connecting them — moving from segmented engagement to coordinated, signal-driven journeys across CRM, loyalty, media, and service.",
-  3: "Your results indicate an orchestrated CRM engine with momentum, and opportunities to scale decisioning and adaptive optimisation across more of the customer base — turning operational maturity into compounding business growth.",
-  4: "Your results indicate an adaptive, learning-led CRM engine. The opportunity now is less about platform and more about staying ahead — embedding agentic capabilities, sharper measurement, and continuous operating-model improvement.",
+  2: "Your results indicate strong foundational capabilities in places, with the biggest opportunities sitting in connecting them – moving from segmented engagement to coordinated, signal-driven journeys across CRM, loyalty, media, and service.",
+  3: "Your results indicate an orchestrated CRM engine with momentum, and opportunities to scale decisioning and adaptive optimisation across more of the customer base – turning operational maturity into compounding business growth.",
+  4: "Your results indicate an adaptive, learning-led CRM engine. The opportunity now is less about platform and more about staying ahead – embedding agentic capabilities, sharper measurement, and continuous operating-model improvement.",
 };
 
 export const WORKSHOP_TRANSITIONS: string[] = [
