@@ -497,46 +497,46 @@ function DimensionPanel({
 }) {
   return (
     <div className="w-full h-full flex flex-col items-center">
+      {/* Top-aligned flow: header, questions, footer with a fixed 56px gap.
+          pt-24 sits the dots ~3 dot-heights higher than before. */}
       <div
-        className="flex flex-col items-start justify-between w-full"
-        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 52, paddingBottom: 52 }}
+        className="flex flex-col items-start w-full"
+        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 24, gap: 56 }}
       >
-        {/* Top + questions — top-aligned, fixed 56px gap (Figma 257:943) */}
-        <div className="flex flex-col items-start w-full" style={{ gap: 56 }}>
-          {/* Top — dots, eyebrow, title, blurb */}
-          <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
-            <ProgressDots count={totalDimensions} current={dimensionIndex} />
-            <div className="flex flex-col items-start w-full" style={{ gap: 8 }}>
-              <p className="font-bold uppercase text-white" style={{ fontSize: 19, letterSpacing: "1.5px" }}>
-                Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
+        {/* Top — dots, eyebrow, title, blurb */}
+        <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
+          <ProgressDots count={totalDimensions} current={dimensionIndex} />
+          <div className="flex flex-col items-start w-full" style={{ gap: 8 }}>
+            <p className="font-bold uppercase text-white" style={{ fontSize: 19, letterSpacing: "1.5px" }}>
+              Dimension {ORDINALS[dimensionIndex] ?? dimensionIndex + 1}
+            </p>
+            <div className="flex flex-col items-start w-full" style={{ gap: 4 }}>
+              <h2 className="font-extrabold text-white" style={{ fontSize: 73, lineHeight: 1.05 }}>
+                {dimension.label}
+              </h2>
+              <p className="whitespace-nowrap" style={{ fontSize: 26, lineHeight: 1.5, color: SUB_GREY }}>
+                {dimension.blurb}
               </p>
-              <div className="flex flex-col items-start w-full" style={{ gap: 4 }}>
-                <h2 className="font-extrabold text-white" style={{ fontSize: 73, lineHeight: 1.05 }}>
-                  {dimension.label}
-                </h2>
-                <p className="whitespace-nowrap" style={{ fontSize: 26, lineHeight: 1.5, color: SUB_GREY }}>
-                  {dimension.blurb}
-                </p>
-              </div>
             </div>
-          </div>
-
-          {/* Questions — fixed 174px slots so 1- vs 2-line questions don't
-              shift the layout; 120px between them (Figma 257:956). */}
-          <div className="flex flex-col items-start w-full" style={{ gap: 120 }}>
-            {questions.map((q) => (
-              <div key={q.id} className="flex flex-col items-start w-full" style={{ minHeight: 174 }}>
-                <p className="font-bold text-white w-full" style={{ fontSize: 26, lineHeight: 1.4, marginBottom: 8 }}>
-                  {q.text}
-                </p>
-                <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
-              </div>
-            ))}
           </div>
         </div>
 
-        {/* Footer — Next only, right-aligned; 30% opacity when disabled */}
-        <div className="flex items-center justify-end w-full">
+        {/* Questions — fixed 174px slots so 1- vs 2-line questions don't
+            shift the layout; 120px between them (Figma 257:956). */}
+        <div className="flex flex-col items-start w-full" style={{ gap: 120 }}>
+          {questions.map((q) => (
+            <div key={q.id} className="flex flex-col items-start w-full" style={{ minHeight: 174 }}>
+              <p className="font-bold text-white w-full" style={{ fontSize: 26, lineHeight: 1.4, marginBottom: 8 }}>
+                {q.text}
+              </p>
+              <ScoreSlider value={answers[q.id]} onSelect={(v) => onScore(q.id, v)} />
+            </div>
+          ))}
+        </div>
+
+        {/* Footer — Next, right-aligned, with top padding; flows after the
+            questions (top-aligned, not pinned). 30% opacity when disabled. */}
+        <div className="flex items-center justify-end w-full" style={{ paddingTop: 24 }}>
           <button
             type="button"
             onClick={onNext}
@@ -809,7 +809,10 @@ function ResultsPanel({
   );
 
   return (
-    <div className="max-w-6xl w-full mx-auto px-6 sm:px-10 pt-20 pb-10 space-y-4">
+    <div
+      className="max-w-6xl w-full mx-auto px-6 sm:px-10 pt-20 pb-10 space-y-4"
+      style={{ transform: "scale(0.72)", transformOrigin: "center" }}
+    >
       <MerkleLockup />
 
       {/* Stage banner — full width, compact */}
