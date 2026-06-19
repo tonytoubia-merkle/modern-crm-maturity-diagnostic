@@ -498,10 +498,10 @@ function DimensionPanel({
   return (
     <div className="w-full h-full flex flex-col items-center">
       {/* Top-aligned flow: header, questions, footer with a fixed 56px gap.
-          pt-24 sits the dots ~3 dot-heights higher than before. */}
+          52px top padding matches the Figma main-viewport. */}
       <div
         className="flex flex-col items-start w-full"
-        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 24, gap: 56 }}
+        style={{ maxWidth: 1100, height: STAGE_H, paddingTop: 52, gap: 56 }}
       >
         {/* Top — dots, eyebrow, title, blurb */}
         <div className="flex flex-col items-start w-full" style={{ gap: 40 }}>
