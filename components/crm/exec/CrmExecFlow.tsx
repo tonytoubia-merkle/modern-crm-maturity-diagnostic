@@ -153,10 +153,13 @@ export function CrmExecFlow() {
           overallScore: results.overallScore,
           high: { key: results.high.dimension.key, score: results.high.average },
           low: { key: results.low.dimension.key, score: results.low.average },
+          // The email CTA links here. Point it at the recipient's COMPLETED
+          // results (public, no login) — not a brand-new assessment. Field name
+          // kept as `fullUrl` so the existing Power Automate flow needs no change.
           fullUrl:
             typeof window !== "undefined"
-              ? `${window.location.origin}/crm/assessment/new`
-              : "/crm/assessment/new",
+              ? `${window.location.origin}/crm/exec/results?r=${encodeExecAnswers(answers)}`
+              : `/crm/exec/results?r=${encodeExecAnswers(answers)}`,
           responses: EXEC_QUESTIONS.filter((q) => answers[q.id]).map((q) => ({
             question: q.text,
             score: answers[q.id],
