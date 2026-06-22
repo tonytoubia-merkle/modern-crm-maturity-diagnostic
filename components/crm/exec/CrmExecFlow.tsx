@@ -17,8 +17,11 @@ import {
   type ExecDimension,
   type ExecQuestion,
 } from "@/lib/data/execQuestions";
-import { computeMaturityStage } from "@/lib/scoring";
-import type { Capability, MaturityStage } from "@/lib/types";
+import {
+  computeExecResults,
+  encodeExecAnswers,
+  type ExecResults,
+} from "@/lib/exec/results";
 
 const SOURCE_TAG = "exec_kiosk";
 
@@ -32,19 +35,6 @@ const NEAR_BLACK = "#05060a";
 const ORDINALS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
 type Step = "intro" | "dimension" | "results";
-
-interface DimensionResult {
-  dimension: ExecDimension;
-  average: number;
-}
-
-interface ExecResults {
-  high: DimensionResult;
-  low: DimensionResult;
-  overallScore: number;
-  maturityStage: MaturityStage;
-  capabilityScores: Record<Capability, number>;
-}
 
 /**
  * Modern CRM Self-Assessment — the Cannes kiosk activation, styled to the
@@ -89,47 +79,7 @@ export function CrmExecFlow() {
 
   /** Compute the snapshot entirely client-side and show it immediately. */
   const computeAndShow = () => {
-    const dimensionResults: DimensionResult[] = EXEC_DIMENSIONS.map((d) => {
-      const qs = EXEC_QUESTIONS_BY_DIMENSION[d.key];
-      const total = qs.reduce((s, q) => s + (answers[q.id] ?? 0), 0);
-      const avg = qs.length ? total / qs.length : 0;
-      return { dimension: d, average: Math.round(avg * 100) / 100 };
-    });
-
-    const capabilityBuckets: Partial<Record<Capability, number[]>> = {};
-    for (const q of EXEC_QUESTIONS) {
-      const score = answers[q.id];
-      if (!score) continue;
-      const bucket = capabilityBuckets[q.capability] ?? [];
-      bucket.push(score);
-      capabilityBuckets[q.capability] = bucket;
-    }
-    const capabilityScores: Record<Capability, number> = {} as Record<
-      Capability,
-      number
-    >;
-    for (const cap of Object.keys(capabilityBuckets) as Capability[]) {
-      const arr = capabilityBuckets[cap]!;
-      capabilityScores[cap] =
-        Math.round((arr.reduce((a, b) => a + b, 0) / arr.length) * 100) / 100;
-    }
-
-    const capValues = Object.values(capabilityScores).filter((v) => v > 0);
-    const overallScore = capValues.length
-      ? Math.round(
-          (capValues.reduce((a, b) => a + b, 0) / capValues.length) * 100
-        ) / 100
-      : 0;
-    const maturityStage = computeMaturityStage(overallScore);
-
-    const sorted = [...dimensionResults].sort((a, b) => b.average - a.average);
-    setResults({
-      high: sorted[0],
-      low: sorted[sorted.length - 1],
-      overallScore,
-      maturityStage,
-      capabilityScores,
-    });
+    setResults(computeExecResults(answers));
     setStep("results");
     setTimeout(() => window.scrollTo(0, 0), 0);
   };
@@ -251,6 +201,7 @@ export function CrmExecFlow() {
         <FitToViewport>
           <ResultsPanel
             results={results}
+            resultsCode={encodeExecAnswers(answers)}
             onSubmitEmail={submitLead}
             onRestart={handleRestart}
           />
@@ -805,21 +756,23 @@ function ResultBar({
 
 function ResultsPanel({
   results,
+  resultsCode,
   onSubmitEmail,
   onRestart,
 }: {
   results: ExecResults;
+  resultsCode: string;
   onSubmitEmail: (email: string) => Promise<void>;
   onRestart: () => void;
 }) {
   const stage = EXEC_STAGES[results.maturityStage];
-  const fullAssessmentUrl = useFullAssessmentUrl();
+  const resultsUrl = useResultsUrl(resultsCode);
   const qrSrc = useMemo(
     () =>
       `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=12&bgcolor=05060a&color=ffffff&data=${encodeURIComponent(
-        fullAssessmentUrl
+        resultsUrl
       )}`,
-    [fullAssessmentUrl]
+    [resultsUrl]
   );
 
   return (
@@ -955,15 +908,16 @@ function FullPictureCta({
       <div className="mt-auto pt-4 flex items-center gap-3">
         <div className="rounded-lg border border-white/15 p-2 shrink-0" style={{ backgroundColor: NEAR_BLACK }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={qrSrc} alt="Scan to take the full Modern CRM diagnostic" width={84} height={84} />
+          <img src={qrSrc} alt="Scan to view your results on your phone" width={84} height={84} />
         </div>
-        <p className="text-xs text-white/45">Or scan to take it now</p>
+        <p className="text-xs text-white/45">Scan to view your results on your phone</p>
       </div>
     </div>
   );
 }
 
-function useFullAssessmentUrl(): string {
-  if (typeof window === "undefined") return "/crm/assessment/new";
-  return `${window.location.origin}/crm/assessment/new`;
+function useResultsUrl(code: string): string {
+  const path = `/crm/exec/results?r=${code}`;
+  if (typeof window === "undefined") return path;
+  return `${window.location.origin}${path}`;
 }
