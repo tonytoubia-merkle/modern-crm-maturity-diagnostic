@@ -94,10 +94,15 @@ export async function POST(req: NextRequest) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.EXEC_FROM_EMAIL;
     const to = process.env.EXEC_CAPTURE_EMAIL;
+    // The capture email only ever rides to your own inbox, so it can use
+    // Resend's shared onboarding@resend.dev sender — which needs NO verified
+    // domain (it just has to deliver to the Resend account's own address). The
+    // Power Automate flow then sends the attendee email from Outlook. Override
+    // with EXEC_CAPTURE_FROM once a real sending domain is verified.
+    const from = process.env.EXEC_CAPTURE_FROM || "onboarding@resend.dev";
     // Graceful no-op until the capture mailbox + Resend are configured.
-    if (!apiKey || !from || !to) {
+    if (!apiKey || !to) {
       return NextResponse.json({ ok: true, captured: false, reason: "capture_not_configured" });
     }
 
