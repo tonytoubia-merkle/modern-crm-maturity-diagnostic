@@ -8,15 +8,29 @@ import type { MaturityStage } from "@/lib/types";
 
 export const runtime = "nodejs";
 
+const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
 /**
- * Forwards a completed kiosk lead to a Power Automate cloud flow (the flow's
- * "When an HTTP request is received" URL, set in POWER_AUTOMATE_URL). The flow
- * then writes the row to a SharePoint List and sends the Outlook email.
+ * Captures a completed kiosk lead to a SharePoint List — with no Graph/Entra
+ * credentials on the server.
  *
- * Server-side on purpose: keeps the flow URL (which contains a SAS signature)
- * out of the browser. Gracefully no-ops until POWER_AUTOMATE_URL is set, so the
- * kiosk is never affected before the flow exists.
+ * Writing to SharePoint directly would need an Entra app registration
+ * (Sites.ReadWrite.All + admin consent) we don't have. Instead this emails a
+ * structured "capture" message to EXEC_CAPTURE_EMAIL via Resend. A standard,
+ * non-premium Power Automate flow watches that inbox ("When a new email
+ * arrives", filtered on the subject prefix), parses the body, and creates the
+ * list item — then sends the Outlook follow-up. The flow runs as the user, so
+ * it can write to a personal-site list the server never could.
+ *
+ * The body carries human-readable lines plus a machine-parseable JSON block
+ * (between the JSON markers) so the flow can parse it reliably from a plain-text
+ * email. Gracefully no-ops until Resend + EXEC_CAPTURE_EMAIL are configured, so
+ * the kiosk is never affected before the flow exists.
  */
+
+const SUBJECT_PREFIX = "[Cannes Capture]";
+const JSON_OPEN = "---DATA-JSON---";
+const JSON_CLOSE = "---END-JSON---";
 
 interface Body {
   email: string;
@@ -41,6 +55,31 @@ function rateLimited(ip: string): boolean {
   return rec.count > 8;
 }
 
+/**
+ * Plain-text body: labeled lines for humans, plus a fenced JSON block the flow
+ * can extract (substring between the markers) and Parse JSON. Kept plain text
+ * so Power Automate's "Body" is clean and not HTML-wrapped.
+ */
+function buildCaptureText(payload: Record<string, unknown>): string {
+  const f = (k: string) => String(payload[k] ?? "");
+  return [
+    "New Cannes Modern CRM assessment completion.",
+    "",
+    `Email: ${f("email")}`,
+    `Submitted: ${f("submittedAt")}`,
+    `Maturity stage: ${f("maturityStage")}`,
+    `Overall score: ${f("overallScore")}`,
+    `Standout dimension: ${f("standoutDimension")} (${f("standoutScore")})`,
+    `Opportunity dimension: ${f("opportunityDimension")} (${f("opportunityScore")})`,
+    `Assessment URL: ${f("fullUrl")}`,
+    "",
+    JSON_OPEN,
+    JSON.stringify(payload),
+    JSON_CLOSE,
+    "",
+  ].join("\n");
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as Partial<Body>;
@@ -54,10 +93,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
     }
 
-    const url = process.env.POWER_AUTOMATE_URL;
-    // Graceful no-op until the flow is wired up.
-    if (!url) {
-      return NextResponse.json({ ok: true, captured: false, reason: "flow_not_configured" });
+    const apiKey = process.env.RESEND_API_KEY;
+    const from = process.env.EXEC_FROM_EMAIL;
+    const to = process.env.EXEC_CAPTURE_EMAIL;
+    // Graceful no-op until the capture mailbox + Resend are configured.
+    if (!apiKey || !from || !to) {
+      return NextResponse.json({ ok: true, captured: false, reason: "capture_not_configured" });
     }
 
     const stage = body.maturityStage ? EXEC_STAGES[body.maturityStage] : undefined;
@@ -74,19 +115,24 @@ export async function POST(req: NextRequest) {
       opportunityDimension: findDim(body.low?.key)?.label ?? "",
       opportunityScore: body.low?.score ?? 0,
       fullUrl: body.fullUrl ?? "",
-      responsesJson: JSON.stringify(body.responses ?? []),
+      responses: body.responses ?? [],
     };
 
-    const res = await fetch(url, {
+    const res = await fetch(RESEND_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: `${SUBJECT_PREFIX} ${email}`,
+        text: buildCaptureText(payload),
+      }),
     });
 
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
-      console.error("[exec/capture] flow error", res.status, detail.slice(0, 300));
-      return NextResponse.json({ ok: false, captured: false, error: "flow_failed" }, { status: 502 });
+      console.error("[exec/capture] capture-email error", res.status, detail.slice(0, 300));
+      return NextResponse.json({ ok: false, captured: false, error: "capture_failed" }, { status: 502 });
     }
     return NextResponse.json({ ok: true, captured: true });
   } catch (err) {
