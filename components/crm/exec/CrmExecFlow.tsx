@@ -203,8 +203,10 @@ export function CrmExecFlow() {
       // ignore — email is a bonus; the lead is already captured.
     }
 
-    // Best-effort: forward the lead to a Power Automate flow (SharePoint List +
-    // Outlook email). No-ops until POWER_AUTOMATE_URL is configured server-side.
+    // Best-effort: capture the lead to a SharePoint List. The route emails a
+    // structured "[Cannes Capture]" message to EXEC_CAPTURE_EMAIL (via Resend),
+    // which a standard Power Automate flow turns into a list item + Outlook
+    // email. No-ops until that mailbox + Resend are configured server-side.
     try {
       await fetch("/api/exec/capture", {
         method: "POST",
