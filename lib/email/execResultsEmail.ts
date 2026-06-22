@@ -26,7 +26,7 @@ export interface ExecResultsEmailParams {
   overallScore?: number;
   high?: { key?: ExecDimensionKey; score?: number };
   low?: { key?: ExecDimensionKey; score?: number };
-  /** Absolute URL to the full assessment (already validated by the caller). */
+  /** Absolute URL to the recipient's completed results page (public, no login). */
   fullUrl: string;
 }
 
@@ -161,11 +161,11 @@ export function renderExecResultsEmail(p: ExecResultsEmailParams): {
       <tr><td style="padding:28px 32px 8px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${HAIRLINE};">
           <tr><td style="padding-top:24px;">
-            <h2 style="margin:0 0 8px;font:800 19px/1.3 ${FONT};color:${INK};">Ready to see the full picture?</h2>
-            <p style="margin:0 0 18px;font:400 15px/1.6 ${FONT};color:${BODY_GREY};">Our complete 30-question assessment goes deeper on every dimension and leaves you with a roadmap, not just a score.</p>
+            <h2 style="margin:0 0 8px;font:800 19px/1.3 ${FONT};color:${INK};">Keep your results</h2>
+            <p style="margin:0 0 18px;font:400 15px/1.6 ${FONT};color:${BODY_GREY};">Open your personalized Modern CRM snapshot anytime &mdash; your stage, your standout strength, and your biggest opportunity.</p>
             <table role="presentation" cellpadding="0" cellspacing="0">
               <tr><td bgcolor="${COBALT}" style="border-radius:10px;">
-                <a href="${esc(p.fullUrl)}" style="display:inline-block;padding:15px 30px;font:700 15px/1 ${FONT};color:#ffffff;text-decoration:none;border-radius:10px;">Take the full assessment &rarr;</a>
+                <a href="${esc(p.fullUrl)}" style="display:inline-block;padding:15px 30px;font:700 15px/1 ${FONT};color:#ffffff;text-decoration:none;border-radius:10px;">View your results &rarr;</a>
               </td></tr>
             </table>
           </td></tr>
