@@ -181,32 +181,18 @@ export function CrmExecFlow() {
       }),
     });
 
-    // Best-effort: trigger the results + full-assessment-link email. The lead
-    // is already saved above, so a send failure must never surface to the user.
-    try {
-      await fetch("/api/exec/send-results", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: normalized,
-          maturityStage: results.maturityStage,
-          overallScore: results.overallScore,
-          high: { key: results.high.dimension.key, score: results.high.average },
-          low: { key: results.low.dimension.key, score: results.low.average },
-          fullUrl:
-            typeof window !== "undefined"
-              ? `${window.location.origin}/crm/assessment/new`
-              : "/crm/assessment/new",
-        }),
-      });
-    } catch {
-      // ignore — email is a bonus; the lead is already captured.
-    }
+    // The attendee results email is sent by a Power Automate flow from Outlook
+    // (a real @merkle.com sender, no domain verification needed) — triggered by
+    // the capture email below. We intentionally do NOT call /api/exec/send-results
+    // here: direct Resend sending requires a verified merkle.com domain we don't
+    // have, so the flow owns the attendee email instead.
 
-    // Best-effort: capture the lead to a SharePoint List. The route emails a
-    // structured "[Cannes Capture]" message to EXEC_CAPTURE_EMAIL (via Resend),
-    // which a standard Power Automate flow turns into a list item + Outlook
-    // email. No-ops until that mailbox + Resend are configured server-side.
+    // Best-effort: capture the lead. The route emails a structured
+    // "[Cannes Capture]" message to EXEC_CAPTURE_EMAIL (your own inbox, via
+    // Resend's onboarding@resend.dev sender — no verified domain needed). A
+    // standard Power Automate flow watches that inbox and sends the attendee
+    // email from Outlook (and optionally logs to SharePoint). The Supabase save
+    // above is the source of truth; this is best-effort. No-ops until configured.
     try {
       await fetch("/api/exec/capture", {
         method: "POST",
