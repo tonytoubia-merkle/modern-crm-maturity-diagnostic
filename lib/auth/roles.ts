@@ -1,6 +1,9 @@
-import { cookies } from "next/headers";
-import { createServerClient as createSSRClient } from "@supabase/ssr";
 import { createServerClient } from "@/lib/supabase/server";
+import { getCurrentUserEmail } from "@/lib/auth/session";
+
+// Re-exported so existing importers of `roles` keep working; the canonical
+// implementation now lives in the auth seam (lib/auth/session.ts).
+export { getCurrentUserEmail };
 
 export type AppRole = "user" | "super_admin";
 
@@ -14,26 +17,6 @@ export interface AdminAccess {
   scopes: Set<AdminScope>;
   /** Signed-in user's email, or null when there is no session. */
   email: string | null;
-}
-
-/**
- * Returns the email of the currently signed-in Supabase user, or null if
- * there is no session. Safe to call from route handlers / server components.
- */
-export async function getCurrentUserEmail(): Promise<string | null> {
-  const cookieStore = cookies();
-  const supabase = createSSRClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: () => {},
-      },
-    }
-  );
-  const { data } = await supabase.auth.getUser();
-  return data.user?.email ?? null;
 }
 
 /**
