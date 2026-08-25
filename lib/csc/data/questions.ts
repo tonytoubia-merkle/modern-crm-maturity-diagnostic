@@ -5,13 +5,12 @@ import type {
 } from "@/lib/csc/types";
 
 // ── Content Supply Chain Maturity Questions ─────────────────────────
-// Sourced from the Content Supply Chain Diagnostic.xlsx (Microsoft Forms
-// export, 45 maturity questions across 6 natural sections). Each question
-// has been reformatted into the Modern CRM diagnostic's "To what extent…"
-// altitude and mapped to the 5-point maturity scale (1 = Not in Place
-// → 5 = Optimized). Tooltips anchor each question against the Level 5
-// ("Optimized") descriptor from the source xlsx so respondents can
-// calibrate consistently.
+// Sourced from the revised CSC Diagnostic (Comprehensive Assisted Version).
+// 27 core questions across 6 natural capability sections, designed for
+// conversational, live-session assessment with facilitator notes. Each question
+// maps to the 5-point maturity scale (1 = Not in Place → 5 = Optimized).
+// Tooltips anchor each question against the Level 5 ("Optimized") descriptor
+// so respondents can calibrate consistently.
 
 export const CSC_CAPABILITY_LABELS: Record<CscCapability, string> = {
   strategy_planning: "Strategy & Planning",
@@ -77,333 +76,209 @@ export const CSC_SCORE_DESCRIPTIONS: Record<number, string> = {
   5: "Capability is fully orchestrated, continuously improved through data and AI, and drives measurable content outcomes.",
 };
 
-// ── 45 Core Questions (from xlsx columns S–BK) ──────────────────────
+// ── 27 Core Questions (Comprehensive Assisted Version) ──────────────
+// Revised for conversational, live-session assessment with facilitator notes.
+// Optional questions (marked in original) are included in core for unified scoring.
 export const CSC_CORE_QUESTIONS: CscQuestion[] = [
-  // ── Strategy & Planning (8) ───────────────────────────────────────
+  // ── Strategy & Planning (5) ───────────────────────────────────────
   {
     id: 1,
-    text: "To what extent is content strategy developed with clear integration to business objectives, audience insights, and measurable outcomes — rather than planned around product launches or calendar cadence?",
+    text: "How is your content strategy developed, and how tightly is it tied to business objectives, audience insights, and measurable outcomes?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: content planning is dynamic and continuously optimized based on audience insights, performance analytics, and real-time data.",
+      "Optimized: planning is dynamic and continuously optimized from audience insight, performance analytics, and real-time data — not built around product launches or calendar cadence.",
   },
   {
     id: 2,
-    text: "To what extent is the approach to updating existing content structured, data-driven, and increasingly automated — rather than reactive or manual?",
+    text: "How do you generate and vet new content ideas before you commit to production?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: AI-powered systems predict refresh needs and auto-prioritize updates based on performance signals.",
+      "Optimized: ideas are generated systematically across channels (including AI-assisted ideation from brand-aligned sources) and validated with predictive/AI analytics before production.",
   },
   {
     id: 3,
-    text: "To what extent is a consistent look and feel maintained across content types through enforced governance, automation, and monitoring tools?",
+    text: "How do teams plan and collaborate around the content portfolio and calendar?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: enterprise-wide adoption of a robust governance framework with advanced tools for automation and monitoring.",
+      "Optimized: a shared, dynamic portfolio plan tied to goals, with a centralized calendar and AI-driven scheduling.",
   },
   {
     id: 4,
-    text: "To what extent are new content ideas generated systematically across channels — including through AI-powered ideation from brand-aligned sources?",
+    text: "What governs consistency and content standards — look and feel, quality, and production policies?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: a unified AI-powered platform generates a vast number of on-brand content ideas from a single prompt.",
+      "Optimized: enforced governance with automation and monitoring; policies continuously updated from performance and regulatory change.",
   },
   {
     id: 5,
-    text: "To what extent are content ideas assessed for potential performance before production — using predictive analytics and AI content analytics?",
+    text: "What is your approach to updating and refreshing existing content?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: predictive campaign and AI content analytics validate ideas and assess potential effectiveness across audiences.",
+      "Optimized: data-driven and increasingly automated; systems predict refresh needs and auto-prioritize.",
   },
+
+  // ── Workflow & Production (5) ─────────────────────────────────────
   {
     id: 6,
-    text: "To what extent do teams collaborate around a shared, dynamic content portfolio plan aligned to business goals, audience insights, and campaign priorities?",
-    capability: "strategy_planning",
+    text: "How do you use technology — including AI and integrated creative tools — to accelerate content creation at scale?",
+    capability: "workflow_production",
     tooltip:
-      "Optimized: enterprise-wide adoption of a dynamic content portfolio planning framework.",
+      "Optimized: reuse and orchestration at the component level; APIs and AI scale content across channels.",
   },
   {
     id: 7,
-    text: "To what extent is the content calendar centralized in content management platforms and dynamically optimized — ideally with AI-driven scheduling?",
-    capability: "strategy_planning",
+    text: "How do you manage cross-channel content projects and track their progress?",
+    capability: "workflow_production",
     tooltip:
-      "Optimized: enterprise-wide adoption of a sophisticated editorial calendar integrated with AI-driven scheduling tools.",
+      "Optimized: unified workflows scale across channels without duplicated effort; enterprise-grade project management integrated with CMS and DAM.",
   },
   {
     id: 8,
-    text: "To what extent are content production policies and standards documented, enforced, and continuously updated based on performance and regulatory changes?",
-    capability: "strategy_planning",
-    tooltip:
-      "Optimized: policies and standards are continuously updated based on performance analytics and regulatory changes across the full content lifecycle.",
-  },
-
-  // ── Workflow & Production (10) ────────────────────────────────────
-  {
-    id: 9,
-    text: "To what extent is technology — including AI and integrated creative tools — used to accelerate content creation at scale?",
+    text: "How are approvals, feedback, and revisions handled?",
     capability: "workflow_production",
     tooltip:
-      "Optimized: micro-content orchestration enables atom-level reuse; APIs and AI scale content across channels.",
+      "Optimized: predictive, dynamic approvals adapting to content type/risk/region; real-time collaboration with automated conflict resolution.",
+  },
+  {
+    id: 9,
+    text: "How do you track and manage the cost and resourcing of content projects?",
+    capability: "workflow_production",
+    tooltip:
+      "Optimized: enterprise financial systems integrated with content tools; metrics drive resource planning across the supply chain.",
   },
   {
     id: 10,
-    text: "To what extent are cross-channel content projects managed through unified workflows that scale rapidly without duplicated effort?",
+    text: "How is content localization or market/audience-variant production managed?",
     capability: "workflow_production",
     tooltip:
-      "Optimized: API-driven workflows enable rapid scaling across channels rather than campaign-by-campaign rebuilds.",
+      "Optimized: AI predicts localization/variant needs and auto-generates resonant content across markets, regions, or audience segments (applies to single-market businesses with multiple audience variants too).",
   },
+
+  // ── Asset Management & Governance (5) ──────────────────────────────
   {
     id: 11,
-    text: "To what extent are responsibilities and tasks for content projects assigned through a shared governed structure with continuous improvement mechanisms?",
-    capability: "workflow_production",
+    text: "How do you store, organize, and control access to your digital assets? Is there a central DAM?",
+    capability: "asset_governance",
     tooltip:
-      "Optimized: teams operate under a unified governed structure with strict adherence, checks, balances, and continuous improvement mechanisms.",
+      "Optimized: a fully integrated DAM acts as the backbone of the content supply chain, with enforced role-based access tied to identity and content systems.",
   },
   {
     id: 12,
-    text: "To what extent is project progress tracked through enterprise-grade project management systems integrated with CMS, DAM, and other content platforms?",
-    capability: "workflow_production",
+    text: "How do you manage version control and the reuse of content components?",
+    capability: "asset_governance",
     tooltip:
-      "Optimized: enterprise-grade project management systems fully integrated with CMS, DAM, and other content systems.",
+      "Optimized: a formalized version-control framework integrated with workflows and audit trails; predictive analytics surface high-value reuse opportunities.",
   },
   {
     id: 13,
-    text: "To what extent are approval workflows predictive and dynamic — adapting to content type, risk level, and region?",
-    capability: "workflow_production",
+    text: "How do you manage rights, usage, compliance, and legal requirements?",
+    capability: "asset_governance",
     tooltip:
-      "Optimized: AI-powered workflows predict bottlenecks and dynamically reassign approvals based on workload or expertise.",
+      "Optimized: rights management scales with growth and new tech; compliance is automated and embedded directly into workflows.",
   },
   {
     id: 14,
-    text: "To what extent are feedback and revisions handled through real-time collaboration tools with predictive prioritization and automated conflict resolution?",
-    capability: "workflow_production",
+    text: "How is content security and archiving managed?",
+    capability: "asset_governance",
     tooltip:
-      "Optimized: AI-powered tools facilitate real-time collaboration, predictive feedback prioritization, and automated conflict resolution.",
+      "Optimized: an optimized security framework integrated with tools; archives retain full historical versions and audit trails for transparency and compliance.",
   },
   {
     id: 15,
-    text: "To what extent are content deadlines consistently met through governance structures, regular audits, and continuous improvement initiatives?",
-    capability: "workflow_production",
+    text: "How is content tagged and made searchable?",
+    capability: "asset_governance",
     tooltip:
-      "Optimized: governance ensures adherence to workflows with regular audits and continuous improvement initiatives in place.",
+      "Optimized: AI/ML auto-categorizes content based on taxonomy rules.",
   },
+
+  // ── Distribution & Activation (5) ──────────────────────────────────
   {
     id: 16,
-    text: "To what extent are content creation costs tracked through enterprise-grade financial systems fully integrated with content tools?",
-    capability: "workflow_production",
+    text: "How do you manage content distribution and adapt content across channels?",
+    capability: "distribution_activation",
     tooltip:
-      "Optimized: enterprise-grade financial systems are fully integrated with content, project, and asset platforms for seamless financial tracking.",
+      "Optimized: real-time cross-channel optimization across all surfaces; AI predicts optimal channel mix and timing.",
   },
   {
     id: 17,
-    text: "To what extent are resources allocated and tracked for content projects using comprehensive metrics that drive strategic planning?",
-    capability: "workflow_production",
+    text: "How do you manage personalization and audience segmentation?",
+    capability: "distribution_activation",
     tooltip:
-      "Optimized: comprehensive metrics drive strategic decisions for resource planning and allocation across the content supply chain.",
+      "Optimized: AI-driven personalization delivers hyper-relevant experiences; segmentation is dynamic and based on real-time data.",
   },
   {
     id: 18,
-    text: "To what extent is content localization managed dynamically — with AI predicting needs and generating culturally resonant content?",
-    capability: "workflow_production",
+    text: "How do you schedule content and orchestrate campaign workflows across channels?",
+    capability: "distribution_activation",
     tooltip:
-      "Optimized: AI predicts localization needs and auto-generates culturally resonant content across markets.",
+      "Optimized: AI-driven orchestration predicts bottlenecks and auto-allocates resources; AI predicts optimal publishing times and channels.",
   },
-
-  // ── Asset Management & Governance (9) ─────────────────────────────
   {
     id: 19,
-    text: "To what extent is digital asset storage and organization backed by a fully integrated DAM that serves as the backbone of the content supply chain?",
-    capability: "asset_governance",
+    text: "How do you test content and feed audience insights back into distribution?",
+    capability: "distribution_activation",
     tooltip:
-      "Optimized: a fully integrated DAM connects all systems for seamless asset management and delivery.",
+      "Optimized: AI predicts optimal test variations; continuous feedback loops refine delivery with predictive modeling.",
   },
   {
     id: 20,
-    text: "To what extent is access to digital assets controlled through enforced, role-based permissions?",
-    capability: "asset_governance",
+    text: "How connected are your creative/content tools to your distribution tools?",
+    capability: "distribution_activation",
     tooltip:
-      "Optimized: enforced role-based access control integrated with identity and content systems.",
+      "Optimized: end-to-end AI-powered integration adapts content for channel-specific requirements automatically.",
   },
+
+  // ── Measurement & Insights (4) ────────────────────────────────────
   {
     id: 21,
-    text: "To what extent is version control a formalized, optimized framework that integrates seamlessly with workflows and tools?",
-    capability: "asset_governance",
+    text: "How do you visualize content performance across channels? Are dashboards used?",
+    capability: "measurement_insights",
     tooltip:
-      "Optimized: fully optimized version control framework integrated with workflows, audit trails, and approval mechanisms.",
+      "Optimized: AI/ML dashboards auto-generate cross-channel, role-based customizable views and surface emerging trends.",
   },
   {
     id: 22,
-    text: "To what extent are content components reused systematically — with predictive analytics identifying high-value reuse opportunities?",
-    capability: "asset_governance",
+    text: "How are content metrics aligned to business goals?",
+    capability: "measurement_insights",
     tooltip:
-      "Optimized: predictive analytics identify high-value components for reuse across campaigns and channels.",
+      "Optimized: an enterprise-wide framework for objectives and goals, integrated with advanced AI-powered tools.",
   },
   {
     id: 23,
-    text: "To what extent are rights and usage for external assets managed through systems that scale with growth, emerging tech, and evolving needs?",
-    capability: "asset_governance",
+    text: "How do you report on performance, and do you benchmark it?",
+    capability: "measurement_insights",
     tooltip:
-      "Optimized: rights management adapts to future growth, emerging technologies, and evolving business needs.",
+      "Optimized: enterprise-wide, AI-driven analytics with formal performance benchmarking practices.",
   },
   {
     id: 24,
-    text: "To what extent are content archives accessible, with full historical versions and audit trails ensuring transparency and compliance?",
-    capability: "asset_governance",
+    text: "How do you ensure data quality, and how are insights fed back into the content process?",
+    capability: "measurement_insights",
     tooltip:
-      "Optimized: historical versions and audit trails are fully accessible, ensuring transparency and compliance.",
+      "Optimized: immutable audit trails log models, training data, and predictions for transparency and bias mitigation; AI autonomously generates insights and prescribes actions.",
   },
+
+  // ── Intelligence & Automation (3) ──────────────────────────────────
   {
     id: 25,
-    text: "To what extent are content compliance and legal requirements automated and embedded directly into workflows?",
-    capability: "asset_governance",
+    text: "What is your approach to metadata? Does it power personalized delivery and predictive analytics?",
+    capability: "intelligence_automation",
     tooltip:
-      "Optimized: compliance processes are automated and embedded into content workflows.",
+      "Optimized: metadata supports advanced capabilities such as personalized content delivery and predictive analytics.",
   },
   {
     id: 26,
-    text: "To what extent do content tagging and searchability leverage AI/ML to auto-categorize content based on taxonomy rules?",
-    capability: "asset_governance",
+    text: "What content search capabilities exist, and do results adapt to user behavior and preferences?",
+    capability: "intelligence_automation",
     tooltip:
-      "Optimized: AI/ML assists in auto-categorizing content based on taxonomy rules.",
+      "Optimized: dynamic personalization tailors search results based on user behavior and preferences.",
   },
   {
     id: 27,
-    text: "To what extent is content security governed through a fully optimized framework that integrates seamlessly with workflows and tools?",
-    capability: "asset_governance",
-    tooltip:
-      "Optimized: fully optimized security and compliance framework integrated with workflows and tools.",
-  },
-
-  // ── Distribution & Activation (9) ─────────────────────────────────
-  {
-    id: 28,
-    text: "To what extent is content distribution managed through real-time, cross-channel optimization?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: real-time cross-channel optimization is in place across all distribution surfaces.",
-  },
-  {
-    id: 29,
-    text: "To what extent is content adapted for different channels through AI that predicts optimal channel mix and timing?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: AI predicts optimal channel mix and delivery timing based on audience behavior and platform algorithms.",
-  },
-  {
-    id: 30,
-    text: "To what extent are campaign workflows managed through AI-driven orchestration that predicts bottlenecks and auto-allocates resources?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: AI-driven campaign orchestration predicts bottlenecks and auto-allocates resources across channels.",
-  },
-  {
-    id: 31,
-    text: "To what extent does personalization deliver hyper-relevant experiences by proactively predicting user needs and preferences?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: AI-driven personalization delivers hyper-relevant experiences by proactively predicting user needs and preferences.",
-  },
-  {
-    id: 32,
-    text: "To what extent is content testing informed by AI that predicts optimal variations and testing strategies?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: AI predicts optimal variations and testing strategies using predictive analytics across channels.",
-  },
-  {
-    id: 33,
-    text: "To what extent are audiences mapped and segmented dynamically based on real-time data for content delivery?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: enterprise-wide adoption of advanced audience mapping practices with dynamic segmentation based on real-time data.",
-  },
-  {
-    id: 34,
-    text: "To what extent does content scheduling use AI to predict optimal publishing times and channels?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: AI predicts optimal publishing times and channels using audience digital patterns and competitor activity.",
-  },
-  {
-    id: 35,
-    text: "To what extent are audience insights used in distribution through continuous feedback loops and predictive modeling?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: continuous feedback loops provide granular cross-channel performance data and refine delivery strategies using predictive modeling.",
-  },
-  {
-    id: 36,
-    text: "To what extent are creative and content tools connected to distribution tools through end-to-end AI-powered integration?",
-    capability: "distribution_activation",
-    tooltip:
-      "Optimized: end-to-end AI-powered tools dynamically adapt content for channel-specific requirements across multiple markets.",
-  },
-
-  // ── Measurement & Insights (6) ────────────────────────────────────
-  {
-    id: 37,
-    text: "To what extent is cross-channel content performance visualized through AI/ML dashboards that auto-generate customizable views?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: AI/ML predicts emerging trends and auto-configures cross-channel dashboards by user role and preferences.",
-  },
-  {
-    id: 38,
-    text: "To what extent are content metrics aligned to business goals through an AI-integrated framework for objectives and goals?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: enterprise-wide framework for objective and goal development integrated with advanced AI-powered tools.",
-  },
-  {
-    id: 39,
-    text: "To what extent is content performance reporting supported by AI-driven analytics and formal performance benchmarking practices?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: enterprise-wide advanced performance benchmarking practices integrated with sophisticated, AI-driven analytics tools.",
-  },
-  {
-    id: 40,
-    text: "To what extent is content data quality assured through immutable audit trails that log models, training data, and predictions?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: immutable audit trails log all models, training data, and predictions for transparency and bias mitigation.",
-  },
-  {
-    id: 41,
-    text: "To what extent are insights fed back into the content process through AI systems that autonomously generate actions?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: AI-powered systems autonomously generate granular insights and prescribe actions.",
-  },
-  {
-    id: 42,
-    text: "To what extent are dashboards used to visualize content performance — ideally with AI-generated, role-based customization?",
-    capability: "measurement_insights",
-    tooltip:
-      "Optimized: AI/ML dashboards auto-generate cross-channel customizable views based on user roles and preferences.",
-  },
-
-  // ── Intelligence & Automation (3) ─────────────────────────────────
-  {
-    id: 43,
-    text: "To what extent does metadata support advanced capabilities such as personalized content delivery and predictive analytics?",
+    text: "How is automation, including AI-driven component combination, used to produce content at scale?",
     capability: "intelligence_automation",
     tooltip:
-      "Optimized: metadata supports capabilities such as personalized content delivery and predictive analytics.",
-  },
-  {
-    id: 44,
-    text: "To what extent does content search dynamically tailor results based on user behavior and preferences?",
-    capability: "intelligence_automation",
-    tooltip:
-      "Optimized: dynamic personalization tailors content search results based on user behavior and preferences.",
-  },
-  {
-    id: 45,
-    text: "To what extent is automation — including AI-driven component combination — used to produce content at scale?",
-    capability: "intelligence_automation",
-    tooltip:
-      "Optimized: AI predicts optimal component combinations based on real-time analytics to produce content at scale.",
+      "Optimized: AI predicts optimal component combinations from real-time analytics to produce content at scale.",
   },
 ];
 
