@@ -6,6 +6,7 @@ import { isAllowedEmail } from "@/lib/auth/domains";
 const PUBLIC_ROUTES = [
   "/auth",              // Passwordless sign-in
   "/auth/callback",     // Magic link code exchange
+  "/auth/confirm",      // Click-to-confirm email link
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
   "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
   "/crm/exec/results",  // Public QR results page (scores in ?r=, no login/PII)
