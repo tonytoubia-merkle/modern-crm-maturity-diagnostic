@@ -12,7 +12,7 @@ import { M2Logo } from "@/components/brand/M2Logo";
  *      B2B Transformation, AI for CX, AI for Enterprise. The current
  *      page is bolded / fully-white; the others are dim links.
  *   3. Utility links – Guide, Library, Badges (yellow), Admin, About.
- *   4. Profile bubble with Badges + Sign out menu.
+ *   4. Profile bubble with Badges, Change password, and Sign out.
  *
  * Kept as a single component so the diagnostic homes can't drift out
  * of sync as new diagnostics or utility links are added.
@@ -147,6 +147,12 @@ export function DiagnosticHeader({
                       className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                     >
                       Badges
+                    </a>
+                    <a
+                      href="/account"
+                      className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                    >
+                      Change password
                     </a>
                     <button
                       onClick={onSignOut}

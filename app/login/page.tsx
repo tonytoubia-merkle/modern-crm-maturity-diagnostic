@@ -135,6 +135,10 @@ export default function LoginPage() {
         </button>
       </form>
 
+      <p className="text-xs text-slate-400 text-center mt-4">
+        Forgot your password? Ask an assessment admin to reset it for you.
+      </p>
+
       <p className="text-sm text-slate-500 text-center mt-5">
         New here?{" "}
         <a href={registerHref} className="font-semibold text-m2-blue hover:underline">

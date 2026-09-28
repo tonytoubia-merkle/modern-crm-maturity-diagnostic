@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { Button } from "@/components/ui/Button";
 import { formatDateTime } from "@/lib/utils";
+import { SetPasswordModal } from "@/components/admin/SetPasswordModal";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -52,6 +53,8 @@ export function AdminUsersPanel() {
   // Per-row busy tracker so we can disable controls while patching
   const [rowBusy, setRowBusy] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<AppUser | null>(null);
+  // undefined = closed, null = open with a blank email field
+  const [passwordTarget, setPasswordTarget] = useState<string | null | undefined>(undefined);
 
   const flash = useCallback((tone: "success" | "error", text: string) => {
     setBanner({ tone, text });
@@ -296,6 +299,13 @@ export function AdminUsersPanel() {
                 </span>
               )}
               <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setPasswordTarget(null)}
+              >
+                Set a password
+              </Button>
+              <Button
                 variant="primary"
                 size="sm"
                 onClick={() => setAddOpen((v) => !v)}
@@ -494,7 +504,7 @@ export function AdminUsersPanel() {
                         </p>
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <div className="inline-flex items-center gap-2">
+                        <div className="inline-flex items-center gap-2 whitespace-nowrap">
                           <button
                             type="button"
                             disabled={busy || (isSelf && isSuper)}
@@ -509,6 +519,16 @@ export function AdminUsersPanel() {
                             className="text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed"
                           >
                             {isSuper ? "Demote" : "Promote"}
+                          </button>
+                          <span className="text-slate-200">·</span>
+                          <button
+                            type="button"
+                            disabled={busy}
+                            onClick={() => setPasswordTarget(u.email)}
+                            title="Set this user's password"
+                            className="text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            Set password
                           </button>
                           <span className="text-slate-200">·</span>
                           <button
@@ -536,10 +556,23 @@ export function AdminUsersPanel() {
           <p className="text-[11px] text-slate-400 mt-4">
             Removing a row returns the user to default access (no admin).
             Users who haven&apos;t signed up yet can still be pre-provisioned –
-            their scopes apply the moment they authenticate.
+            their scopes apply the moment they authenticate. Use{" "}
+            <strong>Set a password</strong> for anyone, including people not
+            listed here.
           </p>
         </div>
       </div>
+
+      {passwordTarget !== undefined && (
+        <SetPasswordModal
+          initialEmail={passwordTarget}
+          onClose={() => setPasswordTarget(undefined)}
+          onDone={(message) => {
+            setPasswordTarget(undefined);
+            flash("success", message);
+          }}
+        />
+      )}
 
       {/* Delete confirmation */}
       {confirmDelete && (

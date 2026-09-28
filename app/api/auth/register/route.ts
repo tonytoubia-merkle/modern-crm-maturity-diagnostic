@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
-import { isAllowedEmail } from "@/lib/auth/domains";
-
-const MIN_PASSWORD_LENGTH = 8;
+import { isAllowedEmail, MIN_PASSWORD_LENGTH } from "@/lib/auth/domains";
 
 // Creates an already-confirmed account so there is no confirmation email;
 // the browser signs in with the same credentials right after.

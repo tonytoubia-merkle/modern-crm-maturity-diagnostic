@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isAllowedEmail, safeRedirectPath } from "@/lib/auth/domains";
+import { isAllowedEmail, MIN_PASSWORD_LENGTH, safeRedirectPath } from "@/lib/auth/domains";
+
+export { MIN_PASSWORD_LENGTH };
 
 // Read after mount: these pages are prerendered, and hydration keeps the
 // server-rendered link hrefs, which would drop ?redirect=.
@@ -15,7 +17,6 @@ export function useRedirectParam(): string {
   return redirect;
 }
 
-export const MIN_PASSWORD_LENGTH = 8;
 
 export function validateAuthEmail(
   email: string
