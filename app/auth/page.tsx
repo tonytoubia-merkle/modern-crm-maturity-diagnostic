@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthAlert } from "@/components/auth/AuthAlert";
@@ -11,17 +11,8 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-/**
- * /auth – unified passwordless authentication.
- *
- * User enters email → magic link sent → click link in email → auto-authenticated.
- * No passwords, no registration confusion. Simple and accessible.
- *
- * Custom AlertCards handle:
- *   - wrong domain    → amber "use @merkle.com or @dentsu.com"
- *   - email sent      → green "check your email for the magic link"
- *   - generic failure → red error card
- */
+// Passwordless sign-in: the magic link lands on /auth/callback, which also
+// creates the account on first use, so there is no separate registration step.
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,6 +25,16 @@ export default function AuthPage() {
     typeof window !== "undefined"
       ? new URLSearchParams(window.location.search).get("redirect") || "/"
       : "/";
+
+  useEffect(() => {
+    const error = new URLSearchParams(window.location.search).get("error");
+    if (error === "domain") setDomainError(true);
+    if (error === "link") {
+      setAuthFailure(
+        "That sign-in link is invalid or has expired. Enter your email to get a new one."
+      );
+    }
+  }, []);
 
   const clearAlerts = () => {
     setDomainError(false);
@@ -62,7 +63,7 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/verify?redirect=${encodeURIComponent(redirect)}`,
+          emailRedirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`,
         },
       });
       if (error) throw error;
@@ -87,8 +88,8 @@ export default function AuthPage() {
           body={
             <>
               We sent a sign-in link to <strong>{email}</strong>. Click it to
-              authenticate and access the workspace. The link expires in 24
-              hours.
+              sign in. If it doesn&apos;t arrive in a minute or two, check
+              your junk folder.
             </>
           }
         />

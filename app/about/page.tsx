@@ -233,7 +233,7 @@ export default function AboutPage() {
                 <li>
                   Edge <span className="font-mono text-xs">middleware.ts</span>{" "}
                   validates the Supabase session on every protected route and
-                  redirects unauthenticated users to <code>/login</code>.
+                  redirects unauthenticated users to <code>/auth</code>.
                 </li>
                 <li>
                   Server components and API routes under{" "}

@@ -119,7 +119,7 @@ export default function CscChatAssessmentPage() {
             Conversational Assessment
           </h2>
           <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-            Instead of answering 45 individual questions, have a natural
+            Instead of answering 27 individual questions, have a natural
             conversation about your content supply chain. The system will infer
             maturity scores across strategy, workflow, asset governance,
             distribution, measurement, and AI from your responses. You can

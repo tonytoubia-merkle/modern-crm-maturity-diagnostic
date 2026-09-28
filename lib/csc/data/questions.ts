@@ -2,7 +2,22 @@ import type {
   CscQuestion,
   CscIndustryQuestion,
   CscCapability,
+  CscIndustry,
 } from "@/lib/csc/types";
+
+/**
+ * Resolves a question's display text given the assessment's industry.
+ * Mirrors lib/data/questions.ts:resolveQuestionText – see notes there.
+ */
+export function resolveCscQuestionText(
+  q: Pick<CscQuestion, "text" | "byIndustry">,
+  industry: CscIndustry | null | undefined
+): string {
+  if (industry && q.byIndustry?.[industry]) {
+    return q.byIndustry[industry] as string;
+  }
+  return q.text;
+}
 
 // ── Content Supply Chain Maturity Questions ─────────────────────────
 // Sourced from the revised CSC Diagnostic (Comprehensive Assisted Version).
@@ -34,7 +49,7 @@ export const CSC_CAPABILITY_DESCRIPTIONS: Record<CscCapability, string> = {
   strategy_planning:
     "Assess the extent to which content strategy, ideation, portfolio planning, editorial calendars, and content policies are designed to deliver audience-led, outcomes-driven content at scale.",
   workflow_production:
-    "Assess the extent to which content is produced through integrated, scalable, and increasingly AI-augmented workflows — from project management through approvals, costs, resources, and localization.",
+    "Assess the extent to which content is produced through integrated, scalable, and increasingly AI-augmented workflows – from project management through approvals, costs, resources, and localization.",
   asset_governance:
     "Assess the extent to which content assets are stored, accessed, versioned, reused, rights-cleared, archived, compliant, tagged, and secured through a trusted DAM foundation.",
   distribution_activation:
@@ -86,7 +101,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
     text: "How is your content strategy developed, and how tightly is it tied to business objectives, audience insights, and measurable outcomes?",
     capability: "strategy_planning",
     tooltip:
-      "Optimized: planning is dynamic and continuously optimized from audience insight, performance analytics, and real-time data — not built around product launches or calendar cadence.",
+      "Optimized: planning is dynamic and continuously optimized from audience insight, performance analytics, and real-time data – not built around product launches or calendar cadence.",
   },
   {
     id: 2,
@@ -104,7 +119,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   },
   {
     id: 4,
-    text: "What governs consistency and content standards — look and feel, quality, and production policies?",
+    text: "What governs consistency and content standards – look and feel, quality, and production policies?",
     capability: "strategy_planning",
     tooltip:
       "Optimized: enforced governance with automation and monitoring; policies continuously updated from performance and regulatory change.",
@@ -120,7 +135,7 @@ export const CSC_CORE_QUESTIONS: CscQuestion[] = [
   // ── Workflow & Production (5) ─────────────────────────────────────
   {
     id: 6,
-    text: "How do you use technology — including AI and integrated creative tools — to accelerate content creation at scale?",
+    text: "How do you use technology – including AI and integrated creative tools – to accelerate content creation at scale?",
     capability: "workflow_production",
     tooltip:
       "Optimized: reuse and orchestration at the component level; APIs and AI scale content across channels.",
@@ -308,7 +323,7 @@ export const CSC_INDUSTRY_LABELS: Record<string, string> = {
   automotive: "Automotive / Mobility",
 };
 
-// Optional industry supplement (not in xlsx source — carried forward from
+// Optional industry supplement (not in xlsx source – carried forward from
 // the CRM diagnostic's shape). Capabilities re-mapped to the CSC 6-set.
 export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   // Retail
@@ -410,7 +425,7 @@ export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   // Travel & Hospitality
   {
     id: "th_1",
-    text: "To what extent is content personalized across the trip lifecycle — dream, plan, book, stay, share — rather than treated as a single moment?",
+    text: "To what extent is content personalized across the trip lifecycle – dream, plan, book, stay, share – rather than treated as a single moment?",
     industry: "travel_hospitality",
     capability: "distribution_activation",
   },
@@ -454,7 +469,7 @@ export const CSC_INDUSTRY_QUESTIONS: CscIndustryQuestion[] = [
   },
   {
     id: "auto_3",
-    text: "To what extent is content aligned to the full vehicle lifecycle — research, purchase, service, loyalty, re-purchase?",
+    text: "To what extent is content aligned to the full vehicle lifecycle – research, purchase, service, loyalty, re-purchase?",
     industry: "automotive",
     capability: "strategy_planning",
   },
