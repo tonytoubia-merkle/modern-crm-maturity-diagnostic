@@ -142,7 +142,7 @@ export default function CscHomePage() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/login";
+    window.location.href = "/auth";
   };
 
   return (
@@ -196,7 +196,7 @@ export default function CscHomePage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900 mb-1.5">Assess</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              45 questions across six content supply chain capabilities –
+              27 questions across six content supply chain capabilities –
               Strategy &amp; Planning, Workflow &amp; Production, Asset Management
               &amp; Governance, Distribution &amp; Activation, Measurement
               &amp; Insights, and Intelligence &amp; Automation.

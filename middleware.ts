@@ -1,11 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isAllowedEmail } from "@/lib/auth/domains";
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
   "/auth",              // Passwordless sign-in
-  "/auth/verify",       // Magic link verification
-  "/auth/callback",     // OAuth callback (legacy, kept for compatibility)
+  "/auth/callback",     // Magic link code exchange
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
   "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
   "/crm/exec/results",  // Public QR results page (scores in ?r=, no login/PII)
@@ -30,6 +30,13 @@ const PUBLIC_PREFIXES = [
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Old bookmarks and links from before passwordless sign-in
+  if (pathname === "/login" || pathname === "/register") {
+    const authUrl = new URL("/auth", request.url);
+    authUrl.search = request.nextUrl.search;
+    return NextResponse.redirect(authUrl);
+  }
 
   // Allow public routes
   if (PUBLIC_ROUTES.includes(pathname)) {
@@ -97,6 +104,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(authUrl);
   }
 
+  // The domain check on /auth is client-side only; enforce it here too.
+  if (!isAllowedEmail(user.email)) {
+    await supabase.auth.signOut();
+    const authUrl = new URL("/auth", request.url);
+    authUrl.searchParams.set("error", "domain");
+    const redirectResponse = NextResponse.redirect(authUrl);
+    response.cookies.getAll().forEach((c) => redirectResponse.cookies.set(c));
+    return redirectResponse;
+  }
+
   return response;
 }
 
@@ -111,4 +128,3 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
-// Build trigger test

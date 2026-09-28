@@ -30,7 +30,7 @@ export default function ChooserHome() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/login";
+    window.location.href = "/auth";
   };
 
   const initials = user?.name

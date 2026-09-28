@@ -10,9 +10,8 @@ import type { CscIndustry } from "@/lib/csc/types";
 
 /**
  * Phase thresholds – proportionally aligned with the CRM phasing
- * (CRM: 30 questions → opening<5, exploration<20). CSC has 45 core
- * questions, so the bands are scaled to roughly the same coverage
- * percentages (≤17%, ≤67%, then gap-filling, then confirmation).
+ * (CRM: 30 questions → opening<5, exploration<20), scaled to the CSC
+ * question count (≤17%, ≤67%, then gap-filling, then confirmation).
  */
 export function calculateCscPhase(
   scores: Map<string, CscInferredScore>,
@@ -20,8 +19,8 @@ export function calculateCscPhase(
   totalQuestions: number
 ): CscChatPhase {
   const covered = scores.size + skipped.size;
-  if (covered < 8) return "opening";
-  if (covered < 30) return "exploration";
+  if (covered < Math.ceil(totalQuestions * 0.17)) return "opening";
+  if (covered < Math.ceil(totalQuestions * 0.67)) return "exploration";
   if (covered < totalQuestions) return "gap_filling";
   return "confirmation";
 }
