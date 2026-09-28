@@ -83,6 +83,12 @@ export default function ChooserHome() {
                           {user.email}
                         </p>
                       </div>
+                      <a
+                        href="/account"
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        Change password
+                      </a>
                       <button
                         onClick={handleSignOut}
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-lg transition-colors"

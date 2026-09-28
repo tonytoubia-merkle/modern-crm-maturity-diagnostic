@@ -1,5 +1,7 @@
 export const ALLOWED_DOMAINS = ["merkle.com", "dentsu.com"];
 
+export const MIN_PASSWORD_LENGTH = 8;
+
 export function isAllowedEmail(email: string | null | undefined): boolean {
   const domain = email?.trim().split("@")[1]?.toLowerCase();
   if (!domain) return false;
