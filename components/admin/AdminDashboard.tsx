@@ -275,7 +275,7 @@ export function AdminDashboard() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/auth";
+    window.location.href = "/login";
   };
 
   const exportCSV = () => {

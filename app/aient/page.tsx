@@ -142,7 +142,7 @@ export default function AientHomePage() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/auth";
+    window.location.href = "/login";
   };
 
   return (

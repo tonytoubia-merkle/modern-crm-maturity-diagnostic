@@ -4,9 +4,8 @@ import { isAllowedEmail } from "@/lib/auth/domains";
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
-  "/auth",              // Passwordless sign-in
-  "/auth/callback",     // Magic link code exchange
-  "/auth/confirm",      // Click-to-confirm email link
+  "/login",
+  "/register",
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
   "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
   "/crm/exec/results",  // Public QR results page (scores in ?r=, no login/PII)
@@ -32,11 +31,12 @@ const PUBLIC_PREFIXES = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Old bookmarks and links from before passwordless sign-in
-  if (pathname === "/login" || pathname === "/register") {
-    const authUrl = new URL("/auth", request.url);
-    authUrl.search = request.nextUrl.search;
-    return NextResponse.redirect(authUrl);
+  // Links and emails from the short-lived passwordless sign-in
+  if (pathname === "/auth" || pathname.startsWith("/auth/")) {
+    const loginUrl = new URL("/login", request.url);
+    const redirect = request.nextUrl.searchParams.get("redirect");
+    if (redirect) loginUrl.searchParams.set("redirect", redirect);
+    return NextResponse.redirect(loginUrl);
   }
 
   // Allow public routes
@@ -98,19 +98,18 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // If no user, redirect to passwordless auth
   if (!user) {
-    const authUrl = new URL("/auth", request.url);
-    authUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(authUrl);
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  // The domain check on /auth is client-side only; enforce it here too.
+  // Sign-in could be called directly against Supabase, so enforce the domain here.
   if (!isAllowedEmail(user.email)) {
     await supabase.auth.signOut();
-    const authUrl = new URL("/auth", request.url);
-    authUrl.searchParams.set("error", "domain");
-    const redirectResponse = NextResponse.redirect(authUrl);
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("error", "domain");
+    const redirectResponse = NextResponse.redirect(loginUrl);
     response.cookies.getAll().forEach((c) => redirectResponse.cookies.set(c));
     return redirectResponse;
   }
