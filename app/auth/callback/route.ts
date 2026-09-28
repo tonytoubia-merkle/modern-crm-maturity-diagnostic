@@ -16,7 +16,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(url);
   };
 
-  if (!code) return authError("link");
+  if (!code) {
+    console.error("auth callback: no code", {
+      error: searchParams.get("error"),
+      error_code: searchParams.get("error_code"),
+      error_description: searchParams.get("error_description"),
+    });
+    return authError("link");
+  }
 
   const cookieStore = cookies();
   const supabase = createServerClient(
@@ -41,7 +48,10 @@ export async function GET(request: NextRequest) {
   );
 
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error) return authError("link");
+  if (error) {
+    console.error("auth callback: code exchange failed", error.message);
+    return authError("link");
+  }
 
   if (!isAllowedEmail(data.user?.email)) {
     await supabase.auth.signOut();

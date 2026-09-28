@@ -5,26 +5,29 @@ import { createBrowserClient } from "@supabase/ssr";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthAlert } from "@/components/auth/AuthAlert";
 import { validateAuthEmail } from "@/components/auth/authShared";
+import { AUTH_REDIRECT_KEY, safeRedirectPath } from "@/lib/auth/domains";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// Passwordless sign-in: the magic link lands on /auth/callback, which also
-// creates the account on first use, so there is no separate registration step.
+// Passwordless sign-in. The email carries both a code (typed here) and a
+// link to /auth/confirm; either one also creates the account on first use.
 export default function AuthPage() {
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [domainError, setDomainError] = useState(false);
   const [authFailure, setAuthFailure] = useState<string | null>(null);
   const [missingFields, setMissingFields] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
 
-  const redirect =
+  const redirect = safeRedirectPath(
     typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("redirect") || "/"
-      : "/";
+      ? new URLSearchParams(window.location.search).get("redirect")
+      : null
+  );
 
   useEffect(() => {
     const error = new URLSearchParams(window.location.search).get("error");
@@ -42,7 +45,7 @@ export default function AuthPage() {
     setMissingFields(null);
   };
 
-  const handleMagicLink = async (e: React.FormEvent) => {
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     clearAlerts();
 
@@ -60,6 +63,7 @@ export default function AuthPage() {
 
     setLoading(true);
     try {
+      localStorage.setItem(AUTH_REDIRECT_KEY, redirect);
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
@@ -69,9 +73,36 @@ export default function AuthPage() {
       if (error) throw error;
       setEmailSent(true);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Failed to send magic link";
+      const msg = err instanceof Error ? err.message : "Failed to send sign-in email";
       setAuthFailure(msg);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    clearAlerts();
+
+    const token = code.replace(/\s/g, "");
+    if (!/^\d{6,10}$/.test(token)) {
+      setMissingFields("Enter the code from your email.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token,
+        type: "email",
+      });
+      if (error) throw error;
+      window.location.href = redirect;
+    } catch {
+      setAuthFailure(
+        "That code is incorrect or has expired. Check the latest email, or send a new one."
+      );
       setLoading(false);
     }
   };
@@ -80,28 +111,53 @@ export default function AuthPage() {
     return (
       <AuthShell
         title="Check your email"
-        subtitle="A magic link has been sent to your inbox."
+        subtitle={`We sent a sign-in email to ${email}.`}
       >
-        <AuthAlert
-          tone="success"
-          title="Magic link sent"
-          body={
-            <>
-              We sent a sign-in link to <strong>{email}</strong>. Click it to
-              sign in. If it doesn&apos;t arrive in a minute or two, check
-              your junk folder.
-            </>
-          }
-        />
+        <p className="text-sm text-slate-600 mb-3">
+          Enter the code from the email below, or click the link in the email.
+          If it doesn&apos;t arrive in a minute or two, check your junk folder.
+        </p>
+
+        <form noValidate onSubmit={handleVerifyCode} className="space-y-3">
+          <input
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            placeholder="Sign-in code"
+            value={code}
+            onChange={(e) => {
+              setCode(e.target.value);
+              if (authFailure || missingFields) clearAlerts();
+            }}
+            className="w-full text-center tracking-[0.3em] text-lg px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400"
+          />
+
+          {missingFields && (
+            <AuthAlert tone="error" title="Missing code" body={missingFields} />
+          )}
+
+          {authFailure && (
+            <AuthAlert tone="error" title="Sign-in failed" body={authFailure} />
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+
         <button
           onClick={() => {
             setEmailSent(false);
-            setEmail("");
+            setCode("");
             clearAlerts();
           }}
-          className="w-full mt-4 px-4 py-2.5 text-sm font-semibold text-slate-700 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
+          className="w-full mt-3 px-4 py-2.5 text-sm font-semibold text-slate-700 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
         >
-          Try another email
+          Use a different email or resend
         </button>
       </AuthShell>
     );
@@ -110,7 +166,7 @@ export default function AuthPage() {
   return (
     <AuthShell
       title="Sign in"
-      subtitle="Enter your email to receive a magic sign-in link."
+      subtitle="Enter your work email and we'll send you a sign-in code."
     >
       <p className="text-[11px] text-slate-400 mb-3 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2">
         Only <strong className="text-slate-600">@merkle.com</strong> and{" "}
@@ -118,7 +174,7 @@ export default function AuthPage() {
         are permitted.
       </p>
 
-      <form noValidate onSubmit={handleMagicLink} className="space-y-3">
+      <form noValidate onSubmit={handleSendEmail} className="space-y-3">
         <input
           type="email"
           placeholder="you@merkle.com"
@@ -150,11 +206,7 @@ export default function AuthPage() {
         )}
 
         {authFailure && !domainError && (
-          <AuthAlert
-            tone="error"
-            title="Sign-in failed"
-            body={authFailure}
-          />
+          <AuthAlert tone="error" title="Sign-in failed" body={authFailure} />
         )}
 
         <button
@@ -162,7 +214,7 @@ export default function AuthPage() {
           disabled={loading}
           className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
         >
-          {loading ? "Sending..." : "Send Magic Link"}
+          {loading ? "Sending..." : "Email Me a Sign-In Code"}
         </button>
       </form>
     </AuthShell>
