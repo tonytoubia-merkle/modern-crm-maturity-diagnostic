@@ -3,9 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Routes that don't require authentication
 const PUBLIC_ROUTES = [
-  "/login",
-  "/register",
-  "/auth/callback",
+  "/auth",              // Passwordless sign-in
+  "/auth/verify",       // Magic link verification
+  "/auth/callback",     // OAuth callback (legacy, kept for compatibility)
   "/crm/exec",          // Modern CRM Executive Self-Assessment (kiosk)
   "/crm/exec/tablet",   // Landscape tablet preview of the kiosk
   "/crm/exec/results",  // Public QR results page (scores in ?r=, no login/PII)
@@ -90,11 +90,11 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // If no user, redirect to login
+  // If no user, redirect to passwordless auth
   if (!user) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
+    const authUrl = new URL("/auth", request.url);
+    authUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(authUrl);
   }
 
   return response;
