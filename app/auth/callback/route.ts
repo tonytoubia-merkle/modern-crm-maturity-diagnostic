@@ -16,6 +16,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(url);
   };
 
+  // Implicit-flow links carry the session in the URL fragment, which the
+  // server never sees. Browsers keep the fragment across a redirect whose
+  // Location has none, so /auth/confirm can read it client-side.
+  if (!code && !searchParams.get("error")) {
+    const url = new URL("/auth/confirm", request.url);
+    url.searchParams.set("redirect", redirect);
+    return NextResponse.redirect(url);
+  }
+
   if (!code) {
     console.error("auth callback: no code", {
       error: searchParams.get("error"),

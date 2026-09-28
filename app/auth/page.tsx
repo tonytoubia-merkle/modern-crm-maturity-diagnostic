@@ -1,22 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthAlert } from "@/components/auth/AuthAlert";
 import { validateAuthEmail } from "@/components/auth/authShared";
-import { AUTH_REDIRECT_KEY, safeRedirectPath } from "@/lib/auth/domains";
+import { safeRedirectPath } from "@/lib/auth/domains";
 
-const supabase = createBrowserClient(
+// Implicit flow, not the @supabase/ssr PKCE default: PKCE links only work in
+// the browser that requested them, and Outlook often opens a different one.
+// The link returns tokens in the URL fragment, handled by /auth/confirm.
+const otpClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    auth: {
+      flowType: "implicit",
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  }
 );
 
-// Passwordless sign-in. The email carries both a code (typed here) and a
-// link to /auth/confirm; either one also creates the account on first use.
+// Passwordless sign-in; the first sign-in also creates the account.
 export default function AuthPage() {
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [domainError, setDomainError] = useState(false);
   const [authFailure, setAuthFailure] = useState<string | null>(null);
@@ -63,8 +72,7 @@ export default function AuthPage() {
 
     setLoading(true);
     try {
-      localStorage.setItem(AUTH_REDIRECT_KEY, redirect);
-      const { error } = await supabase.auth.signInWithOtp({
+      const { error } = await otpClient.auth.signInWithOtp({
         email: email.trim(),
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`,
@@ -80,82 +88,23 @@ export default function AuthPage() {
     }
   };
 
-  const handleVerifyCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    clearAlerts();
-
-    const token = code.replace(/\s/g, "");
-    if (!/^\d{6,10}$/.test(token)) {
-      setMissingFields("Enter the code from your email.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.verifyOtp({
-        email: email.trim(),
-        token,
-        type: "email",
-      });
-      if (error) throw error;
-      window.location.href = redirect;
-    } catch {
-      setAuthFailure(
-        "That code is incorrect or has expired. Check the latest email, or send a new one."
-      );
-      setLoading(false);
-    }
-  };
-
   if (emailSent) {
     return (
       <AuthShell
         title="Check your email"
-        subtitle={`We sent a sign-in email to ${email}.`}
+        subtitle={`We sent a sign-in link to ${email}.`}
       >
-        <p className="text-sm text-slate-600 mb-3">
-          Enter the code from the email below, or click the link in the email.
-          If it doesn&apos;t arrive in a minute or two, check your junk folder.
-        </p>
-
-        <form noValidate onSubmit={handleVerifyCode} className="space-y-3">
-          <input
-            type="text"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            placeholder="Sign-in code"
-            value={code}
-            onChange={(e) => {
-              setCode(e.target.value);
-              if (authFailure || missingFields) clearAlerts();
-            }}
-            className="w-full text-center tracking-[0.3em] text-lg px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-400"
-          />
-
-          {missingFields && (
-            <AuthAlert tone="error" title="Missing code" body={missingFields} />
-          )}
-
-          {authFailure && (
-            <AuthAlert tone="error" title="Sign-in failed" body={authFailure} />
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
-
+        <AuthAlert
+          tone="success"
+          title="Sign-in link sent"
+          body="Click the link in the email to sign in. It works in any browser. If it doesn't arrive in a minute or two, check your junk folder."
+        />
         <button
           onClick={() => {
             setEmailSent(false);
-            setCode("");
             clearAlerts();
           }}
-          className="w-full mt-3 px-4 py-2.5 text-sm font-semibold text-slate-700 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
+          className="w-full mt-4 px-4 py-2.5 text-sm font-semibold text-slate-700 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
         >
           Use a different email or resend
         </button>
@@ -166,7 +115,7 @@ export default function AuthPage() {
   return (
     <AuthShell
       title="Sign in"
-      subtitle="Enter your work email and we'll send you a sign-in code."
+      subtitle="Enter your work email and we'll send you a sign-in link."
     >
       <p className="text-[11px] text-slate-400 mb-3 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2">
         Only <strong className="text-slate-600">@merkle.com</strong> and{" "}
@@ -214,7 +163,7 @@ export default function AuthPage() {
           disabled={loading}
           className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
         >
-          {loading ? "Sending..." : "Email Me a Sign-In Code"}
+          {loading ? "Sending..." : "Email Me a Sign-In Link"}
         </button>
       </form>
     </AuthShell>
