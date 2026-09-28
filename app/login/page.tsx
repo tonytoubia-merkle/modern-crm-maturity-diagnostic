@@ -6,7 +6,7 @@ import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthAlert } from "@/components/auth/AuthAlert";
 import {
   DomainNotice,
-  ShowPasswordsToggle,
+  PasswordField,
   inputClass,
   useRedirectParam,
   primaryButtonClass,
@@ -93,8 +93,7 @@ export default function LoginPage() {
           autoComplete="email"
           className={inputClass}
         />
-        <input
-          type={showPassword ? "text" : "password"}
+        <PasswordField
           placeholder="Password"
           value={password}
           onChange={(e) => {
@@ -102,11 +101,9 @@ export default function LoginPage() {
             clearAlerts();
           }}
           autoComplete="current-password"
-          className={inputClass}
-        />
-        <ShowPasswordsToggle
           shown={showPassword}
           onToggle={() => setShowPassword((s) => !s)}
+          toggleLabel={showPassword ? "Hide password" : "Show password"}
         />
 
         {domainError && (

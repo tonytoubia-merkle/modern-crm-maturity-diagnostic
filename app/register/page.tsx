@@ -7,7 +7,7 @@ import { AuthAlert } from "@/components/auth/AuthAlert";
 import {
   DomainNotice,
   MIN_PASSWORD_LENGTH,
-  ShowPasswordsToggle,
+  PasswordField,
   inputClass,
   useRedirectParam,
   primaryButtonClass,
@@ -33,6 +33,9 @@ export default function RegisterPage() {
   const loginHref =
     redirect === "/" ? "/login" : `/login?redirect=${encodeURIComponent(redirect)}`;
 
+  const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword;
+  const passwordsToggleLabel = showPasswords ? "Hide passwords" : "Show passwords";
+
   const clearAlerts = () => {
     setDomainError(false);
     setAlreadyRegistered(false);
@@ -57,10 +60,7 @@ export default function RegisterPage() {
       setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
       return;
     }
-    if (password !== confirmPassword) {
-      setError("The two passwords don't match.");
-      return;
-    }
+    if (password !== confirmPassword) return;
 
     setLoading(true);
     try {
@@ -116,8 +116,7 @@ export default function RegisterPage() {
           autoComplete="email"
           className={inputClass}
         />
-        <input
-          type={showPasswords ? "text" : "password"}
+        <PasswordField
           placeholder={`Password (at least ${MIN_PASSWORD_LENGTH} characters)`}
           value={password}
           onChange={(e) => {
@@ -125,10 +124,11 @@ export default function RegisterPage() {
             clearAlerts();
           }}
           autoComplete="new-password"
-          className={inputClass}
+          shown={showPasswords}
+          onToggle={() => setShowPasswords((s) => !s)}
+          toggleLabel={passwordsToggleLabel}
         />
-        <input
-          type={showPasswords ? "text" : "password"}
+        <PasswordField
           placeholder="Confirm password"
           value={confirmPassword}
           onChange={(e) => {
@@ -136,13 +136,15 @@ export default function RegisterPage() {
             clearAlerts();
           }}
           autoComplete="new-password"
-          className={inputClass}
-        />
-        <ShowPasswordsToggle
-          plural
           shown={showPasswords}
           onToggle={() => setShowPasswords((s) => !s)}
+          toggleLabel={passwordsToggleLabel}
+          invalid={passwordsMismatch}
         />
+
+        {passwordsMismatch && (
+          <AuthAlert tone="error" title="Passwords don't match" body="Re-enter the same password in both fields." />
+        )}
 
         {domainError && (
           <AuthAlert
@@ -168,7 +170,7 @@ export default function RegisterPage() {
 
         {error && <AuthAlert tone="error" title="Check your details" body={error} />}
 
-        <button type="submit" disabled={loading} className={primaryButtonClass}>
+        <button type="submit" disabled={loading || passwordsMismatch} className={primaryButtonClass}>
           {loading ? "Creating account..." : "Create Account"}
         </button>
       </form>

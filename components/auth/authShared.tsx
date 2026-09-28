@@ -42,25 +42,46 @@ export function DomainNotice() {
   );
 }
 
-export function ShowPasswordsToggle({
+function EyeIcon({ open }: { open: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+      {!open && <line x1="3" y1="3" x2="21" y2="21" />}
+    </svg>
+  );
+}
+
+export function PasswordField({
   shown,
   onToggle,
-  plural,
+  toggleLabel,
+  invalid,
+  ...inputProps
 }: {
   shown: boolean;
   onToggle: () => void;
-  plural?: boolean;
-}) {
-  const noun = plural ? "passwords" : "password";
+  toggleLabel: string;
+  invalid?: boolean;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">) {
   return (
-    <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+    <div className="relative">
       <input
-        type="checkbox"
-        checked={shown}
-        onChange={onToggle}
-        className="h-3.5 w-3.5 rounded border-slate-300 accent-m2-blue"
+        {...inputProps}
+        type={shown ? "text" : "password"}
+        aria-invalid={invalid || undefined}
+        className={`${inputClass} pr-10 ${invalid ? "border-red-300 focus:border-red-400" : ""}`}
       />
-      Show {noun}
-    </label>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={toggleLabel}
+        aria-pressed={shown}
+        title={toggleLabel}
+        className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 hover:text-slate-700"
+      >
+        <EyeIcon open={shown} />
+      </button>
+    </div>
   );
 }
