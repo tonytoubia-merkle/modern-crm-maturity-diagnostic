@@ -1,69 +1,83 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import type { EmailOtpType } from "@supabase/supabase-js";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthAlert } from "@/components/auth/AuthAlert";
-import { AUTH_REDIRECT_KEY, safeRedirectPath } from "@/lib/auth/domains";
+import { isAllowedEmail, safeRedirectPath } from "@/lib/auth/domains";
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  { auth: { detectSessionInUrl: false } }
 );
 
-// Verifies only on click: Outlook Safe Links and other scanners open email
-// links automatically, which would otherwise burn the one-time token.
+// Landing page for sign-in links: reads the session from the URL fragment
+// and stores it in cookies so the server and middleware see it.
 export default function ConfirmPage() {
-  const [loading, setLoading] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<null | "link" | "domain">(null);
 
-  const handleConfirm = async () => {
-    setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    const tokenHash = params.get("token_hash");
-    const type = (params.get("type") || "email") as EmailOtpType;
+  useEffect(() => {
+    const finish = async () => {
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const accessToken = hash.get("access_token");
+      const refreshToken = hash.get("refresh_token");
 
-    const { error } = tokenHash
-      ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
-      : { error: new Error("missing token_hash") };
+      if (!accessToken || !refreshToken) {
+        console.error("auth confirm: no session in link", hash.get("error_code"));
+        setFailed("link");
+        return;
+      }
 
-    if (error) {
-      console.error("auth confirm failed:", error.message);
-      setFailed(true);
-      setLoading(false);
-      return;
-    }
+      const { data, error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+      if (error) {
+        console.error("auth confirm: setSession failed", error.message);
+        setFailed("link");
+        return;
+      }
+      if (!isAllowedEmail(data.user?.email)) {
+        await supabase.auth.signOut();
+        setFailed("domain");
+        return;
+      }
 
-    const redirect = safeRedirectPath(localStorage.getItem(AUTH_REDIRECT_KEY));
-    localStorage.removeItem(AUTH_REDIRECT_KEY);
-    window.location.href = redirect;
-  };
+      const redirect = safeRedirectPath(
+        new URLSearchParams(window.location.search).get("redirect")
+      );
+      window.location.replace(redirect);
+    };
+    finish();
+  }, []);
 
   return (
-    <AuthShell title="Sign in" subtitle="Confirm it's you to finish signing in.">
-      {failed ? (
+    <AuthShell title="Signing you in" subtitle="">
+      {failed === null && (
+        <div className="flex justify-center py-4">
+          <div className="w-6 h-6 border-2 border-m2-blue border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+
+      {failed && (
         <div className="space-y-3">
           <AuthAlert
-            tone="error"
-            title="Link expired"
-            body="This sign-in link has already been used or has expired. Request a new one to continue."
+            tone={failed === "domain" ? "domain" : "error"}
+            title={failed === "domain" ? "Use a Merkle or dentsu email" : "Link expired"}
+            body={
+              failed === "domain"
+                ? "Only @merkle.com and @dentsu.com addresses can sign in."
+                : "This sign-in link has already been used or has expired. Request a new one to continue."
+            }
           />
           <a
             href="/auth"
             className="w-full block text-center px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors"
           >
-            Get a new sign-in email
+            Get a new sign-in link
           </a>
         </div>
-      ) : (
-        <button
-          onClick={handleConfirm}
-          disabled={loading}
-          className="w-full px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-m2-blue hover:bg-m2-blue-alt transition-colors disabled:opacity-50"
-        >
-          {loading ? "Signing in..." : "Continue to the assessment"}
-        </button>
       )}
     </AuthShell>
   );
